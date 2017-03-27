@@ -49,15 +49,7 @@ $config = [
                 ],
             ],
         ],
- // Yii2 TCPDF
-        'tcpdf' => [
-            'class' => 'yii\tcpdf\TCPDF',
-        ],
-        'telmovil' => require(__DIR__ . '/telmovil.php'),
-        'confidencial' => require(__DIR__ . '/confidencial.php'),
-        'tgt' => require(__DIR__ . '/tgt.php'),
-        'fundacion' => require(__DIR__ . '/fundacion.php'),
-        'mysqldb' => require(__DIR__ . '/mysqldb.php'),
+        'usrawa' => require(__DIR__ . '/usrawa.php'),
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
