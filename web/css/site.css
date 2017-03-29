@@ -2459,3 +2459,26 @@ MATERIAL-SELECT
 	list-style: none;
 	padding: 0;
 }
+
+
+
+
+
+/* ESTILOS ACOMER*/
+.bg-acomer{
+	background-image: url(../img/bg.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.logo-login{
+	width: 200px;
+}
+.btn-radius{
+	border-radius: 20px;
+}
+.form-group.input-icon .control-label{
+	margin-left: 48px;
+}
+.form-group.input-icon .help-block{
+	left: 48px;
+}

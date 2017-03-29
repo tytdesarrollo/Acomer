@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 AppAsset::register($this);
 
-$this->title = '.:Autogestion:.';
+$this->title = 'Acomer';
 
 $request = Yii::$app->request;
 
@@ -23,31 +23,27 @@ $request = Yii::$app->request;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class='bg__grt-blue'>
+<body class='bg-acomer'>
 
 <?php $this->beginBody() ?>
 
-<div class="alert-login text-center">
+<!--<div class="alert-login text-center">
  <?php echo Alert::widget([
     'options' => [
         'class' => 'alert-info',
     ],
     'body' => '<strong>Importante!</strong> Por favor escribe tu usuario de red sin dominio (NH/TELECOM) y seguido su clave de red.',
 ]);?>
-</div>
+</div>-->
  
  <div class="container text-center">
-
-	<div class="row">
-		<div class="col-md-12 text-right"><h2 class="txt__light-100"> </h2></div>
-	</div>
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
-			<div>
-				<?= Html::img('@web/img/logo_ag.png', ['alt' => 'Auto Gestión Web']) ?>
+			<div class="mrg__top-40">
+				<?= Html::img('@web/img/logo.png', ['alt' => 'Acomer', 'class' => 'logo-login',]) ?>
 			</div>
-			<div>
-				<h3 class="txt__light-100 mrg__top-30">Inicia sesión con tu cuenta</h3>
+			<div class="mrg__bottom-30">
+				<h2 class="txt__light-100 mrg__top-30">LOG IN</h2>
 				<div class="text-left">
 					<?php $form = ActiveForm::begin([
 					"method" => "post",
@@ -56,19 +52,19 @@ $request = Yii::$app->request;
 					"enableAjaxValidation" => true,
 					]); 
 					?>
-						<?= $form->field($model, 'usuario', ['options' => ['class' => 'input-white form-group label-floating']])->textInput(['autofocus' => true]) ?>
-						 <?= $form->field($model, 'clave', ['options' => ['class' => 'input-white form-group label-floating']])->passwordInput() ?>
+						<?= $form->field($model, 'usuario', ['options' => ['class' => 'input-white form-group label-floating input-icon'],'inputTemplate' => '<div class="input-group"><span class="input-group-addon txt__light-100"><i class="material-icons">&#xE7FD;</i></span>{input}</div>',])->textInput(['autofocus' => true]) ?>
+						<?= $form->field($model, 'clave', ['options' => ['class' => 'input-white form-group label-floating input-icon'],'inputTemplate' => '<div class="input-group"><span class="input-group-addon txt__light-100"><i class="material-icons">&#xE0DA;</i></span>{input}</div>',])->passwordInput()?>
 						 <div class="text-right">
 							<?= $recordar ?>
 						 </div>
 						<div class="form-group text-center mrg__top-15">
-							<?= Html::submitButton('Ingresar', ['class' => 'btn btn-raised btn-info btn-block', 'name' => 'login-button']) ?>
+							<?= Html::submitButton('Ingresar', ['class' => 'btn btn-raised btn-success btn-block btn-radius', 'name' => 'login-button']) ?>
+						</div>
+						<div class="text-center">
+							<a href="#" class="txt__light-100">Olvidaste tu contraseña?</a>
 						</div>
 					<?php ActiveForm::end(); ?>
 				</div>
-			</div>
-			<div class="pdg__16">
-				<?= Html::img('@web/img/logo_telefonica.png', ['alt' => 'Telefónica']) ?>
 			</div>
 		</div>
 	</div>
@@ -96,9 +92,6 @@ $request = Yii::$app->request;
 		</div>
 	</div>
 </div>
-<footer class="footer-login text-center">
-	<p class="txt__light-100">Power by Talentos & Tecnología</p>
-</footer>
 
 <?php $this->endBody() ?>
 
