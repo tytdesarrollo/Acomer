@@ -47,7 +47,7 @@ AppAsset::register($this);
 				</a>
 			</div>
 			<div class="content__logo pull-left">
-				<?= Html::img('@web/img/logo_small.svg', ['alt' => 'Auto Gestión Web', 'height' => '38px']) ?>
+				<?= Html::img('@web/img/logo.png', ['alt' => 'Acomer', 'height' => '38px']) ?>
 				<div class="hidden-xs" style="margin-top: 10px;"><p>Mesa Centro de servicios compartidos.</p></div>
 			</div>
 			<div class="pull-right">

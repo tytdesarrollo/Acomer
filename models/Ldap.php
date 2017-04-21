@@ -20,7 +20,7 @@ class Ldap extends Model{
 	$dominio01 = "local";
 	
 	//parametro para habilitar el directorio activo, si es "true" esta habilitado y omite base de datos, si es "false" pasa a validar con base de datos
-	$directorioactivo = "true";
+	$directorioactivo = "false";
 
 // DIRECCION PARA CONEXION DIRECTORIO ACTIVO
 	@$ldapconn = ldap_connect("192.168.0.195")

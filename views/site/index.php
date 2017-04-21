@@ -1,31 +1,35 @@
 <?php
-use yii\helpers\Html;
-use app\assets\AppAsset;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Alert;
-use yii\helpers\Url;
+	use yii\helpers\Html;
+	use app\assets\AppAsset;
+	use yii\bootstrap\ActiveForm;
+	use yii\bootstrap\Alert;
+	use yii\helpers\Url;
 
-AppAsset::register($this);
+	AppAsset::register($this);
 
-$this->title = 'Acomer';
+	$this->title = 'Acomer';
 
-$request = Yii::$app->request;
+	$request = Yii::$app->request;
 
 ?>
 
-<?php $this->beginPage() ?>
+<?php 
+	$this->beginPage() 
+?>
+
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body class='bg-acomer'>
+	<head>
+	    <meta charset="<?= Yii::$app->charset ?>">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <?= Html::csrfMetaTags() ?>
+	    <title><?= Html::encode($this->title) ?></title>
+	    <?php $this->head() ?>
+	</head>
 
-<?php $this->beginBody() ?>
+	<body class='bg-acomer'>
+
+	<?php $this->beginBody() ?>
 
 <!--<div class="alert-login text-center">
  <?php echo Alert::widget([
@@ -46,11 +50,11 @@ $request = Yii::$app->request;
 				<h2 class="txt__light-100 mrg__top-30">LOG IN</h2>
 				<div class="text-left">
 					<?php $form = ActiveForm::begin([
-					"method" => "post",
-					"id" => "login-form",
-					"enableClientValidation" => false,
-					"enableAjaxValidation" => true,
-					]); 
+							"method" => "post",
+							"id" => "login-form",
+							"enableClientValidation" => false,
+							"enableAjaxValidation" => true,
+						]); 
 					?>
 						<?= $form->field($model, 'usuario', ['options' => ['class' => 'input-white form-group label-floating input-icon'],'inputTemplate' => '<div class="input-group"><span class="input-group-addon txt__light-100"><i class="material-icons">&#xE7FD;</i></span>{input}</div>',])->textInput(['autofocus' => true]) ?>
 						<?= $form->field($model, 'clave', ['options' => ['class' => 'input-white form-group label-floating input-icon'],'inputTemplate' => '<div class="input-group"><span class="input-group-addon txt__light-100"><i class="material-icons">&#xE0DA;</i></span>{input}</div>',])->passwordInput()?>
@@ -60,15 +64,24 @@ $request = Yii::$app->request;
 						<div class="form-group text-center mrg__top-15">
 							<?= Html::submitButton('Ingresar', ['class' => 'btn btn-raised btn-success btn-block btn-radius', 'name' => 'login-button']) ?>
 						</div>
-						<div class="text-center">
-							<a href="#" class="txt__light-100">Olvidaste tu contraseña?</a>
-						</div>
+						<!--<<div class="text-center">
+							a href="#" class="txt__light-100">Olvidaste tu contraseña?</a
+						</div>>-->
 					<?php ActiveForm::end(); ?>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+<?php $form2 = ActiveForm::begin([
+			"method" => "post",
+			"id" => "remember-form",
+			"enableClientValidation" => false,
+			"enableAjaxValidation" => true,
+		]); 
+?>
 <div class="modal fade modal-std modal-vertically-center" id="recordarpass" tabindex="-1" role="dialog" aria-labelledby="recordarpassLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -78,12 +91,9 @@ $request = Yii::$app->request;
 			</div>
 			<div class="modal-body">
 				<div class="text-justify">
-					<p>Por favor ingresa tu número de cédula y te enviaremos las instrucciones para restaurar tu contraseña al correo electrónico que tengas registrado en nómina.<br /> Gracias por utilizar este servicio.</p>
+					<p>Por favor ingresa tu número de cédula y te enviaremos las instrucciones para restaurar tu contraseña al correo electrónico que tengas registrado.<br /> Gracias por utilizar este servicio.</p>
 					<div class="clearfix"></div>
-					<div class="form-group label-floating mrg__top-15">
-						<label class="control-label" for="email">Cédula</label>
-						<input class="form-control" id="email" type="text">
-					</div>
+					<?= $form2->field($model2, 'cedula', ['options' => ['class' => 'form-group label-floating mrg__top-15']])->textInput(['autofocus' => true]) ?>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -92,6 +102,7 @@ $request = Yii::$app->request;
 		</div>
 	</div>
 </div>
+<?php ActiveForm::end(); ?>
 
 <?php $this->endBody() ?>
 
