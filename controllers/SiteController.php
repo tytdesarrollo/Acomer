@@ -319,7 +319,17 @@ class SiteController extends Controller
         
         return $this->goHome();
     }
-
+	public function actionPlaza()
+    {				
+        return $this->render('plaza');
+		
+    }
+	public function actionContratos()
+    {				
+        $this->layout=false; 
+		return $this->render('contratos');
+		
+    }
 
 }
 

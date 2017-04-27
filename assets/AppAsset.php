@@ -23,9 +23,10 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
 		'js/classie.js',
-		'js/mlpushmenu.js',
+		// 'js/mlpushmenu.js',
 		'js/moment.min.js',
 		'js/fullcalendar.min.js',
+		'js/velocity.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
