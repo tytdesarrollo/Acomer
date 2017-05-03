@@ -46,6 +46,7 @@ $request = Yii::$app->request;
 				<tbody>
 					<?php			
 						//CARGAN TODAS LAS EMRESAS QUE SE ENCUENTRAN EN LA BASE DE DATOS			
+						foreach($empresas as $keye){ //ABRE FOREACH DE EMPRESAS
 							//IDENTIFICAR SI ALGUNA EMPRESA NO POSEE UN CONTRATO E INDICAR EN LA VISTA
 							$cantidad_contratos = 0;
 					?>
@@ -63,8 +64,10 @@ $request = Yii::$app->request;
 							<div class="sub-table-wrap">
 								<!--CICLO QUE CARGA CADA UNO DE LOS CONTRATOS QUE SE TIENE CON CADA EMPRESA-->
 								<?php
+									foreach ($contratos as $keyc) { //ABRE FOREACH DE CONTRATOS
 										//IDENTIFICO CON EL ID DE LA EMPRESA CUALES SON SUS CONTRATOS
 										$idCompare = strcmp($keyc['COD_EMPRESA'],$keye['COD_EMPRESA']);
+										if($idCompare === 0){ // ABRE IF COMParacion 
 											//SI LA EMPRESA TIENE UN CONTRATO ENCREMENTO EL CONTADOR 
 											$cantidad_contratos = $cantidad_contratos + 1;
 								?>
@@ -179,8 +182,10 @@ $request = Yii::$app->request;
 															<tbody>
 																<?php
 																	//CARGO LAS FACTURAS PERTENECIENTES AL CONTRATO 
+																	foreach ($facturas as $keyf) { //ABRE FOREACH FACTURAS
 																		//COMPARO EL CODIGO DEL CONTRATO COINCIDA CON EL DE LAS FACTURAS 
 																		$idCompare = strcmp($keyf['COD_CONTRATO'],$keyc['COD_CONTRATO']);
+																		if($idCompare === 0){// ABRE IF COMPARE 2
 																?>
 																<tr>
 																	<th class="content-icon-est">
@@ -214,6 +219,8 @@ $request = Yii::$app->request;
 																	</th>
 																</tr>
 																<?php
+																		}//CIERRA IF COMPARE 2
+																	}// CIERA FOREACH DE FACTURAS											
 																?>
 															</tbody>
 														</table>
@@ -224,9 +231,12 @@ $request = Yii::$app->request;
 									<a href="#0" class="cttos-modal-close"><i class="material-icons">&#xE14C;</i></a>
 								</div>
 								<?php
+										}// CIERRA IF DE COMPARE
+									}//CIERRA FOREACH DE CONTRATOS								
 								?>
 								<?php
 									//SI LA CANTIDAD DE CONTRATOS DE UN EMPRESA EN NULA SE INDICA EN PANTALLA
+									if($cantidad_contratos === 0){ //ABRE IF DE CANTIDAD DE CONTRATOS
 								?>
 								<div class="full-sub-table">
 									<dl class="info-wrapper">
@@ -261,11 +271,13 @@ $request = Yii::$app->request;
 									</div>
 								</div>
 								<?php 
+									}// CIERRA IF DE CANTIDAD DE CONTRATOS CONTRATOS												
 								?>
 							</div>
 						</td>
 					</tr>
 					<?php					
+						}//CIERRA FOREAC DE EMPRESAS
 					?>
 				</tbody>
 			</table>
