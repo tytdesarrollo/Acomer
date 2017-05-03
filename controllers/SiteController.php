@@ -10,7 +10,6 @@ use app\models\IndexForm;
 use app\models\AsignaForm;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
-use app\models\FormSearch;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\helpers\Url;
@@ -18,9 +17,7 @@ use PDO;
 use app\models\SpLoginAcomer;
 use app\models\SpContratosAcomer;
 use app\models\RememberForm;
-use app\models\TwPcPersonalData;
 use app\models\PrbUsuario;
-use app\models\Gen0011;
 use app\models\Ldap;
 
 
