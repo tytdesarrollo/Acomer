@@ -2481,8 +2481,14 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 }
 .main{
 	position: absolute;
-	left: 0;
-	top: -50px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+.base{
+	transform: scale(1.5);
+    transform-origin: 50% 40%;
 }
 .food-menu{
 	position: relative;
@@ -2514,6 +2520,91 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	margin-top: 13px;
     margin-bottom: 10px;
 }
+.content-mesas{
+	position: absolute;
+    width: 100vw;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin-top: 45px;
+}
+.mesas{
+	position: absolute;
+	transform: scale(0.5);
+}
+.mesa__1{
+	top: 179px;
+    left: 226px;
+}
+.mesa__2{
+	top: 142px;
+    left: 290px;
+}
+.mesa__3{
+	top: 105px;
+    left: 354px;
+}
+.mesa__4{
+	top: 68px;
+    left: 418px;
+}
+.mesa__5{
+	top: 216px;
+    left: 290px;
+}
+.mesa__6{
+	top: 179px;
+    left: 354px;
+}
+.mesa__7{
+	top: 142px;
+    left: 418px;
+}
+.mesa__8{
+	top: 105px;
+    left: 482px;
+}
+.mesa__9{
+	top: 253px;
+    left: 354px;
+}
+.mesa__10{
+	top: 216px;
+    left: 418px;
+}
+.mesa__11{
+	top: 179px;
+    left: 482px;
+}
+.mesa__12{
+	top: 142px;
+    left: 546px;
+}
+.mesa__13{
+	top: 290px;
+    left: 418px;
+}
+.mesa__14{
+	top: 253px;
+    left: 482px;
+}
+.mesa__15{
+	top: 216px;
+    left: 546px;
+}
+.mesa__16{
+	top: 179px;
+    left: 611px;
+}
+.mesa__17{
+	top: 224px;
+    left: 20px;
+}
+.mesa__18{
+	top: 187px;
+    left: 84px;
+}
+
 .panel.panel-md-table .panel-body{
 	padding: 0;
 }
@@ -2903,13 +2994,37 @@ body.overflow-hidden {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.content-grid-products{
+	width: 100%;
+	padding: 1.5em
+}
+.content-grid-products > .grid-products{
+	position: relative;
+}
+.grid-item{
+	position: absolute;
+	left: 0%;
+    top: 0px;
+	width: calc((100% / 3) - 20px);
+    margin: 0 10px 20px;
+}
 .cd-modal p {
   color: #ffffff;
   line-height: 1.6;
   margin: 2em 0;
 }
+.food-menu-list{
+	color: #ffffff;
+    list-style: none;
+    padding: 0;
+	font-size: 2rem;
+    line-height: 2;
+}
+.food-menu-list li{
+	padding: 20px 40px;
+}
 .modal-is-visible .cd-modal {
-  z-index: 1;
+  z-index: 3;
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
@@ -2944,6 +3059,8 @@ body.overflow-hidden {
   background-color: #34383c;
 }
 .cd-modal-action .menu-trigger {
+  position: absolute;
+  z-index: 2;
   width: 48px;
   border-radius: 5em;
   color: #ffffff;
@@ -2958,6 +3075,7 @@ body.overflow-hidden {
 .cd-modal-action .menu-trigger.to-circle {
   width: 48px;
   color: transparent;
+  background-color: rgba(255, 255, 255, 0.2);
   -webkit-transition: color 0.2s 0s, width 0.3s 0.2s;
   -moz-transition: color 0.2s 0s, width 0.3s 0.2s;
   transition: color 0.2s 0s, width 0.3s 0.2s;
@@ -3034,11 +3152,9 @@ body.overflow-hidden {
   -o-transform: scale(1);
   transform: scale(1);
 }
+
 @media only screen and (min-width: 768px) {
   .cd-modal-close {
     top: 70px;
   }
 }
-
-
-

@@ -134,6 +134,20 @@ AppAsset::register($this);
 </header>
 <div class="cd-modal">
 	<div class="cd-modal-content">
+		<ul class="food-menu-list text-center">
+			<li>A la parrila</li>
+			<li>Ensaladas</li>
+			<li>Postres</li>
+			<li>Bebidas</li>
+		</ul>
+		<div class="content-grid-products">
+			<div class="grid-products">
+				<div class="grid-item"></div>
+				<div class="grid-item"></div>
+				<div class="grid-item"></div>
+				<div class="grid-item"></div>
+			</div>
+		</div>
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab error reiciendis sapiente iure. Dolore, quo sed dolores ipsum necessitatibus asperiores illo sapiente velit magni accusantium fugit a natus expedita obcaecati!</p>
 	</div>
 </div>
