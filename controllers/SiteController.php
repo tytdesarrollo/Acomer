@@ -10,16 +10,14 @@ use app\models\IndexForm;
 use app\models\AsignaForm;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
-use app\models\FormSearch;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\helpers\Url;
 use PDO;
 use app\models\SpLoginAcomer;
+use app\models\SpContratosAcomer;
 use app\models\RememberForm;
-use app\models\TwPcPersonalData;
 use app\models\PrbUsuario;
-use app\models\Gen0011;
 use app\models\Ldap;
 
 
@@ -319,16 +317,31 @@ class SiteController extends Controller
         
         return $this->goHome();
     }
+    
 	public function actionPlaza()
     {				
         return $this->render('plaza');
 		
     }
+
 	public function actionContratos()
-    {				
+    {			
+        //Declareo la clase  para el procedimeinto que trae las empresas y los contratos	
+        $model = new SpContratosAcomer;
+        $datosEmpCont = $model->sp_acomer_empresas_contratos();
+        //Obtengo el array donde estan todas las empresas almacenadas
+        $empresas = $datosEmpCont[0];
+        //Obtengo el array donde estan todos los contratos almacenados
+        $contratos = $datosEmpCont[1];
+        //Obtengo el array donde estan todas las facturas almacenadas
+        $facturas = $datosEmpCont[2];
+        //Estado de la factura (pendiente o cancelada)
+        $facturacancelada = '<div class="icon-est-factcan">C</div>';
+        $facturapendiente = '<div class="icon-est-factura">P</div>';
+
         $this->layout=false; 
-		return $this->render('contratos');
-		
+        return $this->render('contratos',["empresas"=>$empresas,"contratos"=>$contratos,"facturas"=>$facturas,
+                                          "facturacancelada"=>$facturacancelada,"facturapendiente"=>$facturapendiente]);
     }
 
 }
