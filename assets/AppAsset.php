@@ -20,13 +20,19 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
 		'css/fullcalendar.css',
+		'css/menu-cat.css',
+		'css/style-order.css',
     ];
     public $js = [
+		// 'js/modernizr-custom.js',
 		'js/classie.js',
-		// 'js/mlpushmenu.js',
 		'js/moment.min.js',
 		'js/fullcalendar.min.js',
 		'js/velocity.min.js',
+		'js/dynamics.min.js',
+		'js/main-menu.js',
+		'js/order.js',
+		'js/countspin.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

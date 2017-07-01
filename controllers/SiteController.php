@@ -323,6 +323,18 @@ class SiteController extends Controller
         return $this->render('plaza');
 		
     }
+	public function actionMesa()
+    {	
+		$this->layout=false;    
+        return $this->render('mesa');
+		
+    }
+	public function actionMenu()
+    {	
+		$this->layout=false;    
+        return $this->render('menu');
+		
+    }
 
 	public function actionContratos()
     {			
