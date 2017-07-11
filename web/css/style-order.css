@@ -138,9 +138,11 @@
 }
 
 .product__title {
-	font-size: 150%;
 	margin: 1em 0 0;
 	min-height: 2em;
+	color: #ffffff;	
+	font-size: 150%;
+	font-weight: 400;
 }
 
 .product__price {
@@ -183,7 +185,6 @@
 	font-size: .813em;
 	vertical-align: middle;
 	display: inline-block;
-	margin-bottom: 4px;
 }
 
 .action__text--invisible {
@@ -258,10 +259,14 @@
 	position: absolute;
 	overflow: hidden;
 	color: #ddd;
-	top: 0px;
+	top: 2px;
 	right: 2px;
 	padding: 0;
 	font-size: 0.65em;
+}
+
+.action--remove i.material-icons{
+	font-size: 14px;
 }
 
 .action--compare-add {
@@ -288,19 +293,25 @@
 	/* color: #5C5EDC; */
 }
 
-.action--compare-add .fa-check,
-.action--compare-add input[type=checkbox]:checked ~ .fa-plus {
+.action--compare-add .check,
+.action--compare-add input[type=checkbox]:checked ~ .plus {
 	display: none;
 }
 
-.action--compare-add input[type=checkbox]:checked ~ .fa-check {
+.action--compare-add input[type=checkbox]:checked ~ .check {
 	display: inline-block;
 	color: #6cd84e;
 }
 
+.action--compare-add  i{
+	font-size: 17px;
+	font-weight: bold;
+	vertical-align: middle;
+}
 .check-hidden {
 	position: absolute;
 	opacity: 0;
+	
 }
 
 .compare-basket {
@@ -643,12 +654,14 @@
 .content-count .input-group-addon, .content-count .input-group-btn{
 	width: auto;
 	display: inline-block;
+	padding: 0;
 }
 .content-count .input-group-btn .btn-default{
-	color: #fff;
+	color: #fff !important;
     background-color: #2C2D34;
     border-color: #2C2D34;
 	outline: 0;
+	padding: 6px 12px;
 }
 .content-count .input-group-btn .btn-default.plus{
 	color: #6cd84e;
@@ -660,6 +673,7 @@
 	vertical-align: middle;
 	color: #fff;
 	background-color: transparent;
+	background-image: none;
 	border-color: transparent;
 	font-weight: bold;
 	text-align: center;
