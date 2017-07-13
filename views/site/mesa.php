@@ -68,7 +68,7 @@
 					<div class="container-fluid">
 						<div class="pull-right">
 							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE56C;</i>Ver pedido
+								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
 							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
 								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
