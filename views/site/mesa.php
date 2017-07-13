@@ -68,7 +68,7 @@
 					<div class="container-fluid">
 						<div class="pull-right">
 							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE56C;</i>Ver pedido
+								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
 							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
 								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
@@ -82,24 +82,16 @@
 						<?= Html::img('@web/img/mesa_4_puestos.svg', ['alt' => 'Mesa 4 puestos', 'class' => 'img-responsive mesax4p',]) ?>
 						</div>
 						<div class="content__puesto-1">
-							<svg height="100%" width="100%">
-							  <circle cx="50%" cy="50%" r="48%" fill="red" />
-							</svg>
+							<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive',]) ?>
 						</div>
 						<div class="content__puesto-2">
-							<svg height="100%" width="100%">
-							  <circle cx="50%" cy="50%" r="48%" fill="red" />
-							</svg>
+							<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive',]) ?>
 						</div>
 						<div class="content__puesto-3">
-							<svg height="100%" width="100%">
-							  <circle cx="50%" cy="50%" r="48%" fill="red" />
-							</svg>
+							<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive',]) ?>
 						</div>
 						<div class="content__puesto-4">
-							<svg height="100%" width="100%">
-							  <circle cx="50%" cy="50%" r="48%" fill="red" />
-							</svg>
+							<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive',]) ?>
 						</div>
 					</div>
 				</div>
