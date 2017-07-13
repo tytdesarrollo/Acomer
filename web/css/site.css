@@ -2703,6 +2703,9 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     margin-left: -15%;
     margin-top: -15%;
 }
+.content-mesa img{
+	margin: 0 auto;
+}
 .content__puesto-1{
 	position: absolute;
     width: 5em;
@@ -2738,6 +2741,15 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     left: 50%;
     margin-left: -2.5em;
     margin-bottom: -24%;
+}
+.content__puesto-1 img{
+	transform: rotate(-90deg);
+}
+.content__puesto-3 img{
+	transform: rotate(90deg);
+}
+.content__puesto-4 img{
+	transform: rotate(180deg);
 }
 
 .panel.panel-md-table .panel-body{
@@ -3387,6 +3399,30 @@ body.overflow-hidden {
 		top: 278px;
 		left: 129px;
 	}
+	.content__puesto-1{
+		width: 14em;
+		height: 14em;
+		margin-left: -17.8em;
+		margin-top: -7.3em;
+	}
+	.content__puesto-2{
+		width: 14em;
+		height: 14em;
+		margin-left: -7em;
+		margin-top: -18.8em;
+	}
+	.content__puesto-3{
+		width: 14em;
+		height: 14em;
+		margin-right: -17.7em;
+		margin-top: -7.3em;
+	}
+	.content__puesto-4{
+		width: 14em;
+		height: 14em;
+		margin-left: -7em;
+		margin-bottom: -16.8em;
+	}
 }
 @media (min-width: 1200px){
 	.mesas{
@@ -3464,6 +3500,30 @@ body.overflow-hidden {
 	.mesa__18{
 		top: 370px;
 		left: 177px;
+	}
+	.content__puesto-1{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -20.7em;
+		margin-top: -10.3em;
+	}
+	.content__puesto-2{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-top: -22.9em;
+	}
+	.content__puesto-3{
+		width: 16.4em;
+		height: 16.4em;
+		margin-right: -20.7em;
+		margin-top: -10.3em;
+	}
+	.content__puesto-4{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-bottom: -18.6em;
 	}
 }
 @media (min-width: 1366px){
@@ -3545,6 +3605,30 @@ body.overflow-hidden {
 	.mesa__18{
 		top: 361px;
 		left: 310px;
+	}
+	.content__puesto-1{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -20.7em;
+		margin-top: -11.3em;
+	}
+	.content__puesto-2{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-top: -23.8em;;
+	}
+	.content__puesto-3{
+		width: 16.4em;
+		height: 16.4em;
+		margin-right: -20.7em;
+		margin-top: -11.3em;
+	}
+	.content__puesto-4{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-bottom: -17.6em;
 	}
 }
 @media (min-width: 1440px){
