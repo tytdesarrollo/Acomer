@@ -6,7 +6,12 @@ use yii\widgets\ActiveForm;
 <div class="main">
 	<img src="img/plaza.png" alt="" class="img-responsive base">
 	<div class="content-mesas">
-		<img src="img/mesa.svg" alt="" class="mesas mesa__1">
+		<div class="mesas mesa__1">
+			<img src="img/mesa.svg" alt="" class="img-responsive">
+			<div class="notification">
+				<?= Html::img('@web/img/not__id_1.svg', ['alt' => 'Mesa 1', 'class' => 'img-responsive',]) ?>
+			</div>
+		</div>
 		<img src="img/mesa.svg" alt="" class="mesas mesa__2">
 		<img src="img/mesa.svg" alt="" class="mesas mesa__3">
 		<img src="img/mesa.svg" alt="" class="mesas mesa__4">
