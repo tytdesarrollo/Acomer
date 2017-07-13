@@ -67,7 +67,7 @@
 		
 		var removeCtrl = document.createElement('button');
 		removeCtrl.className = 'actions action--remove';
-		removeCtrl.innerHTML = '<i class="fa fa-remove"></i><span class="action__text action__text--invisible">Remove products<span>';
+		removeCtrl.innerHTML = '<i class="material-icons">&#xE14C;</i><span class="action__text action__text--invisible">Eliminar<span>';
 		removeCtrl.addEventListener('click', function() {
 			self.remove(item);
 		});

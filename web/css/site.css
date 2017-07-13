@@ -2471,6 +2471,9 @@ MATERIAL-SELECT
 a.txt__light-100:hover, a.txt__light-100:focus{
 	color: #ffffff;
 }
+.btn-inline{
+	margin-right: 10px;
+}
 .btn-organge-grad{
 	background: #ff5e49; /* Old browsers */
 	background: -moz-linear-gradient(left, #ff5e49 0%, #ff9045 100%) !important; /* FF3.6-15 */
@@ -2478,6 +2481,19 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	background: linear-gradient(to right, #ff5e49 0%,#ff9045 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff5e49', endColorstr='#ff9045',GradientType=1 ); /* IE6-9 */
 	color: rgba(255,255,255, 0.84) !important;
+}
+.icon-btn{
+	margin-right: 5px;
+}
+.content-main{
+	position: relative;
+    overflow: hidden;
+    width: 100%;
+	height: 100%;
+}
+.content {
+	width: 100%;
+	margin: 0 auto;
 }
 .main{
 	position: absolute;
@@ -2531,6 +2547,15 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 .mesas{
 	position: absolute;
 	transform: scale(0.5);
+}
+.notification{
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50px;
+	height: 50px;
+	margin-top: -50px;
+	margin-left: -25px;
 }
 .mesa__1{
 	top: 179px;
@@ -2603,6 +2628,137 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 .mesa__18{
 	top: 187px;
     left: 84px;
+}
+.main-mesa{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.main-content-select-puestos{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transform: translateX(0);
+	transition: transform 0.3s ease-in-out;
+}
+.main-content-select-puestos.out{
+	transform: translateX(-100%);
+}
+.content-select-puestos{
+	width: 50%;
+	margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content-select-puestos .input-group-btn .btn-number{
+	color: #fff !important;
+	font-size: 30px;
+    padding: 14px 20px;
+    margin: 0;
+    border-radius: 4px !important;
+}
+.content-select-puestos .form-group{
+	margin: 0 auto;
+    padding: 33px 38px 33px 28px;
+    width: 200px;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.content-select-puestos .input-number{
+	margin: 0 auto;
+    padding: 0;
+    height: auto;
+    width: 100%;
+    background: none;
+    font-size: 8em;
+    line-height: normal;
+    text-align: center;
+}
+.main-content-mesa{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	top: 0;
+	left: 0;
+	transform: translateX(100%);
+	transition: transform 0.3s ease-in-out;
+}
+.main-content-mesa.in{
+	transform: translateX(0);
+}
+.main-content-puestos{
+	position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: -60px;
+	padding-top: 60px;
+}
+.content-puestos{
+	position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.content-mesa{
+    position: absolute;
+	width: 30%;
+    top: 50%;
+    left: 50%;
+    margin-left: -15%;
+    margin-top: -15%;
+}
+.content-mesa img{
+	margin: 0 auto;
+}
+.content__puesto-1{
+	position: absolute;
+    width: 5em;
+    height: 5em;
+    top: 50%;
+    left: 50%;
+    margin-left: -24%;
+    margin-top: -2.5em;
+}
+.content__puesto-2{
+	position: absolute;
+    width: 5em;
+    height: 5em;
+    top: 50%;
+    left: 50%;
+    margin-left: -2.5em;
+    margin-top: -24%;
+}
+.content__puesto-3{
+	position: absolute;
+    width: 5em;
+    height: 5em;
+    top: 50%;
+    right: 50%;
+    margin-right: -24%;
+    margin-top: -2.5em;
+}
+.content__puesto-4{
+	position: absolute;
+    width: 5em;
+    height: 5em;
+    bottom: 50%;
+    left: 50%;
+    margin-left: -2.5em;
+    margin-bottom: -24%;
+}
+.content__puesto-1 img{
+	transform: rotate(-90deg);
+}
+.content__puesto-3 img{
+	transform: rotate(90deg);
+}
+.content__puesto-4 img{
+	transform: rotate(180deg);
 }
 
 .panel.panel-md-table .panel-body{
@@ -3173,4 +3329,320 @@ body.overflow-hidden {
   .cd-modal-close {
     top: 70px;
   }
+}
+
+@media (min-width: 992px) {
+	.mesas{
+		position: absolute;
+		transform: scale(0.7);
+	}
+	.mesa__1{
+	top: 267px;
+    left: 320px;
+	}
+	.mesa__2{
+		top: 218px;
+		left: 406px;
+	}
+	.mesa__3{
+		top: 169px;
+		left: 491px;
+	}
+	.mesa__4{
+		top: 119px;
+		left: 577px;
+	}
+	.mesa__5{
+		top: 316px;
+		left: 405px;
+	}
+	.mesa__6{
+		top: 267px;
+		left: 491px;
+	}
+	.mesa__7{
+		top: 218px;
+		left: 577px;
+	}
+	.mesa__8{
+		top: 169px;
+		left: 662px;
+	}
+	.mesa__9{
+		top: 366px;
+		left: 492px;
+	}
+	.mesa__10{
+		top: 317px;
+		left: 576px;
+	}
+	.mesa__11{
+		top: 267px;
+		left: 662px;
+	}
+	.mesa__12{
+		top: 218px;
+		left: 747px;
+	}
+	.mesa__13{
+		top: 423px;
+		left: 591px;
+	}
+	.mesa__14{
+		top: 374px;
+		left: 676px;
+	}
+	.mesa__15{
+		top: 325px;
+		left: 762px;
+	}
+	.mesa__16{
+		top: 276px;
+		left: 846px;
+	}
+	.mesa__17{
+		top: 328px;
+		left: 43px;
+	}
+	.mesa__18{
+		top: 278px;
+		left: 129px;
+	}
+	.content__puesto-1{
+		width: 14em;
+		height: 14em;
+		margin-left: -17.8em;
+		margin-top: -7.3em;
+	}
+	.content__puesto-2{
+		width: 14em;
+		height: 14em;
+		margin-left: -7em;
+		margin-top: -18.8em;
+	}
+	.content__puesto-3{
+		width: 14em;
+		height: 14em;
+		margin-right: -17.7em;
+		margin-top: -7.3em;
+	}
+	.content__puesto-4{
+		width: 14em;
+		height: 14em;
+		margin-left: -7em;
+		margin-bottom: -16.8em;
+	}
+}
+@media (min-width: 1200px){
+	.mesas{
+		position: absolute;
+		transform: scale(0.9);
+	}
+	.mesa__1{
+	top: 356px;
+    left: 414px;
+	}
+	.mesa__2{
+		top: 295px;
+		left: 521px;
+	}
+	.mesa__3{
+		top: 233px;
+		left: 628px;
+	}
+	.mesa__4{
+		top: 171px;
+		left: 735px;
+	}
+	.mesa__5{
+		top: 417px;
+		left: 521px;
+	}
+	.mesa__6{
+		top: 356px;
+		left: 628px;
+	}
+	.mesa__7{
+		top: 295px;
+		left: 735px;
+	}
+	.mesa__8{
+		top: 233px;
+		left: 842px;
+	}
+	.mesa__9{
+		top: 479px;
+		left: 628px;
+	}
+	.mesa__10{
+		top: 418px;
+		left: 735px;
+	}
+	.mesa__11{
+		top: 356px;
+		left: 842px;
+	}
+	.mesa__12{
+		top: 294px;
+		left: 949px;
+	}
+	.mesa__13{
+		top: 541px;
+		left: 735px;
+	}
+	.mesa__14{
+		top: 480px;
+		left: 842px;
+	}
+	.mesa__15{
+		top: 418px;
+		left: 949px;
+	}
+	.mesa__16{
+		top: 356px;
+		left: 1056px;
+	}
+	.mesa__17{
+		top: 432px;
+		left: 70px;
+	}
+	.mesa__18{
+		top: 370px;
+		left: 177px;
+	}
+	.content__puesto-1{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -20.7em;
+		margin-top: -10.3em;
+	}
+	.content__puesto-2{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-top: -22.9em;
+	}
+	.content__puesto-3{
+		width: 16.4em;
+		height: 16.4em;
+		margin-right: -20.7em;
+		margin-top: -10.3em;
+	}
+	.content__puesto-4{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-bottom: -18.6em;
+	}
+}
+@media (min-width: 1366px){
+	.base{
+		transform: scale(1.1);
+	}
+	.mesas{
+		position: absolute;
+		transform: scale(0.7);
+	}
+	.mesa__1{
+	top: 350px;
+    left: 495px;
+	}
+	.mesa__2{
+		top: 302px;
+		left: 578px;
+	}
+	.mesa__3{
+		top: 254px;
+		left: 662px;
+	}
+	.mesa__4{
+		top: 205px;
+		left: 745px;
+	}
+	.mesa__5{
+		top: 398px;
+		left: 578px;
+	}
+	.mesa__6{
+		top: 350px;
+		left: 662px;
+	}
+	.mesa__7{
+		top: 302px;
+		left: 745px;
+	}
+	.mesa__8{
+		top: 254px;
+		left: 829px;
+	}
+	.mesa__9{
+		top: 447px;
+		left: 662px;
+	}
+	.mesa__10{
+		top: 398px;
+		left: 745px;
+	}
+	.mesa__11{
+		top: 350px;
+		left: 829px;
+	}
+	.mesa__12{
+		top: 302px;
+		left: 913px;
+	}
+	.mesa__13{
+		top: 495px;
+		left: 746px;
+	}
+	.mesa__14{
+		top: 447px;
+		left: 829px;
+	}
+	.mesa__15{
+		top: 399px;
+		left: 912px;
+	}
+	.mesa__16{
+		top: 350px;
+		left: 996px;
+	}
+	.mesa__17{
+		top: 409px;
+		left: 225px;
+	}
+	.mesa__18{
+		top: 361px;
+		left: 310px;
+	}
+	.content__puesto-1{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -20.7em;
+		margin-top: -11.3em;
+	}
+	.content__puesto-2{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-top: -23.8em;;
+	}
+	.content__puesto-3{
+		width: 16.4em;
+		height: 16.4em;
+		margin-right: -20.7em;
+		margin-top: -11.3em;
+	}
+	.content__puesto-4{
+		width: 16.4em;
+		height: 16.4em;
+		margin-left: -8.2em;
+		margin-bottom: -17.6em;
+	}
+}
+@media (min-width: 1440px){
+	.content-mesas{
+		top: 25px;
+		left: 28px;
+	}
 }
