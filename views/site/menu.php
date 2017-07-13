@@ -54,10 +54,6 @@
 										<div class="product__info">
 											<img class="product__image" src="img/items/carne.png" alt="Carne" />
 											<h3 class="product__title">Churrasco</h3>
-											<span class="product__year extra highlight">2011</span>
-											<span class="product__region extra highlight">Douro</span>
-											<span class="product__varietal extra highlight">Touriga Nacional</span>
-											<span class="product__alcohol extra highlight">13%</span>
 											<span class="product__price highlight">$55.000</span>
 											<div class="content-count" id="0">
 												<div class="input-group">
@@ -74,17 +70,13 @@
 													</span>
 												</div>
 											</div>
-											<label class="actions action--button action--compare-add" id="45"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add" id="45"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 1 -->
 									<div class="product">
 										<div class="product__info">
 											<img class="product__image" src="img/items/carne.png" alt="Carne" />
 											<h3 class="product__title">Punta de Anca</h3>
-											<span class="product__year extra highlight">2013</span>
-											<span class="product__region extra highlight">California</span>
-											<span class="product__varietal extra highlight">Pinot Noir</span>
-											<span class="product__alcohol extra highlight">12%</span>
 											<span class="product__price highlight">$19.000</span>
 											<div class="content-count" id="1">
 												<div class="input-group">
@@ -101,17 +93,13 @@
 													</span>
 												</div>
 											</div>										
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 2 -->
 									<div class="product">
 										<div class="product__info">
 											<img class="product__image" src="img/items/carne.png" alt="Carne" />
 											<h3 class="product__title">Baby Beef</h3>
-											<span class="product__year extra highlight">2013</span>
-											<span class="product__region extra highlight">Argentina</span>
-											<span class="product__varietal extra highlight">Cabernet Sauvignon </span>
-											<span class="product__alcohol extra highlight">12%</span>
 											<span class="product__price highlight">$15.000</span>
 											<div class="content-count" id="2">
 												<div class="input-group">
@@ -128,17 +116,13 @@
 													</span>
 												</div>
 											</div>										
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 3 -->
 									<div class="product">
 										<div class="product__info">
 											<img class="product__image" src="img/items/carne.png" alt="Carne" />
 											<h3 class="product__title">Roast Beef</h3>
-											<span class="product__year extra highlight">2012</span>
-											<span class="product__region extra highlight">Washington</span>
-											<span class="product__varietal extra highlight">Sangiovese</span>
-											<span class="product__alcohol extra highlight">13%</span>
 											<span class="product__price highlight">$85.000</span>
 											<div class="content-count" id="3">
 												<div class="input-group">
@@ -155,7 +139,7 @@
 													</span>
 												</div>
 											</div>										
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 4 -->
 								</div><!-- grid -->
@@ -186,10 +170,6 @@
 										<div class="product__info">
 											<img class="product__image" src="img/items/hamburguesa.png" alt="Hamburguesa" />
 											<h3 class="product__title">Hamburguesa</h3>
-											<span class="product__year extra highlight">2011</span>
-											<span class="product__region extra highlight">Douro</span>
-											<span class="product__varietal extra highlight">Touriga Nacional</span>
-											<span class="product__alcohol extra highlight">13%</span>
 											<span class="product__price highlight">$15.000</span>
 											<div class="content-count" id="4">
 												<div class="input-group">
@@ -206,7 +186,7 @@
 													</span>
 												</div>
 											</div>
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>									
 									</div><!-- /product 1 -->
 									
@@ -214,10 +194,6 @@
 										<div class="product__info">
 											<img class="product__image" src="img/items/hamburguesa.png" alt="Hot Dog" />
 											<h3 class="product__title">Hot Dog</h3>
-											<span class="product__year extra highlight">2013</span>
-											<span class="product__region extra highlight">California</span>
-											<span class="product__varietal extra highlight">Pinot Noir</span>
-											<span class="product__alcohol extra highlight">12%</span>
 											<span class="product__price highlight">$10.000</span>
 											<div class="content-count" id="5">
 												<div class="input-group">
@@ -234,31 +210,23 @@
 													</span>
 												</div>
 											</div>										
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 2 -->
 									<div class="product">
 										<div class="product__info">
 											<img class="product__image" src="img/items/hamburguesa.png" alt="Pizza" />
 											<h3 class="product__title">Pizza</h3>
-											<span class="product__year extra highlight">2013</span>
-											<span class="product__region extra highlight">Argentina</span>
-											<span class="product__varietal extra highlight">Cabernet Sauvignon </span>
-											<span class="product__alcohol extra highlight">12%</span>
 											<span class="product__price highlight">$12.000</span>
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 3 -->
 									<div class="product">
 										<div class="product__info">
 											<img class="product__image" src="img/items/hamburguesa.png" alt="Sandwish" />
 											<h3 class="product__title">Sandwish</h3>
-											<span class="product__year extra highlight">2012</span>
-											<span class="product__region extra highlight">Washington</span>
-											<span class="product__varietal extra highlight">Sangiovese</span>
-											<span class="product__alcohol extra highlight">13%</span>
 											<span class="product__price highlight">$15.000</span>
-											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="fa fa-plus"></i><i class="fa fa-check"></i><span class="action__text">Agregar</span></label>
+											<label class="actions action--button action--compare-add"><input class="check-hidden" type="checkbox" /><i class="material-icons plus">&#xE145;</i><i class="material-icons check">&#xE876;</i><span class="action__text">Agregar</span></label>
 										</div>
 									</div><!-- /product 4 -->
 								</div><!-- grid -->
