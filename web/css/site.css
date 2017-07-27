@@ -2691,15 +2691,25 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 }
 .st1{
 	fill:#FFFFFF;
+	enable-background:new;
 }
 .st2{
 	font-family:'Roboto';
 	font-weight: bold;
+	enable-background:new;
 }
 .st3{
 	font-size:41.4474px;
+	enable-background:new;
 }
 .st4{
+	font-size:35px;
+	enable-background:new;
+}
+.notification.text_0-9 use{
+	font-size:41.4474px;
+}
+.notification.text_10-20 use{
 	font-size:35px;
 }
 .notification use{
@@ -2814,6 +2824,61 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 .content-mesa img{
 	margin: 0 auto;
 }
+.content-mesa .n-mesa{
+	position: absolute;
+	width: 4.2em;
+	height: 4.2em;
+	top: 50%;
+	left: 50%;
+	margin-left: -2.1em;
+	margin-top: -2.1em;
+	padding: 5px;
+	background-color: #ff9045;
+}
+.content-mesa .n-mesa span{
+	color: #ffffff;
+	font-size: 2.5em;
+	font-weight: bold;
+	text-align: center;
+}
+.content-puestos .n-puesto{
+	position: absolute;
+	width: 3em;
+	height: 3em;
+	padding: 1px;
+	background-color: #ffffff;
+	border-radius: 50%;
+}
+.content-puestos .n-puesto span{
+	color: #333;
+	font-size: 2em;
+	font-weight: bold;
+}
+.content-puestos .cnt{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.content-puestos .puesto-libre{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 5px dashed #ffffff;
+	border-radius: 10px;
+	opacity: 0.6;
+	transition: all 0.3s ease-in-out;
+}
+.content-puestos .puesto-libre:hover{
+	background-color: rgba(255,255,255,0.1);
+	opacity: 1;
+}
+.puesto-libre .txt-puesto{
+	display: table-cell;
+	font-size: 1.5em;
+	color: #ffffff;
+	margin-top: 50%;
+	vertical-align: middle;
+}
 .content__puesto-1{
 	position: absolute;
     width: 5em;
@@ -2822,6 +2887,16 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     left: 50%;
     margin-left: -24%;
     margin-top: -2.5em;
+}
+.content__puesto-1 .n-puesto{
+	top: 50%;
+	left: -4em;
+	margin-top: -1.5em
+}
+.content__puesto-1 .puesto-libre{
+	top: 50%;
+	left: -50%;
+	margin-top: -7.3em;
 }
 .content__puesto-2{
 	position: absolute;
@@ -2832,6 +2907,11 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     margin-left: -2.5em;
     margin-top: -24%;
 }
+.content__puesto-2 .n-puesto{
+	top: -4em;
+	left: 50%;
+	margin-left: -1.5em
+}
 .content__puesto-3{
 	position: absolute;
     width: 5em;
@@ -2841,6 +2921,11 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     margin-right: -24%;
     margin-top: -2.5em;
 }
+.content__puesto-3 .n-puesto{
+	top: 50%;
+	right: -4em;
+	margin-top: -1.5em
+}
 .content__puesto-4{
 	position: absolute;
     width: 5em;
@@ -2849,6 +2934,11 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     left: 50%;
     margin-left: -2.5em;
     margin-bottom: -24%;
+}
+.content__puesto-4 .n-puesto{
+	bottom: -5em;
+	left: 50%;
+	margin-left: -1.5em
 }
 .content__puesto-1 img{
 	transform: rotate(-90deg);
