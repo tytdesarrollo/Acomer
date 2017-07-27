@@ -2854,6 +2854,31 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	font-size: 2em;
 	font-weight: bold;
 }
+.content-puestos .cnt{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.content-puestos .puesto-libre{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 5px dashed #ffffff;
+	border-radius: 10px;
+	opacity: 0.6;
+	transition: all 0.3s ease-in-out;
+}
+.content-puestos .puesto-libre:hover{
+	background-color: rgba(255,255,255,0.1);
+	opacity: 1;
+}
+.puesto-libre .txt-puesto{
+	display: table-cell;
+	font-size: 1.5em;
+	color: #ffffff;
+	margin-top: 50%;
+	vertical-align: middle;
+}
 .content__puesto-1{
 	position: absolute;
     width: 5em;
@@ -2867,6 +2892,11 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	top: 50%;
 	left: -4em;
 	margin-top: -1.5em
+}
+.content__puesto-1 .puesto-libre{
+	top: 50%;
+	left: -50%;
+	margin-top: -7.3em;
 }
 .content__puesto-2{
 	position: absolute;
