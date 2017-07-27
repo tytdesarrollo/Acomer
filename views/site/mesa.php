@@ -86,8 +86,13 @@
 						</div>
 						<div class="content__puesto-1">
 							<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive',]) ?>
-							<div class="n-puesto">
+							<!--<div class="n-puesto">
 								<span>1</span>
+							</div>-->
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#1</span>
+								</div>
 							</div>
 						</div>
 						<div class="content__puesto-2">
