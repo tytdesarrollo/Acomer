@@ -19,6 +19,9 @@ use app\models\SpContratosAcomer;
 use app\models\RememberForm;
 use app\models\PrbUsuario;
 use app\models\Ldap;
+use app\models\SpMesasPlaza;
+use app\models\SpMenusPlaza;
+use app\models\SpMesasPedidos;
 
 
 
@@ -28,35 +31,9 @@ class SiteController extends Controller
 
 	public function actionPrueba(){
 
-		 $form = new FormSearch();
-        $search = null; //valor de la busqueda que da el usuario
-        if($form->load(Yii::$app->request->get())){ // si el formulario ha sido enviado
-            if($form->validate()){ // si el formulario es valido
-                $search = Html::encode($form->q); // guarda el valor de la busqueda del usuario
-                $table = Gen0011::find()
-                        ->where(["like", "TERCOD", $search])
-                        ->orwhere(["like", "TERRAZ", $search])
-                        ->orwhere(["like", "TERDIR", $search]);
-                $count = clone $table;
-                $pages = new Pagination([
-                        "pageSize" => 1, // registros por pagina
-                        "totalCount" => $count->count() //cantidad total de registros
-                    ]);
-                $model = $table->offset($pages->offset)->limit($pages->limit)->all();
-            }else{
-                $form->getErrors();
-            }
-        }else{
-            $table = Gen0011::find();
-            $count = clone $table;
-            $pages = new Pagination([
-                    "pageSize" => 3,
-                    "totalCount" => $count->count()
-                ]);
-            $model = $table->offset($pages->offset)->limit($pages->limit)->all();
-        }
+		$prueba = $_GET['prueba'];
 
-        return $this->render("prueba",['model' => $model, 'form' => $form, 'search' => $search, 'pages' => $pages]);
+        return $this->render("prueba",['prueba' => $prueba]);
 	}	
 	
     public function behaviors()
@@ -320,19 +297,80 @@ class SiteController extends Controller
     
 	public function actionPlaza()
     {				
-        return $this->render('plaza');
-		
+        return $this->render('plaza');		
     }
+
+    public function actionJsonmesas(){
+        $fn_mesas = new SpMesasPlaza;
+        //obtiene las posiciones de las mesas 
+        $datosMesas = $fn_mesas->procedimiento(); 
+        //imprime los datos en tipo json         
+        echo json_encode($datosMesas);
+    }
+
+    public function actionJsonpedidos(){
+        $fn_pedidos = new SpMesasPedidos;
+        //obtiene las posiciones de las mesas 
+        $datosPedidos = $fn_pedidos->procedimiento(); 
+        //imprime los datos en tipo json         
+        echo json_encode($datosPedidos);
+    }
+
+
 	public function actionMesa()
     {	
+        /*if(!isset($_GET['estadoM'])){
+            $estadomesa = 1;
+        }else{
+            $estadomesa = $_GET['estadoM'];
+        }
+        $codigomesa = $_GET['codigoM'];
+        $maxpuestos = $_GET['maxpuestos'];*/
+        /*,["estadomesa" => $estadomesa, "codigomesa" => $codigomesa, "maxpuestos" => $maxpuestos]*/
 		$this->layout=false;    
         return $this->render('mesa');
 		
     }
 	public function actionMenu()
     {	
-		$this->layout=false;    
-        return $this->render('menu');
+        //=============================CARGA DEL MENU=======================================
+        // se hace el llamado de la funcion que ejecuta el procedimiento
+        $fn_menus = new SpMenusPlaza;
+        $datosMenus = $fn_menus->procedimiento();
+        // se asignana los valores que retorna la funcion respectivamente 
+        // tipos de comidas
+        $categorias = $datosMenus[0];
+        // los platos 
+        $comidas = $datosMenus[3];
+        //=============================CARGA DEL MENU=======================================
+        
+
+        //=============================LOGICA DE PEDIDO=======================================
+        //captura el puesto al que se le va a tomar el pedido
+        $puesto = '1'; //$_GET['puesto'];
+        // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
+        if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+            // variables que se pasan como parametro
+            $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
+            $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
+            $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+            // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
+            $this->layout=false;    
+            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+        }else{
+            $platos = 0;
+            $cantidad = 0;
+            $puestos = 0;
+            // redirecciona a la vista menu con los parametros del menu 
+            $this->layout=false;    
+            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+        }
+        //=============================LOGICA DE PEDIDO=======================================        
+        
+
+		
 		
     }
 

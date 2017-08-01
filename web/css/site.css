@@ -2788,6 +2788,43 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     line-height: normal;
     text-align: center;
 }
+.main-content-unir-mesa{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	top: 0;
+	left: 0;
+	transform: translateX(100%);
+	transition: transform 0.3s ease-in-out;
+}
+.main-content-unir-mesa.in{
+	transform: translateX(0);
+}
+.main-content-unir-mesa.out{
+	transform: translateX(-100%);
+	transition-delay: 0.5s
+}
+.content-unir-mesa{
+	margin-top: 1.8em;
+}
+.content-unir-mesa .divider{
+	border-right: 2px solid rgba(255,255,255,0.1);
+}
+.list-mesa__libre{
+	list-style: none;
+    padding: 0;
+	color: #ffffff;
+}
+.list-mesa__libre li{
+	padding: 0.5em;
+	opacity: 0.5;
+	border-radius: 30px;
+	transition: all 0.2s ease-in-out;
+}
+.list-mesa__libre li:hover{
+	opacity: 1;
+	background-color: #4caf50;
+}
 .main-content-mesa{
 	position: absolute;
     width: 100%;
@@ -2799,6 +2836,7 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 }
 .main-content-mesa.in{
 	transform: translateX(0);
+	transition-delay: 0.5s
 }
 .main-content-puestos{
 	position: relative;
@@ -2879,76 +2917,196 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	margin-top: 50%;
 	vertical-align: middle;
 }
-.content__puesto-1{
+
+/* Estilos para mesa de 4 puestos */
+.mesax4p .content__puesto-1{
 	position: absolute;
-    width: 5em;
-    height: 5em;
+    width: 11em;
+    height: 11em;
     top: 50%;
     left: 50%;
-    margin-left: -24%;
-    margin-top: -2.5em;
+    margin-left: -13.6em;
+    margin-top: -6em;
 }
-.content__puesto-1 .n-puesto{
-	top: 50%;
-	left: -4em;
-	margin-top: -1.5em
-}
-.content__puesto-1 .puesto-libre{
+.mesax4p .content__puesto-1 .puesto-libre{
 	top: 50%;
 	left: -50%;
-	margin-top: -7.3em;
+	margin-top: -5em;
 }
-.content__puesto-2{
+.mesax4p .content__puesto-2{
 	position: absolute;
-    width: 5em;
-    height: 5em;
+    width: 11em;
+    height: 11em;
     top: 50%;
     left: 50%;
-    margin-left: -2.5em;
-    margin-top: -24%;
+    margin-left: -5.5em;
+    margin-top: -14.4em;
 }
-.content__puesto-2 .n-puesto{
-	top: -4em;
+.mesax4p .content__puesto-2 .puesto-libre{
+	top: -45%;
 	left: 50%;
-	margin-left: -1.5em
+	margin-left: -5.5em;
 }
-.content__puesto-3{
+.mesax4p .content__puesto-3{
 	position: absolute;
-    width: 5em;
-    height: 5em;
+    width: 11em;
+    height: 11em;
     top: 50%;
     right: 50%;
-    margin-right: -24%;
-    margin-top: -2.5em;
+    margin-right: -13.6em;
+    margin-top: -6em;
 }
-.content__puesto-3 .n-puesto{
+.mesax4p .content__puesto-3 .puesto-libre{
 	top: 50%;
-	right: -4em;
-	margin-top: -1.5em
+	right: -50%;
+	margin-top: -5em;
 }
-.content__puesto-4{
+.mesax4p .content__puesto-4{
 	position: absolute;
-    width: 5em;
-    height: 5em;
+    width: 11em;
+    height: 11em;
     bottom: 50%;
     left: 50%;
-    margin-left: -2.5em;
-    margin-bottom: -24%;
+    margin-left: -5.5em;
+    margin-bottom: -12.8em;
 }
-.content__puesto-4 .n-puesto{
-	bottom: -5em;
+.mesax4p .content__puesto-4 .puesto-libre{
+	bottom: -53%;
 	left: 50%;
-	margin-left: -1.5em
+	margin-left: -5.5em;
 }
-.content__puesto-1 img{
+.mesax4p .content__puesto-1 img{
 	transform: rotate(-90deg);
 }
-.content__puesto-3 img{
+.mesax4p .content__puesto-3 img{
 	transform: rotate(90deg);
 }
-.content__puesto-4 img{
+.mesax4p .content__puesto-4 img{
 	transform: rotate(180deg);
 }
+
+/* Estilos para mesa de 6 puestos */
+.mesax6p .content-mesa{
+	width: 50%;
+	top: 50%;
+	left: 50%;
+	margin-left: -25%;
+	margin-top: -12%;
+}
+.mesax6p .content-mesa .n-mesa:nth-child(2){
+	margin-left: calc(-24% + -2.1em);
+}
+.mesax6p .content-mesa .n-mesa:nth-child(3){
+	margin-left: calc(24% + -2.1em);
+}
+.content-puestos.mesax6p .puesto-libre{
+	border: 4px dashed #ffffff;
+}
+.content-puestos.mesax6p .puesto-libre .txt-puesto{
+	font-size: 1.2em;
+}
+.mesax6p .content__puesto-1{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	top: 50%;
+	left: 50%;
+	margin-left: calc(-24% + -5em);
+	margin-top: -4.5em;
+}
+.mesax6p .content__puesto-1 .puesto-libre{
+	top: 50%;
+	left: -50%;
+	margin-top: -4em;
+}
+.mesax6p .content__puesto-2{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	top: 50%;
+	left: 50%;
+	margin-left: -20%;
+	margin-top: -11.6em;
+}
+.mesax6p .content__puesto-2 .puesto-libre{
+	top: -45%;
+	left: 50%;
+	margin-left: -4.5em;
+}
+.mesax6p .content__puesto-3{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	top: 50%;
+	right: 50%;
+	margin-right: -20%;
+	margin-top: -11.6em;
+}
+.mesax6p .content__puesto-3 .puesto-libre{
+	top: -45%;
+	left: 50%;
+	margin-left: -4.5em;
+	margin-top: 0;
+}
+.mesax6p .content__puesto-4{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	top: 50%;
+    right: 50%;
+    margin-right: calc(-24% + -5em);
+    margin-top: -4.5em;
+}
+.mesax6p .content__puesto-4 .puesto-libre{
+	top: 50%;
+	right: -50%;
+	margin-top: -4em;
+}
+.mesax6p .content__puesto-5{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -20%;
+	margin-bottom: -11.5em;
+}
+.mesax6p .content__puesto-5 .puesto-libre{
+	bottom: -52%;
+	left: 50%;
+	margin-left: -4.5em;
+	margin-top: 0;
+}
+.mesax6p .content__puesto-6{
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	left: 50%;
+	bottom: 50%;
+	margin-left: -20%;
+	margin-bottom: -11.5em;
+}
+.mesax6p .content__puesto-6 .puesto-libre{
+	bottom: -52%;
+	left: 50%;
+	margin-left: -4.5em;
+}
+.mesax6p .content__puesto-1 img{
+	transform: rotate(-90deg);
+}
+.mesax6p .content__puesto-3 img{
+	transform: rotate(0deg);
+}
+.mesax6p .content__puesto-4 img{
+	transform: rotate(90deg);
+}
+.mesax6p .content__puesto-5 img{
+	transform: rotate(180deg);
+}
+.mesax6p .content__puesto-6 img{
+	transform: rotate(180deg);
+}
+
 
 .panel.panel-md-table .panel-body{
 	padding: 0;
@@ -3514,12 +3672,106 @@ body.overflow-hidden {
   transform: scale(1);
 }
 
+/* Estilos para Dispositivos móviles (min-width: 768px) */
 @media only screen and (min-width: 768px) {
-  .cd-modal-close {
-    top: 70px;
-  }
+	.cd-modal-close {
+		top: 70px;
+	}
+	.content-mesa .n-mesa{
+		width: 3.2em;
+		height: 3.2em;
+		margin-top: -1.6em;
+		margin-left: -1.6em;
+	}
+	.content-mesa .n-mesa span{
+		font-size: 1.8em;
+	}
+	/* Estilos para mesa de 6 puestos */
+	.mesax6p .content-mesa .n-mesa:nth-child(2) {
+		margin-left: calc(-24% + -1.6em);
+	}
+	.mesax6p .content-mesa .n-mesa:nth-child(3) {
+		margin-left: calc(24% + -1.6em);
+	}
+	.mesax6p .content__puesto-1{
+		width: 9em;
+		height: 9em;
+		margin-left: calc(-24% + -5em);
+		margin-top: -4.5em;
+	}
+	.mesax6p .content__puesto-1 .puesto-libre{
+		top: 50%;
+		left: -50%;
+		margin-top: -4em;
+	}
+	.mesax6p .content__puesto-2{
+		width: 9em;
+		height: 9em;
+		margin-left: -20%;
+		margin-top: -11.6em;
+	}
+	.mesax6p .content__puesto-2 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -4.5em;
+	}
+	.mesax6p .content__puesto-3{
+		width: 9em;
+		height: 9em;
+		margin-right: -20%;
+		margin-top: -11.6em;
+	}
+	.mesax6p .content__puesto-3 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -4.5em;
+		margin-top: 0;
+	}
+	.mesax6p .content__puesto-4{
+		width: 9em;
+		height: 9em;
+		top: 50%;
+		right: 50%;
+		margin-right: calc(-24% + -5em);
+		margin-top: -4.5em;
+	}
+	.mesax6p .content__puesto-4 .puesto-libre{
+		top: 50%;
+		right: -50%;
+		margin-top: -4em;
+	}
+	.mesax6p .content__puesto-5{
+		position: absolute;
+		width: 9em;
+		height: 9em;
+		right: 50%;
+		bottom: 50%;
+		margin-right: -20%;
+		margin-bottom: -11.5em;
+	}
+	.mesax6p .content__puesto-5 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -4.5em;
+		margin-top: 0;
+	}
+	.mesax6p .content__puesto-6{
+		position: absolute;
+		width: 9em;
+		height: 9em;
+		left: 50%;
+		bottom: 50%;
+		margin-left: -20%;
+		margin-bottom: -11.5em;
+	}
+	.mesax6p .content__puesto-6 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -4.5em;
+	}
 }
 
+/* Estilos para Dispositivos móviles (min-width: 992px) */
 @media (min-width: 992px) {
 	.mesas{
 		position: absolute;
@@ -3613,35 +3865,141 @@ body.overflow-hidden {
 		top: 388px;
 		left: 265px;
 	}
-		.container__4{
+	.container__4{
 		top: 490px;
 		left: 431px;
 	}
-	.content__puesto-1{
+	
+	/* Estilos para mesa de 4 puestos (min-width: 992px) */
+	.mesax4p .content__puesto-1{
 		width: 14em;
 		height: 14em;
 		margin-left: -17.8em;
 		margin-top: -7.3em;
 	}
-	.content__puesto-2{
+	.mesax4p .content__puesto-1 .puesto-libre{
+		top: 50%;
+		left: -50%;
+		margin-top: -6.3em;
+	}
+	.mesax4p .content__puesto-2{
 		width: 14em;
 		height: 14em;
 		margin-left: -7em;
 		margin-top: -18.8em;
 	}
-	.content__puesto-3{
+	.mesax4p .content__puesto-2 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -7em;
+	}
+	.mesax4p .content__puesto-3{
 		width: 14em;
 		height: 14em;
 		margin-right: -17.7em;
 		margin-top: -7.3em;
 	}
-	.content__puesto-4{
+	.mesax4p .content__puesto-3 .puesto-libre{
+		top: 50%;
+		right: -50%;
+		margin-top: -6.3em;
+	}
+	.mesax4p .content__puesto-4{
 		width: 14em;
 		height: 14em;
 		margin-left: -7em;
 		margin-bottom: -16.8em;
 	}
+	.mesax4p .content__puesto-4 .puesto-libre{
+		bottom: -53%;
+		left: 50%;
+		margin-left: -7em;
+	}
+	
+	/* Estilos para mesa de 6 puestos (min-width: 992px) */
+	.mesax6p .content-mesa{
+		width: 50%;
+		top: 50%;
+		left: 50%;
+		margin-left: -25%;
+		margin-top: -12%;
+	}
+	.mesax6p .content__puesto-1{
+		width: 12em;
+		height: 12em;
+		margin-left: calc(-24% + -6.5em);
+		margin-top: -6em;
+	}
+	.mesax6p .content__puesto-1 .puesto-libre{
+		top: 50%;
+		left: -50%;
+		margin-top: -5.3em;
+	}
+	.mesax6p .content__puesto-2{
+		width: 12em;
+		height: 12em;
+		margin-left: -20%;
+		margin-top: -15.4em;
+	}
+	.mesax6p .content__puesto-2 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -6em;
+	}
+	.mesax6p .content__puesto-3{
+		width: 12em;
+		height: 12em;
+		margin-right: -20%;
+		margin-top: -15.4em;
+	}
+	.mesax6p .content__puesto-3 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -6em;
+	}
+	.mesax6p .content__puesto-4{
+		width: 12em;
+		height: 12em;
+		margin-right: calc(-24% + -6.5em);
+		margin-top: -6em;
+	}
+	.mesax6p .content__puesto-4 .puesto-libre{
+		top: 50%;
+		right: -50%;
+		margin-top: -5.3em;
+	}
+	.mesax6p .content__puesto-5{
+		position: absolute;
+		width: 12em;
+		height: 12em;
+		right: 50%;
+		bottom: 50%;
+		margin-right: -20%;
+		margin-bottom: -15.3em;
+	}
+	.mesax6p .content__puesto-5 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -6em;
+		margin-top: 0;
+	}
+	.mesax6p .content__puesto-6{
+		position: absolute;
+		width: 12em;
+		height: 12em;
+		left: 50%;
+		bottom: 50%;
+		margin-left: -20%;
+		margin-bottom: -15.3em;
+	}
+	.mesax6p .content__puesto-6 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -6em;
+	}
 }
+
+/* Estilos para Dispositivos móviles (min-width: 1200px) */
 @media (min-width: 1200px){
 	.base{
 		transform: scale(1.4);
@@ -3742,31 +4100,144 @@ body.overflow-hidden {
 		top: 596px;
 		left: 546px;
 	}
-	.content__puesto-1{
+	.content-mesa .n-mesa{
+		width: 4.2em;
+		height: 4.2em;
+		margin-left: -2.1em;
+		margin-top: -2.1em;
+	}
+	.content-mesa .n-mesa span{
+		font-size: 2.5em;
+	}
+	
+	/* Estilos para mesa de 4 puestos (min-width: 1200px) */
+	.mesax4p .content__puesto-1{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -20.7em;
 		margin-top: -10.3em;
 	}
-	.content__puesto-2{
+	.mesax4p .content__puesto-1 .puesto-libre{
+		top: 50%;
+		left: -50%;
+		margin-top: -7.3em;
+	}
+	.mesax4p .content__puesto-2{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -8.2em;
 		margin-top: -22.9em;
 	}
-	.content__puesto-3{
+	.mesax4p .content__puesto-2 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -8.2em;
+	}
+	.mesax4p .content__puesto-3{
 		width: 16.4em;
 		height: 16.4em;
 		margin-right: -20.7em;
 		margin-top: -10.3em;
 	}
-	.content__puesto-4{
+	.mesax4p .content__puesto-3 .puesto-libre{
+		top: 50%;
+		right: -50%;
+		margin-top: -7.3em;
+	}
+	.mesax4p .content__puesto-4{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -8.2em;
 		margin-bottom: -18.6em;
 	}
+	.mesax4p .content__puesto-4 .puesto-libre{
+		bottom: -53%;
+		left: 50%;
+		margin-left: -8.2em;
+	}
+	/* Estilos para mesa de 6 puestos (min-width: 1200px) */
+	.mesax6p .content-mesa .n-mesa:nth-child(2){
+	    margin-left: calc(-24% + -2.1em);
+	}
+	.mesax6p .content-mesa .n-mesa:nth-child(3){
+		margin-left: calc(24% + -2.1em);
+	}
+	.mesax6p .content__puesto-1{
+		width: 14em;
+		height: 14em;
+		margin-left: calc(-24% + -7.5em);
+		margin-top: -7em;
+	}
+	.mesax6p .content__puesto-1 .puesto-libre{
+		top: 50%;
+		left: -50%;
+		margin-top: -6.2em;
+	}
+	.mesax6p .content__puesto-2{
+		width: 14em;
+		height: 14em;
+		margin-left: -19.5%;
+		margin-top: -18.6em;
+	}
+	.mesax6p .content__puesto-2 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -7em;
+	}
+	.mesax6p .content__puesto-3{
+		width: 14em;
+		height: 14em;
+		margin-right: -19.5%;
+		margin-top: -18.6em;
+	}
+	.mesax6p .content__puesto-3 .puesto-libre{
+		top: -45%;
+		left: 50%;
+		margin-left: -7em;
+	}
+	.mesax6p .content__puesto-4{
+		width: 14em;
+		height: 14em;
+		margin-right: calc(-24% + -7.5em);
+		margin-top: -7em;
+	}
+	.mesax6p .content__puesto-4 .puesto-libre{
+		top: 50%;
+		right: -50%;
+		margin-top: -6.2em;
+	}
+	.mesax6p .content__puesto-5{
+		    position: absolute;
+			width: 14em;
+			height: 14em;
+			right: 50%;
+			bottom: 50%;
+			margin-right: -19.5%;
+			margin-bottom: -18.5em;
+	}
+	.mesax6p .content__puesto-5 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -7em;
+		margin-top: 0;
+	}
+	.mesax6p .content__puesto-6{
+		position: absolute;
+		width: 14em;
+		height: 14em;
+		left: 50%;
+		bottom: 50%;
+		margin-left: -19.5%;
+		margin-bottom: -18.5em;
+	}
+	.mesax6p .content__puesto-6 .puesto-libre{
+		bottom: -52%;
+		left: 50%;
+		margin-left: -7em;
+	}
 }
+
+/* Estilos para Dispositivos móviles (min-width: 1366px) */
 @media (min-width: 1366px){
 	.base{
 		transform: scale(1.1);
@@ -3867,29 +4338,50 @@ body.overflow-hidden {
 		top: 566px;
 		left: 601px;
 	}
-	.content__puesto-1{
+	.mesax4p .content__puesto-1{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -20.7em;
 		margin-top: -11.3em;
 	}
-	.content__puesto-2{
+	.mesax4p .content__puesto-2{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -8.2em;
 		margin-top: -23.8em;;
 	}
-	.content__puesto-3{
+	.mesax4p .content__puesto-3{
 		width: 16.4em;
 		height: 16.4em;
 		margin-right: -20.7em;
 		margin-top: -11.3em;
 	}
-	.content__puesto-4{
+	.mesax4p .content__puesto-4{
 		width: 16.4em;
 		height: 16.4em;
 		margin-left: -8.2em;
 		margin-bottom: -17.6em;
+	}
+	/* Estilos para mesa de 6 puestos (min-width: 1366px) */
+	.mesax6p .content__puesto-2{
+		width: 14em;
+		height: 14em;
+		margin-left: -19%;
+		margin-top: -19.2em;
+	}
+	.mesax6p .content__puesto-3{
+		width: 14em;
+		height: 14em;
+		margin-right: -19%;
+		margin-top: -19.2em;
+	}
+	.mesax6p .content__puesto-5{
+			margin-right: -19%;
+			margin-bottom: -19.2em;
+	}
+	.mesax6p .content__puesto-6{
+		margin-left: -19%;
+		margin-bottom: -19.2em;
 	}
 }
 @media (min-width: 1440px){

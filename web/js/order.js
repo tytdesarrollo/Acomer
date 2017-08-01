@@ -54,7 +54,7 @@
 		var self = this;
 
 		var preview = document.createElement('div');
-		preview.className = 'product-icon';
+		preview.className = 'product-icon';		
 		preview.setAttribute('data-idx', items.indexOf(item));
 		
 	
@@ -64,6 +64,7 @@
 		var contador = document.getElementsByClassName('input-number')[num].value;
 		// var porClassName=document.getElementsByClassName("formulario")[0].value;
 		
+		preview.setAttribute('id', items.indexOf(item)+':'+contador);
 		
 		var removeCtrl = document.createElement('button');
 		removeCtrl.className = 'actions action--remove';
