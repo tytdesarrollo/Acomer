@@ -13,6 +13,7 @@
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];
 			//establece la conexion con la base de datos 
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			//cursores que recibiran los datos del menu
 			$cursor_categorias; 
 			$cursor_subcategorias;

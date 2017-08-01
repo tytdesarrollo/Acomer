@@ -13,6 +13,7 @@
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
 			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			//cursor que recibira los datos de las mesas
 			$cursor_mesas;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
