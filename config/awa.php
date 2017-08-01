@@ -11,6 +11,6 @@ $this->models->params['awadb'] = '(DESCRIPTION=
 			    )
 			    (CONNECT_DATA=
 			      (SERVER=dedicated)
-			      (SERVICE_NAME=ORCL)
+			      (SERVICE_NAME=AWAJAVA)
 			    )
 	  		)';
