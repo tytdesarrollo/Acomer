@@ -115,9 +115,9 @@
 					</div>
 				</div>
 				<div class="main-content-puestos text-center">
-					<div class="content-puestos">
+					<div class="content-puestos mesax4p">
 						<div class="content-mesa">
-							<?= Html::img('@web/img/mesa_4_puestos.svg', ['alt' => 'Mesa 4 puestos', 'class' => 'img-responsive mesax4p',]) ?>
+							<?= Html::img('@web/img/mesa_4_puestos.svg', ['alt' => 'Mesa 4 puestos', 'class' => 'img-responsive',]) ?>
 							<div class="n-mesa">
 								<span>#1</span>
 							</div>
@@ -155,6 +155,65 @@
 							</div>
 						</div>
 					</div>
+					<!--<div class="content-puestos mesax6p">
+						<div class="content-mesa">
+							<?= Html::img('@web/img/mesa_6_puestos.svg', ['alt' => 'Mesa 6 puestos', 'class' => 'img-responsive',]) ?>
+							<div class="n-mesa">
+								<span>#1</span>
+							</div>
+							<div class="n-mesa">
+								<span>#2</span>
+							</div>
+						</div>
+						<div class="content__puesto-1">
+							<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#1</span>
+								</div>
+							</div>
+						</div>
+						<div class="content__puesto-2">
+							<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#2</span>
+								</div>
+							</div>
+						</div>
+						<div class="content__puesto-3">
+							<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#3</span>
+								</div>
+							</div>
+						</div>
+						<div class="content__puesto-4">
+							<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#4</span>
+								</div>
+							</div>
+						</div>
+						<div class="content__puesto-5">
+							<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#5</span>
+								</div>
+							</div>
+						</div>
+						<div class="content__puesto-6">
+							<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive',]) ?>
+							<div class="puesto-libre">
+								<div class="cnt">
+									<span class="txt-puesto">Puesto</br>#6</span>
+								</div>
+							</div>
+						</div>
+					</div>-->
 				</div>
 			</div>
 		</div>
