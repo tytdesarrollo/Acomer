@@ -12,7 +12,7 @@ return[
 			    )
 			    (CONNECT_DATA=
 			      (SERVER=dedicated)
-			      (SERVICE_NAME=ORCL)
+			      (SERVICE_NAME=AWAJAVA)
 			    )
 	  		)'
 ];
