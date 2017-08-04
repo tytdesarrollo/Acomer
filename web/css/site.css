@@ -2838,11 +2838,16 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	transform: translateX(0);
 	transition-delay: 0.5s
 }
+.top-bar-btns{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
 .main-content-puestos{
 	position: relative;
     width: 100%;
     height: 100%;
-    margin-top: -60px;
 	padding-top: 60px;
 }
 .content-puestos{
