@@ -67,7 +67,7 @@
 				<div class="mrg__bottom-30">
 					<div class="container-fluid">
 						<div class="pull-right">
-							<a href="#" id="cancelMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+							<a href="#" id="cancelUnirMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 								<i class="material-icons">&#xE317;</i>
 							</a>
 						</div>
@@ -102,18 +102,6 @@
 				</div>
 			</div>
 			<div class="main-content-mesa">
-				<div>
-					<div class="container-fluid">
-						<div class="pull-right">
-							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
-							</a>
-							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
-							</a>
-						</div>
-					</div>
-				</div>
 				<div class="main-content-puestos text-center">
 					<div class="content-puestos mesax4p">
 						<div class="content-mesa">
@@ -295,6 +283,23 @@
 						</div>
 					</div>-->
 				</div>
+				<div class="top-bar-btns">
+					<div class="container-fluid">
+						<div class="pull-left">
+							<a href="#" id="cancelMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+								<i class="material-icons">&#xE317;</i>
+							</a>
+						</div>
+						<div class="pull-right">
+							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
+							</a>
+							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
+								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 <?php $this->endBody() ?>
@@ -312,9 +317,13 @@
 			$(".main-content-unir-mesa").addClass("out");
 			$(".main-content-mesa").addClass("in");
 		});
-		$("#cancelMesa").click(function(){
+		$("#cancelUnirMesa").click(function(){
 			$(".main-content-unir-mesa").removeClass("in");
 			$(".main-content-select-puestos").removeClass("out");
+		});
+		$("#cancelMesa").click(function(){
+			$(".main-content-mesa").removeClass("in");
+			$(".main-content-unir-mesa").removeClass("out");
 		});
 	</script>
 </body>
