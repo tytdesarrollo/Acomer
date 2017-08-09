@@ -67,7 +67,7 @@
 				<div class="mrg__bottom-30">
 					<div class="container-fluid">
 						<div class="pull-right">
-							<a href="#" id="cancelMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+							<a href="#" id="cancelUnirMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 								<i class="material-icons">&#xE317;</i>
 							</a>
 						</div>
@@ -102,18 +102,6 @@
 				</div>
 			</div>
 			<div class="main-content-mesa">
-				<div>
-					<div class="container-fluid">
-						<div class="pull-right">
-							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
-							</a>
-							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
-								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
-							</a>
-						</div>
-					</div>
-				</div>
 				<div class="main-content-puestos text-center">
 					<div class="content-puestos mesax4p">
 						<div class="content-mesa">
@@ -214,6 +202,215 @@
 							</div>
 						</div>
 					</div>-->
+					<!--<div class="content-puestos mesax8p">
+						<div class="content-scroll-mesa">
+							<div class="content-mesa">
+								<?= Html::img('@web/img/mesa_8_puestos.svg', ['alt' => 'Mesa 6 puestos', 'class' => 'img-responsive',]) ?>
+								<div class="n-mesa">
+									<span>#1</span>
+								</div>
+								<div class="n-mesa">
+									<span>#2</span>
+								</div>
+								<div class="n-mesa">
+									<span>#3</span>
+								</div>
+							</div>
+							<div class="content__puesto-1">
+								<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#1</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-2">
+								<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#2</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-3">
+								<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#3</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-4">
+								<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#4</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-5">
+								<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#5</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-6">
+								<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 6', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#6</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-7">
+								<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 7', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#7</span>
+									</div>
+								</div>
+							</div>
+							<div class="content__puesto-8">
+								<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 8', 'class' => 'img-responsive',]) ?>
+								<div class="puesto-libre">
+									<div class="cnt">
+										<span class="txt-puesto">Puesto</br>#8</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>-->
+				</div>
+				<div class="top-bar-btns">
+					<div class="container-fluid">
+						<div class="pull-left">
+							<a href="#" id="cancelMesa" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+								<i class="material-icons">&#xE317;</i>
+							</a>
+						</div>
+						<div class="pull-right">
+							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
+								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
+							</a>
+							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
+								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal list-pedidos fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="pull-right">
+										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+											<i class="material-icons icon-btn">&#xE14B;</i>Cancelar Todo
+										</a>
+										<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
+											<i class="material-icons icon-btn">&#xE877;</i>Confirmar Pedido
+										</a>
+										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+											<i class="material-icons icon-btn">&#xE14C;</i>Salir
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-body">
+							<h2 class="no-mrg-top">Pedidos</h2>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="table-wrapper view-List-pedidos">
+										<table>
+											<tbody>
+												<tr class="default">
+													<td>Mesa #1</td>
+													<td><span class="arrow">arrow</span></td>
+												</tr>
+												<tr class="toggle-row">
+													<td colspan="5">
+														<div class="sub-table-wrap">
+															<div class="full-sub-table">
+																<div class="list-item-pedido">
+																	<dl class="info-wrapper">
+																		<dt>Pedido</dt>
+																		<dd>Puesto #1</dd>
+																	</dl>
+																	<div class="pull-right content-btn-clear-pedido">
+																		<dl class="info-wrapper view-zoom">
+																			<div class="cttos-modal-action">
+																				<a href="#" class="zoom-btn ctt">
+																					<i class="material-icons">&#xE14C;</i>
+																				</a>
+																			</div>
+																		</dl>
+																	</div>
+																</div>
+															</div>
+															<div class="full-sub-table">
+																<div class="list-item-pedido">
+																	<dl class="info-wrapper">
+																		<dt>Pedido</dt>
+																		<dd>Puesto #2</dd>
+																	</dl>
+																	<div class="pull-right content-btn-clear-pedido">
+																		<dl class="info-wrapper view-zoom">
+																			<div class="cttos-modal-action">
+																				<a href="#" class="zoom-btn ctt">
+																					<i class="material-icons">&#xE14C;</i>
+																				</a>
+																			</div>
+																		</dl>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="content-view-pedido txt__light-100">
+										<div class="content-head-view-pedido clearfix">
+											<div class="pull-left">
+												<h4>Pedido - <span class="txt__lightorange">Puesto #1</span></h4>
+											</div>
+											<div class="pull-right ">
+												<h5 class="text-right txt__light-70">Mesa #1</h5>
+											</div>
+										</div>
+										<div class="content-list-view-pedido-item table-responsive">
+											<table>
+												<tbody>
+													<tr>
+														<td class="icn">
+															<?= Html::img('@web/img/items/carne.png', ['alt' => 'Imagen Item', 'class' => 'img-item',]) ?>
+														</td>
+														<td class="desc">
+															<div class="nom-item">
+																<p>Nombre del plato Nombre del plato</p>
+															</div>
+															<div class="val-item">
+																<p>$00.000</p>
+															</div>
+														</td>
+														<td class="cant"><p>x4</p></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -232,9 +429,22 @@
 			$(".main-content-unir-mesa").addClass("out");
 			$(".main-content-mesa").addClass("in");
 		});
-		$("#cancelMesa").click(function(){
+		$("#cancelUnirMesa").click(function(){
 			$(".main-content-unir-mesa").removeClass("in");
 			$(".main-content-select-puestos").removeClass("out");
+		});
+		$("#cancelMesa").click(function(){
+			$(".main-content-mesa").removeClass("in");
+			$(".main-content-unir-mesa").removeClass("out");
+		});
+	</script>
+	<script>
+		$(document).ready(function ($) {
+		  $('.default').click(function () {    
+			$('.default').not($(this)).removeClass('active');
+			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
+			$(".toggle-row").not($(this).next()).find('.sub-table-wrap').slideUp('fast');
+		  });
 		});
 	</script>
 </body>
