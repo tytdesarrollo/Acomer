@@ -294,7 +294,7 @@
 							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
 								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
-							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
+							<a href="#" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
 								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
 							</a>
 						</div>
@@ -307,12 +307,14 @@
 						<div class="modal-header">
 							<div class="container-fluid">
 								<div class="row">
+									<div class="pull-left">
+										<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
+											<i class="material-icons icon-btn">&#xE877;</i>Confirmar Pedido
+										</a>
+									</div>
 									<div class="pull-right">
 										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 											<i class="material-icons icon-btn">&#xE14B;</i>Cancelar Todo
-										</a>
-										<a href="#" class="btn btn-raised btn-success btn-radius btn-inline">
-											<i class="material-icons icon-btn">&#xE877;</i>Confirmar Pedido
 										</a>
 										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
 											<i class="material-icons icon-btn">&#xE14C;</i>Salir
@@ -328,7 +330,7 @@
 									<div class="table-wrapper view-List-pedidos">
 										<table>
 											<tbody>
-												<tr class="default">
+												<tr class="default active">
 													<td>Mesa #1</td>
 													<td><span class="arrow">arrow</span></td>
 												</tr>
@@ -413,6 +415,155 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal list-pedidos fade" id="facturaModal" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="pull-left">
+										<a id="btn-fact" href="#" class="btn btn-raised btn-success btn-radius btn-inline">Facturar</a>
+									</div>
+									<div class="pull-right">
+										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+											<i class="material-icons icon-btn">&#xE14C;</i>Salir
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-body">
+							<h2 class="text-center">Selecciona los puestos a facturar</h2>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="content-fact">
+										<div class="table-responsive">
+											<table id="data-table" class="table table-hover">
+												<thead>
+													<tr>
+														<th class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="select_all" value="1" type="checkbox">
+															  </label>
+															</div>
+														</th>
+														<th>Mesa #1</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #1</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name2" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #2</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name3" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #3</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name4" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #4</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="content-fact">
+										<div class="table-responsive">
+											<table id="data-table" class="table table-hover">
+												<thead>
+													<tr>
+														<th class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="select_all" value="1" type="checkbox">
+															  </label>
+															</div>
+														</th>
+														<th>Mesa #2</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #1</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name2" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #2</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name3" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #3</td>
+													</tr>
+													<tr>
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name4" type="checkbox">
+															  </label>
+															</div>
+														</td>
+														<td>Pedido puesto #4</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 <?php $this->endBody() ?>
 	<script>
@@ -440,10 +591,42 @@
 	</script>
 	<script>
 		$(document).ready(function ($) {
-		  $('.default').click(function () {    
+		  $('.active').next().find('.sub-table-wrap').show();
+		  $('.default').click(function () {
 			$('.default').not($(this)).removeClass('active');
 			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
 			$(".toggle-row").not($(this).next()).find('.sub-table-wrap').slideUp('fast');
+		  });
+		});
+	</script>
+	<script>
+		var dataTable = document.getElementById('data-table');
+		var checkItAll = dataTable.querySelector('input[name="select_all"]');
+		var inputs = dataTable.querySelectorAll('tbody>tr>td.select-cell input');
+		var btnFact = document.getElementById('btn-fact');
+
+		inputs.forEach(function(input) {
+		  input.addEventListener('change', function() {
+			if (!this.checked) {
+			  checkItAll.checked = false;
+			}else if (!checkItAll.checked) {
+			  var allChecked = true;
+			  for (var i=0; i<inputs.length; i++) {
+				if (!inputs[i].checked) {
+				  allChecked = false;
+				  break;
+				}
+			  }
+			  if (allChecked) {
+				checkItAll.checked = true;
+			  }
+			}
+		  });
+		});
+
+		checkItAll.addEventListener('change', function() {
+		  inputs.forEach(function(input) {
+			input.checked = checkItAll.checked;
 		  });
 		});
 	</script>
