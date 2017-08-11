@@ -3334,6 +3334,48 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	font-weight: bold;
 }
 
+/* ESTILOS FACTURACIÓN */
+.content-fact{
+	margin: 20px auto;
+	padding: 15px;
+	border: 2px dashed #ddd;
+	border-radius: 8px;
+}
+.content-fact .table{
+	margin-bottom: 0;
+}
+.content-fact table thead th{
+	padding: 10px;
+	font-size: 16px;
+	vertical-align: middle;
+}
+.content-fact table thead th.select-cell, .content-fact table body td.select-cell{
+	width: 30px;
+}
+.content-fact .select-cell .checkbox{
+	margin: 0px;
+}
+.content-fact .select-cell .checkbox .checkbox-material:before{
+	-webkit-transform: scale3d(1.6, 1.6, 1);
+    transform: scale3d(1.6, 1.6, 1);
+}
+.content-fact .select-cell .checkbox input[type=checkbox]:checked + .checkbox-material .check{
+	color: #4caf50;
+    border-color: #4caf50;
+}
+.content-fact .select-cell .checkbox input[type=checkbox]:checked + .checkbox-material .check:before{
+	color: #4caf50;
+}
+.content-fact table tbody td{
+	padding: 10px;
+	vertical-align: middle;
+}
+
+
+
+
+
+
 
 
 .panel.panel-md-table .panel-body{
