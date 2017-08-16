@@ -28,7 +28,7 @@
 	</head>
 	<body class='bg-acomer'>
 	<?php $this->beginBody() ?>
-		<div class="main-mesa">
+		<div class="main-mesa cd-section">
 			<div class="main-content-select-puestos">
 				<div class="mrg__bottom-30">
 					<div class="container-fluid">
@@ -415,14 +415,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal list-pedidos fade" id="facturaModal" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
+			<div class="modal m-facturar fade" id="facturaModal" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<div class="container-fluid">
 								<div class="row">
 									<div class="pull-left">
-										<a id="btn-fact" href="#" class="btn btn-raised btn-success btn-radius btn-inline">Facturar</a>
+										<div class="btn-factura-action-content">
+											<a id="btn-fact" href="#" class="btn btn-raised btn-success btn-radius btn-inline btn-factura" data-type="modal-view-factura-action">Facturar</a>
+											<span class="modal-view-factura-bg"></span>
+										</div>
 									</div>
 									<div class="pull-right">
 										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
@@ -561,11 +564,83 @@
 								</div>
 							</div>
 						</div>
+						<div class="modal-view-factura">
+							<div class="modal-view-factura-content">
+								<div class="container">
+									<div class="box-factura-content">
+										<div class="clearfix">
+											<div class="logo-factura-content pull-left">
+												<?= Html::img('@web/img/logo_small_gray.png', ['alt' => 'Acomer', 'class' => 'img-responsive',]) ?>
+											</div>
+											<div class="pull-right">
+												<div class="num-factura-content">
+													<dl class="num-fact">
+														<dt>Fecha</dt>
+														<dd>17-07-2017</dd>
+													</dl>
+													<dl class="divider">
+														<div></div>
+													</dl>
+													<dl class="num-fact">
+														<dt>Factura</dt>
+														<dd>#0001</dd>
+													</dl>
+												</div>
+											</div>
+										</div>
+										<hr>
+										<div class="detail-factura-content">
+											<div class="table-responsive">
+												<table class="table table-hover">
+													<thead>
+														<tr>
+															<th>Producto</th>
+															<th>unidad</th>
+															<th>Precio</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>Producto #1</td>
+															<td>1</td>
+															<td>$00.000</td>
+														</tr>
+														<tr>
+															<td>Producto #2</td>
+															<td>2</td>
+															<td>$00.000</td>
+														</tr>
+														<tr>
+															<td>Producto #3</td>
+															<td>3</td>
+															<td>$00.000</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="total-factura-content clearfix">
+												<div class="btn-factura-box pull-left">
+													<a href="#" class="btn btn-raised btn-info btn-radius btn-inline">
+														Pagar<i class="material-icons">&#xE5C8;</i>
+													</a>
+												</div>
+												<div class="total-factura-box pull-right">
+													<span class="total-txt">Total</span>
+													<span class="total-num">$000.000</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div> <!-- cd-modal-content -->
+						</div> <!-- cd-modal -->
+						<a href="#0" class="modal-view-factura-close"><i class="material-icons">&#xE14C;</i></a>
 					</div>
 				</div>
 			</div>
 		</div>
 <?php $this->endBody() ?>
+	<script src="../web/js/modal_view_fact.js"></script>
 	<script>
 	  $(function () {
 		$.material.init();
