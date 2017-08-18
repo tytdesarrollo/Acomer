@@ -174,8 +174,8 @@
 				console.log(puestos);
 
 				//ruta que retorna a la mesa para tomar demas pedidos
-				//var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
-				//location.href = urlMesa+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
+				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
+				location.href = urlMesa+'&codigoM='+'<?=$codmesa?>'+'&tamanoM='+'<?=$tamano?>'+'&estadoM='+'<?=$estado?>'+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
 			}
 
 			//funcion para comodar todo lo escogido del menu
