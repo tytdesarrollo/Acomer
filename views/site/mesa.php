@@ -1030,7 +1030,7 @@
 		if(puestos != 0){
 			// pedidos para la unioin de 2 mesas (6 puestos)
 			if(cantidadPuestos >= 5 && cantidadPuestos <= 6){
-				var mesaUnida = '<?=$_COOKIE["mesa1"]?>';
+				var mesaUnida = '';
 				// contador de pedidos por mesa
 				var cont61 = 0;
 				var cont62 = 0;
@@ -1467,7 +1467,7 @@
 						dataType:'json',
 						method: "GET",
 						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':mesa, 
-							   'mesa2':'<?=$_COOKIE["mesa1"]?>', 'tamano':0},			
+							   'mesa2':'', 'tamano':0},			
 						success: function (data) {						
 							
 						}
@@ -1478,7 +1478,7 @@
 						dataType:'json',
 						method: "GET",
 						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':mesa, 
-							   'mesa2':'<?=$_COOKIE["mesa1"]?>', 'tamano':0},			
+							   'mesa2':'s', 'tamano':0},			
 						success: function (data) {						
 							
 						}
