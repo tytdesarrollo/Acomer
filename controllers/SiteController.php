@@ -22,6 +22,8 @@ use app\models\Ldap;
 use app\models\SpMesasPlaza;
 use app\models\SpMenusPlaza;
 use app\models\SpMesasPedidos;
+use app\models\funcionesArray;
+use app\models\SpMesasFactura;
 
 
 
@@ -29,11 +31,10 @@ class SiteController extends Controller
 { 	
 
 
-	public function actionPrueba(){
+	public function actionPrueba(){		
 
-		$prueba = $_GET['prueba'];
 
-        return $this->render("prueba",['prueba' => $prueba]);
+        return $this->render('prueba'); 
 	}	
 	
     public function behaviors()
@@ -316,21 +317,336 @@ class SiteController extends Controller
         echo json_encode($datosPedidos);
     }
 
+    public function actionJsonpuestosfac(){
+        //parametros pasados por GET
+        $c1 = $_GET['mesa'];
+
+        $fn_fac_puestos = new SpMesasFactura;
+        //obtiene las posiciones de las mesas 
+        $puestos = $fn_fac_puestos->procedimiento($c1); 
+        //imprime los datos en tipo json         
+        echo json_encode($puestos);
+    }
 
 	public function actionMesa()
     {	
-        /*if(!isset($_GET['estadoM'])){
+        //=============================DATOS ENVIADOS POR GET=======================================
+        //codigo de la mesa 
+        if(!isset($_GET['codigoM'])){
+            $this->layout=false;    
+            return $this->redirect(['site/plaza']); 
+        }else{
+            $codigomesa = $_GET['codigoM'];  
+        }
+       
+        //datos enviados desde la plaza
+        if(!isset($_GET['estadoM'])){
             $estadomesa = 1;
         }else{
             $estadomesa = $_GET['estadoM'];
+        }        
+
+        //datos enviados desde el menu
+        if(!isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+            $platos = 0;
+            $cantidad = 0;
+            $puestos = 0;
+            $arrpuestos = 0;
+        }else{
+            $platos = $_GET['platos'];
+            $cantidad = $_GET['cantidad'];            
+            $puestos = $_GET['puestos'];
+            // acomodar el array de los puestos
+            $funciones1 = new funcionesArray();
+            $funciones2 = $funciones1->crearArray($_GET['puestos']);
+            $arrpuestos = $funciones1->arrayNuevo(array_unique($funciones2));
+            $arrpuestos = $funciones1->arrayToChar($arrpuestos);
+
+            $tamano = $_GET['tamanoM']; //tamano de la mesa que se esta usando
         }
-        $codigomesa = $_GET['codigoM'];
-        $maxpuestos = $_GET['maxpuestos'];*/
-        /*,["estadomesa" => $estadomesa, "codigomesa" => $codigomesa, "maxpuestos" => $maxpuestos]*/
+
+        if(!isset($_GET['tamanoM'])){            
+            $tamano = 4;
+        }else{
+            $tamano = $_GET['tamanoM'];
+        }
+        //=============================DATOS ENVIADOS POR GET=======================================
+        
+
+
+        
 		$this->layout=false;    
-        return $this->render('mesa');
+        return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
+                                     "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos]);
 		
     }
+   
+
+    public function actionVarsesions(){
+        //cantidad de personas en la mesa
+        $tamano = $_GET['tamano'];
+
+        // dependiendo del tamano de la mesa se crear n variables de session
+        if($tamano > 4 && $tamano <= 6){
+            $codigo1 = $_GET['mesas'];
+            setcookie('mesa1', $codigo1);   
+            echo $_COOKIE["mesa1"];
+        }
+        
+    }
+
+
+    public function actionJsonmesasunidas(){
+        $in_var = $_GET['mesaclick'];
+
+        $clase = new SpMesasPedidos();
+        $procedimiento = $clase->procedimiento3($in_var);
+        $a = $procedimiento[0];
+        $b = $procedimiento[1];
+
+        $c = arraY($a,$b);
+        echo json_encode($c);
+    }
+
+    public function actionRealizarpedido(){
+        //c1: Variable correspondiente al arraY de los puestos  
+        //c2: Variable correspondiente al arraY de los platos
+        //c3: Variable correspondiente al arraY de la cantidad
+        //c4: Variable correspondiente al arraY del termino
+        //c5: Variable correspondiente alcodigo del mesero
+        //c6: Variable correspondiente al arraY al codigo de la mesa
+        
+        //capturas los datos enviados por get
+        $get1 = $_GET['puestos'];
+        $get2 = $_GET['platos'];
+        $get3 = $_GET['cantidad'];
+        $get4 = $_GET['termino'];        
+        $get5 = '16743485';//$_SESSION['cedula'];
+        $get6 = $_GET['mesa'];
+        
+        $funcionArr = new funcionesArray();
+        //
+        $c1 = $funcionArr->crearArray($get1);
+        $c1 = $funcionArr->arrayPuestos($c1);
+        $c2 = $funcionArr->crearArray($get2);
+        $c3 = $funcionArr->crearArray($get3);
+        $c4 = $funcionArr->arrayTermino($get4);
+        $c5 = $get5;//$_SESSION['cedula'];
+        $c6 = $get6;
+
+
+        //return $this->redirect(['site/prueba','c1'=>$c1,'c2'=>$c2,'c3'=>$c3,'c4'=>$c4,'c5'=>$c5,'c6'=>$c6]);   
+        
+        $pedido = new SpMesasPedidos();
+        $tomarpedido = $pedido->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
+
+        return $this->redirect(['site/plaza']);
+
+    }
+
+    public function actionAdicionarpedido(){
+        //c1: Variable correspondiente al arraY de los puestos  
+        //c2: Variable correspondiente al arraY de los platos
+        //c3: Variable correspondiente al arraY de la cantidad
+        //c4: Variable correspondiente al arraY del termino
+        //c5: Variable correspondiente alcodigo del mesero
+        //c6: Variable correspondiente al arraY al codigo de la mesa
+        
+        //capturas los datos enviados por get
+        $get1 = $_GET['puestos'];
+        $get2 = $_GET['platos'];
+        $get3 = $_GET['cantidad'];
+        $get4 = $_GET['termino'];        
+        $get5 = '16743485';//$_SESSION['cedula'];
+        $get6 = $_GET['mesa'];
+        
+        $funcionArr = new funcionesArray();
+        //
+        $c1 = $funcionArr->crearArray($get1);
+        $c1 = $funcionArr->arrayPuestos($c1);
+        $c2 = $funcionArr->crearArray($get2);
+        $c3 = $funcionArr->crearArray($get3);
+        $c4 = $funcionArr->arrayTermino($get4);
+        $c5 = $get5;//$_SESSION['cedula'];
+        $c6 = $get6;
+
+        echo "paila";
+
+        //return $this->redirect(['site/prueba','c1'=>$c1,'c2'=>$c2,'c3'=>$c3,'c4'=>$c4,'c5'=>$c5,'c6'=>$c6]);   
+        
+        $pedido = new SpMesasPedidos();
+        $tomarpedido = $pedido->procedimiento4($c1,$c2,$c3,$c4,$c5,$c6);
+
+        return $this->redirect(['site/plaza']);
+    }
+
+    public function actionRealizarpedidox(){
+        // Mesa 1
+        //c1: Variable correspondiente al arraY de los puestos  
+        //c2: Variable correspondiente al arraY de los platos
+        //c3: Variable correspondiente al arraY de la cantidad
+        //c4: Variable correspondiente al arraY del termino
+        //c5: Variable correspondiente alcodigo del mesero
+        //c6: Variable correspondiente al codigo de la mesa
+        // mesa 2
+        //c7: Variable correspondiente al arraY de los puestos  
+        //c8: Variable correspondiente al arraY de los platos
+        //c9: Variable correspondiente al arraY de la cantidad
+        //c10: Variable correspondiente al arraY del termino
+        //c11: Variable correspondiente alcodigo del mesero
+        //c12: Variable correspondiente al arraY al codigo de la mesa
+        //
+        // union de las mesas
+        // c13: variable correspondiente a la mesa principal
+        // c14: variable correspondiente al numero de personas 
+        // c15: variable correnpondiente a las mesas que se van a unir
+        
+        //capturas los datos enviados por get   
+        //pedido para la mesa principal     
+        $get1 = $_GET['puestos1'];
+        $get2 = $_GET['platos1'];
+        $get3 = $_GET['cantidad1'];
+        $get4 = $_GET['termino1'];        
+        $get5 = '16743485';//$_SESSION['cedula'];
+        $get6 = $_GET['mesa1'];        
+        $get7 = $_GET['mesa2'];
+        
+        $fn_arrays = new funcionesArray();
+
+        //0: dos mesas unidas
+        //1: tres mesas unidad
+        if($_GET['tamano'] === '0'){
+            $arrayMesa1 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'1');
+            $arrayMesa2 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'2');
+            
+            // variables de la mesa 1
+            $c1 = $arrayMesa1[0];
+            $c1 = $fn_arrays->arrayPuestos($c1);
+            $c2 = $arrayMesa1[1];
+            $c3 = $arrayMesa1[2];
+            $c4 = $arrayMesa1[3];
+            $c5 = $get5;
+            $c6 = $get6;
+
+            // variables de la mesa 2
+            $c7 = $arrayMesa2[0];
+            $c7 = $fn_arrays->arrayPuestos($c7);
+            $c8 = $arrayMesa2[1];
+            $c9 = $arrayMesa2[2];
+            $c10 = $arrayMesa2[3];
+            $c11 = $get5;
+            $c12 = $get7;
+
+            // variables de union
+            $c13 = $get6;
+            $c14 = '6';
+            $c15 =  array($get7);
+
+            // se realiza el pedido
+            /*$pedido1 = new SpMesasPedidos();
+            $tomarpedido1 = $pedido1->procedimiento5($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14,$c15);*/
+
+            var_dump($c1);
+            
+        }else if($_GET['tamano'] === '1'){
+            //toma de pedido con el procedimiento para 3 mesas unidas
+            echo 'a';
+        }        
+        
+        return $this->redirect(['site/plaza']);
+
+    }
+
+    public function actionAdicionarpedidox(){
+        // Mesa 1
+        //c1: Variable correspondiente al arraY de los puestos  
+        //c2: Variable correspondiente al arraY de los platos
+        //c3: Variable correspondiente al arraY de la cantidad
+        //c4: Variable correspondiente al arraY del termino
+        //c5: Variable correspondiente alcodigo del mesero
+        //c6: Variable correspondiente al codigo de la mesa
+        // mesa 2
+        //c7: Variable correspondiente al arraY de los puestos  
+        //c8: Variable correspondiente al arraY de los platos
+        //c9: Variable correspondiente al arraY de la cantidad
+        //c10: Variable correspondiente al arraY del termino
+        //c11: Variable correspondiente alcodigo del mesero
+        //c12: Variable correspondiente al arraY al codigo de la mesa
+        
+        //capturas los datos enviados por get
+        $get1 = $_GET['puestos1'];
+        $get2 = $_GET['platos1'];
+        $get3 = $_GET['cantidad1'];
+        $get4 = $_GET['termino1'];        
+        $get5 = '16743485';//$_SESSION['cedula'];
+        $get6 = $_GET['mesa1'];        
+        $get7 = $_GET['mesa2'];
+
+        $fn_arrays = new funcionesArray();
+
+        if($_GET['tamano'] === '0'){
+
+            $arrayMesa1 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'1');
+            $arrayMesa2 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'2');
+
+            if(sizeof($arrayMesa1[0]) === 0){
+                echo '';
+            }
+
+        }else if($_GET['tamano'] === '1'){
+            //toma de pedido con el procedimiento para 3 mesas unidas
+            echo 'a';
+        }  
+        
+        
+
+
+        //return $this->redirect(['site/plaza']);
+    }
+
+    public function actionFacturar(){
+        //c1: Variable correspondiente a la cedula del cliente (opcional)
+        //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
+        //c3: Variable correspondiente al codigo de la mesa
+        //c4: Variable correspondiente a la cedula del mesero
+        //c5: Variable correspondiente a la forma de pago
+        //c6: Variable correspondiente a los puestos que se facturan
+        //caputra de datos por get
+        $get1 = $_GET['puestos'];
+        $get2 = $_GET['mesa'];
+        $get3 = $_GET['full'];
+
+        // parametros del procedimiento
+        $c1 = "N/A";
+        $c2 = "N/A";
+        $c3 = $get2;
+        $c4 = '16743485';//$_SESSION['cedula'];
+        $c5 = "01";
+        $c6 = $get1;
+
+
+
+        $fn_facturar = new SpMesasFactura();
+        
+
+        if($get3 === "false"){     
+            $c6 = array("0");
+            $facturar = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
+            echo json_encode($facturar);
+        }else{
+            $funcionArr = new funcionesArray();                        
+            $c6 = $funcionArr->arrayPuestos($c6);
+            $facturar = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
+            echo json_encode($facturar);
+
+        }
+        //echo '[{"NUMERO_FAC":["000003"],"FECHA":["17\/08\/2017"]},{"PRODES":["TORO CAESAR","ENSALDA FUSION","ENSALDA ORIENTE"],"PEDUNI":["1","1","1"],"PEDVALTUN":["24990","22015","26537"]},"73542"]';
+
+        
+        
+    }
+
 	public function actionMenu()
     {	
         //=============================CARGA DEL MENU=======================================
@@ -347,7 +663,10 @@ class SiteController extends Controller
 
         //=============================LOGICA DE PEDIDO=======================================
         //captura el puesto al que se le va a tomar el pedido
-        $puesto = '1'; //$_GET['puesto'];
+        $puesto = $_GET['puesto'];
+        $codmesa = $_GET['codigoM'];
+        $tamano = $_GET['tamanoM'];
+        $estado = $_GET['estadoM'];
         // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
         if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
             // variables que se pasan como parametro
@@ -357,7 +676,8 @@ class SiteController extends Controller
             // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
             $this->layout=false;    
             return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
         }else{
             $platos = 0;
             $cantidad = 0;
@@ -365,7 +685,8 @@ class SiteController extends Controller
             // redirecciona a la vista menu con los parametros del menu 
             $this->layout=false;    
             return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
         }
         //=============================LOGICA DE PEDIDO=======================================        
         
