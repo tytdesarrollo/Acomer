@@ -94,7 +94,7 @@ use yii\widgets\ActiveForm;
 			imgMesa = useImg(i);
 			// mesas que se van a mostrar
 			esquemaTemporal = 
-				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+puestosMesas[i]+','+estadosMesas[i]+','+codigosMesas[i]+')">'+
+				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+4+','+estadosMesas[i]+','+codigosMesas[i]+')">'+
 				'<img src="img/mesa.svg" alt="" class="img-responsive">'+
 					notificacionMesa+
 						'<svg width="50" height="60">'+
@@ -119,16 +119,28 @@ use yii\widgets\ActiveForm;
 		var route = "<?php echo Url::toRoute(['site/mesa'])?>";
 		//mensaje de confirmacion si la mesa esta ocupada
 		if(estado == 0){
-			var confirmar = confirm("La mesa se encuentra ocupada, desea adicionar pedido a la mesa?");
-			if(!confirmar){
-				return;
-			}else{
-				//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
-				location.href = route+"&maxpuestos="+puesto+"&codigoM="+codigo+"&estadoM="+estado;
-			}
+			swal({
+				  title: "",
+				  text: "Desea adicionar pedido a la mesa?",
+				  type: "info",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  confirmButtonText: "Si, adicionar",
+				  cancelButtonText: "No, volver",
+				  closeOnConfirm: false,
+				  closeOnCancel: false
+				},
+				function(isConfirm){
+				  if (isConfirm) {
+				    //redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+					location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;
+				  } else {
+				    swal("", "Proceso cancelado..", "error");
+				  }
+				});			
 		}else{
 			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
-			location.href = route+"&maxpuestos="+puesto+"&codigoM="+codigo;
+			location.href = route+"&codigoM="+codigo;
 		}
 	}
 	
@@ -147,15 +159,22 @@ use yii\widgets\ActiveForm;
 		}else if(estado == 0){
 			//se comparan los tiempos de atencio para cambiar el tipo de notificacion
 			var date = new Date();	// funcion para fecha del sistema
-			var horaActual = date.getHours()+':'+date.getMinutes(); // optengo la hora y minutos del sistema
+			var horaActual;
+			if(date.getHours()<10){
+				horaActual = '0'+date.getHours()+':'+date.getMinutes(); // optengo la hora y minutos del sistema
+			}else{
+				horaActual = date.getHours()+':'+date.getMinutes(); // optengo la hora y minutos del sistema
+			}
+			 
 			var arrayTiempos = atencion.split(":");  // separo las horas, los minutos  y los segundos de la hora arrojada en el pedido 
 			var horaInicial = arrayTiempos[0]+':'+arrayTiempos[1]; // armo hora y minutos 
 			var tiempos = calcularTiempo(horaInicial, horaActual); /// ejecuta la funcion que calcula la diferencia entre horas
 			
 			//alert(tiempos[0]);
-			// para las mesas de un solo digito
-			if(codMesa <= 8){
+			// para las mesas de un solo digito			
+			if(codMesa <= 8){				
 				// si la diferencia son 0 horas				
+				;
 				if(tiempos[0] === '00'){
 					// si los minutos superan los 3 min y menos a 5
 					if(tiempos[1] < 3){
@@ -202,9 +221,8 @@ use yii\widgets\ActiveForm;
 
 	function calcularTiempo(horaInicio, horaFin){
 		// se declaran las horas de inico y de fin
-		inicio = horaInicio;		
-		fin = horaFin;
-
+		inicio = horaInicio; 
+		fin = horaFin; 
 
 		//alert(inicio+'|||'+fin);
 
@@ -213,11 +231,13 @@ use yii\widgets\ActiveForm;
 		inicioHoras = parseInt(inicio.substr(0,2)); 
 
 		// se convierten los datos en enteros y separando las horas de los minutos de la hora final
-		finMinutos = parseInt(fin.substr(3,2));
+		finMinutos = parseInt(fin.substr(3,2));  
 		finHoras = parseInt(fin.substr(0,2)); 
 
+		//console.log(inicioHoras+' / '+inicioMinutos+'*****'+finHoras+' / '+finMinutos);
+
 		// de restan las diferencias de las horas y minutos por aparte
-		transcurridoMinutos = finMinutos - inicioMinutos;
+		transcurridoMinutos = finMinutos - inicioMinutos; 
 		transcurridoHoras = finHoras - inicioHoras; 
 
 
@@ -269,16 +289,17 @@ use yii\widgets\ActiveForm;
 	    			return [value];
 				});				
 				//
-				//console.log(arrayDatos);
+				
 				//almaceno los valores pertenecientes al codigo de las mesas
 				var estadoPedido = arrayDatos[0];
 				//almaceno los valores pertenecientes al estado de las mesas
 				var numeroMesa = arrayDatos[1];
 				//almaceno los valores pertenecientes al codigo de la empresa a la que pertenecen las mesas
-				var empresaPedido = arrayDatos[2];
+				var empresaPedido = arrayDatos[2];				
 
 				var notificaciones = notificacionContainer(tamano, numeroMesa, empresaPedido);	
 
+				//console.log(notificaciones[0]);
 				//muestros las mesas en la plaza
 				document.getElementById("pedidosEmp1").innerHTML = notificaciones[0];			
 				document.getElementById("pedidosEmp2").innerHTML = notificaciones[1];
@@ -297,9 +318,9 @@ use yii\widgets\ActiveForm;
 		for (var i = 0; i < tamano; i++) {
 			// mostrar la notificacion dependiendo a que empresa pertenece el plato a entregar
 			switch(empresa[i]){
-				case '901.023.461-1':
+				case '901.023.461-1':					
 					// notificacion para las mesas de un digito 
-					if(mesa[i] <= 9){
+					if(mesa[i] <= 9){						
 						esquemaemp1 = esquemaemp1 +
 							'<div class="notification text_0-9 not-'+contadoremp1+' full">'+
 								'<svg width="50" height="60">'+
