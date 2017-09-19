@@ -695,6 +695,45 @@ class SiteController extends Controller
 		
     }
 
+	public function actionMenunew()
+    {
+		 //=============================CARGA DEL MENU=======================================
+        // se hace el llamado de la funcion que ejecuta el procedimiento
+        $fn_menus = new SpMenusPlaza;
+        $datosMenus = $fn_menus->procedimiento();
+        // se asignana los valores que retorna la funcion respectivamente 
+        // tipos de comidas
+        $categorias = $datosMenus[0];
+        // los platos 
+        $comidas = $datosMenus[3];
+        //=============================CARGA DEL MENU=======================================
+        
+
+        //=============================LOGICA DE PEDIDO=======================================
+        //captura el puesto al que se le va a tomar el pedido
+        $puesto = '1'; //$_GET['puesto'];
+        // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
+        if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+            // variables que se pasan como parametro
+            $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
+            $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
+            $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+            // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
+            $this->layout=false;    
+            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+        }else{
+            $platos = 0;
+            $cantidad = 0;
+            $puestos = 0;
+            // redirecciona a la vista menu con los parametros del menu 
+            $this->layout=false;    
+            return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
+        }
+        //=============================LOGICA DE PEDIDO=======================================    
+	}
+	
 	public function actionContratos()
     {			
         //Declareo la clase  para el procedimeinto que trae las empresas y los contratos	
