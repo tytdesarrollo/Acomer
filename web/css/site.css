@@ -3740,10 +3740,10 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 .table-wrapper.view-List-pedidos .sub-table-wrap{
 	background-color: transparent;
 }
-.table-wrapper.view-List-pedidos .sub-table-wrap .full-sub-table{
+.full-sub-table.item-pedido{
 	padding: 10px 0px;
 }
-.table-wrapper.view-List-pedidos .sub-table-wrap .full-sub-table .list-item-pedido{
+.full-sub-table.item-pedido .list-item-pedido{
 	border: 2px solid #ff9045;
     border-radius: 5px;
 }
