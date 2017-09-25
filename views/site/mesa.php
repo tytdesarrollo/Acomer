@@ -166,35 +166,35 @@
 													</tr>													
 												<?php else: ?>
 													<?php if ($tamano <= 4): ?>
-														<tr class="default">
+														<tr class="default active">
 															<td id="tituloMesa4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestos4">arrow</span></td>											
 														</tr>
 														<tr class="toggle-row">
-															<td colspan="5" id="listaPuestos4">
-																
+															<td colspan="5">
+																<div class="sub-table-wrap" id="listaPuestos4"></div>
 															</td>
 														</tr>	
 													<?php else: ?>
 														<?php if ($tamano >= 5 && $tamano <= 6): ?>
 																<!--MESA 1 PARA 6 PERSONAS-->
-																<tr class="default">
+																<tr class="default active">
 																	<td id="tituloMesa61">Mesa <?=$codigomesa?></td>	
 																	<td><span class="arrow" id="flechaPuestos61">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos61">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos61"></div>
 																	</td>
 																</tr>	
 																<!--MESA 2 PARA 6 PERSONAS-->
 																<tr class="default" id="detalleMesa62">
-																	<td id="tituloMesa62">Mesa <?=$_COOKIE["mesa1"]?></td>	
+																	<td id="tituloMesa62">Mesa <?=@$_COOKIE["mesa1"]?></td>	
 																	<td><span class="arrow" id="flechaPuestos62">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos62">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos62"></div>
 																	</td>
 																</tr>	
 														<?php endif ?>
@@ -421,6 +421,7 @@
 	</script>
 	<script>
 		$(document).ready(function ($) {
+		  $('.active').next().find('.sub-table-wrap').show();
 		  $('.default').click(function () {    
 			$('.default').not($(this)).removeClass('active');
 			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
@@ -951,7 +952,11 @@
 		});		
 	}
 
-	function verPedido(){		
+	function verPedido(){
+		// Asigna clase "active" a la primer mesa
+		// $('.view-List-pedidos .default').addClass('active');
+		// Mostrar el pedido de la primer mesa
+		// $('.active').next().find('.sub-table-wrap').show();
 		// cantidad de personas que estan seleccionadas 
 		var cantidad = generalTamano;
 		// si es menor o igual que 4
@@ -986,22 +991,20 @@
 		if(puestos != 0){
 			for (var i=0 ; i<puestosArr.length ; i++){
 				cadenaPuestos = cadenaPuestos +
-					'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-						'<div class="full-sub-table">'+
-							'<div class="list-item-pedido">'+
-								'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
-									'<dt>Pedido</dt>'+
-									'<dd>Puesto '+puestosArr[i]+'</dd>'+
+					'<div class="full-sub-table item-pedido" id="puestoDiv'+puestosArr[i]+'">'+
+						'<div class="list-item-pedido" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
+							'<dl class="info-wrapper">'+
+								'<dt>Pedido</dt>'+
+								'<dd>Puesto '+puestosArr[i]+'</dd>'+
+							'</dl>'+
+							'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
+								'<dl class="info-wrapper view-zoom">'+
+									'<div class="cttos-modal-action">'+
+										'<a href="#" class="zoom-btn ctt">'+
+											'<i class="material-icons">&#xE14C;</i>'+
+										'</a>'+
+									'</div>'+
 								'</dl>'+
-								'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
-									'<dl class="info-wrapper view-zoom">'+
-										'<div class="cttos-modal-action">'+
-											'<a href="#" class="zoom-btn ctt">'+
-												'<i class="material-icons">&#xE14C;</i>'+
-											'</a>'+
-										'</div>'+
-									'</dl>'+
-								'</div>'+
 							'</div>'+
 						'</div>'+
 					'</div>';
@@ -1030,7 +1033,7 @@
 		if(puestos != 0){
 			// pedidos para la unioin de 2 mesas (6 puestos)
 			if(cantidadPuestos >= 5 && cantidadPuestos <= 6){
-				var mesaUnida = '<?=$_COOKIE["mesa1"]?>';
+				var mesaUnida = '<?=@$_COOKIE["mesa1"]?>';
 				// contador de pedidos por mesa
 				var cont61 = 0;
 				var cont62 = 0;
@@ -1040,44 +1043,40 @@
 					if(puestosArr[i] == '1' || puestosArr[i] == '2' || puestosArr[i] == '6' ){
 						cont61++;
 						cadenaPuestos1 = cadenaPuestos1 +
-							'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-								'<div class="full-sub-table">'+
-									'<div class="list-item-pedido">'+
-										'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
-											'<dt>Pedido</dt>'+
-											'<dd>Puesto '+puestosArr[i]+'</dd>'+
+							'<div class="full-sub-table" id="puestoDiv'+puestosArr[i]+'">'+
+								'<div class="list-item-pedido" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
+									'<dl class="info-wrapper">'+
+										'<dt>Pedido</dt>'+
+										'<dd>Puesto '+puestosArr[i]+'</dd>'+
+									'</dl>'+
+									'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
+										'<dl class="info-wrapper view-zoom">'+
+											'<div class="cttos-modal-action">'+
+												'<a href="#" class="zoom-btn ctt">'+
+													'<i class="material-icons">&#xE14C;</i>'+
+												'</a>'+
+											'</div>'+
 										'</dl>'+
-										'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
-											'<dl class="info-wrapper view-zoom">'+
-												'<div class="cttos-modal-action">'+
-													'<a href="#" class="zoom-btn ctt">'+
-														'<i class="material-icons">&#xE14C;</i>'+
-													'</a>'+
-												'</div>'+
-											'</dl>'+
-										'</div>'+
 									'</div>'+
 								'</div>'+
 							'</div>';
 					}else{
 						cont62++;
 						cadenaPuestos2 = cadenaPuestos2 +
-							'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-								'<div class="full-sub-table">'+
-									'<div class="list-item-pedido">'+
-										'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesaUnida+')">'+
-											'<dt>Pedido</dt>'+
-											'<dd>Puesto '+puestosArr[i]+'</dd>'+
+							'<div class="full-sub-table" id="puestoDiv'+puestosArr[i]+'">'+
+								'<div class="list-item-pedido" onclick="verDetallePedido('+puestosArr[i]+','+mesaUnida+')">'+
+									'<dl class="info-wrapper">'+
+										'<dt>Pedido</dt>'+
+										'<dd>Puesto '+puestosArr[i]+'</dd>'+
+									'</dl>'+
+									'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
+										'<dl class="info-wrapper view-zoom">'+
+											'<div class="cttos-modal-action">'+
+												'<a href="#" class="zoom-btn ctt">'+
+													'<i class="material-icons">&#xE14C;</i>'+
+												'</a>'+
+											'</div>'+
 										'</dl>'+
-										'<div class="pull-right content-btn-clear-pedido" onclick="cancelarPuesto('+puestosArr[i]+')">'+
-											'<dl class="info-wrapper view-zoom">'+
-												'<div class="cttos-modal-action">'+
-													'<a href="#" class="zoom-btn ctt">'+
-														'<i class="material-icons">&#xE14C;</i>'+
-													'</a>'+
-												'</div>'+
-											'</dl>'+
-										'</div>'+
 									'</div>'+
 								'</div>'+
 							'</div>';
@@ -1087,49 +1086,45 @@
 				// mostrar que no hay pedido si la mesa 1 no lo tiene 
 				if(cont61 == 0){
 					cadenaPuestos1 = cadenaPuestos1 +
-						'<div class="sub-table-wrap">'+
-								'<div class="full-sub-table">'+
-									'<div class="list-item-pedido">'+
-										'<dl class="info-wrapper">'+
-											'<dt>Pedido</dt>'+
-											'<dd>Mesa sin pedido</dd>'+
-										'</dl>'+
-										'<div class="pull-right content-btn-clear-pedido">'+
-											'<dl class="info-wrapper view-zoom">'+
-												'<div class="cttos-modal-action">'+
-													'<a href="#" class="zoom-btn ctt">'+
-														'<i class="material-icons">&#xE14C;</i>'+
-													'</a>'+
-												'</div>'+
-											'</dl>'+
+						'<div class="full-sub-table">'+
+							'<div class="list-item-pedido">'+
+								'<dl class="info-wrapper">'+
+									'<dt>Pedido</dt>'+
+									'<dd>Mesa sin pedido</dd>'+
+								'</dl>'+
+								'<div class="pull-right content-btn-clear-pedido">'+
+									'<dl class="info-wrapper view-zoom">'+
+										'<div class="cttos-modal-action">'+
+											'<a href="#" class="zoom-btn ctt">'+
+												'<i class="material-icons">&#xE14C;</i>'+
+											'</a>'+
 										'</div>'+
-									'</div>'+
+									'</dl>'+
 								'</div>'+
-							'</div>';
+							'</div>'+
+						'</div>';
 				}
 
 				// mostrar que no hay pedido si la mesa 2 no lo tiene 
 				if(cont62 == 0){
 					cadenaPuestos2 = cadenaPuestos2 +
-						'<div class="sub-table-wrap">'+
-								'<div class="full-sub-table">'+
-									'<div class="list-item-pedido">'+
-										'<dl class="info-wrapper">'+
-											'<dt>Pedido</dt>'+
-											'<dd>Mesa sin pedido</dd>'+
-										'</dl>'+
-										'<div class="pull-right content-btn-clear-pedido">'+
-											'<dl class="info-wrapper view-zoom">'+
-												'<div class="cttos-modal-action">'+
-													'<a href="#" class="zoom-btn ctt">'+
-														'<i class="material-icons">&#xE14C;</i>'+
-													'</a>'+
-												'</div>'+
-											'</dl>'+
+						'<div class="full-sub-table">'+
+							'<div class="list-item-pedido">'+
+								'<dl class="info-wrapper">'+
+									'<dt>Pedido</dt>'+
+									'<dd>Mesa sin pedido</dd>'+
+								'</dl>'+
+								'<div class="pull-right content-btn-clear-pedido">'+
+									'<dl class="info-wrapper view-zoom">'+
+										'<div class="cttos-modal-action">'+
+											'<a href="#" class="zoom-btn ctt">'+
+												'<i class="material-icons">&#xE14C;</i>'+
+											'</a>'+
 										'</div>'+
-									'</div>'+
+									'</dl>'+
 								'</div>'+
-							'</div>';
+							'</div>'+
+						'</div>';
 				}
 
 			}
@@ -1467,7 +1462,7 @@
 						dataType:'json',
 						method: "GET",
 						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':mesa, 
-							   'mesa2':'<?=$_COOKIE["mesa1"]?>', 'tamano':0},			
+							   'mesa2':'<?=@$_COOKIE["mesa1"]?>', 'tamano':0},			
 						success: function (data) {						
 							
 						}
@@ -1478,7 +1473,7 @@
 						dataType:'json',
 						method: "GET",
 						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':mesa, 
-							   'mesa2':'<?=$_COOKIE["mesa1"]?>', 'tamano':0},			
+							   'mesa2':'<?=@$_COOKIE["mesa1"]?>', 'tamano':0},			
 						success: function (data) {						
 							
 						}
