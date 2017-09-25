@@ -370,6 +370,14 @@ class SiteController extends Controller
         }else{
             $tamano = $_GET['tamanoM'];
         }
+
+        // si el estado es ocupado ya hay pedido confirmado 
+        // y se consulta lo que se ha pedido
+        if($estadomesa === '0'){
+            $confirmados = 1;
+        }else{
+            $confirmados = 0;
+        }
         //=============================DATOS ENVIADOS POR GET=======================================
         
 
@@ -378,7 +386,8 @@ class SiteController extends Controller
 		$this->layout=false;    
         return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos]);
+                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
+                                     "confirmados" => $confirmados]);
 		
     }
    
@@ -389,9 +398,10 @@ class SiteController extends Controller
 
         // dependiendo del tamano de la mesa se crear n variables de session
         if($tamano > 4 && $tamano <= 6){
-            $codigo1 = $_GET['mesas'];
-            setcookie('mesa1', $codigo1);   
-            echo $_COOKIE["mesa1"];
+            session_start();
+            //modifica la variable con la mesa correspondiente
+            $_SESSION['mesa1'] = $_GET['mesa1'];   
+            echo $_SESSION["mesa1"];
         }
         
     }
@@ -605,6 +615,34 @@ class SiteController extends Controller
         //return $this->redirect(['site/plaza']);
     }
 
+    public function actionCancelarpedido(){
+        //$c1: tipo de cancelacion 0: plato 1: todo el pedido
+        //$c2: codigo de la mesa donde se va hacer la cancelacion
+        //$c3: codigo del plato que se va a cancelar
+        //$c4: cantidad que se va a cancelar
+        //$c5: puesto del plato donde se va a cancelar  
+        //$c6: codigo del mensaje 0: correcto , 1: error         
+        
+        // codigo de la mesa que 
+        $c1 = 0;
+        $c2 = $_GET['mesa'];
+        $c3 = array($_GET['plato']);
+        $c4 = array($_GET['cantidad']);
+        $c5 = array($_GET['puesto']);
+        $c6 = 1;
+               
+        $fn_cancelar = new SpMesasPedidos();
+        $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
+        
+        /*echo $c2.'<br>';
+        var_dump($c3);
+        var_dump($c4);
+        var_dump($c5);*/
+
+        echo $c6;        
+
+    }
+
     public function actionFacturar(){
         //c1: Variable correspondiente a la cedula del cliente (opcional)
         //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
@@ -645,6 +683,40 @@ class SiteController extends Controller
 
         
         
+    }
+
+    public function actionConsultarpedido(){
+        // obtengo el codigo de la mesa 
+        $c1 = $_GET['mesa'];
+        //inicia el objeto
+        $fn_pedidos = new SpMesasPedidos();
+        //llamo el procedimiento del objeto
+        $resultado = $fn_pedidos->procedimiento6($c1);
+        //el array como json
+        echo json_encode($resultado);
+    }
+
+    public function actionConsultanomplato(){
+        // obtengo el codigo de la mesa 
+        $platosPlano = $_GET['plato'];
+        //funciones para array
+        $fn_array = new funcionesArray();
+        //convierto la cadena en array
+        $c1 = $fn_array->crearArray($platosPlano);
+        //array con los nombres ya definidos
+        $arrayNombres = array();        
+        //inicia el objeto
+        $fn_pedidos = new SpMesasPedidos();
+
+        foreach ($c1 as $keyA) {
+            //llamo el procedimiento del objeto
+            $resultado = $fn_pedidos->procedimiento7($keyA);
+            
+            array_push($arrayNombres,$resultado);
+        }
+        
+
+        echo json_encode($arrayNombres);
     }
 
 	public function actionMenu()

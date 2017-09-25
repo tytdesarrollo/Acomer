@@ -11,6 +11,9 @@
 
 	$request = Yii::$app->request;
 
+	// variables de sesiones para el manejo de las mesas
+	session_start();	
+
 ?>
 
 <?php 
@@ -50,7 +53,7 @@
 								<span class="glyphicon glyphicon-minus"></span>
 							</button>
 						</span>
-						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="4">
+						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="6">
 						<span class="input-group-btn">
 							<button type="button" class="btn btn-default btn-number plus" data-type="plus" data-field="selectPuestos">
 								  <span class="glyphicon glyphicon-plus"></span>
@@ -122,10 +125,10 @@
 							
 						</div>
 						<div class="pull-right">
-							<a onClick="verPedido()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
+							<a id="visualizarPedidoBtn" onClick="verPedido()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
 								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
-							<a onClick="verFactura()" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
+							<a id="facturarPedidoBtn" onClick="verFactura()" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
 								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
 							</a>
 						</div>
@@ -154,15 +157,16 @@
 							</div>
 						</div>
 						<div class="modal-body">
-							<h2 class="no-mrg-top">Pedidos</h2>
+							<h2 class="no-mrg-top">Pedidos por confirmar</h2>
 							<div class="row">
 								<div class="col-sm-6">
+								<!--FIN DE PEDIDOS QUE POR CONFIRMAR-->
 									<div class="table-wrapper view-List-pedidos">
 										<table>
 											<tbody>		
 												<?php if ($platos === 0): ?>
 													<tr class="default">
-														<td>Mesa sin pedidos</td>														
+														<td>Mesa sin pedidos por confirmar</td>														
 													</tr>													
 												<?php else: ?>
 													<?php if ($tamano <= 4): ?>
@@ -189,7 +193,7 @@
 																</tr>	
 																<!--MESA 2 PARA 6 PERSONAS-->
 																<tr class="default" id="detalleMesa62">
-																	<td id="tituloMesa62">Mesa <?=$_COOKIE["mesa1"]?></td>	
+																	<td id="tituloMesa62">Mesa <?=$_SESSION["mesa1"]?></td>	
 																	<td><span class="arrow" id="flechaPuestos62">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
@@ -206,7 +210,67 @@
 											</tbody>
 										</table>
 									</div>
+								<!--FIN DE PEDIDOS QUE POR CONFIRMAR-->
+
+								<br>
+
+								<!--INICIO DE PEDIDOS CONFIRMADOS-->
+									<h2 class="no-mrg-top">Pedidos confirmados</h2>
+									<div class="table-wrapper view-List-pedidos">
+										<table>
+											<tbody>		
+												<?php if ($confirmados === 0): ?>
+													<tr class="default">
+														<td>Mesa sin pedidos confirmados</td>														
+													</tr>													
+												<?php else: ?>
+													<?php if ($tamano <= 4): ?>
+														<tr class="default">
+															<td id="tituloMesaC4">Mesa <?=$codigomesa?></td>	
+															<td><span class="arrow" id="flechaPuestosC4">arrow</span></td>											
+														</tr>
+														<tr class="toggle-row">
+															<td colspan="5" id="listaPuestosC4">
+																
+															</td>
+														</tr>	
+													<?php else: ?>
+														<?php if ($tamano >= 5 && $tamano <= 6): ?>
+																<!--MESA 1 PARA 6 PERSONAS-->
+																<tr class="default">
+																	<td id="tituloMesa61">Mesa <?=$codigomesa?></td>	
+																	<td><span class="arrow" id="flechaPuestos61">arrow</span></td>											
+																</tr>
+																<tr class="toggle-row">
+																	<td colspan="5" id="listaPuestos61">
+																		
+																	</td>
+																</tr>	
+																<!--MESA 2 PARA 6 PERSONAS-->
+																<tr class="default" id="detalleMesa62">
+																	<td id="tituloMesa62">Mesa <?=$_SESSION["mesa1"]?></td>	
+																	<td><span class="arrow" id="flechaPuestos62">arrow</span></td>											
+																</tr>
+																<tr class="toggle-row">
+																	<td colspan="5" id="listaPuestos62">
+																		
+																	</td>
+																</tr>	
+														<?php endif ?>
+														
+													<?php endif ?>
+													
+												<?php endif ?>
+																						
+											</tbody>
+										</table>
+									</div>
+								<!--FIN DE PEDIDOS QUE CONFIRMADOS-->
+
+								
 								</div>
+
+
 																				
 											
 								<div class="col-sm-6">
@@ -244,10 +308,10 @@
 							<div class="container-fluid">
 								<div class="row">
 									<div class="pull-left">
-										<div class="btn-factura-action-content" onclick="generarFactura()">
+										<div class="btn-factura-action-content" onclick="opcionFacturar()">
 											<a id="btn-fact" href="#" class="btn btn-raised btn-success btn-radius btn-inline btn-factura" data-type="modal-view-factura-action">Facturar</a>
 											<span class="modal-view-factura-bg"></span>
-										</div>
+										</div>										
 									</div>
 									<div class="pull-right">
 										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
@@ -386,8 +450,8 @@
 												</table>
 											</div>
 											<div class="total-factura-content clearfix">
-												<div class="btn-factura-box pull-left" onClick="imprimirRecibo()">
-													<a href="#" class="btn btn-raised btn-info btn-radius btn-inline">
+												<div id="btnImprimir" class="btn-factura-box pull-left">
+													<a onClick="imprimirRecibo()" id="labelImprimir"  href="#" class="btn btn-raised btn-info btn-radius btn-inline">
 														Salir<i class="material-icons">&#xE5C8;</i>
 													</a>
 												</div>
@@ -401,7 +465,7 @@
 								</div>
 							</div> <!-- cd-modal-content -->
 						</div> <!-- cd-modal -->
-						<!--<a id="cerrarFacturar" class="modal-view-factura-close"><i class="material-icons">&#xE14C;</i></a>-->
+						<a id="cerrarFacturar" class="modal-view-factura-close"><i class="material-icons">&#xE14C;</i></a>
 					</div>
 				</div>
 			</div>
@@ -468,6 +532,14 @@
 		var generalPuestos = '<?=$puestos?>';		
 		var generalTamano = '<?=$tamano?>'; 
 		var generalarrPuestos = '<?=$arrpuestos?>';
+		var generalMesa1 = '<?php if(isset($_SESSION['mesa1'])){echo $_SESSION['mesa1'];}else{echo 0;}?>';
+		var generalConfirmado = '<?=$confirmados?>';
+		var generalConfirmPlatos;
+		var generalConfirmCantidad;
+		var generalConfirmPuestos;
+		var generalConfirmPlaCod;
+
+
 
 	</script>
 
@@ -475,6 +547,9 @@
 	<script type="text/javascript">		
 		$(xVez());
 		$(validarCheck());
+		$(pedidosConfirmados());
+		$(nombrePlatos());
+		$(habilitarBotones());
 
 		function mesasDisponiblesR(){
 			$.ajax({
@@ -546,7 +621,7 @@
 				//identificar con que mesa esta unida 
 				codMes = mesasUnidad();
 			}else{
-				codMes = '<?php if(!isset($_COOKIE["mesa1"])){ echo "undefined";}else{echo $_COOKIE["mesa1"];}?>';
+				codMes = '<?php if(!isset($_SESSION["mesa1"])){ echo "undefined";}else{echo $_SESSION["mesa1"];}?>';
 			}
 			
 		}
@@ -873,15 +948,37 @@
 		}
 	}
 
-	function crearSession(mesasSeleccionadas){		
+	function habilitarBotones(){
+		// habilitar el boton de la facturacion
+		if(generalEstadoM == 1){
+			document.getElementById("facturarPedidoBtn").style.display = 'none';			
+		}
+
+		//habilir el boton de visualizar el pedido 
+		if(generalPlatos == 0 && generalEstadoM == 1){						
+			document.getElementById("visualizarPedidoBtn").style.display = 'none';			
+		}
+
+		//habilitar el boton de cerrar factura
+		document.getElementById("cerrarFacturar").style.display = 'none';			
+		
+	}
+
+	function crearSession(mesaSeleccionada1 = 0, mesaSeleccionada2 = 0){		
 		// tamano de la mesa que se carga		
 		var tamano = document.getElementById("numPersonas").value;
-		var mesas = mesasSeleccionadas;
+		var mesa1 = mesaSeleccionada1;
+		var mesa2 = mesaSeleccionada2;
+
+
 		//console.log(mesas[0]);
 		$.ajax({
 			url: '<?php echo Url::toRoute(['site/varsesions']); ?>',
 			method: "GET",
-			data: {'tamano':tamano, 'mesas':mesas[0]}
+			data: {'tamano':tamano, 'mesa1':mesa1},
+			success: function (data) {			
+				
+			}
 		});
 	}
 
@@ -981,9 +1078,11 @@
 		var puestosArr = new Array();
 		puestosArr = crearArray(puestos);		
 		// caden que va a mostrar los puestos
-		var cadenaPuestos = '';
+		var cadenaPuestos = '';		
 		
-		if(puestos != 0){
+
+		if(puestos != 0){	
+			// ciclo para mostrar los puestos
 			for (var i=0 ; i<puestosArr.length ; i++){
 				cadenaPuestos = cadenaPuestos +
 					'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
@@ -1008,8 +1107,10 @@
 			}
 		}else{
 			document.getElementById("flechaPuestos4").style.display = 'none';	
-			document.getElementById("tituloMesa4").innerHTML = 'Mesa sin pedidos';
-			document.getElementById("platosDetalle").innerHTML = "Sin pedidos";
+			document.getElementById("tituloMesa4").innerHTML = 'No hay pedidos por confirmar';
+			 if(generalEstadoM != 0){
+			 	document.getElementById("platosDetalle").innerHTML = "Sin pedidos";
+			 }
 		}
 
 		document.getElementById("listaPuestos4").innerHTML = cadenaPuestos;	
@@ -1030,7 +1131,8 @@
 		if(puestos != 0){
 			// pedidos para la unioin de 2 mesas (6 puestos)
 			if(cantidadPuestos >= 5 && cantidadPuestos <= 6){
-				var mesaUnida = '';
+				// mesa que se ha unido 
+				var mesaUnida = generalMesa1;
 				// contador de pedidos por mesa
 				var cont61 = 0;
 				var cont62 = 0;
@@ -1149,6 +1251,191 @@
 		document.getElementById("listaPuestos62").innerHTML = cadenaPuestos2;
 	}
 
+	function pedidosConfirmados(){
+
+		if(generalConfirmado == '1'){
+			var mesa = generalCodigoM;
+
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/consultarpedido']); ?>',
+				dataType:'json',
+				method: "GET",
+				data: {'mesa':mesa},		
+				success: function (data) {						
+					//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+					var arrayDatos = $.map(data, function(value, index) {
+		    			return [value];
+					});	
+
+					// obtengo los datos del array 
+					generalConfirmPlatos= arrayDatos[0];
+					generalConfirmCantidad = arrayDatos[1];
+					generalConfirmPuestos = arrayDatos[2];				
+					generalConfirmPlaCod = arrayDatos[3];
+					
+					if(generalTamano <= 4){
+						mostrarConfirmados(arrayDatos[2]);
+					}
+				}
+			});	
+		}
+	}
+
+	function mostrarConfirmados(arrayPuestosConf){		
+		var arrayPuestos = new Array();
+		arrayPuestos = sinRepetirArray(arrayPuestosConf);
+		// cadena de puestos a mostrar
+		var puestoCadena = '';		
+		//construye la cadena con los datos 
+		for(var i=0 ; i<arrayPuestos.length; i++){	
+			puestoCadena = puestoCadena +
+				'<div class="sub-table-wrap" id="puestoDiv'+arrayPuestos[i]+'">'+
+					'<div class="full-sub-table">'+
+						'<div class="list-item-pedido">'+
+							'<dl class="info-wrapper" onclick="verDetalleConfirmado('+arrayPuestos[i]+')">'+
+								'<dt>Pedido</dt>'+
+								'<dd>Puesto '+arrayPuestos[i]+'</dd>'+
+							'</dl>'+
+							'<div class="pull-right content-btn-clear-pedido">'+
+								'<dl class="info-wrapper view-zoom">'+
+									'<div class="cttos-modal-action">'+
+										'<a href="#" class="zoom-btn ctt">'+
+											'<i class="material-icons">&#xE877;</i>'+
+										'</a>'+
+									'</div>'+
+								'</dl>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>';
+		}
+		
+		// se muestran los datos en pantalla
+		document.getElementById("listaPuestosC4").innerHTML = puestoCadena;
+	}
+
+	function aumentarCantidad(){
+		var valorCantidad = document.getElementById("cantidadSweet").innerHTML;
+		var resultado = 1;
+
+		if(valorCantidad != 1){
+			resultado = valorCantidad - 1;
+		}
+
+		document.getElementById("cantidadSweet").innerHTML = resultado;
+
+	}
+
+	function reducirCantidad(cantidad){
+		var valorCantidad = parseInt(document.getElementById("cantidadSweet").innerHTML);
+		var resultado = document.getElementById("cantidadSweet").innerHTML;
+
+		if(valorCantidad != cantidad){
+			resultado = valorCantidad + 1;
+		}
+
+		document.getElementById("cantidadSweet").innerHTML = resultado;
+
+	}
+
+	function cancelarConfirmado(cantidad, posicionArray){				
+			//mensaje de confirmacion
+			swal({
+				title: "¿Cantidad a cancelar?",
+			  	text: 	'<div class="row center">'+		
+			  				'<div class="col-sm-12">'+	
+			  					'<div class="col-sm-3"> </div>'+		  								
+			  					'<div class="col-sm-2">'+
+									'<span class="glyphicon glyphicon-minus" onclick="aumentarCantidad()"></span>'+
+								'</div>'+
+								'<div class="col-sm-2">'+
+									'<div id="cantidadSweet">1</div>'+
+								'</div>'+							
+								'<div class="col-sm-2">'+
+									  '<span class="glyphicon glyphicon-plus" onclick="reducirCantidad('+cantidad+')"></span>'+
+								'</div>'+
+								'<div class="col-sm-3"> </div>'+	
+			  				'</div>'+	
+						'</div>',		  
+				html: true, // add this if you want to show HTM		  
+				showCancelButton: true,
+				closeOnConfirm: false,
+				confirmButtonColor: "#ff9045",
+				confirmButtonText: "Aceptar",
+				cancelButtonText: "Volver",
+		  
+			},function (inputValue) {
+		  		if (inputValue === false) return false;
+		  		if (inputValue === true) {	
+		  			// la cantidad ingresada a cancelar	
+					var cantidadCancelar = document.getElementById("cantidadSweet").innerHTML;	    		
+					//
+		    		$.ajax({
+						url:'<?php echo Url::toRoute(['site/cancelarpedido']); ?>',						
+						method: "GET",
+						data: {'mesa':generalCodigoM,'plato':generalConfirmPlaCod[posicionArray],
+							   'cantidad':cantidadCancelar,'puesto':'0'+generalConfirmPuestos[posicionArray]},		
+						success: function (data) {
+							// mensaje a mostrar
+							var mensaje;
+							// si la respuesta es cero, fue correcta la ejecucion
+							if(data == 0){
+								// mensaje que se muestra al realiza la operacion cancelar plato
+								mensaje = "Se ha cancelado "+cantidadCancelar+" "+generalConfirmPlatos[posicionArray];
+								// alerta en pantalla
+								swal("Cancelado!", mensaje, "success");
+								// el detalle de pedido cambia a vacio
+								document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto</span>';	
+								document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Mesa</h5>';
+								document.getElementById("platosDetalle").innerHTML = '';
+								// se vuelven a cargar los platos que estan confirmados
+								pedidosConfirmados();
+							}else if(data == 1){
+								// mensaje que se muestra al realiza la operacion cancelar plato
+								mensaje = "Los pedidos ya entregados no pueden ser cancelados!";
+								// alerta en pantalla
+								swal("Error!", mensaje, "error");
+							}
+						}		
+					});	
+		  		}
+		  		
+			});
+		
+		
+	}
+
+	function verDetalleConfirmado(puesto){
+		//candena conla estructura 
+		var contenidoPedido = '';
+		// recorro los datos de los array
+		for(var i=0 ; i<generalConfirmPuestos.length ; i++){
+			// si el puesto seleccionado es igual al leido relleno los datos
+			if(generalConfirmPuestos[i] == puesto){
+				contenidoPedido = contenidoPedido +
+					'<tr>'+
+						'<td class="icn">'+
+							'<?= Html::img('@web/img/items/carne.png', ['alt' => 'Imagen Item', 'class' => 'img-item',]) ?>'+
+						'</td>'+
+						'<td class="desc">'+
+							'<div class="nom-item">'+
+								'<p>'+generalConfirmPlatos[i]+'</p>'+
+							'</div>'+
+							'<div class="val-item">'+
+								'<p></p>'+
+							'</div>'+
+						'</td>'+
+						'<td class="cant"><p>x'+generalConfirmCantidad[i]+'</p></td>'+						
+						'<td class="cant"><p><i class="material-icons icon-btn" onClick="cancelarConfirmado('+generalConfirmCantidad[i]+','+i+')">&#xE14C;</i></p></td>'+					
+					'</tr>';
+			}
+		}
+
+		document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
+		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Mesa '+generalCodigoM+'</h5>';
+		document.getElementById("platosDetalle").innerHTML = contenidoPedido;
+	}
+
 	function listaFactura(){
 		// array con los puestos sin repetir 
 		var puestos = generalarrPuestos;
@@ -1217,7 +1504,59 @@
 		
 	}
 
+	function opcionFacturar(){
+		// se oculta el boton de cerrar la vista de la factura
+		document.getElementById("cerrarFacturar").style.display = 'none';			
+		//mensaje de alerta y saber que accion se va a tomar
+		swal({
+			title: '¿Previsualizar factura o facturar pedido?',						
+			type: "info",
+			showCancelButton: true,
+			confirmButtonColor: "#5cb85c",
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Facturar",
+			cancelButtonText: "Previsualizar",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+			function(isConfirm){
+				if (isConfirm) {
+					//se genera la factura de los puestos que ya selecciono
+					generarFactura();					
+					swal("", "Factura generada", "success");
+					//muestra el boton de salir (futuro a imprimir )
+					document.getElementById("labelImprimir").innerHTML = 'Salir';
+				} else {
+					swal("", "Previsualizacion Completada", "success");
+					//se oculta el boton de salir (futuro a imprimir)
+					document.getElementById("labelImprimir").innerHTML = 'Facturar';											
+					//se muestra la opcion para cerrar la visualizacion
+					document.getElementById("cerrarFacturar").style.display = 'block';	
+					//cambio el onclick del boton
+					$(document).ready(function(){					    
+					    // clears onclick then sets click using jQuery
+					    $("#labelImprimir").attr('onclick', 'generarFactura()');
+					});					
+				}
+		});		
+	}	
+
+	function accionFacturaVisualiza(accion){
+		if(accion == 1){
+			console.log("presiono visualizar");
+		}else{
+			console.log("Presiono generar");			
+		}
+	}
+
 	function generarFactura(){
+		//cambio el onclick del boton
+		$(document).ready(function(){					    
+		    // clears onclick then sets click using jQuery
+		    $("#labelImprimir").attr('onclick', 'imprimirRecibo()');
+		});	
+		//muestra el boton de salir (futuro a imprimir )
+		document.getElementById("labelImprimir").innerHTML = 'Salir';
 		// nombre de los combo box
 		var nombrebox = 'check';
 		//array de los puestos que se seleccionaron
@@ -1498,16 +1837,22 @@
 		//datos en texto plano de los platos la cantidad y el puesto
 		var platos = generalPlatos;
 		var cantidad = generalCantidad;
-		var puestos = generalPuestos;
+		var puestos = generalPuestos;	
+
 		// acomodan los textos planos en array
-		var arrPlatos = crearArray(platos);
+		var arrPlatos = generalNombrePlatos;		
 		var arrCantidad = crearArray(cantidad);
 		var arrPuestos = crearArray(puestos);
+
+		/*console.log(arrPlatos);
+		console.log(arrCantidad);
+		console.log(arrPuestos);*/
 		// contenido del pedido 
 		var contenidoPedido = '';
 
 		for(var i=0 ; i<arrPuestos.length ; i++){
 			if(arrPuestos[i] == puesto){
+				
 				contenidoPedido = contenidoPedido +
 					'<tr>'+
 						'<td class="icn">'+
@@ -1521,7 +1866,7 @@
 								'<p></p>'+
 							'</div>'+
 						'</td>'+
-						'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
+						'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+												
 					'</tr>';
 			}
 		}
@@ -1532,7 +1877,34 @@
 			
 
 	}
+
+	var generalNombrePlatos = new Array();
 	
+	function nombrePlatos(){	
+		// datos de los platos seleccionados	
+		var platos = generalPlatos;	
+
+		if(platos != 0){
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/consultanomplato']); ?>',	
+				dataType:'json',								
+				method: "GET",
+				data: {'plato':platos},
+				success: function (data) {	
+					//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+					var arrayDatos = $.map(data, function(value, index) {
+		    			return [value];
+					});		
+					
+					generalNombrePlatos = arrayDatos;
+				}
+			});	
+		}
+
+		
+		
+	}
+
 	function crearArray(datos){
 		//array que se retorna
 		var arrayRetornar = new Array();
@@ -1590,6 +1962,46 @@
 		}
 		//retorna el array
 		return arrayNew;
+	}
+
+	function adicionarArray(arrayFijo, arrayAdicion){
+		//array que se va a retornar
+		var arrayRetornar = arrayFijo;		
+		//saber si ya esta repetido
+		var cont = 0;
+		//recorro el array fijo
+		for (var j=0 ; j<arrayAdicion.length ; j++){
+			//recorro el array que se va adicionar
+			for (var k=0 ; k<arrayFijo.length ; k++){
+				//si se repite aumenta el contador				
+				if(arrayAdicion[j].localeCompare(arrayFijo[k]) == 1){
+					cont++;
+					
+				}
+			}
+
+			if(cont == 0){
+				arrayRetornar.push(arrayAdicion[j]);
+			}
+
+			cont = 0;
+		}	
+
+		return arrayFijo;
+	}
+
+	function sinRepetirArray(array){
+		// array con los datos repetidos
+		var arrayConRepetidos = array;
+		//array que se retorna con los valor sin repetir
+		var arraySinRepetidos = [];
+		// funcion jquery para quitar repetidos
+		$.each(arrayConRepetidos, function(i, el){
+	    	if($.inArray(el, arraySinRepetidos) === -1) arraySinRepetidos.push(el);
+		});	
+		// retorna el array sin repetidos
+		return arraySinRepetidos;
+
 	}
 
 	function mensajeAlerta(tipoAlerta){
