@@ -37,6 +37,9 @@
 
 	<!--DIV DE MENU-->
 		<div class="content-main">
+			<a onclick="retrocederMesa()" class="btn btn-raised btn-success btn-radius btn-inline">
+				<i class="material-icons"></i>
+			</a>
 			<div id="slideshow" class="slideshow">
 				<?php $id_content_count = 0;?> <!--VARIABLE PARA ASIGNAR EL ID DEL DIV QUE CONTIENE LOS PLATOS-->
 				<?php $id_quant = 1;?>	<!--VARIABLE PARA ASIGNAR EL CONSECUTIVO DEL ARRAY QUANT-->
@@ -221,6 +224,21 @@
 				datosTotal = [cantidadPedido,codigoPedido];
 
 				return datosTotal;
+			}
+
+			function retrocederMesa(){
+				//url a la que se redirecciona
+				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
+				//url actual
+				var urlActual = window.location.href;
+				//posicion de los parametros
+				var posParams = urlActual.search("&");
+				//parametros de la url
+				var urlParams = urlActual.substring(posParams);
+
+
+				location.href = urlMesa+urlParams;
+				
 			}
 
 			function datosPuesto(tamano){
