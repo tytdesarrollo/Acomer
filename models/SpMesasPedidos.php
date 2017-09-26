@@ -159,5 +159,76 @@
 		    oci_execute($stid2);
 		    oci_execute($stid3);
 		}
+
+		public function procedimiento6($c1){
+			//c1: codigo de la mesa 
+			
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			// cursor con los codigos de las mesas que estan unidas
+			$c2;			
+			//ejecuta el procedimeinto
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_DETALLE_PEDIDO(:c1,:c2); END;");
+			//inicializa el cursor pasa como parametro
+			$c2 = oci_new_cursor($conexion);
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ':c1',$c1, 10);   
+			oci_bind_by_name($stid, ':c2',$c2,-1, OCI_B_CURSOR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+			oci_execute($c2,OCI_DEFAULT);
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c2, $cursor1);
+			//retona el array de datos
+			return $cursor1;
+		}
+
+		public function procedimiento7($c1){
+			//$c1: codigo del plato que ingresa en el procedimiento
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			// cursor con los codigos de las mesas que estan unidas
+			$c2;			
+			//ejecuta el procedimeinto
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_NOMBRE_PLATOS(:c1,:c2); END;");				
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ':c1',$c1, 20);   
+			oci_bind_by_name($stid, ':c2',$c2, 200);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+
+			return $c2;
+		}
+
+		public function procedimiento8($c1,$c2,$c3,$c4,$c5){
+			//$c1: tipo de cancelacion
+			//$c2: codigo de la mesa donde se va hacer la cancelacion
+			//$c3: codigo del plato que se va a cancelar
+			//$c4: cantidad que se va a cancelar
+			//$c5: puesto del plato donde se va a cancelar	
+			//$c6: codigo del mensaje 0: correcto , 1: error 
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//mensaje que se recibe
+			$c6;			
+			//ejecuta el procedimeinto
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_PEDIDOS_CANCEL(:c1,:C2,:C3,:C4,:c5,:c6); END;");				
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ':c1',$c1, 10);   
+			oci_bind_by_name($stid, ':c2',$c2, 10);
+			oci_bind_array_by_name($stid, ":c3", $c3, 100, -1, SQLT_CHR);
+			oci_bind_array_by_name($stid, ":c4", $c4, 100, -1, SQLT_CHR);
+			oci_bind_array_by_name($stid, ":c5", $c5, 100, -1, SQLT_CHR); 		
+			oci_bind_by_name($stid, ':c6',$c6, 10);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+
+			return $c6;
+		}
+
+
 	} 
 
