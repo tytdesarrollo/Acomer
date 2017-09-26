@@ -28,15 +28,15 @@ use app\models\SpMesasFactura;
 
 
 class SiteController extends Controller
-{ 	
+{   
 
 
-	public function actionPrueba(){		
+    public function actionPrueba(){     
 
 
         return $this->render('prueba'); 
-	}	
-	
+    }   
+    
     public function behaviors()
     {
         return [
@@ -76,23 +76,23 @@ class SiteController extends Controller
     public function actionIndex()
     {
         //variable para etiquetas de recordar contraseña en caso de que no se utilice directorio activo
-		$recordar = null;
-		
-		$this->layout=false;       			
-		//modelo delos datos ingresados (usuario y contraseña) 
+        $recordar = null;
+        
+        $this->layout=false;                
+        //modelo delos datos ingresados (usuario y contraseña) 
         $model = new IndexForm(); 
         //modelo de recuperar contraseña
         $model2 = new RememberForm();
-		//Se declara la clase de directorio activo
-		$modeladp = new Ldap;
-		///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
-		$ladpcon = $modeladp->directorioactivo();
-		
+        //Se declara la clase de directorio activo
+        $modeladp = new Ldap;
+        ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
+        $ladpcon = $modeladp->directorioactivo();
+        
         //si no posee directorio activo permite la recuperacion de la contraseña
-		if($ladpcon[2]=="false"){
-			//etiquetas para recuperar contraseña en vista 
-			$recordar = "<a class='color-white' href='' data-toggle='modal' data-target='#recordarpass'>Olvidaste tu contraseña?</a>";
-		}
+        if($ladpcon[2]=="false"){
+            //etiquetas para recuperar contraseña en vista 
+            $recordar = "<a class='color-white' href='' data-toggle='modal' data-target='#recordarpass'>Olvidaste tu contraseña?</a>";
+        }
 
     //===================================INICIA RECORDAR CONTRASEÑA =======================================
         //la validacion del modelo (que el campo este correctamente)
@@ -114,31 +114,31 @@ class SiteController extends Controller
             }
         }       
     //===================================TERMINA RECORDAR CONTRASEÑA=======================================
-		
+        
 
     //===================================INICIA VALIDACION PARA USUARIO Y CONTRASEÑA=======================================        
         //la validacion del modelo (que los los campos esten correctamente)
         //Validación mediante ajax - si es de tipo ajax
-		if($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
-			// respuesta en formato json
-			Yii::$app->response->format = Response::FORMAT_JSON;
+        if($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
+            // respuesta en formato json
+            Yii::$app->response->format = Response::FORMAT_JSON;
             //retorna el modelo como valido
-			return ActiveForm::validate($model);			
-		}
-		
-		if($model->load(Yii::$app->request->post())){
+            return ActiveForm::validate($model);            
+        }
+        
+        if($model->load(Yii::$app->request->post())){
             //Valida que el modelo si es valido
-            if($model->validate()){			
-                // retorna a la vista de loguep 	
-                return $this->redirect(['site/logueo','usuario'=>$model->usuario,'clave'=>$model->clave,'operacion'=>'L']);			
-            }else{			
-                return $this->goBack();			 
-			}		
-		}
+            if($model->validate()){         
+                // retorna a la vista de loguep     
+                return $this->redirect(['site/logueo','usuario'=>$model->usuario,'clave'=>$model->clave,'operacion'=>'L']);         
+            }else{          
+                return $this->goBack();          
+            }       
+        }
     //===================================TERMINA VALIDACION PARA USUARIO Y CONTRASEÑA=======================================
 
 
-    //===================================INICIA VALIDAR QUE LA SESION SIGUE ABIERTA=======================================    		
+    //===================================INICIA VALIDAR QUE LA SESION SIGUE ABIERTA=======================================          
         //Valida que la variable de sesion cedula no este vacia indicando que hay una sesion abierta
         if(isset(Yii::$app->session['cedula'])){
             //redireccionamos a la pantalla principapl 
@@ -296,9 +296,9 @@ class SiteController extends Controller
         return $this->goHome();
     }
     
-	public function actionPlaza()
-    {				
-        return $this->render('plaza');		
+    public function actionPlaza()
+    {               
+        return $this->render('plaza');      
     }
 
     public function actionJsonmesas(){
@@ -328,8 +328,8 @@ class SiteController extends Controller
         echo json_encode($puestos);
     }
 
-	public function actionMesa()
-    {	
+    public function actionMesa()
+    {   
         //=============================DATOS ENVIADOS POR GET=======================================
         //codigo de la mesa 
         if(!isset($_GET['codigoM'])){
@@ -370,16 +370,25 @@ class SiteController extends Controller
         }else{
             $tamano = $_GET['tamanoM'];
         }
+
+        // si el estado es ocupado ya hay pedido confirmado 
+        // y se consulta lo que se ha pedido
+        if($estadomesa === '0'){
+            $confirmados = 1;
+        }else{
+            $confirmados = 0;
+        }
         //=============================DATOS ENVIADOS POR GET=======================================
         
 
 
         
-		$this->layout=false;    
+        $this->layout=false;    
         return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos]);
-		
+                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
+                                     "confirmados" => $confirmados]);
+        
     }
    
 
@@ -389,9 +398,10 @@ class SiteController extends Controller
 
         // dependiendo del tamano de la mesa se crear n variables de session
         if($tamano > 4 && $tamano <= 6){
-            $codigo1 = $_GET['mesas'];
-            setcookie('mesa1', $codigo1);   
-            echo $_COOKIE["mesa1"];
+            session_start();
+            //modifica la variable con la mesa correspondiente
+            $_SESSION['mesa1'] = $_GET['mesa1'];   
+            echo $_SESSION["mesa1"];
         }
         
     }
@@ -605,6 +615,34 @@ class SiteController extends Controller
         //return $this->redirect(['site/plaza']);
     }
 
+    public function actionCancelarpedido(){
+        //$c1: tipo de cancelacion 0: plato 1: todo el pedido
+        //$c2: codigo de la mesa donde se va hacer la cancelacion
+        //$c3: codigo del plato que se va a cancelar
+        //$c4: cantidad que se va a cancelar
+        //$c5: puesto del plato donde se va a cancelar  
+        //$c6: codigo del mensaje 0: correcto , 1: error         
+        
+        // codigo de la mesa que 
+        $c1 = 0;
+        $c2 = $_GET['mesa'];
+        $c3 = array($_GET['plato']);
+        $c4 = array($_GET['cantidad']);
+        $c5 = array($_GET['puesto']);
+        $c6 = 1;
+               
+        $fn_cancelar = new SpMesasPedidos();
+        $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
+        
+        /*echo $c2.'<br>';
+        var_dump($c3);
+        var_dump($c4);
+        var_dump($c5);*/
+
+        echo $c6;        
+
+    }
+
     public function actionFacturar(){
         //c1: Variable correspondiente a la cedula del cliente (opcional)
         //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
@@ -647,8 +685,42 @@ class SiteController extends Controller
         
     }
 
-	public function actionMenu()
-    {	
+    public function actionConsultarpedido(){
+        // obtengo el codigo de la mesa 
+        $c1 = $_GET['mesa'];
+        //inicia el objeto
+        $fn_pedidos = new SpMesasPedidos();
+        //llamo el procedimiento del objeto
+        $resultado = $fn_pedidos->procedimiento6($c1);
+        //el array como json
+        echo json_encode($resultado);
+    }
+
+    public function actionConsultanomplato(){
+        // obtengo el codigo de la mesa 
+        $platosPlano = $_GET['plato'];
+        //funciones para array
+        $fn_array = new funcionesArray();
+        //convierto la cadena en array
+        $c1 = $fn_array->crearArray($platosPlano);
+        //array con los nombres ya definidos
+        $arrayNombres = array();        
+        //inicia el objeto
+        $fn_pedidos = new SpMesasPedidos();
+
+        foreach ($c1 as $keyA) {
+            //llamo el procedimiento del objeto
+            $resultado = $fn_pedidos->procedimiento7($keyA);
+            
+            array_push($arrayNombres,$resultado);
+        }
+        
+
+        echo json_encode($arrayNombres);
+    }
+
+    public function actionMenu()
+    {   
         //=============================CARGA DEL MENU=======================================
         // se hace el llamado de la funcion que ejecuta el procedimiento
         $fn_menus = new SpMenusPlaza;
@@ -691,52 +763,13 @@ class SiteController extends Controller
         //=============================LOGICA DE PEDIDO=======================================        
         
 
-		
-		
+        
+        
     }
 
-	public function actionMenunew()
-    {
-		 //=============================CARGA DEL MENU=======================================
-        // se hace el llamado de la funcion que ejecuta el procedimiento
-        $fn_menus = new SpMenusPlaza;
-        $datosMenus = $fn_menus->procedimiento();
-        // se asignana los valores que retorna la funcion respectivamente 
-        // tipos de comidas
-        $categorias = $datosMenus[0];
-        // los platos 
-        $comidas = $datosMenus[3];
-        //=============================CARGA DEL MENU=======================================
-        
-
-        //=============================LOGICA DE PEDIDO=======================================
-        //captura el puesto al que se le va a tomar el pedido
-        $puesto = '1'; //$_GET['puesto'];
-        // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
-        if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
-            // variables que se pasan como parametro
-            $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
-            $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
-            $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
-            // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
-            $this->layout=false;    
-            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
-        }else{
-            $platos = 0;
-            $cantidad = 0;
-            $puestos = 0;
-            // redirecciona a la vista menu con los parametros del menu 
-            $this->layout=false;    
-            return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos]);
-        }
-        //=============================LOGICA DE PEDIDO=======================================    
-	}
-	
-	public function actionContratos()
-    {			
-        //Declareo la clase  para el procedimeinto que trae las empresas y los contratos	
+    public function actionContratos()
+    {           
+        //Declareo la clase  para el procedimeinto que trae las empresas y los contratos    
         $model = new SpContratosAcomer;
         $datosEmpCont = $model->sp_acomer_empresas_contratos();
         //Obtengo el array donde estan todas las empresas almacenadas
