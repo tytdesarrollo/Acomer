@@ -4656,3 +4656,30 @@ body.overflow-hidden {
 		left: 605px;
 	}
 }
+
+/* Boton del menunew */
+.btn-position{
+	position: absolute;
+    margin-top: -700px;
+    margin-left: 30px;
+}
+
+/* modal personajes */
+
+.menos{
+	margin-right: 0px;
+    margin-left: 0px;
+}
+
+.menos img{
+	width: 15%;
+	cursor: pointer;
+}
+
+.modal_p{
+	background-color: transparent;
+}
+
+.centrarh4{
+	text-align: center;
+}

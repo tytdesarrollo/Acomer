@@ -92,7 +92,7 @@ AppAsset::register($this);
 	</nav>
 </header>
 <section class="scroller-inner">
-	<aside class="mp-pusher" id="mp-pusher">
+	<!--<aside class="mp-pusher" id="mp-pusher">
 		<nav id="mp-menu" class="mp-menu">
 			<div class="mp-level">
 				<p></p>
@@ -144,7 +144,7 @@ AppAsset::register($this);
 				</ul>
 			</div>
 		</nav>
-	</aside>
+	</aside>-->
 	<section id="content">
 		<div class="fluid-container main-content">
 			<?= Breadcrumbs::widget([
