@@ -114,6 +114,9 @@
 				</div>
 			</div>
 		</div>
+		<a onclick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline btn-position">
+			<i class="material-icons"></i>
+		</a>
 	<?php $this->endBody() ?>
 	<script src="../web/js/main-menu-new.js"></script>
 	<script src="../web/js/order_new.js"></script>
@@ -181,6 +184,8 @@
 				console.log(puestos);
 
 				//ruta que retorna a la mesa para tomar demas pedidos
+				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
+				location.href = urlMesa+'&codigoM='+'<?=$codmesa?>'+'&tamanoM='+'<?=$tamano?>'+'&estadoM='+'<?=$estado?>'+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
 				//var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
 				//location.href = urlMesa+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
 			}
@@ -228,6 +233,21 @@
 				datosTotal = [cantidadPedido,codigoPedido];
 
 				return datosTotal;
+			}
+
+			function retrocederMesa(){
+				//url a la que se redirecciona
+				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
+				//url actual
+				var urlActual = window.location.href;
+				//posicion de los parametros
+				var posParams = urlActual.search("&");
+				//parametros de la url
+				var urlParams = urlActual.substring(posParams);
+
+
+				location.href = urlMesa+urlParams;
+				
 			}
 
 			function datosPuesto(tamano){

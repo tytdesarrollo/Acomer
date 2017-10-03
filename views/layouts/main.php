@@ -39,7 +39,7 @@ AppAsset::register($this);
 					</div>
 				</a>
 			</div>-->
-			<div class="content__icon-menu__ham cd-modal-action pull-left">
+			<!--<div class="content__icon-menu__ham cd-modal-action pull-left">
 				<a href="#" class="menu-trigger" data-type="modal-trigger">
 					<div class="food-menu">
 						<div class="item one">
@@ -68,7 +68,7 @@ AppAsset::register($this);
 					</div>
 				</a>
 				<span class="cd-modal-bg"></span>
-			</div>
+			</div>-->
 			<!--<div class="content__logo pull-left">
 				<?= Html::img('@web/img/logo_small.svg', ['alt' => 'Auto Gestión Web', 'height' => '38px']) ?>
 				<div class="hidden-xs" style="margin-top: 10px;"><p>Mesa Centro de servicios compartidos.</p></div>
@@ -152,43 +152,7 @@ AppAsset::register($this);
 	</div>
 </div>
 <section class="scroller-inner">
-	<aside class="mp-pusher" id="mp-pusher">
-		<nav id="mp-menu" class="mp-menu">
-			<div class="mp-level">
-				<p></p>
-				<ul>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE88A;</i><span>Inicio</span>', ['site/principal']) ?></li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE7EF;</i><span>Equipo de nómina</span>', ['site/equiponomina']) ?></li>
-					<li class="divider"></li>
-					<li>
-						<p class="category">Módulos</p>
-					</li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE873;</i><span>Certificado Laboral</span>', ['site/certificadolaboral']) ?></li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE53E;</i><span>Comprobantes de pago</span>', ['site/comprobantespago']) ?></li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE84F;</i><span>Certificado de ingresos y retención</span>', ['site/certificadosretencion']) ?></li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xEB48;</i><span>Vacaciones</span>', ['site/vacaciones']) ?></li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE856;</i><span>Trabajo por turnos</span>', ['site/turnos']) ?></li>
-					<!--<li>
-					<?= Html::a('<i class="material-icons">&#xE3F3;</i><span>Incapacidades</span>', ['site/incapacidades']) ?></li>-->				
-					<li class="divider"></li>
-					<li>
-						<p class="category">Información</p>
-					</li>
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE801;</i><span>Actualidad laboral</span>', ['site/actualidadlaboral']) ?></li>	
-					<li>
-					<?= Html::a('<i class="material-icons">&#xE916;</i><span>Cronográma cierre de nómina</span>', ['site/cronogramanomina']) ?></li>	
-				</ul>
-			</div>
-		</nav>
-	</aside>
+	
 	<section id="content">
 		<div class="fluid-container main-content">
 			<?= Breadcrumbs::widget([
