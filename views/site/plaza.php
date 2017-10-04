@@ -124,8 +124,9 @@ use yii\widgets\ActiveForm;
 				  text: "Desea adicionar pedido a la mesa?",
 				  type: "info",
 				  showCancelButton: true,
-				  confirmButtonColor: "#DD6B55",
+				  confirmButtonColor: "#4caf50",
 				  confirmButtonText: "Si, adicionar",
+				  cancelButtonColor: "#EC4424",
 				  cancelButtonText: "No, volver",
 				  closeOnConfirm: false,
 				  closeOnCancel: false
