@@ -74,9 +74,6 @@ AppAsset::register($this);
 				<div class="hidden-xs" style="margin-top: 10px;"><p>Mesa Centro de servicios compartidos.</p></div>
 			</div>-->
 			<div class="pull-right">
-				<div class="content__icon-menu__aux hidden-xxs">
-					<a id="search" href="#" class="menu-trigger"><i class="material-icons icon__26">&#xE8B6;</i></a>
-				</div>
 				<div class="content__icon-menu__aux">
 					<div id="avatar" class="content-avatar__nav hidden-xs">
 						<?= Html::img('@web/img/avatar.png', ['alt' => 'avatar', 'class' => 'img-avatar img-circle']) ?>
@@ -130,7 +127,7 @@ AppAsset::register($this);
 			</div>
 		</div>
 	</nav>
-	<div class="top-search-content"><div class="search-content"><i id="search-close" class="material-icons clear-icon">&#xE14C;</i><input type="text" class="search-input"><i class="material-icons search-icon">&#xE8B6;</i></div></div>
+	
 </header>
 <div class="cd-modal">
 	<div class="cd-modal-content">

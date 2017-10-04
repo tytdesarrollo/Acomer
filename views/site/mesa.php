@@ -122,15 +122,71 @@
 							<a onClick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 								<i class="material-icons">&#xE317;</i>
 							</a>
-							
+							<a onClick="animateAvatar()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#personajesModal">
+								<i class="material-icons"></i>Prueba_Personajes
+							</a>
 						</div>
 						<div class="pull-right">
-							<a id="visualizarPedidoBtn" onClick="verPedido()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
+							<a onClick="verPedido()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
 								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
-							<a id="facturarPedidoBtn" onClick="verFactura()" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
+							<a onClick="verFactura()" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
 								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
 							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--MODAL DEL Prueba_P-->
+			<div class="modal list-pedidos fade" id="personajesModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content modal_personajes">
+						<div class="modal-header">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="pull-right">
+										<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+											<i class="material-icons icon-btn">&#xE14C;</i>Cancelar
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-body">
+							<!--<h2 class="no-mrg-top">Seleccionar</h2>-->
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="table-wrapper view-List-pedidos">
+										
+									</div>
+
+									<div class="content-view-pedido txt__light-100 modal_personajes">
+										<div class="content-head-view-pedido clearfix">
+											<div class="pull-center">
+												<h4 id="puestoDetalle" class="centrarh4"><span>Selecciona el tipo de cliente</span></h4>
+											</div>
+											<div class="pull-right ">
+												<div id="mesaDetalle">
+													
+												</div>
+											</div>
+										</div>
+										<div class="content-list-view-pedido-item table-responsive lineatitulo">
+											<div class="row menos">
+												<img class="animate_avatar" onClick="hacerPedido" src="../web/img/personajes/uviejo1.svg" alt="">
+												<img class="animate_avatar2" onClick="hacerPedido" src="../web/img/personajes/uadulto1.svg" alt="">
+												<img class="animate_avatar3" onClick="hacerPedido" src="../web/img/personajes/unino1.svg" alt="">
+											</div>
+											<div class="row menos">
+												<img class="animate_avatar4" onClick="hacerPedido" src="../web/img/personajes/uviejo2.svg" alt="">
+												<img class="animate_avatar5" onClick="hacerPedido" src="../web/img/personajes/uadulto2.svg" alt="">
+												<img class="animate_avatar6" onClick="hacerPedido" src="../web/img/personajes/unino2.svg" alt="">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -170,25 +226,25 @@
 													</tr>													
 												<?php else: ?>
 													<?php if ($tamano <= 4): ?>
-														<tr class="default">
+														<tr class="default active">
 															<td id="tituloMesa4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestos4">arrow</span></td>											
 														</tr>
 														<tr class="toggle-row">
-															<td colspan="5" id="listaPuestos4">
-																
+															<td colspan="5">
+																<div class="sub-table-wrap" id="listaPuestos4"></div>
 															</td>
 														</tr>	
 													<?php else: ?>
 														<?php if ($tamano >= 5 && $tamano <= 6): ?>
 																<!--MESA 1 PARA 6 PERSONAS-->
-																<tr class="default">
+																<tr class="default active">
 																	<td id="tituloMesa61">Mesa <?=$codigomesa?></td>	
 																	<td><span class="arrow" id="flechaPuestos61">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos61">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos61"></div>
 																	</td>
 																</tr>	
 																<!--MESA 2 PARA 6 PERSONAS-->
@@ -197,8 +253,8 @@
 																	<td><span class="arrow" id="flechaPuestos62">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos62">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos62"></div>
 																	</td>
 																</tr>	
 														<?php endif ?>
@@ -225,25 +281,25 @@
 													</tr>													
 												<?php else: ?>
 													<?php if ($tamano <= 4): ?>
-														<tr class="default">
+														<tr class="default active">
 															<td id="tituloMesaC4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestosC4">arrow</span></td>											
 														</tr>
 														<tr class="toggle-row">
-															<td colspan="5" id="listaPuestosC4">
-																
+															<td colspan="5">
+																<div class="sub-table-wrap" id="listaPuestosC4"></div>
 															</td>
 														</tr>	
 													<?php else: ?>
 														<?php if ($tamano >= 5 && $tamano <= 6): ?>
 																<!--MESA 1 PARA 6 PERSONAS-->
-																<tr class="default">
+																<tr class="default active">
 																	<td id="tituloMesa61">Mesa <?=$codigomesa?></td>	
 																	<td><span class="arrow" id="flechaPuestos61">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos61">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos61"></div>
 																	</td>
 																</tr>	
 																<!--MESA 2 PARA 6 PERSONAS-->
@@ -252,8 +308,8 @@
 																	<td><span class="arrow" id="flechaPuestos62">arrow</span></td>											
 																</tr>
 																<tr class="toggle-row">
-																	<td colspan="5" id="listaPuestos62">
-																		
+																	<td colspan="5">
+																		<div class="sub-table-wrap" id="listaPuestos62"></div>
 																	</td>
 																</tr>	
 														<?php endif ?>
@@ -485,6 +541,7 @@
 	</script>
 	<script>
 		$(document).ready(function ($) {
+		  $('.active').next().find('.sub-table-wrap').show();
 		  $('.default').click(function () {    
 			$('.default').not($(this)).removeClass('active');
 			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
@@ -895,7 +952,7 @@
 		//identificar si es la primera vez que se ordena en mesa
 		var pedidoAcumu = generalPlatos;
 		//ruta para cargar el menu
-		var url = "<?php echo Url::toRoute(['site/menu'])?>"
+		var url = "<?php echo Url::toRoute(['site/menunew'])?>"
 		//cantidad e personas que pueden ordenar
 		var tamano = document.getElementById("numPersonas").value;
 		// si el pedido acumulado es cero parte como primer pedido a realizar en mesa
@@ -1014,7 +1071,7 @@
 	}
 	
 	function mesasUnidad(){
-		var mesa = generalCodigoM;	
+		var mesa = generalCodigoM;
 		
 		//console.log(mesa);
 		$.ajax({
@@ -1085,8 +1142,7 @@
 			// ciclo para mostrar los puestos
 			for (var i=0 ; i<puestosArr.length ; i++){
 				cadenaPuestos = cadenaPuestos +
-					'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-						'<div class="full-sub-table">'+
+						'<div class="full-sub-table" id="puestoDiv'+puestosArr[i]+'">'+
 							'<div class="list-item-pedido">'+
 								'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
 									'<dt>Pedido</dt>'+
@@ -1102,8 +1158,7 @@
 									'</dl>'+
 								'</div>'+
 							'</div>'+
-						'</div>'+
-					'</div>';
+						'</div>';
 			}
 		}else{
 			document.getElementById("flechaPuestos4").style.display = 'none';	
@@ -1142,8 +1197,7 @@
 					if(puestosArr[i] == '1' || puestosArr[i] == '2' || puestosArr[i] == '6' ){
 						cont61++;
 						cadenaPuestos1 = cadenaPuestos1 +
-							'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-								'<div class="full-sub-table">'+
+								'<div class="full-sub-table" id="puestoDiv'+puestosArr[i]+'">'+
 									'<div class="list-item-pedido">'+
 										'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesa+')">'+
 											'<dt>Pedido</dt>'+
@@ -1159,13 +1213,11 @@
 											'</dl>'+
 										'</div>'+
 									'</div>'+
-								'</div>'+
-							'</div>';
+								'</div>';
 					}else{
 						cont62++;
 						cadenaPuestos2 = cadenaPuestos2 +
-							'<div class="sub-table-wrap" id="puestoDiv'+puestosArr[i]+'">'+
-								'<div class="full-sub-table">'+
+								'<div class="full-sub-table" id="puestoDiv'+puestosArr[i]+'">'+
 									'<div class="list-item-pedido">'+
 										'<dl class="info-wrapper" onclick="verDetallePedido('+puestosArr[i]+','+mesaUnida+')">'+
 											'<dt>Pedido</dt>'+
@@ -1181,15 +1233,13 @@
 											'</dl>'+
 										'</div>'+
 									'</div>'+
-								'</div>'+
-							'</div>';
+								'</div>';
 					}
 				}
 
 				// mostrar que no hay pedido si la mesa 1 no lo tiene 
 				if(cont61 == 0){
 					cadenaPuestos1 = cadenaPuestos1 +
-						'<div class="sub-table-wrap">'+
 								'<div class="full-sub-table">'+
 									'<div class="list-item-pedido">'+
 										'<dl class="info-wrapper">'+
@@ -1206,14 +1256,12 @@
 											'</dl>'+
 										'</div>'+
 									'</div>'+
-								'</div>'+
-							'</div>';
+								'</div>';
 				}
 
 				// mostrar que no hay pedido si la mesa 2 no lo tiene 
 				if(cont62 == 0){
 					cadenaPuestos2 = cadenaPuestos2 +
-						'<div class="sub-table-wrap">'+
 								'<div class="full-sub-table">'+
 									'<div class="list-item-pedido">'+
 										'<dl class="info-wrapper">'+
@@ -1230,8 +1278,7 @@
 											'</dl>'+
 										'</div>'+
 									'</div>'+
-								'</div>'+
-							'</div>';
+								'</div>';
 				}
 
 			}
@@ -1289,9 +1336,8 @@
 		//construye la cadena con los datos 
 		for(var i=0 ; i<arrayPuestos.length; i++){	
 			puestoCadena = puestoCadena +
-				'<div class="sub-table-wrap" id="puestoDiv'+arrayPuestos[i]+'">'+
-					'<div class="full-sub-table">'+
-						'<div class="list-item-pedido">'+
+					'<div class="full-sub-table" id="puestoDiv'+arrayPuestos[i]+'">'+
+						'<div class="list-item-pedido ">'+
 							'<dl class="info-wrapper" onclick="verDetalleConfirmado('+arrayPuestos[i]+')">'+
 								'<dt>Pedido</dt>'+
 								'<dd>Puesto '+arrayPuestos[i]+'</dd>'+
@@ -1306,8 +1352,7 @@
 								'</dl>'+
 							'</div>'+
 						'</div>'+
-					'</div>'+
-				'</div>';
+					'</div>';
 		}
 		
 		// se muestran los datos en pantalla
@@ -2015,7 +2060,7 @@
 				  text: "Usted cancelara todo el pedido!",
 				  type: "warning",
 				  showCancelButton: true,
-				  confirmButtonColor: "#DD6B55",
+				  confirmButtonColor: "#4caf50",
 				  confirmButtonText: "Si, Cancelar",
 				  cancelButtonText: "No, Volver",
 				  closeOnConfirm: false,
@@ -2032,6 +2077,27 @@
 				break;
 		}
 	}
+	</script>
+
+	<script>
+		
+
+function animateAvatar(){
+/* jquery.js */
+/* jquery.velocity.js */
+
+// Use the loop option.
+
+$(".animate_avatar").velocity("transition.slideLeftIn",
+  { 
+    duration: 500,
+    delay: 2000, // Insert a 500ms delay between each loop alternation.
+    //loop: 1,  Loop twice.
+  });
+
+
+}
+
 	</script>
 
 </body>
