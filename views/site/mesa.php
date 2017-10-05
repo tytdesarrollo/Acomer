@@ -122,7 +122,7 @@
 							<a onClick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 								<i class="material-icons">&#xE317;</i>
 							</a>
-							<a onClick="animateAvatar()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#personajesModal">
+							<a onClick="showAvatars()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#personajesModal">
 								<i class="material-icons"></i>Prueba_Personajes
 							</a>
 						</div>
@@ -154,36 +154,18 @@
 							</div>
 						</div>
 						<div class="modal-body">
-							<!--<h2 class="no-mrg-top">Seleccionar</h2>-->
 							<div class="row">
-								<div class="col-sm-12">
-									<div class="table-wrapper view-List-pedidos">
-										
+								<div class="col-sm-12 txt__light-100">
+										<h4 id="puestoDetalle" class="centrarh4"><span>Selecciona el tipo de cliente</span></h4>
+									<div class="row menos">
+										<img class="animate_avatar" src="../web/img/personajes/uviejo1.svg" alt="">
+										<img class="animate_avatar" src="../web/img/personajes/uadulto1.svg" alt="">
+										<img class="animate_avatar" src="../web/img/personajes/unino1.svg" alt="">
 									</div>
-
-									<div class="content-view-pedido txt__light-100 modal_personajes">
-										<div class="content-head-view-pedido clearfix">
-											<div class="pull-center">
-												<h4 id="puestoDetalle" class="centrarh4"><span>Selecciona el tipo de cliente</span></h4>
-											</div>
-											<div class="pull-right ">
-												<div id="mesaDetalle">
-													
-												</div>
-											</div>
-										</div>
-										<div class="content-list-view-pedido-item table-responsive lineatitulo">
-											<div class="row menos">
-												<img class="animate_avatar" onClick="hacerPedido" src="../web/img/personajes/uviejo1.svg" alt="">
-												<img class="animate_avatar2" onClick="hacerPedido" src="../web/img/personajes/uadulto1.svg" alt="">
-												<img class="animate_avatar3" onClick="hacerPedido" src="../web/img/personajes/unino1.svg" alt="">
-											</div>
-											<div class="row menos">
-												<img class="animate_avatar4" onClick="hacerPedido" src="../web/img/personajes/uviejo2.svg" alt="">
-												<img class="animate_avatar5" onClick="hacerPedido" src="../web/img/personajes/uadulto2.svg" alt="">
-												<img class="animate_avatar6" onClick="hacerPedido" src="../web/img/personajes/unino2.svg" alt="">
-											</div>
-										</div>
+									<div class="row menos">
+										<img class="animate_avatar" src="../web/img/personajes/uviejo2.svg" alt="">
+										<img class="animate_avatar" src="../web/img/personajes/uadulto2.svg" alt="">
+										<img class="animate_avatar" src="../web/img/personajes/unino2.svg" alt="">
 									</div>
 								</div>
 							</div>
@@ -2079,26 +2061,34 @@
 	}
 	</script>
 
-	<script>
-		
+<script>
 
-function animateAvatar(){
-/* jquery.js */
-/* jquery.velocity.js */
+ var avatars = document.querySelectorAll('.animate_avatar') 
+ function showAvatars() {
+  // Animate each line individually
+  for(var i=0; i<avatars.length; i++) {
+   var avt= avatars[i]
+   // Define initial properties
+   dynamics.css(avt, {
+   opacity: 0,
+   scale: .1
+   })
 
-// Use the loop option.
+   // Animate to final properties
+   dynamics.animate(avt, {
+   opacity: 1,
+   scale: 1
+   }, {
+   type: dynamics.spring,
+   frequency: 300,
+   friction: 400,
+   duration: 1200,
+   delay: 200 + i * 40
+   })
+  }
+ }
 
-$(".animate_avatar").velocity("transition.slideLeftIn",
-  { 
-    duration: 500,
-    delay: 2000, // Insert a 500ms delay between each loop alternation.
-    //loop: 1,  Loop twice.
-  });
-
-
-}
-
-	</script>
+</script>
 
 </body>
 </html>

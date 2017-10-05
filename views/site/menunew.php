@@ -114,9 +114,13 @@
 				</div>
 			</div>
 		</div>
-		<a onclick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline btn-position">
-			<i class="material-icons"></i>
-		</a>
+		<div class="top-bar-btns">
+   			<div class="container-fluid">
+    			<a onclick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+     				<i class="material-icons"></i>
+    			</a>
+   			</div>
+  		</div>
 	<?php $this->endBody() ?>
 	<script src="../web/js/main-menu-new.js"></script>
 	<script src="../web/js/order_new.js"></script>
