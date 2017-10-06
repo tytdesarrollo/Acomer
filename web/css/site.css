@@ -2825,6 +2825,7 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	opacity: 0.5;
 	border-radius: 30px;
 	transition: all 0.2s ease-in-out;
+	font-size: 1.2em;
 }
 .list-mesa__libre li:hover{
 	opacity: 1;
@@ -4256,20 +4257,21 @@ body.overflow-hidden {
 		padding-top: 10px;
 	}
 	.content-mesa .n-mesa{
-		width: 3em;
+		width: 3.5em;
 		height: 3em;
 		margin-top: -1.5em;
-		margin-left: -1.5em;
+		margin-left: -1.75em;
 	}
 	.content-mesa .n-mesa span{
-		font-size: 1.8em;
+		font-size: 1.6em;
+		line-height: 1.5em;
 	}
 	/* Estilos para mesa de 6 puestos */
 	.mesax6p .content-mesa .n-mesa:nth-child(2) {
 		margin-left: calc(-24% + -1.5em);
 	}
 	.mesax6p .content-mesa .n-mesa:nth-child(3) {
-		margin-left: calc(24% + -1.5em);
+		margin-left: calc(24% + -1.75em);
 	}
 }
 
@@ -4374,15 +4376,33 @@ body.overflow-hidden {
 	
 	/* Estilos para mesa de 4 puestos (min-width: 992px) */
 	.mesax4p .content-mesa .n-mesa{
-		width: 3.5em;
+		width: 4.2em;
 		height: 3.5em;
-		margin-left: -1.75em;
+		margin-left: -2.1em;
 		margin-top: -1.75em;
 	}
 	.mesax4p .content-mesa .n-mesa span{
 		font-size: 2em;
 	}
-	
+
+	/* Estilos para mesa de 6 puestos (min-width: 992px) */
+	.mesax6p .content-mesa .n-mesa{
+		width: 4.2em;
+		height: 3.5em;
+		margin-left: -2.1em;
+		margin-top: -1.75em;
+	}
+	.mesax6p .content-mesa .n-mesa span{
+		font-size: 2em;
+		line-height: inherit;
+	}
+	.mesax6p .content-mesa .n-mesa:nth-child(2) {
+		margin-left: calc(-24% + -2em);
+	}
+	.mesax6p .content-mesa .n-mesa:nth-child(3) {
+		margin-left: calc(24% + -2.1em);
+	}
+
 	/* Estilos para mesa de 8 puestos (min-width: 992px) */
 	.content-puestos.mesax8p .puesto-libre{
 		border: 4px dashed #ffffff;
@@ -4714,3 +4734,5 @@ body.overflow-hidden {
 	backface-visibility: hidden;
 	cursor: pointer;
 }
+
+/* Texto */
