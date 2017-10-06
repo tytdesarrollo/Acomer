@@ -8,6 +8,14 @@
 	transform: scale3d(0.9,0.9,1);
 }
 
+.cat_description{
+	font-size: 1.5em;
+}
+
+.cat__title-main{
+	font-size: 3em;
+}
+
 /* product grid */
 .grid {
 	margin: 0 auto;
