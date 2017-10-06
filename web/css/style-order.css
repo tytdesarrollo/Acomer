@@ -50,8 +50,9 @@
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
+	width: calc(50% - 2em);
 	min-width: 16em;
-	margin: 0 1em 2.5em;
+	margin: 0 0.5em 2.5em;
 	padding: 1.5em 1.5em 2em;
 	background: #24252A;
 	border-radius: 5px;
@@ -146,6 +147,7 @@
 }
 
 .product__price {
+	font-size: 1.2em;
 	font-weight: bold;
 	color: #6cd84e;
 	
@@ -182,9 +184,10 @@
 	font-family: 'Raleway', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	letter-spacing: 1px;
-	font-size: .813em;
+	font-size: 1em;
 	vertical-align: middle;
 	display: inline-block;
+	text-transform: uppercase;
 }
 
 .action__text--invisible {
@@ -520,6 +523,20 @@
 	transition-delay: 0.3s;
 }
 
+@media screen and (min-width: 48em){
+	.product{
+		width: calc(100% / 3 - 2em);
+		margin: 0 0.7em 2.5em;
+	}
+}
+
+@media screen and (min-width: 70em){
+	.product{
+		width: calc(25% - 2em);
+		margin: 0 0.9em 2.5em;
+	}
+}
+
 @media screen and (min-width: 59.688em) {
 	.flexbox .compare__effect {
 		display: -webkit-flex;
@@ -546,12 +563,7 @@
 @media screen and (max-width: 59.688em) {
 	.grid {
 		padding: 2em 0.5em;
-		font-size: 65%;
-	}
-
-	.product {
-		margin: 0 0.5em 1em;
-		min-width: 13em;
+		font-size: 90%;
 	}
 
 	.product__title {
@@ -644,7 +656,6 @@
 	line-height: 4px;
 }
 .content-count{
-	max-width: 182px;
     margin-top: 0.5em;
 	margin-bottom: 1.5em;
 }
