@@ -516,9 +516,15 @@
 	  });
 	</script>
 	<script>
+	  $(function () {
+		$(".main-content-select-puestos").addClass("in");
+	  });
+	</script>
+	<script>
 		$("#cancelMesa").click(function(){
 			$(".main-content-unir-mesa").removeClass("in");
 			$(".main-content-select-puestos").removeClass("out");
+			$(".main-content-select-puestos").addClass("in");
 		});
 	</script>
 	<script>
@@ -682,6 +688,7 @@
 		}
 
 		$(".main-content-unir-mesa").addClass("out");
+		$(".main-content-unir-mesa").removeClass("in");
 		$(".main-content-mesa").addClass("in");
 	}
 
@@ -702,6 +709,7 @@
 			//se muestra en el div
 			document.getElementById("mesaPuestos4").innerHTML = creacion;
 			// oculto el seleccionar puestos
+			$(".main-content-select-puestos").removeClass("in");
 			$(".main-content-select-puestos").addClass("out");
 			//muestro las mesa de 4 puestos 
 			$(".main-content-mesa").addClass("in");
@@ -712,6 +720,7 @@
 			
 		}else{			
 			// oculta la seleccion de puesto y muestra la mesa
+			$(".main-content-select-puestos").removeClass("in");
 			$(".main-content-select-puestos").addClass("out");
 			$(".main-content-unir-mesa").addClass("in");
 			// si la cantidad varia entre 5 y 6
@@ -952,7 +961,7 @@
 		//identificar si es la primera vez que se ordena en mesa
 		var pedidoAcumu = generalPlatos;
 		//ruta para cargar el menu
-		var url = "<?php echo Url::toRoute(['site/menu'])?>"
+		var url = "<?php echo Url::toRoute(['site/menunew'])?>"
 		//cantidad e personas que pueden ordenar
 		var tamano = document.getElementById("numPersonas").value;
 		// si el pedido acumulado es cero parte como primer pedido a realizar en mesa
