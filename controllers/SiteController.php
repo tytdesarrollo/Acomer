@@ -830,5 +830,10 @@ class SiteController extends Controller
         return $this->render('contratos',["empresas"=>$empresas,"contratos"=>$contratos,"facturas"=>$facturas,
                                           "facturacancelada"=>$facturacancelada,"facturapendiente"=>$facturapendiente]);
     }
-
+	
+	public function actionCocina()
+    {               
+        $this->layout="main_cocina";
+		return $this->render('cocina');      
+    }
 }
