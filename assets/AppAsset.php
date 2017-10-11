@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
         'css/site.css',
 		'css/fullcalendar.css',
 		'css/menu-cat.css',
