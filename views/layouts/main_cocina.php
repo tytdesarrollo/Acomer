@@ -23,7 +23,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="cd-section">
+<body class="bg-acomer">
 	<?php $this->beginBody() ?>
 	<?php @$events = $this->params['customParam']; ?>
 <header id="header" class="clearfix">
@@ -87,9 +87,9 @@ AppAsset::register($this);
 		</div>
 	</nav>
 </header>
-<section class="scroller-inner">
+<section class="scroller-inner p-t-60">
 	<section id="content">
-		<div class="fluid-container main-content">
+		<div class="container-fluid main-content main-cocina">
 			<?= Breadcrumbs::widget([
 				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 			]) ?>
