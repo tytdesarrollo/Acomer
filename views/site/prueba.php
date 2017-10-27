@@ -10,15 +10,12 @@
 	$this->title = 'Acomer';
 
 	$request = Yii::$app->request;
-?>
-<br><br><br><br><br>
+
+	var_dump($result[0]);
 
 
-<script type="text/javascript">
-	swal({
-	  title: "Sweet!",
-	  text: "Here's a custom image.",
-	  imageUrl: "images/thumbs-up.jpg"
-	});
-</script>
+	foreach ($result[0] as $key) {
+		echo $key['CONJUNTO'];
+	}
+
 
