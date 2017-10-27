@@ -94,7 +94,7 @@ use yii\widgets\ActiveForm;
 			imgMesa = useImg(i);
 			// mesas que se van a mostrar
 			esquemaTemporal = 
-				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+4+','+estadosMesas[i]+','+codigosMesas[i]+')">'+
+				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+puestosMesas[i]+','+estadosMesas[i]+','+codigosMesas[i]+')">'+
 				'<img src="img/mesa.svg" alt="" class="img-responsive">'+
 					notificacionMesa+
 						'<svg width="50" height="60">'+
@@ -121,11 +121,11 @@ use yii\widgets\ActiveForm;
 		if(estado == 0){
 			swal({
 				  title: "",
-				  text: "Desea adicionar pedido a la mesa?",
+				  text: "La mesa esta ocupada, desea ingresar?",
 				  type: "info",
 				  showCancelButton: true,
 				  confirmButtonColor: "#4caf50",
-				  confirmButtonText: "Si, adicionar",
+				  confirmButtonText: "Si, ingresar",
 				  cancelButtonColor: "#EC4424",
 				  cancelButtonText: "No, volver",
 				  closeOnConfirm: false,
@@ -315,31 +315,43 @@ use yii\widgets\ActiveForm;
 		//posicion de la notificacion sobre el container
 		var contadoremp1 = 1;
 		var contadoremp2 = 1;		
+		//
+		var posicionesDisp1 = new Array(0,0,0,0,0);
+		var posicionesDisp2 = new Array(0,0,0,0,0);
 		// recorrer los datos aarrojados por el cursor 
 		for (var i = 0; i < tamano; i++) {
 			// mostrar la notificacion dependiendo a que empresa pertenece el plato a entregar
 			switch(empresa[i]){
 				case '901.023.461-1':					
 					// notificacion para las mesas de un digito 
-					if(mesa[i] <= 9){						
-						esquemaemp1 = esquemaemp1 +
-							'<div class="notification text_0-9 not-'+contadoremp1+' full">'+
-								'<svg width="50" height="60">'+
-								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'-rest"></use>'+
-								'</svg>'+
-							'</div>';
-						// aumenta 1 mas la posicion de la notificacion
-						contadoremp1 = contadoremp1 + 1;
+					if(mesa[i] <= 9){	
+						// recorrer las cinco notificaciones al tiempo del container y si hay disponibilidad se carga la notificacion	
+						for(var j = 0 ; j <posicionesDisp1.length ; j++){
+							if(posicionesDisp1[j] != 1){
+								esquemaemp1 = esquemaemp1 +
+									'<div class="notification text_0-9 not-'+(j+1)+' full">'+
+										'<svg width="50" height="60">'+
+										  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+										'</svg>'+
+									'</div>';
+								posicionesDisp1[j] = 1;
+								break;
+							}
+						}										
 					// notificacion para las mesas de dos digitos
 					}else{
-						esquemaemp1 = esquemaemp1 +
-							'<div class="notification text_10-20 not-'+contadoremp1+' full">'+
-								'<svg width="50" height="60">'+
-								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'-rest"></use>'+
-								'</svg>'+
-							'</div>';
-						// aumenta 1 mas la posicion de la notificacion
-						contadoremp1 = contadoremp1 + 1;
+						for(var j = 0 ; j <posicionesDisp1.length ; j++){
+							if(posicionesDisp1[j] != 1){
+								esquemaemp1 = esquemaemp1 +
+									'<div class="notification text_10-20 not-'+(j+1)+' full">'+
+										'<svg width="50" height="60">'+
+										  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+										'</svg>'+
+									'</div>';
+								posicionesDisp1[j] = 1;
+								break;
+							}
+						}							
 					}
 					break;
 				case '901.023.461-2':
@@ -348,7 +360,7 @@ use yii\widgets\ActiveForm;
 						esquemaemp2 = esquemaemp2 +
 							'<div class="notification text_0-9 not-'+contadoremp2+' full">'+
 								'<svg width="50" height="60">'+
-								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'-rest"></use>'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
 								'</svg>'+
 							'</div>';
 						// aumenta 1 mas la posicion de la notificacion
@@ -358,7 +370,7 @@ use yii\widgets\ActiveForm;
 						esquemaemp2 = esquemaemp2 +
 							'<div class="notification text_10-20 not-'+contadoremp2+' full">'+
 								'<svg width="50" height="60">'+
-								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'-rest"></use>'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
 								'</svg>'+
 							'</div>';
 						// aumenta 1 mas la posicion de la notificacion

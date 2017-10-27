@@ -190,16 +190,18 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			// cursor con los codigos de las mesas que estan unidas
-			$c2;			
+			$c2;
+			$c3;			
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_NOMBRE_PLATOS(:c1,:c2); END;");				
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_NOMBRE_PLATOS(:c1,:c2,:c3); END;");				
 			//se pasan los parametros del procedimiento 			
 			oci_bind_by_name($stid, ':c1',$c1, 20);   
 			oci_bind_by_name($stid, ':c2',$c2, 200);
+			oci_bind_by_name($stid, ':c3',$c3, 50);
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
 
-			return $c2;
+			return array($c2,$c3);
 		}
 
 		public function procedimiento8($c1,$c2,$c3,$c4,$c5){
@@ -227,6 +229,53 @@
 			oci_execute($stid);
 
 			return $c6;
+		}
+
+		public function procedimiento9($c1,$c2){
+			//$c1: codigo de la mesa
+			//$c2: array con los puestos que va a visualizar
+			//$c3: cursor que retorna con los datos pertinentes
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//ejecuta el procedimeinto
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_VISUALIZA_FAC(:c1,:c2,:c3,:c4); END;");	
+			//establece el cursor
+			$c3 = oci_new_cursor($conexion);		
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ":c1", $c1, 10, OCI_B_INT);    
+		    oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);
+		    oci_bind_by_name($stid, ':c3',$c3,-1, OCI_B_CURSOR);
+		    oci_bind_by_name($stid, ":c4", $c4, 40);  
+
+		    oci_execute($stid);
+    		oci_execute($c3,OCI_DEFAULT);
+
+    		oci_fetch_all($c3, $cursor);
+
+    		return array($cursor,$c4);
+		}
+
+		public function procedimiento10($c1){
+			//$c1: codigo de la mesa
+			//$c2: cadena de codigo de mesa que hay unidas
+			
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//ejecuta el procedimeinto
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_MESA_PRINC_HIJOS(:c1,:c2); END;");	
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ":c1", $c1, 10, OCI_B_INT);    
+			oci_bind_by_name($stid, ":c2", $c2, 200, SQLT_CHR);    
+
+			oci_execute($stid);
+
+			// transforma en un array los puestos
+			$result = explode("_*", $c2);
+
+			return $result;
+			
 		}
 
 

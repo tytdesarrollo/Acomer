@@ -45,7 +45,7 @@
 					<div class="cat__grid-item-box">
 						<div class="cat__grid-item">
 							<div class="grid-item__info">
-								<img src="img/categorias/mar_cat_icon.svg" alt="" class="grid-item__image">
+								<img src="img/categorias/<?=$ketc['IMAGEN']?>" alt="" class="grid-item__image">
 							</div>
 						</div>
 						<h4 class="cat__title"><?php echo $ketc['DESCRIPCION']?></h4>
@@ -71,7 +71,7 @@
 											<?php if ($keyco['CATEGORIA']==$ketc['COD_CATEGORIA']): ?>
 												<div class="product">
 													<div class="product__info">
-														<img class="product__image" src="img/items/carne.png" alt="Carne" />
+														<img class="product__image" src="img/categorias/<?=$ketc['IMAGEN']?>" alt="Carne" />
 														<h3 class="product__title"><?=$keyco['NOMBRE']?></h3>
 														<span class="product__price highlight">$<?php echo number_format($keyco['PRECIO']);?></span>
 														<div class="content-count" id="<?php echo $id_content_count; ?>">
