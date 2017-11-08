@@ -24,7 +24,7 @@ use app\models\SpMenusPlaza;
 use app\models\SpMesasPedidos;
 use app\models\funcionesArray;
 use app\models\SpMesasFactura;
-
+use app\models\SpCocinaPedidos;
 
 
 class SiteController extends Controller
@@ -32,9 +32,11 @@ class SiteController extends Controller
 
 
     public function actionPrueba(){     
+        $fn_cocina = new SpCocinaPedidos();
+        $result = $fn_cocina->procedimiento(5555);
 
-
-        return $this->render('prueba'); 
+        
+        return $this->render('prueba',["result"=>$result]); 
     }   
     
     public function behaviors()
@@ -297,7 +299,7 @@ class SiteController extends Controller
     }
     
     public function actionPlaza()
-    {               
+    {             
         return $this->render('plaza');      
     }
 
@@ -326,6 +328,29 @@ class SiteController extends Controller
         $puestos = $fn_fac_puestos->procedimiento($c1); 
         //imprime los datos en tipo json         
         echo json_encode($puestos);
+    }
+
+    public function actionJsonpuestosfacx(){
+         //parametros pasados por GET
+        $mesa1 = $_GET['mesa1'];
+        $mesa2 = $_GET['mesa2'];
+
+        if($mesa2 == 'undefined'){
+            session_start()   ;
+            if(is_array($_SESSION['mesa1'])){
+                $mesa2 = $_SESSION["mesa1"][0];
+            }else{
+                $mesa2 = $_SESSION["mesa1"];
+            }
+        }
+        $fn_fac_puestos = new SpMesasFactura;
+        //obtiene las posiciones de las mesas 
+        $puestos1 = $fn_fac_puestos->procedimiento($mesa1); 
+        $puestos2 = $fn_fac_puestos->procedimiento($mesa2); 
+        //array que va a contener los dos resultados de las mesas
+        $puestosTotal = array($puestos1, $puestos2);
+        //imprime los datos en tipo json         
+        echo json_encode($puestosTotal);
     }
 
     public function actionMesa()
@@ -371,6 +396,18 @@ class SiteController extends Controller
             $tamano = $_GET['tamanoM'];
         }
 
+
+        $model = new SpMesasPedidos();        
+        // se crea la ession correspondiente para las mesas unidas
+        if($tamano >= 5 && $tamano <= 6 && $plato = 0){
+            $mesasUnidas = $model->procedimiento3($codigomesa);
+            $mesaSecundaria = $mesasUnidas[0]['MESCODUNI'][0];
+            //inicia la session y se crea la mesa secundaria
+            session_start();
+            $_SESSION['mesa1'] = $mesaSecundaria ; 
+        }
+
+
         // si el estado es ocupado ya hay pedido confirmado 
         // y se consulta lo que se ha pedido
         if($estadomesa === '0'){
@@ -398,9 +435,18 @@ class SiteController extends Controller
 
         // dependiendo del tamano de la mesa se crear n variables de session
         if($tamano > 4 && $tamano <= 6){
-            session_start();
+            if(session_status() != 1){
+                session_destroy();
+            } 
+
+            session_start(); 
             //modifica la variable con la mesa correspondiente
-            $_SESSION['mesa1'] = $_GET['mesa1'];   
+            if(is_array($_GET['mesa1'])){
+                $_SESSION['mesa1'] = $_GET['mesa1'][0];
+            }else{
+                $_SESSION['mesa1'] = $_GET['mesa1'];  
+            }
+            
             echo $_SESSION["mesa1"];
         }
         
@@ -554,10 +600,15 @@ class SiteController extends Controller
             $c15 =  array($get7);
 
             // se realiza el pedido
-            /*$pedido1 = new SpMesasPedidos();
-            $tomarpedido1 = $pedido1->procedimiento5($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14,$c15);*/
+            $pedido1 = new SpMesasPedidos();
+            $tomarpedido1 = $pedido1->procedimiento5($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14,$c15);
 
-            var_dump($c1);
+            var_dump($c7); echo '<br>';
+            var_dump($c8); echo '<br>';
+            var_dump($c9); echo '<br>';
+            var_dump($c10); echo '<br>';
+                echo($c11); echo '<br>';
+                echo($c12); echo '<br>';
             
         }else if($_GET['tamano'] === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
@@ -594,25 +645,44 @@ class SiteController extends Controller
         $get7 = $_GET['mesa2'];
 
         $fn_arrays = new funcionesArray();
+        $fn_adicion = new SpMesasPedidos();
 
         if($_GET['tamano'] === '0'){
-
+            //los arrays correspondientes a la mesa 1
             $arrayMesa1 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'1');
-            $arrayMesa2 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'2');
+            $c1 = $fn_arrays->arrayPuestos($arrayMesa1[0]);
+            $c2 = $arrayMesa1[1];
+            $c3 = $arrayMesa1[2];
+            $c4 = $arrayMesa1[3];
+            $c5 = $get5;
+            $c6 = $get6;
 
-            if(sizeof($arrayMesa1[0]) === 0){
-                echo '';
-            }
+            //los arrays correspondientes a la mesa 2
+            $arrayMesa2 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'2');
+            $c7  = $fn_arrays->arrayPuestos($arrayMesa2[0]);
+            $c8  = $arrayMesa2[1];
+            $c9  = $arrayMesa2[2];
+            $c10 = $arrayMesa2[3];
+            $c11 = $get5;
+            $c12 = $get7;
+
+            // si la adicion a la mesa uno es nula no se ejecuta el procedimiento 
+            if(count($arrayMesa1[0]) !== 0){
+                $adicionMesa1 = $fn_adicion->procedimiento4($c1,$c2,$c3,$c4,$c5,$c6);
+            }      
+
+            // si la adicion a la mesa dos es nula no se ejecuta el procedimiento 
+            if(count($arrayMesa2[0]) !== 0){
+                $adicionMesa2 = $fn_adicion->procedimiento4($c7,$c8,$c9,$c10,$c11,$c12);
+            }                  
 
         }else if($_GET['tamano'] === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
             echo 'a';
         }  
         
-        
 
-
-        //return $this->redirect(['site/plaza']);
+        return $this->redirect(['site/plaza']);
     }
 
     public function actionCancelarpedido(){
@@ -643,7 +713,7 @@ class SiteController extends Controller
 
     }
 
-    public function actionFacturar(){
+    public function actionFacturar(){ 
         //c1: Variable correspondiente a la cedula del cliente (opcional)
         //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
         //c3: Variable correspondiente al codigo de la mesa
@@ -655,34 +725,339 @@ class SiteController extends Controller
         $get2 = $_GET['mesa'];
         $get3 = $_GET['full'];
 
+        //objeto para facturar
+        $fn_facturar = new SpMesasFactura();
+
+        //////////////////////// respaldo de datos antes de facturar en caso de reversarla
+        $numeroRever = $fn_facturar->procedimiento5($get2);
+        //////////////////////// respaldo de datos antes de facturar en caso de reversarla
+
         // parametros del procedimiento
         $c1 = "N/A";
         $c2 = "N/A";
         $c3 = $get2;
         $c4 = '16743485';//$_SESSION['cedula'];
         $c5 = "01";
-        $c6 = $get1;
-
-
-
-        $fn_facturar = new SpMesasFactura();
+        $c6 = $get1;        
         
-
+        // si es falso se facturan todos lo puestos
         if($get3 === "false"){     
             $c6 = array("0");
-            $facturar = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
-            echo json_encode($facturar);
-        }else{
+            // se genera la factura general para los restaurantes
+            $facturar1 = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
+            // se toma la cabecera y los detalles de la factura generada
+            $cabecera = $facturar1[0];
+            $detalle = $facturar1[1];
+            // se sacan los datos mas detallados de la cabecera
+            $c1 = $cabecera['FECHA'][0];
+            $c2 = $cabecera['HORA'][0];
+            $c3 = array($cabecera['NUMERO_FAC'][0]);
+            // se genera la factura para el cliente
+            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+            $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            echo json_encode($cabeceraDetalle);
+        // si es falso se facturan los puestos solicitados
+        }else if($get3 === "true"){
             $funcionArr = new funcionesArray();                        
             $c6 = $funcionArr->arrayPuestos($c6);
-            $facturar = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
-            echo json_encode($facturar);
+            // se genera la factura general para los restaurantes
+            $facturar1 = $fn_facturar->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
+            // se toma la cabecera y los detalles de la factura generada
+            $cabecera = $facturar1[0];
+            $detalle = $facturar1[1];
+            // se sacan los datos mas detallados de la cabecera
+            $c1 = $cabecera['FECHA'][0];
+            $c2 = $cabecera['HORA'][0];
+            $c3 = array($cabecera['NUMERO_FAC'][0]);
+            // se genera la factura para el cliente
+            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+            $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            echo json_encode($cabeceraDetalle);   
 
         }
         //echo '[{"NUMERO_FAC":["000003"],"FECHA":["17\/08\/2017"]},{"PRODES":["TORO CAESAR","ENSALDA FUSION","ENSALDA ORIENTE"],"PEDUNI":["1","1","1"],"PEDVALTUN":["24990","22015","26537"]},"73542"]';
 
         
         
+    }
+
+    public function actionReversarfactura(){
+        //$c1: numero de rever que se le asigna al momento de facturar 
+        //$c2: numero de la factura que se da al cliente y que se va a revertir
+        //
+        $get1 = $_GET['rever'];
+        $get2 = $_GET['factura'];
+
+        $c1 = $get2;
+        $c2 = $get1;
+
+        $fn_factura = new SpMesasFactura();
+        $fn_factura->procedimiento6($c1,$c2);
+
+        echo '1';
+        
+    }
+
+    public function actionFacturarx(){
+        //c1: Variable correspondiente a la cedula del cliente (opcional)
+        //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
+        //c3: Variable correspondiente al codigo de la mesa
+        //c4: Variable correspondiente a la cedula del mesero
+        //c5: Variable correspondiente a la forma de pago
+        //c6: Variable correspondiente a los puestos que se facturan
+        //caputra de datos por get
+        $get1 = $_GET['puestos'];
+        $get2 = $_GET['mesa1'];
+        $get3 = $_GET['full'];
+        $get4 = $_GET['mesa2'];
+
+        $puestos1 = array();
+        $puestos2 = array();
+
+        // recorreo los puestos y los separo
+        for($i = 0 ; $i < count($get1) ; $i++){
+            //puests para la mesa 1
+            if ($get1[$i] === '1' or $get1[$i] === '2' or $get1[$i] === '6') {
+                //asigna el valor al array
+                $puestos1[] = '0'.$get1[$i];
+            //puests para la mesa 2
+            }else if ($get1[$i] === '3' or $get1[$i] === '4' or $get1[$i] === '5') {
+                //asigna el valor al array
+                $puestos2[] = '0'.$get1[$i];
+            }
+        }
+
+
+        //objeto para facturar
+        $fn_facturar = new SpMesasFactura();        
+
+        //////////////////////// respaldo de datos antes de facturar en caso de reversarla
+        $numeroRever = $fn_facturar->procedimiento5($get2);
+        //////////////////////// respaldo de datos antes de facturar en caso de reversarla
+
+        //si los puestos de una mesa estan vacion no se factura a esa mesa
+        if(count($puestos1) > 0){
+            //facturacion para la mesa 1
+            $c11 = "N/A";
+            $c21 = "N/A";
+            $c31 = $get2;
+            $c41 = '16743485';//$_SESSION['cedula'];
+            $c51 = "01";
+            $c61 = $puestos1;   
+            // se genera la factura general para los restaurantes
+            $faturaM1 = $fn_facturar->procedimiento2($c11,$c21,$c31,$c41,$c51,$c61);
+            // se toma la cabecera y los detalles de la factura generada
+            $cabecera1 = $faturaM1[0];
+            $detalle1 = $faturaM1[1];            
+            // se sacan los datos mas detallados de la cabecera
+            $c11 = $cabecera1['FECHA'][0];
+            $c21 = $cabecera1['HORA'][0];
+            $c31 = array($cabecera1['NUMERO_FAC'][0]);
+        }else{
+            // se declaran las variables vacias        
+            $c11 = ""; // fecha de la factura
+            $c21 = ""; // hora de la factura
+            $c31 = array(""); // codigo general de la mesa
+            $detalle1 = array(
+                'PRODES' => array(""),
+                'PEDUNI' => array(""),
+                'PEDVALTUN' => array("")            
+            );   
+        }
+
+
+        if(count($puestos2) > 0){
+            // facturacion para la mesa 2
+            $c12 = "N/A";
+            $c22 = "N/A";
+            $c32 = $get4;
+            $c42 = '16743485';//$_SESSION['cedula'];
+            $c52 = "01";
+            $c62 = $puestos2;
+            // se genera la factura general para los restaurantes
+            $faturaM2 = $fn_facturar->procedimiento2($c12,$c22,$c32,$c42,$c52,$c62);
+             // se toma la cabecera y los detalles de la factura generada            
+            $cabecera2 = $faturaM2[0];
+            $detalle2 = $faturaM2[1];            
+            // se sacan los datos mas detallados de la cabecera
+            $c12 = $cabecera2['FECHA'][0];
+            $c22 = $cabecera2['HORA'][0];
+            $c32 = array($cabecera2['NUMERO_FAC'][0]);
+        }else{
+            // se declaran las variables vacias        
+            $c12 = ""; // fecha de la factura
+            $c22 = ""; // hora de la factura
+            $c32 = array(""); // codigo general de la mesa
+            $detalle2 = array(
+                'PRODES' => array(""),
+                'PEDUNI' => array(""),
+                'PEDVALTUN' => array("")            
+            );     
+        }
+        
+        // datos para la factura del cliente
+        $c1 = array($c11,$c12);        
+        $c1 = array_filter($c1);  // se filtran los registros que se encuentren nulos        
+        if(array_key_exists(0, $c1)){
+            $c1 = $c1[0];    
+        }else{
+            $c1 = $c1[1];
+        }
+        
+
+        $c2 = array($c21,$c22);
+        $c2 = array_filter($c2);  // se filtran los registros que se encuentren nulos
+        if(array_key_exists(0, $c2)){
+            $c2 = $c2[0];    
+        }else{
+            $c2 = $c2[1];
+        }
+
+        $c3;
+        $c30 = array($c31,$c32);        
+        foreach ($c30 as $key) {
+            $c3[] = $key[0];
+        }        
+        $c3 = array_filter($c3);  // se filtran los registros que se encuentren nulos        
+
+        $c4 = '16743485';//$_SESSION['cedula'];
+
+        // detalle de la factura
+        $producto = array();
+        $cantidad = array();
+        $valor    = array();
+
+        //union del detalle de cada una de las mesas
+        for ($i = 0 ; $i < count($detalle1['PRODES']) ; $i++) {                                  
+            array_push($producto  , $detalle1['PRODES'][$i]);
+            array_push($cantidad  , $detalle1['PEDUNI'][$i]);
+            array_push($valor     , $detalle1['PEDVALTUN'][$i]);                  
+        }
+
+        for ($i = 0 ; $i < count($detalle2['PRODES']) ; $i++) {                                  
+            array_push($producto  , $detalle2['PRODES'][$i]);
+            array_push($cantidad  , $detalle2['PEDUNI'][$i]);
+            array_push($valor     , $detalle2['PEDVALTUN'][$i]);                  
+        }
+
+        // elimina los valor que el array contenga vacios
+        $producto = array_filter($producto);
+        $cantidad = array_filter($cantidad);
+        $valor    = array_filter($valor);
+
+        // se crea el array calve valor
+        $detalle[] = array(
+            'PRODES' => $producto,
+            'PEDUNI' => $cantidad,
+            'PEDVALTUN' => $valor,            
+        );    
+        
+        // se genera la factura para el cliente
+        $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+        $cabeceraDetalle = array($facturar, $detalle, $numeroRever);
+        echo json_encode($cabeceraDetalle);
+    }
+
+    public function actionVisualizarfac(){
+        //$c1: codigo de la mesa
+        //$c2: array con los puestos que va a visualizar
+        $model1 = new funcionesArray();
+        $c1 = $_GET["mesa"];
+        $c2 = $model1->arrayPuestos($_GET["puestos"]);
+
+        $model2 = new SpMesasPedidos();
+        $visualiza = $model2->procedimiento9($c1,$c2);
+        
+        //var_dump($c2)
+        echo json_encode($visualiza);
+    }
+
+    public function actionVisualizarfacx(){
+        //$c1: codigo de la mesa
+        //$c2: array con los puestos que va a visualizar        
+        $tamano = $_GET['tamano'];
+        
+        if($tamano >= 5 and $tamano <= 6){
+            // captura la mesa principal y la unida a ella 
+            $c11 = $_GET["mesa1"];
+            $c12 = $_GET["mesa2"];
+
+            $get1 = $_GET["puestos"];
+
+            $c21 = array();
+            $c22 = array();
+
+            // puestos de cada mesa
+            for($i = 0 ; $i < count($get1) ; $i++){
+                //puests para la mesa 1
+                if ($get1[$i] === '1' or $get1[$i] === '2' or $get1[$i] === '6') {
+                    //asigna el valor al array
+                    $c21[] = '0'.$get1[$i];
+                //puests para la mesa 2
+                }else if ($get1[$i] === '3' or $get1[$i] === '4' or $get1[$i] === '5') {
+                    //asigna el valor al array
+                    $c22[] = '0'.$get1[$i];
+                }
+            }
+
+            $model1 = new SpMesasPedidos();
+            $producto = array();
+            $unidad = array();
+            $precio = array();
+            $fecha = array();
+
+            if(count($c21) != 0){
+                $pedidos1 = $model1->procedimiento9($c11,$c21);
+                $detalle1 = $pedidos1[0];
+                $fecha1 = $pedidos1[1];
+
+                for($i = 0 ; $i < count($detalle1['PRODUCTO']) ; $i++){
+                                     
+                    $producto[] = $detalle1['PRODUCTO'][$i];
+                    $unidad[] = $detalle1['UNIDAD'][$i];
+                    $precio[] = $detalle1['VALOR'][$i];
+                }
+
+                $fecha[] = $fecha1;
+
+            }
+
+            if(count($c22) != 0){
+                $pedidos2 = $model1->procedimiento9($c12,$c22);
+                $detalle2 = $pedidos2[0];
+                $fecha2 = $pedidos2[1];
+
+                for($i = 0 ; $i < count($detalle2['PRODUCTO']) ; $i++){
+                                     
+                    $producto[] = $detalle2['PRODUCTO'][$i];
+                    $unidad[] = $detalle2['UNIDAD'][$i];
+                    $precio[] = $detalle2['VALOR'][$i];
+                }
+
+                $fecha[] = $fecha2;
+            }
+
+            // se crea el array calve valor
+            $detalle = array(
+                'PRODUCTO' => $producto,
+                'UNIDAD' => $unidad,
+                'VALOR' => $precio,            
+            );                       
+
+            $full = array($detalle, $fecha[0]);
+           
+            echo json_encode($full);
+        }
+        
+    }
+
+     public function actionEstadomesafac(){
+        $c1 = $_GET["mesa"];
+
+        $model = new SpMesasFactura();
+        $estado = $model->procedimiento3($c1);
+
+        echo $estado;
     }
 
     public function actionConsultarpedido(){
@@ -696,6 +1071,56 @@ class SiteController extends Controller
         echo json_encode($resultado);
     }
 
+    public function actionConsultarpedidox(){
+        // obtengo el codigo de la mesa 
+        $c1 = $_GET['mesa'];
+        //inicia el objeto
+        $fn_pedidos = new SpMesasPedidos();
+        //llamo el procedimiento del objeto
+        $mesasUnidad = $fn_pedidos->procedimiento10($c1);
+        $tamano = count($mesasUnidad);
+        //array que contiene todos los pedidos de la mesa
+        $arrayUnido = array();
+        //array para los datos que se muestran de los platos
+        $platos = array();
+        $cantidad = array();
+        $puesto = array();
+        $codigo = array();
+        $imagen = array();
+        $mesa = array();
+
+        for ($i = 0 ; $i < count($mesasUnidad) ; $i++) {
+            $pedidoMesa = $fn_pedidos->procedimiento6($mesasUnidad[$i]);                      
+
+            //rellena el array con la informacion correspondiente retornada por el procedimiento
+            for ($j = 0 ; $j < count($pedidoMesa['PLATO']) ; $j++) {
+                array_push($platos  , $pedidoMesa['PLATO'][$j]);
+                array_push($cantidad, $pedidoMesa['CANTIDAD'][$j]);
+                array_push($puesto  , $pedidoMesa['PUESTO'][$j]);
+                array_push($codigo  , $pedidoMesa['CODIGO'][$j]);
+                array_push($imagen  , $pedidoMesa['IMAGEN'][$j]);
+                array_push($mesa    , $mesasUnidad[$i]);                           
+            }       
+
+        }
+
+        // se llena el array a retornar en json con sus respectivos datos en clave valor
+        $arrayUnido[] = array(
+                                'PLATO'    => $platos,
+                                'CANTIDAD' => $cantidad,
+                                'PUESTO'   => $puesto,
+                                'CODIGO'   => $codigo,
+                                'IMAGEN'   => $imagen,
+                                'MESA'     => $mesa
+                            );        
+
+        echo json_encode($arrayUnido[0]) ;
+
+
+        
+        
+    }
+
     public function actionConsultanomplato(){
         // obtengo el codigo de la mesa 
         $platosPlano = $_GET['plato'];
@@ -704,7 +1129,9 @@ class SiteController extends Controller
         //convierto la cadena en array
         $c1 = $fn_array->crearArray($platosPlano);
         //array con los nombres ya definidos
-        $arrayNombres = array();        
+        $arrayNombres = array();    
+        // array con las imagenes de los platos
+        $arrayImg = array();
         //inicia el objeto
         $fn_pedidos = new SpMesasPedidos();
 
@@ -712,11 +1139,12 @@ class SiteController extends Controller
             //llamo el procedimiento del objeto
             $resultado = $fn_pedidos->procedimiento7($keyA);
             
-            array_push($arrayNombres,$resultado);
+            array_push($arrayNombres,$resultado[0]);
+            array_push($arrayImg,$resultado[1]);
         }
         
 
-        echo json_encode($arrayNombres);
+        echo json_encode(array($arrayNombres,$arrayImg));
     }
 
     public function actionMenu()
@@ -829,6 +1257,54 @@ class SiteController extends Controller
         $this->layout=false; 
         return $this->render('contratos',["empresas"=>$empresas,"contratos"=>$contratos,"facturas"=>$facturas,
                                           "facturacancelada"=>$facturacancelada,"facturapendiente"=>$facturapendiente]);
+    }
+
+    public function actionCocina()
+    {   
+       
+
+        $this->layout="main_cocina";
+        return $this->render('cocina');      
+    }
+
+    public function actionPedidoscocina(){
+        //$c1: cedula del cocinero
+        //  
+        $c1 = '16743485';//$_SESSION['cedula'];
+        // se crea el objeto 
+        $fn_cocina = new SpCocinaPedidos();
+        // se ejecuta el procedimiento
+        $result = $fn_cocina->procedimiento($c1);
+
+        echo json_encode($result);
+    }
+
+    public function actionPedidolisto(){
+        //$c1: codigo del restaurante al que pertenece el plato
+        //$c2: codigo del pedido que tiene asignado el plato
+        //$c3: puesto al que pertenece el pedido 
+        //$c4: cantidad que se esta alistando para aetregar
+        //
+        $get1 = $_GET['empresa'];
+        $get2 = $_GET['pednro'];
+        $get3 = $_GET['puesto'];
+        $get4 = $_GET['cantidad'];
+
+        $c1 = $get1;
+        $c2 = $get2;
+        $c3 = $get3;
+        $c4 = $get4;
+        
+        // se crea el objeto 
+        $fn_cocina = new SpCocinaPedidos();
+        // se ejecuta el procedimiento
+        $result = $fn_cocina->procedimiento2($c1,$c2,$c3,$c4);
+
+
+        //echo $c1; echo '<br>';
+        //echo $c2; echo '<br>';
+        //echo $c3; echo '<br>';
+        //echo $c4; echo '<br>';
     }
 
 }
