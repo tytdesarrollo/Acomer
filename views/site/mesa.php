@@ -497,12 +497,54 @@
 													</tbody>
 												</table>												
 											</div>
+											<div class="clearfix mrg__bottom-30">
+												<div class="propina-content pull-left">
+													<p class="fnt__Bold">¿Desea agregar propina?</p>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina1" value="option1" checked="">
+															Sin propina
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina2" value="option2">
+															10%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina3" value="option3">
+															15%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina4" value="option4">
+															18%
+														</label>
+													</div>
+												</div>
+												<div class="sub-total-factura-content pull-right">
+													<div class="iva-factura text-right fnt__Medium">
+														<span>IVA</span>
+														<span>Subtotal</span>
+														<span>Propina</span>
+													</div>
+													<div class="sub-total-factura text-right">
+														<span>$00.000</span>
+														<span>$00.000</span>
+														<span>$00.000</span>
+													</div>
+												</div>
+											</div>
 											<div class="total-factura-content clearfix">
 												<div id="btnImprimir" class="btn-factura-box pull-left">
 													<a onClick="imprimirRecibo()" id="labelImprimir"  href="#" class="btn btn-raised btn-info btn-radius btn-inline">
 														Salir<i class="material-icons">&#xE5C8;</i>
 													</a>
 												</div>
+												<div id="btnRegistroC" class="btn-factura-box pull-left"><a href="#" class="btn btn-raised btn-warning btn-radius btn-inline">Cliente</a></div>
 												<div class="total-factura-box pull-right">	
 													<span class="total-txt">Total</span>
 													<span class="total-num" id="totalFactura">$000.000</span>
@@ -514,6 +556,54 @@
 							</div> <!-- cd-modal-content -->
 						</div> <!-- cd-modal -->
 						<a id="cerrarFacturar" class="modal-view-factura-close"><i class="material-icons">&#xE14C;</i></a>
+						<div class="modal-registro">
+							<div class="m-content">
+								<div class="client-content">
+									<div class="clt-cnt">
+										<h3 class="title-header fnt__Medium text-center">CLIENTE</h3>
+										<div class="form-group">
+											<input class="form-control" id="cltRCc" type="text" placeholder="Identificación">
+										</div>
+									</div>
+									<div class="btn-addId-content">
+										<button id="addIdClt" type="button" class="btn btn-modact btn-add-id-cl">
+											<i class="material-icons">&#xE876;</i>
+										</button>
+										<button id="closeModClt" type="button" class="btn btn-modact btn-close-cl">
+											<i class="material-icons">&#xE14C;</i>
+										</button>
+									</div>
+								</div>
+								<div class="new-client-content">
+									<i class="btn-nw-clt material-icons">person_add</i>
+									<div class="main-cnt">
+										<div class="clt-cnt">
+											<h3 class="title-header fnt__Medium text-center txt__light-100">CLIENTE NUEVO</h3>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltNombre" type="text" placeholder="Nombre">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltNCc" type="text" placeholder="Identificación">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltDir" type="text" placeholder="Dirección">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltMail" type="text" placeholder="Correo electrónico">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltTel" type="text" placeholder="Teléfono">
+											</div>
+										</div>
+										<div class="btn-addId-content">
+											<button type="button" class="btn btn-modreg btn-add-nw-cl">
+												Registrar
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -545,6 +635,35 @@
 			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
 			$(".toggle-row").not($(this).next()).find('.sub-table-wrap').slideUp('fast');
 		  });
+		});
+	</script>
+	<script>
+	// MODAL AGREGAR CLIENTE //
+		// Abrir modal registro de cliente
+		$("#btnRegistroC").click(function () {
+			$(".modal-registro").addClass("show-modal");
+		});
+		// Evento abrir/cerrar del formulario de cliente nuevo
+		$(".btn-nw-clt").click(function (){
+			if (!$(this).hasClass('open')){
+				$(".m-content").addClass("sld-up");
+				$(".new-client-content").addClass("active-nw-clt");
+				$(this).addClass("open");
+				$(this).html("close");
+			}
+			else if ($(this).hasClass('open')){
+				$(".m-content").removeClass("sld-up");
+				$(".new-client-content").removeClass("active-nw-clt");
+				$(this).removeClass("open");
+				$(this).html("person_add");
+			}
+			else{
+				return false;
+			}
+		});
+		// Cerrar modal registro de cliente
+		$("#closeModClt").click(function () {
+			$(".modal-registro").removeClass("show-modal");
 		});
 	</script>
 	<script>
