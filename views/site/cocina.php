@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 			
 		</div>
 	</div>
-	<div class="col-sm-6 text-center">
+	<div class="col-sm-6 text-center pedidos_view">
 		<div class="content-pedido__detail" id="detallePlato">
 			<h3 class="text-center fnt__Medium pedido__view-title">Nombre del plato</h3>
 			<div class="pedido__detail-img">

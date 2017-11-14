@@ -672,7 +672,7 @@ a.desc:after {
   -webkit-animation-name: shake;
   animation-name: shake;
 }
-.pdg__16{
+.pdisplay: ruby-text-group;__16{
 	padding: 16px;
 }
 .pdg__24{
@@ -3594,6 +3594,29 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	margin-top: -3px;
     margin-left: 8px;
 }
+.propina-content .radio{
+	display: inline-block;
+	margin-right: 10px;
+}
+.propina-content .radio > label{
+	padding-left: 25px;
+}
+.propina-content .radio span{
+	left: 5px;
+}
+.sub-total-factura-content .iva-factura, .sub-total-factura-content  .sub-total-factura{
+	display: inline-block;
+}
+.iva-factura span{
+	display: block;
+}
+.sub-total-factura{
+	margin-left: 8px;
+	padding-right: 8px;
+}
+.sub-total-factura span{
+	display: block;
+}
 .total-factura-content{
 	position: relative;
 	margin-bottom: -70px;
@@ -3620,7 +3643,184 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	font-size: 24px;
     font-weight: bold;
 }
-
+/* MODAL-REGISTRO-CLIENTE */
+.modal-registro{
+	position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0;
+    background-color: rgba(0,0,0,.7);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .3s;
+}
+.modal-registro::before{
+	content: " ";
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+.show-modal{
+	opacity: 1;
+    pointer-events: auto;
+}
+.modal-registro .m-content{
+	width: 80%;
+    opacity: 0;
+    pointer-events: none;
+    background-color: #fff;
+    text-align: left;
+    border-radius: 5px;
+    position: static;
+    margin: 20px auto;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    z-index: 10001;
+    transition: opacity .2s,-webkit-transform .3s;
+    transition: transform .3s,opacity .2s;
+    transition: transform .3s,opacity .2s,-webkit-transform .3s;
+}
+.show-modal .m-content{
+	opacity: 1;
+    pointer-events: auto;
+    box-sizing: border-box;
+    -webkit-animation: showSweetAlert .3s;
+    animation: showSweetAlert .3s;
+    will-change: transform;
+}
+.m-content.sld-up{
+	transform: translateY(-110px);
+}
+.client-content .clt-cnt, .new-client-content .clt-cnt{
+	padding: 20px 40px;
+}
+.client-content .title-header{
+	color: #4caf50;
+}
+.client-content .btn-addId-content, .new-client-content .btn-addId-content{
+	width: 100%;
+}
+.btn-addId-content .btn-modact{
+	display: inline-block;
+	width: 50%;
+	margin: 0;
+	padding: 10px 15px;
+	text-align: center;
+	border: none;
+	outline: none !important;
+	border-radius: 0;
+}
+.btn-modact.btn-add-id-cl{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 0px;
+}
+.btn-modact.btn-close-cl{
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 5px;
+}
+.btn-addId-content .btn-modreg{
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 10px 15px;
+	text-align: center;
+	border: none;
+	outline: none !important;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.btn-add-id-cl{
+	background-color: #4caf50;
+	color: #ffffff !important;
+}
+.btn-add-id-cl:hover, .btn-add-id-cl:focus{
+	background-color: #61e066 !important;
+}
+.btn-add-id-cl i.material-icons, .btn-close-cl i.material-icons{
+	font-size: 36px;
+}
+.btn-close-cl{
+	background-color: #d42d2d;
+	color: #ffffff !important;
+}
+.btn-close-cl:hover, .btn-close-cl:focus{
+	background-color: #ff3131 !important;
+}
+.new-client-content{
+	display: block;
+	position: absolute;
+	top: -15px;
+	right: -15px;
+	width: 60px;
+	height: 60px;
+	padding: 12px;
+	background-color: #ff9045;
+	color: #ffffff;
+	border-radius: 50%;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.4s ease-in-out;
+}
+.new-client-content .title-header{
+	margin-top: 0;
+}
+.new-client-content .form-group{
+	margin: 5px 0 0 0;
+}
+.new-client-content .input-white .form-control{
+	color: #ffffff
+}
+.new-client-content .input-white .form-control::placeholder{
+	color: rgba(255, 255, 255, 0.5);
+}
+.new-client-content i.material-icons{
+	font-size: 36px;
+	transition: all 0.4s ease-in-out;
+	float: right;
+}
+.main-cnt {
+	visibility: hidden;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.active-nw-clt{
+	top: 0;
+    right: 0;
+    border-radius: 5px;
+    width: 100%;
+    height: 424px;
+	padding: 12px 0;
+    cursor: auto;
+}
+.active-nw-clt .main-cnt{
+	visibility: visible;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    transition-delay: 0.4s;
+}
+.active-nw-clt i.material-icons{
+	margin: 0 15px;
+    transform: rotate(360deg);
+    cursor: pointer;
+}
+.btn-add-nw-cl{
+	height: 56px;
+	background-color: #ffffff;
+	color: #ff9045 !important;
+	font-size: 18px;
+}
+.btn-add-nw-cl:hover, .btn-add-nw-cl:focus{
+	background-color: #ffffff !important;
+}
 
 
 
@@ -4257,6 +4457,9 @@ body.overflow-hidden {
 .pedidos_list-view{
 	padding: 30px 30px 30px 15px;
 	overflow-y: auto;
+}
+.pedidos_view{
+	overflow: hidden;
 }
 .content-pedido__item{
 	padding: 10px 10px 10px 20px;
