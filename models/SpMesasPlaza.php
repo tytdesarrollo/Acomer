@@ -17,7 +17,7 @@
 			//cursor que recibira los datos de las mesas
 			$cursor_mesas;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_MESAS(:cursor); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_MESAS(:cursor); END;");
 			//inicializa el cursor pasa como parametro
 			$cursor_mesas = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 
@@ -29,6 +29,51 @@
 			oci_fetch_all($cursor_mesas, $cursor);
 			//retona el array de datos
 			return $cursor;
+		}
+
+		public function procedimiento2(){
+			//$c1: codigo del container 1 
+			//$c2: codigo del container 2
+			//$c3: codigo del container 3
+			//$c4: codigo del container 4
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CODIGO_CONTAINERS(:c1,:c2,:c3,:c4); END;");
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 13);
+			oci_bind_by_name($stid, ":c2", $c2, 13);
+			oci_bind_by_name($stid, ":c3", $c3, 13);
+			oci_bind_by_name($stid, ":c4", $c4, 13);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+
+			return array($c1, $c2, $c3, $c4);
+
+		}
+
+		public function procedimiento3($c1,$c2,$c3,$c4){
+			//$c1: puestos del pedido ARRAY
+			//$C2: platos del pedido ARRAY
+			//$c3: codigo del pedido
+			//$c4: codigo del container
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ENTREGAR_PEDIDO_MESA(:c1,:c2,:c3,:c4); END;");
+			//pasa los parametros del proceimiento
+			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
+			oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);			
+			oci_bind_by_name($stid, ":c3", $c3, 10);
+			oci_bind_by_name($stid, ":c4", $c4, 13);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
 		}
 
 		public function matrizDatos(){

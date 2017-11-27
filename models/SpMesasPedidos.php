@@ -17,7 +17,7 @@
 			//cursor que recibira los datos de las mesas
 			$cursor_mesas;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_PEDIDOS_ENTREGAR(:cursor); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_ENTREGAR(:cursor); END;");
 			//inicializa el cursor pasa como parametro
 			$cursor_mesas = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 
@@ -43,7 +43,7 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 
-			$stid = oci_parse($conexion, 'BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_PEDIDOS(:c1,:C2,:C3,:C4,:C5,:c6); END;');    
+			$stid = oci_parse($conexion, 'BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS(:c1,:C2,:C3,:C4,:C5,:c6); END;');    
 
 			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
 		    oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);
@@ -66,7 +66,7 @@
 			// codigo de la mesa principal
 			$c3;
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_MESAS_UNIDAS(:c1,:c2,:c3); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_MESAS_UNIDAS(:c1,:c2,:c3); END;");
 			//inicializa el cursor pasa como parametro
 			$c2 = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 			
@@ -94,7 +94,7 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 
-			$stid = oci_parse($conexion, 'BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_PEDIDOS_ADD(:c1,:C2,:C3,:C4,:C5,:C6); END;');    
+			$stid = oci_parse($conexion, 'BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_ADD(:c1,:C2,:C3,:C4,:C5,:C6); END;');    
 
 			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
 		    oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);
@@ -132,9 +132,9 @@
 			$conexion1 = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			$conexion2 = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			// procedimeintos a ejecutar
-			$stid1 = oci_parse($conexion1, 'BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_PEDIDOS(:c1,:C2,:C3,:C4,:C5,:c6); END;');    
-		    $stid2 = oci_parse($conexion1, 'BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_PEDIDOS(:c7,:C8,:C9,:C10,:C11,:c12); END;');
-		    $stid3 = oci_parse($conexion2, 'BEGIN SP_ACOMER_UNION_MESAS(:c13,:C14,:C15); END;');    
+			$stid1 = oci_parse($conexion1, 'BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS(:c1,:C2,:C3,:C4,:C5,:c6); END;');    
+		    $stid2 = oci_parse($conexion1, 'BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS(:c7,:C8,:C9,:C10,:C11,:c12); END;');
+		    $stid3 = oci_parse($conexion2, 'BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_UNION_MESAS(:c13,:C14,:C15); END;');    
 		    //parametros para los procedimientos    
 		    // parametros del procedimientos 1
 			oci_bind_array_by_name($stid1, ":c1", $c1, 100, -1, SQLT_CHR);
@@ -169,7 +169,7 @@
 			// cursor con los codigos de las mesas que estan unidas
 			$c2;			
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_DETALLE_PEDIDO(:c1,:c2); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_DETALLE_PEDIDO(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
 			$c2 = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 			
@@ -193,7 +193,7 @@
 			$c2;
 			$c3;			
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_NOMBRE_PLATOS(:c1,:c2,:c3); END;");				
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_NOMBRE_PLATOS(:c1,:c2,:c3); END;");				
 			//se pasan los parametros del procedimiento 			
 			oci_bind_by_name($stid, ':c1',$c1, 20);   
 			oci_bind_by_name($stid, ':c2',$c2, 200);
@@ -217,7 +217,7 @@
 			//mensaje que se recibe
 			$c6;			
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_PEDIDOS_CANCEL(:c1,:C2,:C3,:C4,:c5,:c6); END;");				
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_CANCEL(:c1,:C2,:C3,:C4,:c5,:c6); END;");				
 			//se pasan los parametros del procedimiento 			
 			oci_bind_by_name($stid, ':c1',$c1, 10);   
 			oci_bind_by_name($stid, ':c2',$c2, 10);
@@ -239,7 +239,7 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_VISUALIZA_FAC(:c1,:c2,:c3,:c4); END;");	
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_VISUALIZA_FAC(:c1,:c2,:c3,:c4); END;");	
 			//establece el cursor
 			$c3 = oci_new_cursor($conexion);		
 			//se pasan los parametros del procedimiento 			
@@ -264,7 +264,7 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			//ejecuta el procedimeinto
-			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_MESA_PRINC_HIJOS(:c1,:c2); END;");	
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_MESA_PRINC_HIJOS(:c1,:c2); END;");	
 			//se pasan los parametros del procedimiento 			
 			oci_bind_by_name($stid, ":c1", $c1, 10, OCI_B_INT);    
 			oci_bind_by_name($stid, ":c2", $c2, 200, SQLT_CHR);    
@@ -275,6 +275,43 @@
 			$result = explode("_*", $c2);
 
 			return $result;
+			
+		}
+
+		public function procedimiento11($c1){
+			//$c1: codigo de la mesa
+			//$c2: codigo del mensaje
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PED_ENTREG_MESUNIDA(:c1,:c2); END;");		
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 10);
+			oci_bind_by_name($stid, ":c2", $c2, 10);	
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+
+			return $c2;
+			
+		}
+
+		public function procedimiento12($c1){
+			//$c1: codigo de la mesa
+			//$c2: codigo del mensaje
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_CANCEL_REST(:c1); END;");		
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 10);	
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
 			
 		}
 
