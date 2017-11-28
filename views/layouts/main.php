@@ -30,53 +30,65 @@ AppAsset::register($this);
 <header id="header" class="clearfix">
 	<nav id="menu" class="navbar">
 		<div class="container-fluid">
-			<!--<div class="content__icon-menu__ham pull-left">
-				<a href="#" id="trigger" class="menu-trigger">
-					<div class="line-wrap">
-						<div class="line top"></div>
-						<div class="line center"></div>
-						<div class="line bottom"></div>
-					</div>
-				</a>
-			</div>-->
-			<!--<div class="content__icon-menu__ham cd-modal-action pull-left">
-				<a href="#" class="menu-trigger" data-type="modal-trigger">
-					<div class="food-menu">
-						<div class="item one">
-							<?xml version="1.0" encoding="utf-8"?>
-							<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-							<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-								 width="24px" height="24px" viewBox="12 12 24 24" enable-background="new 12 12 24 24" xml:space="preserve">
-							<g>
-								<path fill="#FFFFFF" d="M19.161,25.299l3.256-3.256l-8.07-8.07c-1.795,1.795-1.795,4.711,0,6.506
-									C14.346,20.479,19.161,25.299,19.161,25.299z"/>
-								
-									<rect x="22.822" y="28.522" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 27.5311 70.7509)" fill="#FFFFFF" width="11.193" height="2.302"/>
-							</g>
-							</svg>
-						</div>
-						<div class="item two">
-							<?xml version="1.0" encoding="utf-8"?>
-							<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-							<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-								 width="24px" height="24px" viewBox="12 12 24 24" enable-background="new 12 12 24 24" xml:space="preserve">
-							<path fill="#FFFFFF" d="M26.966,23.211c1.754,0.823,4.234,0.242,6.063-1.588c2.203-2.203,2.623-5.349,0.938-7.035
-								c-1.691-1.685-4.843-1.265-7.041,0.938c-1.829,1.829-2.404,4.308-1.588,6.063c-2.56,2.554-11.234,11.228-11.234,11.228l1.628,1.628
-								C15.732,34.445,26.966,23.211,26.966,23.211z"/>
-							</svg>
-						</div>
-					</div>
-				</a>
-				<span class="cd-modal-bg"></span>
-			</div>-->
-			<!--<div class="content__logo pull-left">
-				<?= Html::img('@web/img/logo_small.svg', ['alt' => 'Auto Gestión Web', 'height' => '38px']) ?>
-				<div class="hidden-xs" style="margin-top: 10px;"><p>Mesa Centro de servicios compartidos.</p></div>
-			</div>-->
 			<div class="pull-right">
 				<div class="content__icon-menu__aux">
-					<div id="avatar" class="content-avatar__nav hidden-xs">
-						<?= Html::img('@web/img/avatar.png', ['alt' => 'avatar', 'class' => 'img-avatar img-circle']) ?>
+					<div class="dropdown">
+						<a href="#" data-toggle="dropdown" class="dropdown-toggle btn-menu-helper">
+							<i class="material-icons">&#xE8FD;</i>
+						</a>
+						<ul class="dropdown-menu menu-profile menu-helper">
+							<li class="mrg__bottom-5">
+									<p class="sub-title text-center fnt__Medium">Notificaciones</p>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<p class="sub-title cat-helper fnt__Medium">Mesas</p>
+							</li>
+							<li class="cnt-notification-helper">
+								<div class="dis-inline-block">
+									<p class="lb-notification-helper">Mesa libre</p>
+								</div>
+								<div class="dis-inline-block pull-right">
+									<div class="notification-helper null"></div>
+								</div>
+							</li>
+							<li class="cnt-notification-helper">
+								<div class="dis-inline-block">
+									<p class="lb-notification-helper">Mesa ocupada</p>
+								</div>
+								<div class="dis-inline-block pull-right">
+									<div class="notification-helper full"></div>
+								</div>
+							</li>
+							<li class="cnt-notification-helper">
+								<div class="dis-inline-block">
+									<p class="lb-notification-helper">Pedido en espera</p>
+								</div>
+								<div class="dis-inline-block pull-right">
+									<div class="notification-helper warning"></div>
+								</div>
+							</li>
+							<li class="cnt-notification-helper">
+								<div class="dis-inline-block">
+									<p class="lb-notification-helper">Pedido retrasado</p>
+								</div>
+								<div class="dis-inline-block pull-right">
+									<div class="notification-helper danger"></div>
+								</div>
+							</li>
+							<li class="divider cat-helper"></li>
+							<li>
+								<p class="sub-title cat-helper fnt__Medium">Restaurantes</p>
+							</li>
+							<li class="cnt-notification-helper">
+								<div class="dis-inline-block">
+									<p class="lb-notification-helper">Pedido listo</p>
+								</div>
+								<div class="dis-inline-block pull-right">
+									<div class="notification-helper c-full"></div>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 				<div class="content__icon-menu__aux">
@@ -127,29 +139,8 @@ AppAsset::register($this);
 			</div>
 		</div>
 	</nav>
-	
 </header>
-<div class="cd-modal">
-	<div class="cd-modal-content">
-		<ul class="food-menu-list text-center">
-			<li>A la parrila</li>
-			<li>Ensaladas</li>
-			<li>Postres</li>
-			<li>Bebidas</li>
-		</ul>
-		<div class="content-grid-products">
-			<div class="grid-products">
-				<div class="grid-item"></div>
-				<div class="grid-item"></div>
-				<div class="grid-item"></div>
-				<div class="grid-item"></div>
-			</div>
-		</div>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab error reiciendis sapiente iure. Dolore, quo sed dolores ipsum necessitatibus asperiores illo sapiente velit magni accusantium fugit a natus expedita obcaecati!</p>
-	</div>
-</div>
 <section class="scroller-inner">
-	
 	<section id="content">
 		<div class="fluid-container main-content">
 			<?= Breadcrumbs::widget([
