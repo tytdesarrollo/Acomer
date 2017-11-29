@@ -62,4 +62,21 @@
 			//retorna los valores devueltos por el procedimiento (identificacion del usuario, codigo de mensaje y el mensaje)
 			return $SpLoginAcomer = array($V_OUT_USER_ID,$V_OUT_COD_MESS,$V_OUT_MESS);
 		}
+
+		public function procedimiento2($c1){
+			//$c1: cedula de quien inicia sesion
+			//$c2: rol que tiene 
+			
+			$c2 = '';
+			//			
+			$rows = Yii::$app->usrawa->createCommand("BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_ROL(:c1,:c2); END;");
+
+			$rows->bindParam(":c1", $c1, PDO::PARAM_STR);
+			$rows->bindParam(":c2", $c2, PDO::PARAM_STR,200);
+
+			//Se ejecuta el procedimiento 
+			$rows->execute();
+
+			return $c2;
+		}
 	}

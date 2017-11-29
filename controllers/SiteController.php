@@ -33,7 +33,6 @@ class SiteController extends Controller
 
     public function actionPrueba(){     
         
-
         
         return $this->render('prueba'); 
     }   
@@ -85,9 +84,10 @@ class SiteController extends Controller
         //modelo de recuperar contraseña
         $model2 = new RememberForm();
         //Se declara la clase de directorio activo
-        $modeladp = new Ldap;
+        //$modeladp = new Ldap;
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
-        $ladpcon = $modeladp->directorioactivo();
+        //$ladpcon = $modeladp->directorioactivo();
+        $ladpcon = array("","","false");
         
         //si no posee directorio activo permite la recuperacion de la contraseña
         if($ladpcon[2]=="false"){
@@ -154,9 +154,10 @@ class SiteController extends Controller
     public function actionLogueo()
     {   
         //Declaracion de  directorio activo
-        $modeladp = new Ldap;        
+        //$modeladp = new Ldap;        
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado         
-        $ladpcon = $modeladp->directorioactivo();
+        //$ladpcon = $modeladp->directorioactivo();
+        $ladpcon = array("","","false");
         //si hay un usuario con el id ingresado y el directorio activo esta activo
         if(isset($ladpcon[0]) && $ladpcon[2]=='true'){
             //la variable de sesion cedula le asigno el identificador del usuario
@@ -278,8 +279,19 @@ class SiteController extends Controller
     public function actionPrincipal(){
         //si hay una sesion abierta
         if (isset(Yii::$app->session['cedula'])){
-            // renderizamos
-            return $this->render('principal');
+            //cedula ingresada
+            $cedula = $_SESSION['cedula'];
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);
+
+            if($rol === 'MESERO'){
+                return $this->redirect(['site/plaza']);
+            }else if($rol === 'COCINERO'){
+                return $this->redirect(['site/cocina']);
+            }
+
+            return $this->render('principal',["rol"=>$rol]);
         }else{                                        
             //retornamos al index
             return $this->goHome();                                        
@@ -1491,5 +1503,32 @@ class SiteController extends Controller
         //echo $c2; echo '<br>';
         //echo $c3; echo '<br>';        
     }
+
+    public function actionAgregahistorial(){
+        //$c1: cedula del cocinero
+        //$c2: nombre del plato
+        //$c3: cantidad
+        //  
+        $c1 = '16743485';//$_SESSION['cedula'];
+        $c2 = $_GET['plato'];                
+        $c3 = $_GET['cantidad'];
+        
+        $fn_cocina = new SpCocinaPedidos;
+        $historial = $fn_cocina->procedimiento3($c1,$c2,$c3);
+
+        echo 1;
+    }
+
+    public function actionHistorialcocina(){
+        //$c1: cedula del cocinero
+        //  
+        $c1 = '16743485';//$_SESSION['cedula'];
+
+        $fn_cocina = new SpCocinaPedidos;
+        $historial = $fn_cocina->procedimiento4($c1);
+
+        echo json_encode($historial);
+    }
+
 
 }
