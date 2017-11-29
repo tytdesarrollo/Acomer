@@ -61,4 +61,47 @@
 			//se ejecuta el procidimiento 
 			oci_execute($stid);			
 		}
+
+		public function procedimiento3($c1,$c2,$c3){
+			//$c1: codigo del cocinero
+			//$c2: nombre del plato
+			//$c3: cantidad 
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_HISTORIAL_COCINA(:c1,:c2,:c3); END;");
+			//se pasan los parametros del procedimiento 
+			oci_bind_by_name($stid, ":c1", $c1, 11,SQLT_CHR);    
+			oci_bind_by_name($stid, ":c2", $c2,200,SQLT_CHR);
+			oci_bind_by_name($stid, ":c3", $c3, 10,SQLT_CHR);		
+			//se ejecuta el procidimiento 
+			oci_execute($stid);		
+		}
+
+		public function procedimiento4($c1){			
+			//$c1: codigo del cocinero
+			//$c2: cursor con los datos de los platos ya terminados			
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_HISTCOCINA(:c1,:c2); END;");
+			//inicializa el cursor pasa como parametro
+			$c2 = oci_new_cursor($conexion);
+			//se pasan los parametros del procedimiento 
+			oci_bind_by_name($stid, ":c1", $c1, 11,SQLT_CHR);    
+			oci_bind_by_name($stid, ":c2", $c2,-1, OCI_B_CURSOR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);	
+			oci_execute($c2,OCI_DEFAULT);
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c2, $cursor1);	
+
+			return $cursor1;
+		}
 	}

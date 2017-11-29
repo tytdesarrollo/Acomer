@@ -33,15 +33,15 @@ AppAsset::register($this);
 				<?= Html::img('@web/img/logo_small.png', ['alt' => 'Acomer', 'height' => '24px']) ?>
 			</div>
 			<div class="content__nom-emp dis-inline-block">
-				<h3 class="nom-emp">Nombre restaurante</h3>
+				<h3 class="nom-emp" id="tituloCocina">SMILLE CITY</h3>
 			</div>
 			<div class="pull-right">
-				<a href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos">
+				<a href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos" onclick="consultarHistorial()">
 					<i class="material-icons icon-btn">&#xE889;</i>Historial
 				</a>
 				<div class="content__icon-menu__aux">
 					<div class="dropdown">
-						<a href="#" data-toggle="dropdown" class="dropdown-toggle menu-trigger"><i class="btn-menu-profile glyphicon glyphicon-option-vertical icon__24"></i></a>
+						<a href="#" data-toggle="dropdown" class="dropdown-toggle menu-trigger menu-user"><i class="btn-menu-profile glyphicon glyphicon-option-vertical icon__24"></i></a>
 						<ul class="dropdown-menu menu-profile">
 							<li>
 								<div class="dis-inline-block">
@@ -76,7 +76,7 @@ AppAsset::register($this);
 								<div class="pull-right">
 								<?= Html::beginForm(['/site/salida'],
 								'post', 
-								['class' => 'form-inline']); ?>
+								['class' => 'form-inline']); ?>								
 								<?= Html::submitButton('Salir',['class' => 'btn btn-raised btn-default btn-sm']) ?>
 								<?= Html::endForm() ?>
 								</div>
@@ -105,7 +105,7 @@ AppAsset::register($this);
 				<div class="container-fluid">
 					<div class="row">
 						<div class="pull-right">
-							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close" onclick="salirHistorial()">
 								<i class="material-icons icon-btn">&#xE14C;</i>Salir
 							</a>
 						</div>
@@ -117,17 +117,17 @@ AppAsset::register($this);
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="content-fact">
-							<div class="table-responsive">
-								<table class="table table-hover">
+							<div class="table-responsive" id="tablaHistorial">
+								<table class="table table-hover" >
 									<thead>
 										<tr>
-											<th>info 1</th>
-											<th>info 2</th>
-											<th>Hora ingreso</th>
-											<th>Hora salida</th>
+											<th>Plato</th>
+											<th>Cantidad</th>
+											<th>Fecha</th>
+											<th>Hora terminado</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="cuerpoHistroial">
 										<tr>
 											<td>info 1</td>
 											<td>info 2</td>
