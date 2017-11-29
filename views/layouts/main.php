@@ -62,7 +62,7 @@ AppAsset::register($this);
 							</li>
 							<li class="cnt-notification-helper">
 								<div class="dis-inline-block">
-									<p class="lb-notification-helper">Pedido en espera</p>
+									<p class="lb-notification-helper">-15 minutos de retraso</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="notification-helper warning"></div>
@@ -70,7 +70,7 @@ AppAsset::register($this);
 							</li>
 							<li class="cnt-notification-helper">
 								<div class="dis-inline-block">
-									<p class="lb-notification-helper">Pedido retrasado</p>
+									<p class="lb-notification-helper">+15 minutos de retraso</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="notification-helper danger"></div>
@@ -93,7 +93,7 @@ AppAsset::register($this);
 				</div>
 				<div class="content__icon-menu__aux">
 					<div class="dropdown">
-						<a href="#" data-toggle="dropdown" class="dropdown-toggle menu-trigger"><i class="btn-menu-profile glyphicon glyphicon-option-vertical icon__24"></i></a>
+						<a href="#" data-toggle="dropdown" class="dropdown-toggle menu-trigger menu-user"><i class="btn-menu-profile glyphicon glyphicon-option-vertical icon__24"></i></a>
 						<ul class="dropdown-menu menu-profile">
 							<li>
 								<div class="dis-inline-block">

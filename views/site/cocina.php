@@ -147,7 +147,7 @@ use yii\widgets\ActiveForm;
 	function verDetallePlato(posicion){
 		var nombrePlato = generalDetallePlato['PLATO'];
 		var imagenPlato = generalDetallePlato['IMAGEN'];
-		var descriPlato = generalDetallePlato['DESCRIPCION'];
+		var descriPlato = generalDetallePlato['DESCRIPCION'];		
 
 		var detallePedido;
 
@@ -183,7 +183,8 @@ use yii\widgets\ActiveForm;
 		
 		var empresa  = generalDetallePlato['EMPRESA'][posicion];
 		var pednro   = generalDetallePlato['PEDIDO'][posicion];
-		var plato    = generalDetallePlato['PLATO'][posicion];				
+		var plato    = generalDetallePlato['PLATO'][posicion];	
+		var cantidad = generalDetallePlato['CANTIDAD'][posicion];			
 
 		$.ajax({
 			url: '<?php echo Url::toRoute(['site/pedidolisto']); ?>',
@@ -192,7 +193,74 @@ use yii\widgets\ActiveForm;
 			success: function (data) {			
 				
 			}
-		});		
+		});	
+
+		$.ajax({
+			url: '<?php echo Url::toRoute(['site/agregahistorial']); ?>',
+			method: "GET",
+			data: {'cantidad':cantidad, 'plato':plato},
+			success: function (data) {			
+				
+			}
+		});			
 
 	}
+
+	function consultarHistorial(){
+		$.ajax({
+			url: '<?php echo Url::toRoute(['site/historialcocina']); ?>',
+			dataType:'json',				
+			success: function (data) {	
+				//capturar los datos json
+				var arrayDatos = $.map(data, function(value, index) {
+	    			return [value];
+				});	
+
+				cargarHistorial(arrayDatos);
+			}
+		});	
+	}setInterval(consultarHistorial,1000);
+
+	function cargarHistorial(datos){
+		//array con los datos 
+		var plato = datos[0];
+		var cantidad = datos[1];
+		var fecha = datos[2];
+		var hora = datos[3];
+
+		//estructura como se van a mostrar los datos
+		var cadena = 
+				'<table class="table table-hover" >'+
+					'<thead>'+
+						'<tr>'+
+							'<th>Plato</th>'+
+							'<th>Cantidad</th>'+
+							'<th>Fecha</th>'+
+							'<th>Hora</th>'+
+						'</tr>'+
+					'</thead>'+
+					'<tbody>';
+
+		for(var i=0 ; i<plato.length ; i++){
+			cadena = cadena +
+					'<tr>'+
+						'<td>'+plato[i]+'</td>'+
+						'<td>'+cantidad[i]+'</td>'+
+						'<td>'+fecha[i]+'</td>'+
+						'<td>'+hora[i]+'</td>'+
+					'</tr>';				
+		}
+
+		cadena = cadena +
+				'</tbody>'+
+			'</table>';
+
+		document.getElementById("tablaHistorial").innerHTML = cadena;
+	}
+
+	function salirHistorial(){
+		var refreshIntervalId = setInterval(consultarHistorial, 10000);
+		clearInterval(refreshIntervalId);
+	}
+
 </script>

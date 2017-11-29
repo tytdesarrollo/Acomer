@@ -2487,6 +2487,9 @@ MATERIAL-SELECT
 .btn-menu-helper + .dropdown-backdrop{
 	z-index: 2;
 }
+.menu-user + .dropdown-backdrop{
+	z-index: 2;
+}
 .menu-helper{
 	padding: 24px;
     min-width: 294px;
