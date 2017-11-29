@@ -9,6 +9,9 @@ body {
     height: auto;
 	width: 100%;
 }
+.scroller-inner.full-height{
+	height: 100%;
+}
 .scroller-inner #content{
 	min-height: 100%;
 	height: 100%;
@@ -969,8 +972,8 @@ a.desc:after {
 	margin-bottom:6px;
 }
 .content__logo{
-	margin-top: 11px;
 	margin-left: 15px;
+	padding: 18px 0;
 }
 .icon-menu{
 	width: 48px;
@@ -2463,6 +2466,84 @@ MATERIAL-SELECT
 }
 .logo-login{
 	width: 200px;
+}
+.btn-menu-helper {
+	width: 48px;
+    height: 48px;
+    padding: 9px;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+}
+.btn-menu-helper:hover, .btn-menu-helper:focus {
+    color: #ffffff;
+    text-decoration: none;
+}
+.btn-menu-helper > i{
+	font-size: 30px;
+}
+.btn-menu-helper + .dropdown-backdrop{
+	z-index: 2;
+}
+.menu-helper{
+	padding: 24px;
+    min-width: 294px;
+}
+.menu-helper .divider.cat-helper{
+	margin-top: 20px;
+}
+.menu-helper .title{
+	font-size: 13px;
+    color: #666666;
+    margin: 0;
+}
+.menu-helper .sub-title{
+	font-size: 22px;
+    color: #032538;
+    margin: 0;
+}
+.menu-helper .sub-title.cat-helper{
+	font-size: 16px;
+    color: #0071aa;
+    margin: 0;
+}
+.menu-helper .cnt-notification-helper{
+	margin-bottom: 9px;
+}
+.menu-helper .lb-notification-helper{
+	font-size: 18px;
+    color: #444;
+    margin: 0;
+}
+.menu-helper .notification-helper{
+	width: 25px;
+	height: 25px;
+	background-color: #ffffff;
+	border: 2px solid rgba(0,0,0,0.5);
+	border-radius: 50%;
+	opacity:0.8;
+}
+.notification-helper.null{
+	background-color: #555555;
+	border-color: #222222;
+}
+.notification-helper.full{
+	background-color: #00c853;
+	border-color: #00642a;
+}
+.notification-helper.warning{
+	background-color: #ff9800;
+	border-color: #934d00;
+}
+.notification-helper.danger{
+	background-color: #ff3600;
+	border-color: #8e1e00;
+}
+.notification-helper.c-full{
+	background-color: #0091ea;
+	border-color: #004975;
 }
 .btn-radius{
 	border-radius: 20px;
@@ -4447,6 +4528,25 @@ body.overflow-hidden {
 /* INTERFAZ COCINERO */
 .p-t-60{
 	padding-top: 60px;
+}
+.p-t-80{
+	padding-top: 80px;
+}
+.content__nom-emp{
+	padding: 18px 0;
+	text-align: center;
+}
+.nom-emp{
+	margin: 0;
+	font-size: 22px;
+}
+.modal_full-view .modal-dialog{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+.modal_full-view .modal-content{
+	height: 100%;
 }
 .main-cocina > .row{
 	height: 100%;

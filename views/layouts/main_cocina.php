@@ -28,16 +28,17 @@ AppAsset::register($this);
 	<?php @$events = $this->params['customParam']; ?>
 <header id="header" class="clearfix">
 	<nav id="menu" class="navbar">
-		<div class="container-fluid">
+		<div class="container-fluid text-center">
 			<div class="content__logo pull-left">
-				<?= Html::img('@web/img/logo_small.png', ['alt' => 'Acomer', 'height' => '38px']) ?>
+				<?= Html::img('@web/img/logo_small.png', ['alt' => 'Acomer', 'height' => '24px']) ?>
+			</div>
+			<div class="content__nom-emp dis-inline-block">
+				<h3 class="nom-emp">Nombre restaurante</h3>
 			</div>
 			<div class="pull-right">
-				<div class="content__icon-menu__aux">
-					<div id="avatar" class="content-avatar__nav hidden-xs">
-						<?= Html::img('@web/img/avatar.png', ['alt' => 'avatar', 'class' => 'img-avatar img-circle']) ?>
-					</div>
-				</div>
+				<a href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos">
+					<i class="material-icons icon-btn">&#xE889;</i>Historial
+				</a>
 				<div class="content__icon-menu__aux">
 					<div class="dropdown">
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle menu-trigger"><i class="btn-menu-profile glyphicon glyphicon-option-vertical icon__24"></i></a>
@@ -87,7 +88,7 @@ AppAsset::register($this);
 		</div>
 	</nav>
 </header>
-<section class="scroller-inner p-t-60">
+<section class="scroller-inner full-height p-t-80">
 	<section id="content">
 		<div class="container-fluid main-content main-cocina">
 			<?= Breadcrumbs::widget([
@@ -97,18 +98,74 @@ AppAsset::register($this);
 		</div>
 	</section>
 </section>
+<div class="modal modal_full-view fade" id="historialPedidos" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="pull-right">
+							<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+								<i class="material-icons icon-btn">&#xE14C;</i>Salir
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">
+				<h2 class="text-center">Historial de pedidos</h2>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="content-fact">
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>info 1</th>
+											<th>info 2</th>
+											<th>Hora ingreso</th>
+											<th>Hora salida</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>info 1</td>
+											<td>info 2</td>
+											<td>Hora ingreso</td>
+											<td>Hora salida</td>
+										</tr>
+										<tr>
+											<td>info 1</td>
+											<td>info 2</td>
+											<td>Hora ingreso</td>
+											<td>Hora salida</td>
+										</tr>
+										<tr>
+											<td>info 1</td>
+											<td>info 2</td>
+											<td>Hora ingreso</td>
+											<td>Hora salida</td>
+										</tr>
+										<tr>
+											<td>info 1</td>
+											<td>info 2</td>
+											<td>Hora ingreso</td>
+											<td>Hora salida</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	<?php $this->endBody() ?>
 </body>
 </html>
 	<?php $this->endPage() ?>
-<script>
-	/*
-	 * Detectar Navegador móvil
-	 */
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	   $('html').addClass('mobile');
-	}
-</script>
 <script>
   $(function () {
     $.material.init();
