@@ -22,7 +22,8 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-	<script src="../web/js/modernizr.custom.js"></script>
+	<!--<script src="../web/js/modernizr.custom.js"></script>-->
+	<?= Html::jsFile('@web/js/modernizr.custom.js') ?>
 </head>
 <body class="bg-green cd-section">
 	<?php $this->beginBody() ?>
@@ -62,7 +63,7 @@ AppAsset::register($this);
 							</li>
 							<li class="cnt-notification-helper">
 								<div class="dis-inline-block">
-									<p class="lb-notification-helper">-15 minutos de retraso</p>
+									<p class="lb-notification-helper">0-15 minutos de retraso</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="notification-helper warning"></div>
@@ -98,7 +99,7 @@ AppAsset::register($this);
 							<li>
 								<div class="dis-inline-block">
 									<p class="txt-name fnt__Medium">usuario</p>
-									<p class="txt-email">john.doe@hello.com</p>
+									<p class="txt-email" id="idUsuario">Id usuario</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="content-avatar__menu-profile">
@@ -106,25 +107,12 @@ AppAsset::register($this);
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>
+							<li class="divider"></li>	
 							<li>
-								<p class="txt-cargo fnt__Medium">Profesional Nómina</p>
-								<p class="txt-info">C.C. 52513735</p>
-								<p class="txt-info">BOGOTÁ</p>
-							</li>
-							<li>
-								<p class="txt-subcat fnt__Medium">Jefe Inmediato:</p>
-								<p class="txt-info">Luis Alejandro Galindo Ramirez</p>
-							</li>
-							<li>
-								<p class="txt-subcat fnt__Medium">Regional:</p>
-								<p class="txt-info">Administración Central</p>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<div class="pull-left">
-									<button class="btn btn-raised btn-default btn-sm">Actualizar</button>
-								</div>
+								<p class="txt-name fnt__Medium">Perfil</p>
+								<p class="txt-email" id="idPerfil">Nombre Perfil</p>	
+							<li class="divider"></li>							
+							<li>								
 								<div class="pull-right">
 								<?= Html::beginForm(['/site/salida'],
 								'post', 
@@ -154,7 +142,8 @@ AppAsset::register($this);
 </body>
 </html>
 	<?php $this->endPage() ?>
-<script src="../web/js/main.js"></script>
+<!--<script src="../web/js/main.js"></script>-->
+<?= Html::jsFile('@web/js/main.js') ?>
 <script>
 	/*
 	 * Detectar Navegador móvil

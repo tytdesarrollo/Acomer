@@ -104,4 +104,23 @@
 
 			return $cursor1;
 		}
+
+		public function procedimiento5($c1){
+			//$c1: codigo del cocinero
+			//$c2: nombre de la cocina
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_NOMBRE_COCINAS(:c1,:c2); END;");			
+			//se pasan los parametros del procedimiento 
+			oci_bind_by_name($stid, ":c1", $c1, 11,SQLT_CHR);    
+			oci_bind_by_name($stid, ":c2", $c2,100,SQLT_CHR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);				
+
+			return $c2;
+		}
 	}

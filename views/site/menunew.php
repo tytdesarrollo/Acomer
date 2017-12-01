@@ -25,7 +25,8 @@
 	    <?= Html::csrfMetaTags() ?>
 	    <title><?= Html::encode($this->title) ?></title>
 	    <?php $this->head() ?>
-		<script src="js/modernizr-custom.js"></script>
+		<!--<script src="js/modernizr-custom.js"></script>-->
+		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	</head>
 	<body class='bg-acomer'>
@@ -122,8 +123,10 @@
    			</div>
   		</div>
 	<?php $this->endBody() ?>
-	<script src="../web/js/main-menu-new.js"></script>
-	<script src="../web/js/order_new.js"></script>
+	<!--<script src="../web/js/main-menu-new.js"></script>-->
+	<!--<script src="../web/js/order_new.js"></script>-->
+	<?= Html::jsFile('@web/js/main-menu-new.js') ?>
+	<?= Html::jsFile('@web/js/order_new.js') ?>
 		<script>
 			(function() {
 				var categories = new CircleCategories(document.getElementById('categories'));

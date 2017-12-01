@@ -33,8 +33,16 @@ use yii\widgets\ActiveForm;
 	var generalPrimerItem = 0;
 </script>
 
-<script type="text/javascript">
-	$(cargarPedidos());	
+<script type="text/javascript">		
+
+	//funciones que debe cargar una vez este listo el documento 
+    $(cargarPedidos());	
+
+    $(document).ready(function() {	
+    	document.getElementById("tituloCocina").innerHTML = "<?=$nomcocina?>";
+    	document.getElementById("idUsuario").innerHTML = "CC."+"<?=Yii::$app->session['cedula']?>";
+    	document.getElementById("idPerfil").innerHTML = "<?=ucwords(strtolower($rol))?>";
+    });
 	
 	function cargarPedidos(){
 		$.ajax({
@@ -233,22 +241,32 @@ use yii\widgets\ActiveForm;
 				'<table class="table table-hover" >'+
 					'<thead>'+
 						'<tr>'+
-							'<th>Plato</th>'+
-							'<th>Cantidad</th>'+
-							'<th>Fecha</th>'+
-							'<th>Hora</th>'+
+							'<th>PLATO</th>'+
+							'<th>CANTIDAD</th>'+
+							'<th>FECHA</th>'+
+							'<th>HORA</th>'+
 						'</tr>'+
 					'</thead>'+
 					'<tbody>';
 
-		for(var i=0 ; i<plato.length ; i++){
+		if(plato[0] == 'SIN_DATOS'){
 			cadena = cadena +
 					'<tr>'+
-						'<td>'+plato[i]+'</td>'+
-						'<td>'+cantidad[i]+'</td>'+
-						'<td>'+fecha[i]+'</td>'+
-						'<td>'+hora[i]+'</td>'+
-					'</tr>';				
+						'<td>VACIO</td>'+
+						'<td>VACIO</td>'+
+						'<td>VACIO</td>'+
+						'<td>VACIO</td>'+
+					'</tr>';	
+		}else{
+			for(var i=0 ; i<plato.length ; i++){
+				cadena = cadena +
+						'<tr>'+
+							'<td>'+plato[i]+'</td>'+
+							'<td>'+cantidad[i]+'</td>'+
+							'<td>'+fecha[i]+'</td>'+
+							'<td>'+hora[i]+'</td>'+
+						'</tr>';				
+			}
 		}
 
 		cadena = cadena +
@@ -261,6 +279,6 @@ use yii\widgets\ActiveForm;
 	function salirHistorial(){
 		var refreshIntervalId = setInterval(consultarHistorial, 10000);
 		clearInterval(refreshIntervalId);
-	}
-
+	}		
+	
 </script>

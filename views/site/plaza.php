@@ -39,6 +39,13 @@ use yii\widgets\ActiveForm;
 </div>
 
 <script type="text/javascript">
+	$(document).ready(function() {	    	
+    	document.getElementById("idUsuario").innerHTML = "CC."+"<?=Yii::$app->session['cedula']?>";
+    	document.getElementById("idPerfil").innerHTML = "<?=ucwords(strtolower($rol))?>";
+    });
+</script>
+
+<script type="text/javascript">
 	var codigoEmp1 = '<?=$container1?>';
 	var codigoEmp2 = '<?=$container2?>';
 	var codigoEmp3 = '<?=$container3?>';

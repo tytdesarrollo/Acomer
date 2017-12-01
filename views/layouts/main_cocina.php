@@ -33,7 +33,7 @@ AppAsset::register($this);
 				<?= Html::img('@web/img/logo_small.png', ['alt' => 'Acomer', 'height' => '24px']) ?>
 			</div>
 			<div class="content__nom-emp dis-inline-block">
-				<h3 class="nom-emp" id="tituloCocina">SMILLE CITY</h3>
+				<h3 class="nom-emp" id="tituloCocina">NOMBRE COCINA</h3>
 			</div>
 			<div class="pull-right">
 				<a href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos" onclick="consultarHistorial()">
@@ -45,8 +45,8 @@ AppAsset::register($this);
 						<ul class="dropdown-menu menu-profile">
 							<li>
 								<div class="dis-inline-block">
-									<p class="txt-name fnt__Medium">usuario</p>
-									<p class="txt-email">john.doe@hello.com</p>
+									<p class="txt-name fnt__Medium">Usuario</p>
+									<p class="txt-email" id="idUsuario">Id usuario</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="content-avatar__menu-profile">
@@ -54,25 +54,13 @@ AppAsset::register($this);
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>
+							<li class="divider"></li>	
 							<li>
-								<p class="txt-cargo fnt__Medium">Profesional Nómina</p>
-								<p class="txt-info">C.C. 52513735</p>
-								<p class="txt-info">BOGOTÁ</p>
-							</li>
-							<li>
-								<p class="txt-subcat fnt__Medium">Jefe Inmediato:</p>
-								<p class="txt-info">Luis Alejandro Galindo Ramirez</p>
-							</li>
-							<li>
-								<p class="txt-subcat fnt__Medium">Regional:</p>
-								<p class="txt-info">Administración Central</p>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<div class="pull-left">
-									<button class="btn btn-raised btn-default btn-sm">Actualizar</button>
-								</div>
+								<p class="txt-name fnt__Medium">Perfil</p>
+								<p class="txt-email" id="idPerfil">Nombre Perfil</p>								
+							</li>						
+							<li class="divider"></li>	
+							<li>								
 								<div class="pull-right">
 								<?= Html::beginForm(['/site/salida'],
 								'post', 
