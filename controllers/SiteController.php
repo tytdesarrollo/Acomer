@@ -289,9 +289,7 @@ class SiteController extends Controller
                 return $this->redirect(['site/plaza']);
             }else if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
-            }
-
-            return $this->render('principal',["rol"=>$rol]);
+            }            
         }else{                                        
             //retornamos al index
             return $this->goHome();                                        
@@ -311,6 +309,20 @@ class SiteController extends Controller
     
     public function actionPlaza()
     {         
+        if(!isset(Yii::$app->session['cedula'])){
+            return $this->goHome();                                        
+        }else{
+            $cedula = Yii::$app->session['cedula'];
+            $cedula = trim($cedula);
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);
+
+            if($rol === 'COCINERO'){
+                return $this->redirect(['site/cocina']);
+            }
+        }
+
         //==========================================================
         //codigos de los container
         $fn_plaza = new SpMesasPlaza();
@@ -323,7 +335,7 @@ class SiteController extends Controller
 
 
         return $this->render('plaza', ["container1"=>$container1, "container2"=>$container2, "container3"=>$container3,
-                                       "container4"=>$container4]);      
+                                       "container4"=>$container4, "rol"=>$rol]);           
     }
 
     public function actionJsonmesas(){
@@ -337,7 +349,7 @@ class SiteController extends Controller
     public function actionJsonpedidos(){
         $fn_pedidos = new SpMesasPedidos;
         //obtiene las posiciones de las mesas 
-        $datosPedidos = $fn_pedidos->procedimiento(); 
+        $datosPedidos = $fn_pedidos->procedimiento();
         //imprime los datos en tipo json         
         echo json_encode($datosPedidos);
     }
@@ -348,8 +360,10 @@ class SiteController extends Controller
         $c3 = $_GET['documento'];
         $c4 = $_GET['empresa'];
 
-        $fn_mesas = new SpMesasPlaza();
-        $fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
+        var_dump($c1);
+        var_dump($c2);
+        //$fn_mesas = new SpMesasPlaza();
+        //$fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
     }
 
     public function actionJsonpuestosfac(){
@@ -511,7 +525,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos'];
         $get3 = $_GET['cantidad'];
         $get4 = $_GET['termino'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa'];
         
         $funcionArr = new funcionesArray();
@@ -521,7 +536,8 @@ class SiteController extends Controller
         $c2 = $funcionArr->crearArray($get2);
         $c3 = $funcionArr->crearArray($get3);
         $c4 = $funcionArr->arrayTermino($get4);
-        $c5 = $get5;//$_SESSION['cedula'];
+        $c5 = Yii::$app->session['cedula'];
+        $c5 = trim($c5);
         $c6 = $get6;
 
 
@@ -547,7 +563,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos'];
         $get3 = $_GET['cantidad'];
         $get4 = $_GET['termino'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa'];
         
         $funcionArr = new funcionesArray();
@@ -557,7 +574,8 @@ class SiteController extends Controller
         $c2 = $funcionArr->crearArray($get2);
         $c3 = $funcionArr->crearArray($get3);
         $c4 = $funcionArr->arrayTermino($get4);
-        $c5 = $get5;//$_SESSION['cedula'];
+        $c5 = Yii::$app->session['cedula'];
+        $c5 = trim($c5);
         $c6 = $get6;
 
         echo "paila";
@@ -597,7 +615,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos1'];
         $get3 = $_GET['cantidad1'];
         $get4 = $_GET['termino1'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
         
@@ -673,7 +692,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos1'];
         $get3 = $_GET['cantidad1'];
         $get4 = $_GET['termino1'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
 
@@ -869,7 +889,8 @@ class SiteController extends Controller
         $c1 = $get5;
         $c2 = $get6;
         $c3 = $get2;
-        $c4 = '16743485';//$_SESSION['cedula'];
+        $c4 = Yii::$app->session['cedula'];
+        $c4 = trim($c4);
         $c5 = "01";
         $c6 = $get1;        
         
@@ -989,7 +1010,8 @@ class SiteController extends Controller
             $c11 = $get6;
             $c21 = $get7;
             $c31 = $get2;
-            $c41 = '16743485';//$_SESSION['cedula'];
+            $c41 = Yii::$app->session['cedula'];
+            $c41 = trim($c41);
             $c51 = "01";
             $c61 = $puestos1;   
             // se genera la factura general para los restaurantes
@@ -1019,7 +1041,8 @@ class SiteController extends Controller
             $c12 = $get6;
             $c22 = $get7;
             $c32 = $get4;
-            $c42 = '16743485';//$_SESSION['cedula'];
+            $c42 = Yii::$app->session['cedula'];
+            $c42 = trim($c42);
             $c52 = "01";
             $c62 = $puestos2;
             // se genera la factura general para los restaurantes
@@ -1068,7 +1091,8 @@ class SiteController extends Controller
         }        
         $c3 = array_filter($c3);  // se filtran los registros que se encuentren nulos        
 
-        $c4 = '16743485';//$_SESSION['cedula'];
+        $c4 = Yii::$app->session['cedula'];
+        $c4 = trim($c4);
 
         // detalle de la factura
         $producto = array();
@@ -1461,16 +1485,37 @@ class SiteController extends Controller
 
     public function actionCocina()
     {   
-       
+       if(!isset(Yii::$app->session['cedula'])){
+            return $this->goHome();                                        
+        }else{
+            $cedula = Yii::$app->session['cedula'];
+            $cedula = trim($cedula);
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);            
+
+            if($rol === 'MESERO'){
+                return $this->redirect(['site/plaza']);
+            }
+        }
+
+        //consulta el nombre de la cocina
+        //        
+        $c1 = $cedula;
+        $c1 = trim($c1);
+
+        $fn_cocina = new SpCocinaPedidos();
+        $nomcocina = $fn_cocina->procedimiento5($c1);
 
         $this->layout="main_cocina";
-        return $this->render('cocina');      
+        return $this->render('cocina',["nomcocina"=>$nomcocina,"rol"=>$rol]);        
     }
 
     public function actionPedidoscocina(){
         //$c1: cedula del cocinero
         //  
-        $c1 = '16743485';//$_SESSION['cedula'];
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
         // se crea el objeto 
         $fn_cocina = new SpCocinaPedidos();
         // se ejecuta el procedimiento
@@ -1509,7 +1554,8 @@ class SiteController extends Controller
         //$c2: nombre del plato
         //$c3: cantidad
         //  
-        $c1 = '16743485';//$_SESSION['cedula'];
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
         $c2 = $_GET['plato'];                
         $c3 = $_GET['cantidad'];
         
@@ -1522,7 +1568,8 @@ class SiteController extends Controller
     public function actionHistorialcocina(){
         //$c1: cedula del cocinero
         //  
-        $c1 = '16743485';//$_SESSION['cedula'];
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
 
         $fn_cocina = new SpCocinaPedidos;
         $historial = $fn_cocina->procedimiento4($c1);
