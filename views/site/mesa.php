@@ -539,7 +539,7 @@
 													<div class="radio radio-primary">
 														<label>
 															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina1" value="0" checked="" onclick="calcularPropina(0)">
-															Sin propina
+															0%
 														</label>
 													</div>
 													<div class="radio radio-primary">
@@ -560,6 +560,14 @@
 															18%
 														</label>
 													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina5" value="0" onclick="habilitarPropina()">Otro:
+														</label>																
+													</div>	
+													<div class="radio radio-primary">
+														<input type="number" class="form-control" placeholder="$0" id="propinax" value="x" style="width:100px; font-size:20px;" disabled="true" />
+													</div>				
 												</div>
 												<div class="sub-total-factura-content pull-right">
 													<div class="iva-factura text-right fnt__Medium">
@@ -650,7 +658,8 @@
 			</div>
 		</div>
 <?php $this->endBody() ?>
-	<script src="../web/js/modal_view_fact.js"></script>
+	<!--<script src="../web/js/modal_view_fact.js"></script>-->
+	<?= Html::jsFile('@web/js/modal_view_fact.js') ?>
 	<script>
 	  $(function () {
 		$.material.init();
@@ -2233,7 +2242,63 @@
 		});		
 	}
 
-	function calcularPropina(porcentaje){
+	//////////////////////////////////////////////////////////////////////////////
+	var typingTimer;                //timer identifier
+	var doneTypingInterval = 1000;  //time in ms, 5 second for example
+	var $input = $('#propinax');
+
+	//on keyup, start the countdown
+	$("#propinax").on('keyup', function () {
+		clearTimeout(typingTimer);
+		typingTimer = setTimeout(doneTyping, doneTypingInterval);
+	});
+
+	//on keydown, clear the countdown 
+	$("#propinax").on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
+
+	//user is "finished typing," do something
+	function doneTyping () {
+		var subtotalFactura = formatoNumerico($('#valorSubtotal').html());	
+		subtotalFactura = subtotalFactura.substring(1);
+		// calcula el porcentaje sobre el subtotal
+		var valorPorcentaje = document.getElementById("propinax").value;
+		
+		if(valorPorcentaje.localeCompare("") == 0 || valorPorcentaje.indexOf('.') != -1 || 
+		   valorPorcentaje.indexOf('e') != -1 || valorPorcentaje.indexOf(',') != -1){
+			valorPorcentaje = 0;
+			console.log("--"+valorPorcentaje+"--");
+		}
+		
+		//
+		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
+		valorIvaFatura = valorIvaFatura.substring(1);
+		//
+		var valorTotalFactura = parseFloat(valorIvaFatura) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura);
+
+		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
+		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());	
+
+		calcularPorcentajePropina(valorPorcentaje,subtotalFactura);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+
+	function calcularPorcentajePropina(valor,subtotal){
+		var porcentaje = (valor*100)/subtotal;
+
+		$("#optionsRadiosPropina5").attr('value', porcentaje);		
+	}
+
+	function habilitarPropina(){
+		$("#propinax").prop("disabled",false);
+		$("#propinax").focus();		
+		document.getElementById("valorPropina").innerHTML = "$0";
+	}
+
+	function calcularPropina(porcentaje){		
+		document.getElementById("propinax").value = "";
 		// valor del subtotal
 		var subtotalFactura = formatoNumerico($('#valorSubtotal').html());	
 		subtotalFactura = subtotalFactura.substring(1);
@@ -2555,7 +2620,9 @@
 									//se oculta el boton cliente
 									document.getElementById("btnRegistroC").style.display = "none";
 									//se oculata las opciones de cambio de porcentaje de propina
-									document.getElementById("opcionesPropina").style.display = "none";									
+									document.getElementById("opcionesPropina").style.display = "none";		
+									document.getElementById("nombreClientefac").innerHTML = "N/A";		
+									document.getElementById("idClientefac").innerHTML = "N/A";		
 									//ejecuta la factura en bd
 									mostrarFactura(true);
 									// muestra el mensaje de terminado
@@ -2595,6 +2662,8 @@
 	function mostrarFactura(full = false){
 		//toma el valor de la propina
 		var propina = $('input:radio[name=optionsRadiosPropina]:checked').val();
+		propina = propina.replace(",", ".");
+		propina = propina.substring(0,propina.indexOf(".")+4);
 		//codigo del cliente
 		var codigoClienteFactura = document.getElementById("cltRCc").value;
 		//cuando el tamano de la mesa es de 4 personas
@@ -3109,7 +3178,14 @@
 
 	}
 
-	function formatoMoneda(valor){
+	function formatoMoneda(valorIn){
+		if(valorIn.indexOf(".") != -1){
+			var decimal = ","+valorIn.substring(valorIn.indexOf(".")+1,valorIn.length);
+			var valor = valorIn.substring(0,valorIn.indexOf("."));
+		}else{
+			var decimal = "";
+			var valor = valorIn;
+		}
 		//valor que se retorna
 		var valorFinal1 = '';
 		var valorFinal2 = '';
@@ -3131,8 +3207,7 @@
 			valorFinal2 = valorFinal2 + valorFinal1.charAt(i);
 		}
 
-	
-		return valorFinal2;
+		return (valorFinal2+decimal);
 	}
 
 	function formatoNumerico(valor){
