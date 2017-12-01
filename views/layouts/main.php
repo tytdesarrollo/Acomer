@@ -22,7 +22,6 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-	<!--<script src="../web/js/modernizr.custom.js"></script>-->
 	<?= Html::jsFile('@web/js/modernizr.custom.js') ?>
 </head>
 <body class="bg-green cd-section">
@@ -142,7 +141,6 @@ AppAsset::register($this);
 </body>
 </html>
 	<?php $this->endPage() ?>
-<!--<script src="../web/js/main.js"></script>-->
 <?= Html::jsFile('@web/js/main.js') ?>
 <script>
 	/*
@@ -156,16 +154,6 @@ AppAsset::register($this);
   $(function () {
     $.material.init();
 	$('[data-toggle="tooltip"]').tooltip();
-	$(".slide-box-back .btn-toggle").click(function(){
-	  $(".container-v").toggleClass("sld-in");
-	});
-	$("#help").modal("show");
-	$("#swipeUp").click(function(){
-	  $("#modVac").addClass("open-swipeUp");
-	});
-	$("#swipeDown").click(function(){
-	  $("#modVac").removeClass("open-swipeUp");
-	});
   });
 </script>
 <script>
@@ -187,182 +175,4 @@ AppAsset::register($this);
 		  pageDots: false,
 		  dragThreshold: 10,
 		});		
-</script>
-<script>
-	(function(){
-        $('body').on('click', '#search', function(e){
-            e.preventDefault();
-
-            $('#header').addClass('search-toggled');
-            $('.top-search-content input').focus();
-        });
-
-        $('body').on('click', '#search-close', function(e){
-            e.preventDefault();
-
-            $('#header').removeClass('search-toggled');
-        });
-    })();
-</script>
-<script>
-	// new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ), {
-		// type : 'cover'
-	// } );
-</script>
-<script>
-	$(function () {
-  
-	// /////
-	// MAD-SELECT
-		var madSelectHover = 0;
-		$(".mad-select").each(function() {
-			var $input = $(this).find("input"),
-				$ul = $(this).find("> ul"),
-				$ulDrop =  $ul.clone().addClass("mad-select-drop");
-
-			$(this)
-			  .append('<i class="material-icons">arrow_drop_down</i>', $ulDrop)
-			  .on({
-			  hover : function() { madSelectHover ^= 1; },
-			  click : function() { $ulDrop.toggleClass("show");}
-			});
-
-			// PRESELECT
-			$ul.add($ulDrop).find("li[data-value='"+ $input.val() +"']").addClass("selected");
-
-			// MAKE SELECTED
-			$ulDrop.on("click", "li", function(evt) {
-			  evt.stopPropagation();
-			  $input.val($(this).data("value")); // Update hidden input value
-			  $ul.find("li").eq($(this).index()).add(this).addClass("selected")
-				.siblings("li").removeClass("selected");
-			});
-			// UPDATE LIST SCROLL POSITION
-			$ul.on("click", function() {
-			  var liTop = $ulDrop.find("li.selected").position().top;
-			  $ulDrop.scrollTop(liTop + $ulDrop[0].scrollTop);
-			});
-		});
-
-		$(document).on("mouseup", function(){
-			if(!madSelectHover) $(".mad-select-drop").removeClass("show");
-		});
-		  
-	});
-</script>
-<script>
-	$(document).ready(function() {
-		
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev',
-				center: 'title',
-				right: 'next'
-			},
-			height: 'auto',
-			businessHours: true,
-			editable: false,
-			eventLimit: true, // allow "more" link when too many events
-			selectable: true,
-			selectHelper: true,
-			selectOverlap: false,
-			select: function(start, end) {
-				
-				$('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-				$('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
-				$('#ModalAdd').modal('show');
-				
-			},
-			eventRender: function(event, element) {
-				element.bind('dblclick', function() {
-					$('#ModalEdit #id').val(event.id);
-					$('#ModalEdit #title').val(event.title);
-					$('#ModalEdit #color').val(event.color);
-					$('#ModalEdit').modal('show');
-					
-				});
-			},
-			eventDrop: function(event, delta, revertFunc) { // si changement de position
-
-				edit(event);
-
-			},
-			eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
-
-				edit(event);
-
-			},
-			
-			<?php
-				if(isset($events)){			
-			?>
-
-			events: [
-			
-			<?php
-								
-			foreach($events as $event): 
-			
-				$start = explode(" ", $event['START']);
-				$end = explode(" ", $event['END']);
-				if($start[1] == '00:00:00'){
-					$start = $start[0];
-				}else{
-					$start = $event['START'];
-				}
-				if($end[1] == '00:00:00'){
-					$end = $end[0];
-				}else{
-					$end = $event['END'];
-				}
-			?>
-				{
-					id: '<?php echo $event['ID']; ?>',
-					title: '<?php echo $event['TITLE']; ?>',
-					start: '<?php echo $start; ?>',
-					end: '<?php echo $end; ?>',
-					color: '<?php echo $event['COLOR']; ?>',
-					overlap: false,
-					
-					
-				},
-						
-			<?php endforeach; ?>
-					
-			]
-			
-			<?php }; ?>
-		});
-		
-		function edit(event){
-			start = event.start.format('YYYY-MM-DD HH:mm:ss');
-			if(event.end){
-				end = event.end.format('YYYY-MM-DD HH:mm:ss');
-			}else{
-				end = start;
-			}
-			
-			id =  event.id;
-			
-			Event = [];
-			Event[0] = id;
-			Event[1] = start;
-			Event[2] = end;
-			
-			$.ajax({
-			 url: 'editEventDate.php',
-			 type: "POST",
-			 data: {Event:Event},
-			 success: function(rep) {
-					if(rep == 'OK'){
-						alert('Registro actualizado');
-					}else{
-						alert('El registro no fue guardado, intente de nuevo.'); 
-					}
-				}
-			});
-		}
-		
-	});
-
 </script>

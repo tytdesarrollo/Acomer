@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 		<div class="content-pedido__detail" id="detallePlato">
 			<h3 class="text-center fnt__Medium pedido__view-title">Nombre del plato</h3>
 			<div class="pedido__detail-img">
-				<img src="img/items/hamburguesa.png" alt="Imagen plato" class="img-responsive">
+				<?= Html::img('@web/img/categorias/carnes_cat_icon.png', ['alt' => 'Imagen plato', 'class' => 'img-responsive']) ?>
 			</div>
 			<div class="pedido__detail-info">
 				<div class="notes mrg__top-30 text-left">
