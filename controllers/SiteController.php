@@ -360,10 +360,8 @@ class SiteController extends Controller
         $c3 = $_GET['documento'];
         $c4 = $_GET['empresa'];
 
-        var_dump($c1);
-        var_dump($c2);
-        //$fn_mesas = new SpMesasPlaza();
-        //$fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
+        $fn_mesas = new SpMesasPlaza();
+        $fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
     }
 
     public function actionJsonpuestosfac(){
@@ -944,7 +942,7 @@ class SiteController extends Controller
         $get1 = $_GET['rever'];
         $get2 = $_GET['factura'];
 
-        $c1 = $get2;
+        $c1 = $get2[0];
         $c2 = $get1;
 
         $fn_factura = new SpMesasFactura();
