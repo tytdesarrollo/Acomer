@@ -97,8 +97,9 @@ AppAsset::register($this);
 						<ul class="dropdown-menu menu-profile">
 							<li>
 								<div class="dis-inline-block">
-									<p class="txt-name fnt__Medium">usuario</p>
-									<p class="txt-email" id="idUsuario">Id usuario</p>
+									<p class="txt-name fnt__Bold">Usuario</p>
+									<p class="txt-email fnt__Medium" id="idUsuario">Id usuario</p>
+									<p class="txt-email fnt__Medium" id="idPerfil">Nombre Perfil</p>
 								</div>
 								<div class="dis-inline-block pull-right">
 									<div class="content-avatar__menu-profile">
@@ -106,11 +107,7 @@ AppAsset::register($this);
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>	
-							<li>
-								<p class="txt-name fnt__Medium">Perfil</p>
-								<p class="txt-email" id="idPerfil">Nombre Perfil</p>	
-							<li class="divider"></li>							
+							<li class="divider"></li>													
 							<li>								
 								<div class="pull-right">
 								<?= Html::beginForm(['/site/salida'],
