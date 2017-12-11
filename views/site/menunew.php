@@ -25,7 +25,8 @@
 	    <?= Html::csrfMetaTags() ?>
 	    <title><?= Html::encode($this->title) ?></title>
 	    <?php $this->head() ?>
-		<script src="js/modernizr-custom.js"></script>
+		<!--<script src="js/modernizr-custom.js"></script>-->
+		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	</head>
 	<body class='bg-acomer'>
@@ -45,7 +46,7 @@
 					<div class="cat__grid-item-box">
 						<div class="cat__grid-item">
 							<div class="grid-item__info">
-								<img src="img/categorias/mar_cat_icon.svg" alt="" class="grid-item__image">
+								<img src="img/categorias/<?=$ketc['IMAGEN']?>" alt="" class="grid-item__image">
 							</div>
 						</div>
 						<h4 class="cat__title"><?php echo $ketc['DESCRIPCION']?></h4>
@@ -71,7 +72,7 @@
 											<?php if ($keyco['CATEGORIA']==$ketc['COD_CATEGORIA']): ?>
 												<div class="product">
 													<div class="product__info">
-														<img class="product__image" src="img/items/carne.png" alt="Carne" />
+														<img class="product__image" src="img/categorias/<?=$ketc['IMAGEN']?>" alt="Carne" />
 														<h3 class="product__title"><?=$keyco['NOMBRE']?></h3>
 														<span class="product__price highlight">$<?php echo number_format($keyco['PRECIO']);?></span>
 														<div class="content-count" id="<?php echo $id_content_count; ?>">
@@ -122,8 +123,10 @@
    			</div>
   		</div>
 	<?php $this->endBody() ?>
-	<script src="../web/js/main-menu-new.js"></script>
-	<script src="../web/js/order_new.js"></script>
+	<!--<script src="../web/js/main-menu-new.js"></script>-->
+	<!--<script src="../web/js/order_new.js"></script>-->
+	<?= Html::jsFile('@web/js/main-menu-new.js') ?>
+	<?= Html::jsFile('@web/js/order_new.js') ?>
 		<script>
 			(function() {
 				var categories = new CircleCategories(document.getElementById('categories'));

@@ -20,7 +20,7 @@
 			$cursor_terminos;
 			$cursor_comidas;
 			// llamado al rocedimiento con los parametros correspondientes
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_RESTAURANTES.SP_ACOMER_MENU(:c1,:c2,:c3,:c4); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_MENU(:c1,:c2,:c3,:c4); END;");
 			//inicializa los cursores
 			$cursor_categorias = oci_new_cursor($conexion);
 			$cursor_subcategorias = oci_new_cursor($conexion);
