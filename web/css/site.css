@@ -2470,7 +2470,7 @@ MATERIAL-SELECT
 .btn-menu-helper {
 	width: 48px;
     height: 48px;
-    padding: 9px;
+    padding: 4px;
     border: none;
     background: transparent;
     color: #ffffff;
@@ -2486,6 +2486,9 @@ MATERIAL-SELECT
 }
 .btn-menu-helper + .dropdown-backdrop{
 	z-index: 2;
+}
+.menu-user {
+	padding: 4px;
 }
 .menu-user + .dropdown-backdrop{
 	z-index: 2;
@@ -2625,6 +2628,506 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	margin-top: 13px;
     margin-bottom: 10px;
 }
+/* SIDE-BAR NOTIFICACIONES RESTAURANTES */
+.side-notifications{
+	position: fixed;
+	width: 35%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: #ffffff;
+	-webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+	box-shadow: -4px 4px 20px transparent;
+	z-index: 4;
+	-webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-transition: -webkit-transform 0.3s, box-shadow 0.3s;
+    -moz-transition: -moz-transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.side-notifications.side-visible{
+	-webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
+}
+.side-body{
+	height: 100%;
+	overflow-y: auto;
+	background-color: #ffffff;
+}
+.side-header{
+	padding: 24px 15px 24px 15px;
+}
+.side-title{
+	margin: 0;
+}
+.side-notifications .list-group .list-group-item{
+	padding: 10px 15px 0 15px;
+	-webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+}
+.side-notifications .list-group .list-group-item.ok{
+	background-color: #efffef;
+}
+.side-notifications .list-group .list-group-item .row-picture{
+	position: relative;
+	vertical-align: top;
+	width: 50px;
+	height: 50px;
+	margin: 2px 10px 2px 0px;
+	padding: 0;
+}
+.side-notifications .list-group .list-group-item .row-picture .item-icon-pl{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border: 3px solid #ffbead;
+    border-radius: 100%;
+    padding: 4px;
+    background-color: #ff8646;
+	cursor: pointer;
+	-webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+	transform: scale(1);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-transition: -webkit-transform 0.3s, display 0.3s;
+    -moz-transition: -moz-transform 0.3s, display 0.3s;
+    transition: transform 0.3s, display 0.3s;
+	visibility: visible;
+}
+.side-notifications .list-group .list-group-item .row-picture .item-icon-pl > .not-item-icon{
+	width: 36px;
+	height: 36px;
+	background-image: url(../img/plato_listo_animated.svg);
+	background-size: 36px 36px;
+	background-repeat: no-repeat;
+}
+.side-notifications .list-group .list-group-item.cheked .row-picture .item-icon-pl{
+	-webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+	transform: scale(0);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	visibility: hidden;
+}
+.side-notifications .list-group .list-group-item .row-picture .item-icon-pe{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+	cursor: pointer;
+	-webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+	transform: scale(0);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-transition: -webkit-transform 0.3s, display 0.3s;
+    -moz-transition: -moz-transform 0.3s, display 0.3s;
+    transition: transform 0.3s, display 0.3s;
+	visibility: hidden;
+}
+.side-notifications .list-group .list-group-item.cheked .row-picture .item-icon-pe{
+	-webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+	transform: scale(1);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	visibility: visible;
+}
+/* Estilos y animación para vector CHECK */
+.icon-check .circle{
+	fill:#ffffff;
+	stroke:#4CAF50;
+	stroke-width:3;
+	stroke-linecap:round;
+	stroke-miterlimit:10;
+}
+.icon-check .check{
+	fill:#ffffff;
+	stroke:#4CAF50;
+	stroke-width:3;
+	stroke-miterlimit:10;
+}
+.xokfQlnb_0{
+	stroke-dasharray:130 132;
+	stroke-dashoffset:131;
+}
+.start .xokfQlnb_0{
+	animation:xokfQlnb_draw_circle 600ms ease-in-out 0ms forwards;
+}
+.xokfQlnb_1{
+	stroke-dasharray:115 117;
+	stroke-dashoffset:116;
+}
+.start .xokfQlnb_1{
+	animation:xokfQlnb_draw_check 449ms ease-in-out 600ms forwards;
+}
+@keyframes xokfQlnb_draw_circle{
+	100%{
+		stroke-dashoffset:0;
+		fill: #C8E6C9;
+	}
+}
+@keyframes xokfQlnb_draw_check{
+	100%{
+		stroke-dashoffset:0;
+		fill: #E8F5E9;
+	}
+}
+@keyframes xokfQlnb_draw{
+	100%{
+		stroke-dashoffset:0;
+	}
+}
+@keyframes xokfQlnb_fade{
+	0%{
+		stroke-opacity:1;
+	}
+	94.02985074626866%{
+		stroke-opacity:1;
+	}
+	100%{
+		stroke-opacity:0;
+	}
+}
+.side-notifications .list-group .list-group-item .row-content{
+	position: relative;
+	width: -webkit-calc(100% - 70px);
+    width: calc(100% - 70px);
+	min-height: 54px;
+	overflow: hidden;
+}
+.side-notifications .list-group .list-group-item .row-content .item-desc{
+	-webkit-transition: transform 0.3s, opacity 0.3s;
+    -moz-transition: transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	-moz-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.side-notifications .list-group .list-group-item .row-content .item-desc .list-group-item-heading{
+	margin: 0;
+	font-size: 18px;
+}
+.side-notifications .list-group .list-group-item .row-content.confirm .item-desc{
+	opacity: 0;
+	visibility: hidden;
+    -webkit-transform: translate3d(0, 25%, 0);
+	-moz-transform: translate3d(0, -25%, 0);
+    -ms-transform: translate3d(0, -25%, 0);
+    -o-transform: translate3d(0, -25%, 0);
+    transform: translate3d(0, 25%, 0);
+}
+.side-notifications .list-group .list-group-item .row-content .item-confirm-pe{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transform: translate3d(0, -25%, 0);
+    -moz-transform: translate3d(0, -25%, 0);
+    -ms-transform: translate3d(0, -25%, 0);
+    -o-transform: translate3d(0, -25%, 0);
+	transform: translate3d(0, -25%, 0);
+	-webkit-transition: transform 0.3s, opacity 0.3s;
+    -moz-transition: transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	-moz-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.side-notifications .list-group .list-group-item .row-content.confirm .item-confirm-pe{
+	opacity: 1;
+	visibility: visible;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+.item-confirm-pe .item-confirm-heading{
+	margin: 0;
+	font-size: 16px;
+}
+.item-confirm-pe .btn{
+	padding: 4px 10px;
+	margin: 5px 2px;
+}
+.side-notifications .list-group .list-group-separator{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.side-notifications .list-group .list-group-separator:before{
+	width: -webkit-calc(100% - 30px);
+    width: calc(100% - 30px);
+	float: left;
+	margin-left: 15px;
+}
+.btn-side-close{
+	position: absolute;
+    top: 15px;
+    right: -65px;
+	width: 50px;
+	height: 50px;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.btn-side-close.v-btn-close{
+	z-index: 0;
+	right: -25px;
+}
+.icon-bell{
+	display: block;
+	position: relative;
+	width: 50px;
+    height: 50px;
+}
+/* Estilos Campana */
+/* Nuevos */
+#gCircle .circle{
+	fill:#A8A5A4;
+	stroke:#000000;
+	stroke-width:2;
+	stroke-miterlimit:10;
+	-webkit-transition: fill 0.3s;
+    -moz-transition: fill 0.3s;
+	transition: fill 0.3s;
+}
+#gCircle .shdwCircle{
+	opacity:0.3;
+}
+#Bell{
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    transition: transform 0.5s;
+	visibility: visible;
+}
+#Bell .shdwB{
+	opacity:0.3;
+}
+#Bell .clapper{
+	fill:#FC933D;
+	stroke:#000000;
+	stroke-width:1.5;
+	stroke-miterlimit:10;
+}
+#Bell .shdwCl{
+	fill:#FF7900;
+}
+#Bell .shdwCl2{
+	fill:#FF6E4A;
+}
+#Bell .asa{
+	fill:#FDD93B;
+	stroke:#000000;
+	stroke-width:1.5;
+	stroke-miterlimit:10;
+}
+#Bell .mdB{
+	fill:#FFB829;
+	stroke:#000000;
+	stroke-width:1.5;
+	stroke-miterlimit:10;
+}
+#Bell .shdwMd{
+	fill:#C68502;
+}
+#Bell .lghtMd{
+	fill:#FDD93B;
+}
+#Close{
+	fill:none;
+	stroke:#000000;
+	stroke-width:3;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+	stroke-miterlimit:10;
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+	transform: scale(0);
+	-webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    transition: transform 0.5s;
+	visibility: hidden;
+}
+.icon-bell.start{
+	animation: shake 2.5s ease infinite;
+}
+.icon-bell.start #gCircle .circle{
+	fill:#e53636;
+}
+.btn-side-close.v-btn-close .icon-bell #Bell{
+	-webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+	transform: scale(0);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	visibility: hidden;
+}
+.btn-side-close.v-btn-close .icon-bell #Close{
+	-webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+	transform: scale(1);
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	visibility: visible;
+}
+/* Fin Nuevos */
+@keyframes shake {
+	0%, 50%, 100% {
+		transform: rotate(0);
+	}
+	5%, 10%, 15%, 20%, 25%, 30%, 35%, 40% {
+		transform: rotate(6deg);
+	} 
+	45% {
+		transform: rotate(4deg);
+	} 
+	7.5%, 12.5%, 17.5%, 22.5%, 27.5%, 32.5%, 37.5%, 42.5% {
+		transform: rotate(-6deg);
+	}
+	47.5% {
+		transform: rotate(-2deg);
+	}
+}
+/* Estilos Help */
+#gCircleH .circleH{
+	fill:#A8A5A4;
+	stroke:#000000;
+	stroke-width:2;
+	stroke-linecap:round;
+	stroke-linejoin:round;
+	stroke-miterlimit:10;
+}
+#gCircleH .shdwCircleH, #gi .shdwIB, #gi .shdwIH{
+	opacity:0.3;
+}
+#gi .iBody, #gi .iHead{
+	fill:#2EB9FF;
+	stroke:#000000;
+	stroke-width:1.5;
+	stroke-miterlimit:10;
+}
+#gi .lghtIB, #gi .lghtIH{
+	opacity:0.4;
+	fill:#FFFFFF;
+}
+/* //Fin Estilos Help */
+/* Estilos Waiter */
+#gCircleW .circleW{
+	fill:#A8A5A4;
+	stroke:#000000;
+	stroke-width:2;
+	stroke-miterlimit:10;
+}
+#gCircleW .shdwCircleW{
+	opacity:0.3;
+	enable-background:new;
+}
+#Waiter .shdwW{
+	opacity:0.3;
+	enable-background:new;
+}
+#Waiter .tShW, #Waiter .tShW2, #Waiter .tShW3{
+	fill:#FFFFFF;
+}
+#Waiter .headW{
+	fill:#EFB88B;
+}
+#Waiter .lghtHeadW{
+	fill:#F4CAAB;
+}
+/* //Fin Estilos Waiter */
+/* Estilos Chef */
+#gCircleCh .circleCh{
+	fill:#A8A5A4;
+	stroke:#000000;
+	stroke-width:2;
+	stroke-miterlimit:10;
+}
+#gCircleCh .shdwCircleCh, #Chef .shdwCh{
+	opacity:0.3;
+	enable-background:new;
+}
+#Chef .tshCh, #Chef .tshCh2{
+	fill:#FFFFFF;
+}
+#Chef .headCh{
+	fill:#EFB88B;
+}
+#Chef .lghtHeadCh{
+	fill:#F4CAAB;
+}
+#Chef .goCh{
+	fill:#FFFFFF;
+	stroke:#000000;
+	stroke-width:1.9477;
+	stroke-miterlimit:10;
+}
+/* //Fin Estilos Chef */
 .content-mesas{
 	position: absolute;
     width: 100vw;

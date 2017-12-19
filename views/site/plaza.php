@@ -37,7 +37,11 @@ use yii\widgets\ActiveForm;
 		</div>
 	</div>
 </div>
-
+<!--<script>
+	$(function sideClose(){
+		$(".side-notifications").removeClass("side-visible");
+	});
+</script>-->
 <script type="text/javascript">
 	$(document).ready(function() {	    	
     	document.getElementById("idUsuario").innerHTML = "CC."+"<?=Yii::$app->session['cedula']?>";
