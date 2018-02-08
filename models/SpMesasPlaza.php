@@ -70,8 +70,8 @@
 			//pasa los parametros del proceimiento
 			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
 			oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);			
-			oci_bind_by_name($stid, ":c3", $c3, 10);
-			oci_bind_by_name($stid, ":c4", $c4, 13);
+			oci_bind_array_by_name($stid, ":c3", $c3, 100, -1, SQLT_CHR);
+			oci_bind_array_by_name($stid, ":c4", $c4, 100, -1, SQLT_CHR);		
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
 		}

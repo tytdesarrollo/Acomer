@@ -31,11 +31,7 @@ AppAsset::register($this);
 	<nav id="menu" class="navbar">
 		<div class="container-fluid">
 			<div class="pull-right">
-				<div class="content__icon-menu__aux">
-					<a id="sideOpen" class="menu-trigger">
-						<?= Html::img('@web/img/notrest.svg', ['alt' => 'avatar', 'class' => 'img-responsive']) ?>
-					</a>
-				</div>
+				
 				<div class="content__icon-menu__aux">
 					<div class="dropdown">
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle btn-menu-helper">
@@ -212,12 +208,13 @@ AppAsset::register($this);
 		</div>
 	</section>
 </section>
-<div class="side-notifications">
+<div id="notificacionesDivModal" class="side-notifications">
 	<div class="side-body">
 		<div class="side-header">
+			<span class="glyphicon glyphicon-refresh" onClick="realEntregar()"></span>
 			<h3 class="side-title text-center fnt__Medium">Pedidos listos</h3>
 		</div>
-		<div class="list-group">
+		<div class="list-group" id="listaEntrega">
 			<div class="list-group-item" id="lgi1">
 				<div class="row-picture" onClick="rowPicture(1)">
 					<div class="item-icon-pl">
@@ -292,7 +289,7 @@ AppAsset::register($this);
 			<div class="list-group-separator"></div>
 		</div>
 	</div>
-	<div class="btn-side-close">
+	<div class="btn-side-close" onClick="platosEntregar()">
 		<a id="sideClose" class="icon-bell">
 			<svg version="1.1" id="Ring_Bell" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="50px" height="50px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -358,7 +355,7 @@ AppAsset::register($this);
 <script>
 	$("#sideOpen").click(function(){
 		$(".side-notifications").addClass("side-visible");
-		$(".btn-side-close").addClass("v-btn-close");
+		$(".btn-side-close").addClass("v-btn-close");		
 	});
 	$("#sideClose").click(function(){
 		$(".side-notifications").toggleClass("side-visible");
