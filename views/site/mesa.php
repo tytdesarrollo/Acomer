@@ -2109,45 +2109,49 @@
 
 		if(generalTamano <= 4){
 
-			if(arrPlatos.length > 0){
-				for(var i=0 ; i<arrPlatos.length ; i++){
-					contenidoPedido = contenidoPedido +
-						'<tr>'+
-							'<td class="icn">'+
-								'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
-							'</td>'+
-							'<td class="desc">'+
-								'<div class="nom-item">'+
-									'<p>'+arrPlatos[i]+'</p>'+
-								'</div>'+
-								'<div class="val-item">'+
-									'<p></p>'+
-								'</div>'+
-							'</td>'+
-							'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
-							'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
-						'</tr>';
-				}
-			}	
+			if(Array.isArray(arrPlatos)){
+				if(arrPlatos.length > 0){
+					for(var i=0 ; i<arrPlatos.length ; i++){
+						contenidoPedido = contenidoPedido +
+							'<tr>'+
+								'<td class="icn">'+
+									'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
+								'</td>'+
+								'<td class="desc">'+
+									'<div class="nom-item">'+
+										'<p>'+arrPlatos[i]+'</p>'+
+									'</div>'+
+									'<div class="val-item">'+
+										'<p></p>'+
+									'</div>'+
+								'</td>'+
+								'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
+								'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
+							'</tr>';
+					}
+				}	
+			}
 
-			if(generalConfirmPlatos.length > 0){
-				for(var i=0 ; i<generalConfirmPlatos.length ; i++){
-					contenidoPedido = contenidoPedido +
-						'<tr>'+
-							'<td class="icn">'+
-								'<img src="img/categorias/'+generalConfirmImagen[i]+'" class="img-item">'+							
-							'</td>'+
-							'<td class="desc">'+
-								'<div class="nom-item">'+
-									'<p>'+generalConfirmPlatos[i]+'</p>'+
-								'</div>'+
-								'<div class="val-item">'+
-									'<p></p>'+
-								'</div>'+
-							'</td>'+
-							'<td class="cant"><p>x'+generalConfirmCantidad[i]+'</p></td>'+
-							'<td class="cant"><p><i class="material-icons icon-btn">&#xe877;</i></p></td>'+					
-						'</tr>';
+			if(Array.isArray(generalConfirmPlatos)){
+				if(generalConfirmPlatos.length > 0){
+					for(var i=0 ; i<generalConfirmPlatos.length ; i++){
+						contenidoPedido = contenidoPedido +
+							'<tr>'+
+								'<td class="icn">'+
+									'<img src="img/categorias/'+generalConfirmImagen[i]+'" class="img-item">'+							
+								'</td>'+
+								'<td class="desc">'+
+									'<div class="nom-item">'+
+										'<p>'+generalConfirmPlatos[i]+'</p>'+
+									'</div>'+
+									'<div class="val-item">'+
+										'<p></p>'+
+									'</div>'+
+								'</td>'+
+								'<td class="cant"><p>x'+generalConfirmCantidad[i]+'</p></td>'+
+								'<td class="cant"><p><i class="material-icons icon-btn">&#xe877;</i></p></td>'+					
+							'</tr>';
+					}
 				}
 			}
 		}
