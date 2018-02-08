@@ -2595,7 +2595,7 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     overflow: hidden;
 }
 .base{
-	transform: scale(1.5);
+	transform: scale(1.4);
     transform-origin: 50% 40%;
 }
 .food-menu{
@@ -3138,7 +3138,7 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 }
 .mesas{
 	position: absolute;
-	transform: scale(0.5);
+	transform: scale(0.46);
 }
 .containers{
 	position: absolute;
@@ -3154,76 +3154,224 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	margin-left: -25px;
 }
 .mesa__1{
-	top: 179px;
-    left: 226px;
+	top: 208px;
+    left: -7px;
 }
 .mesa__2{
-	top: 142px;
-    left: 290px;
+	top: 180px;
+    left: 43px;
 }
 .mesa__3{
-	top: 105px;
-    left: 354px;
+	top: 151px;
+    left: 93px;
 }
 .mesa__4{
-	top: 68px;
-    left: 418px;
+	top: 266px;
+    left: -6px;
 }
 .mesa__5{
-	top: 216px;
-    left: 290px;
+	top: 238px;
+    left: 44px;
 }
 .mesa__6{
-	top: 179px;
-    left: 354px;
+	top: 208px;
+    left: 93px;
 }
 .mesa__7{
-	top: 142px;
-    left: 418px;
+	top: 179px;
+    left: 143px;
 }
 .mesa__8{
-	top: 105px;
-    left: 482px;
+	top: 151px;
+    left: 193px;
 }
 .mesa__9{
-	top: 253px;
-    left: 354px;
+	top: 122px;
+    left: 243px;
 }
 .mesa__10{
-	top: 216px;
-    left: 418px;
+	top: 93px;
+    left: 293px;
 }
 .mesa__11{
-	top: 179px;
-    left: 482px;
+	top: 65px;
+    left: 343px;
 }
 .mesa__12{
-	top: 142px;
-    left: 546px;
+	top: 35px;
+    left: 393px;
 }
 .mesa__13{
-	top: 290px;
-    left: 418px;
+	top: 237px;
+    left: 143px;
 }
 .mesa__14{
-	top: 253px;
-    left: 482px;
+	top: 208px;
+    left: 193px;
 }
 .mesa__15{
-	top: 216px;
-    left: 546px;
+	top: 179px;
+    left: 243px;
 }
 .mesa__16{
-	top: 179px;
-    left: 611px;
+	top: 151px;
+    left: 293px;
 }
 .mesa__17{
-	top: 224px;
-    left: 20px;
+	top: 122px;
+    left: 343px;
 }
 .mesa__18{
-	top: 187px;
-    left: 84px;
+	top: 93px;
+    left: 393px;
+}
+.mesa__19{
+	top: 64px;
+    left: 443px;
+}
+.mesa__20{
+	top: 266px;
+    left: 193px;
+}
+.mesa__21{
+	top: 237px;
+    left: 243px;
+}
+.mesa__22{
+	top: 209px;
+    left: 293px;
+}
+.mesa__23{
+	top: 180px;
+    left: 343px;
+}
+.mesa__24{
+	top: 151px;
+    left: 393px;
+}
+.mesa__25{
+	top: 122px;
+    left: 442px;
+}
+.mesa__26{
+	top: 93px;
+    left: 492px;
+}
+.mesa__27{
+	top: 295px;
+    left: 243px;
+}
+.mesa__28{
+	top: 266px;
+    left: 293px;
+}
+.mesa__29{
+	top: 237px;
+    left: 343px;
+}
+.mesa__30{
+	top: 208px;
+	left: 393px;
+}
+.mesa__31{
+	top: 180px;
+    left: 443px;
+}
+.mesa__32{
+	top: 151px;
+    left: 492px;
+}
+.mesa__33{
+	top: 122px;
+    left: 542px;
+}
+.mesa__34{
+	top: 324px;
+    left: 293px;
+}
+.mesa__35{
+	top: 295px;
+    left: 343px;
+}
+.mesa__36{
+	top: 266px;
+    left: 393px;
+}
+.mesa__37{
+	top: 237px;
+    left: 443px;
+}
+.mesa__38{
+	top: 209px;
+    left: 492px;
+}
+.mesa__39{
+	top: 180px;
+    left: 542px;
+}
+.mesa__40{
+	top: 151px;
+    left: 592px;
+}
+.mesa__41{
+	top: 382px;
+    left: 294px;
+}
+.mesa__42{
+	top: 352px;
+    left: 343px;
+}
+.mesa__43{
+	top: 324px;
+    left: 393px;
+}
+.mesa__44{
+	top: 295px;
+    left: 443px;
+}
+.mesa__45{
+	top: 267px;
+    left: 492px;
+}
+.mesa__46{
+	top: 237px;
+    left: 542px;
+}
+.mesa__47{
+	top: 209px;
+    left: 592px;
+}
+.mesa__48{
+	top: 180px;
+    left: 642px;
+}
+.mesa__49{
+	top: 410px;
+    left: 343px;
+}
+.mesa__50{
+	top: 382px;
+    left: 393px;
+}
+.mesa__51{
+	top: 353px;
+    left: 443px;
+}
+.mesa__52{
+	top: 324px;
+    left: 492px;
+}
+.mesa__53{
+	top: 295px;
+    left: 542px;
+}
+.mesa__54{
+	top: 266px;
+    left: 592px;
+}
+.mesa__55{
+	top: 237px;
+    left: 642px;
 }
 .container__1{
 	top: 179px;
@@ -5302,83 +5450,235 @@ body.overflow-hidden {
 @media (min-width: 992px) {
 	.mesas{
 		position: absolute;
-		transform: scale(0.7);
+		transform: scale(0.6);
 	}
 	.containers{
 		position: absolute;
 		transform: scale(0.7);
 	}
 	.mesa__1{
-	top: 267px;
-    left: 320px;
+	top: 309px;
+    left: 8px;
 	}
 	.mesa__2{
-		top: 218px;
-		left: 406px;
+		top: 272px;
+		left: 74px;
 	}
 	.mesa__3{
-		top: 169px;
-		left: 491px;
+		top: 232px;
+		left: 142px;
 	}
 	.mesa__4{
-		top: 119px;
-		left: 577px;
+		top: 387px;
+		left: 8px;
 	}
 	.mesa__5{
-		top: 316px;
-		left: 405px;
+		top: 348px;
+		left: 75px;
 	}
 	.mesa__6{
-		top: 267px;
-		left: 491px;
+		top: 309px;
+		left: 142px;
 	}
 	.mesa__7{
-		top: 218px;
-		left: 577px;
+		top: 272px;
+		left: 208px;
 	}
 	.mesa__8{
-		top: 169px;
-		left: 662px;
+		top: 232px;
+		left: 274px;
 	}
 	.mesa__9{
-		top: 366px;
-		left: 492px;
+		top: 194px;
+		left: 341px;
 	}
 	.mesa__10{
-		top: 317px;
-		left: 576px;
+		top: 155px;
+		left: 408px;
 	}
 	.mesa__11{
-		top: 267px;
-		left: 662px;
+		top: 117px;
+		left: 475px;
 	}
 	.mesa__12{
-		top: 218px;
-		left: 747px;
+		top: 78px;
+		left: 541px;
 	}
 	.mesa__13{
-		top: 423px;
-		left: 591px;
+		top: 347px;
+		left: 209px;
 	}
 	.mesa__14{
-		top: 374px;
-		left: 676px;
+		top: 309px;
+		left: 275px;
 	}
 	.mesa__15{
-		top: 325px;
-		left: 762px;
+		top: 271px;
+		left: 342px;
 	}
 	.mesa__16{
-		top: 276px;
-		left: 846px;
+		top: 232px;
+		left: 408px;
 	}
 	.mesa__17{
-		top: 328px;
-		left: 43px;
+		top: 194px;
+		left: 474px;
 	}
 	.mesa__18{
-		top: 278px;
-		left: 129px;
+		top: 155px;
+		left: 541px;
+	}
+	.mesa__19{
+		top: 117px;
+		left: 607px;
+	}
+	.mesa__20{
+		top: 387px;
+		left: 273px;
+	}
+	.mesa__21{
+		top: 347px;
+		left: 341px;
+	}
+	.mesa__22{
+		top: 309px;
+		left: 408px;
+	}
+	.mesa__23{
+		top: 270px;
+		left: 474px;
+	}
+	.mesa__24{
+		top: 232px;
+		left: 541px;
+	}
+	.mesa__25{
+		top: 194px;
+		left: 607px;
+	}
+	.mesa__26{
+		top: 155px;
+		left: 674px;
+	}
+	.mesa__27{
+		top: 424px;
+		left: 341px;
+	}
+	.mesa__28{
+		top: 386px;
+		left: 408px;
+	}
+	.mesa__29{
+		top: 347px;
+		left: 474px;
+	}
+	.mesa__30{
+		top: 309px;
+		left: 541px;
+	}
+	.mesa__31{
+		top: 271px;
+		left: 607px;
+	}
+	.mesa__32{
+		top: 232px;
+		left: 673px;
+	}
+	.mesa__33{
+		top: 194px;
+		left: 740px;
+	}
+	.mesa__34{
+		top: 463px;
+		left: 408px;
+	}
+	.mesa__35{
+		top: 425px;
+		left: 475px;
+	}
+	.mesa__36{
+		top: 386px;
+		left: 540px;
+	}
+	.mesa__37{
+		top: 347px;
+		left: 607px;
+	}
+	.mesa__38{
+		top: 309px;
+		left: 674px;
+	}
+	.mesa__39{
+		top: 271px;
+		left: 740px;
+	}
+	.mesa__40{
+		top: 232px;
+		left: 807px;
+	}
+	.mesa__41{
+		top: 540px;
+		left: 408px;
+	}
+	.mesa__42{
+		top: 501px;
+		left: 474px;
+	}
+	.mesa__43{
+		top: 463px;
+		left: 541px;
+	}
+	.mesa__44{
+		top: 424px;
+		left: 607px;
+	}
+	.mesa__45{
+		top: 386px;
+		left: 674px;
+	}
+	.mesa__46{
+		top: 348px;
+		left: 740px;
+	}
+	.mesa__47{
+		top: 309px;
+		left: 807px;
+	}
+	.mesa__48{
+		top: 271px;
+		left: 873px;
+	}
+	.mesa__49{
+		top: 578px;
+		left: 475px;
+	}
+	.mesa__50{
+		top: 539px;
+		left: 541px;
+	}
+	.mesa__51{
+		top: 501px;
+		left: 607px;
+	}
+	.mesa__52{
+		top: 463px;
+		left: 674px;
+	}
+	.mesa__53{
+		top: 424px;
+		left: 740px;
+	}
+	.mesa__54{
+		top: 386px;
+		left: 807px;
+	}
+	.mesa__55{
+		top: 347px;
+		left: 873px;
+	}
+	.mesa__56{
+		top: 185px;
+		left: 313px;
 	}
 	.container__1{
 		top: 185px;
