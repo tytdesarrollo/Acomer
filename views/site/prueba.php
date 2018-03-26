@@ -11,40 +11,35 @@
 
 	$request = Yii::$app->request;	
 
+  session_start();
 	
 	
 ?>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
-<p>
-  <span>Move the mouse over the div.</span>
-  <span>&nbsp;</span>
-</p>
-<div></div>
- 
-<script>
-	var fecha1 = new Date();
-	var horaIn = fecha1.getHours();
-	var minIn  = fecha1.getMinutes();
+<script src="/Acomer/web/js/jquery.min.js"></script>
 
-	$("div").mousemove(function(event){
-		var fecha3 = new Date();
-		horaIn = fecha3.getHours();
-		minIn  = fecha3.getMinutes();
-	});
 
-	function cerrarSesion(){ 
-		var fecha2 = new Date();
-		var horaAc = fecha2.getHours();
-		var minAc  = fecha2.getMinutes();		
-		
-		if(((minAc-minIn)+(60*(horaAc-horaIn)))>1){
-			console.log("cerrando session");
-		}
-		
 
-	}setInterval(cerrarSesion,1000);
+<script type="text/javascript">
+    
+  var url = 'http://localhost:8000/Acomer/web/index.php?r=site%2Fplaza';
+  //url actual
+  var urlActual = window.location.href;
+  //posicion de los parametros
+  var posParams = urlActual.search("%2F");
+  //parametros de la url
+  var urlParams = urlActual.substring(0,posParams+3);
+
+  console.log(urlParams);
+
+
+
 </script>
+
+
+
+
+
 
 
 

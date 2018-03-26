@@ -9,24 +9,25 @@
 
 	Class SpMesasPedidos extends Model{
 
-		public function procedimiento(){
+		public function procedimiento($c1){
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
 			//cursor que recibira los datos de las mesas
-			$cursor_mesas;
+			$c2;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_ENTREGAR(:cursor); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_ENTREGAR(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
-			$cursor_mesas = oci_new_cursor($conexion);
+			$c2 = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 
-			oci_bind_by_name($stid, 'cursor',$cursor_mesas,-1, OCI_B_CURSOR);
+			oci_bind_by_name($stid, ":c1", $c1, 10, SQLT_INT);    
+			oci_bind_by_name($stid, ":c2", $c2,-1, OCI_B_CURSOR);
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
-			oci_execute($cursor_mesas,OCI_DEFAULT);
+			oci_execute($c2,OCI_DEFAULT);
 			//se extrae los datos del cursor en un array
-			oci_fetch_all($cursor_mesas, $cursor);
+			oci_fetch_all($c2, $cursor);
 			//retona el array de datos
 			return $cursor;
 		}
@@ -313,6 +314,47 @@
 			// se ejecuta el procedimiento 
 			oci_execute($stid);		
 			
+		}
+
+		public function procedimeinto13($c1,$c2){
+			//$c1: array con codigo de la mesa
+			//$c2: array con el avatar seleccionado
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_AVATAR_MESAS(:c1,:c2); END;");		
+			//pasa los parametros del proceimiento
+			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
+		    oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+		}
+
+		public function procedimeinto14($c1){
+			//$c1: codigo de la mesa
+			//$c2: cursor con los datos de la consulta
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_AVATAR(:c1,:c2); END;");	
+			//inicializa el cursor pasa como parametro
+			$c2 = oci_new_cursor($conexion);
+			//se pasan los parametros del procedimiento 			
+			oci_bind_by_name($stid, ':c1',$c1, 10);   
+			oci_bind_by_name($stid, ':c2',$c2,-1, OCI_B_CURSOR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+			oci_execute($c2,OCI_DEFAULT);
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c2, $cursor1);
+			//retona el array de datos
+			return $cursor1;
 		}
 
 
