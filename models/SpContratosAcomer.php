@@ -9,12 +9,16 @@
 
 	Class SpContratosAcomer extends Model{
 
+		
+
 		public function sp_acomer_empresas_contratos(){
 			//PARAMETROS DE ENTRADA Y DE SALUDA DEL PROCEDIMIENTO
 			//CONEXION
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 
-			$CONEXION = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 
 			//EMPRESAS QUE TIENE CONTRATOS
 			$CURSOR_EMPRESAS;
