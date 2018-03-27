@@ -3,7 +3,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
-<script src="/Acomer/web/js/jquery.min.js"></script>
+<?= Html::jsFile('@web/js/jquery.min.js') ?>
+<?= Html::jsFile('@web/js/ciclosession.js') ?>
 <div class="row">
 	<div class="col-sm-6 pedidos_list-view">
 		<div id="conjunto">

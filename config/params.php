@@ -14,5 +14,7 @@ return[
 			      (SERVER=dedicated)
 			      (SERVICE_NAME=AWAJAVA)
 			    )
-	  		)'
+	  		)',
+'usuario'=>'USR_AWA',    //USR_AWA	  		//USR_SAIC
+'password'=>'0RCAWASYST' //0RCAWASYST       //SAIC123WEB
 ];
