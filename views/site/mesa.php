@@ -37,8 +37,8 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <?= Html::csrfMetaTags() ?>
 	    <title><?= Html::encode($this->title) ?></title>
-	    <script src="/Acomer/web/js/jquery.min.js"></script>
-	    <script src="/Acomer/web/js/ciclosession.js"></script>
+	    <?= Html::jsFile('@web/js/jquery.min.js') ?>
+		<?= Html::jsFile('@web/js/ciclosession.js') ?>
 	    <?php $this->head() ?>
 	</head>
 	<body class='bg-acomer'>
@@ -95,12 +95,32 @@
 					<div class="container">
 						<div class="row">
 							<!--LISTA 1 DE LAS MESA DISPONIBLES PARA UNIR-->
-							<div class="col-sm-6 col-md-6 divider" id="listaMesas1">
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas1">
 								
 							</div>
 
 							<!--LISTA 2 DE LAS MESAS DISPONIBLES PARA UNIR-->
-							<div class="col-sm-6 col-md-6" id="listaMesas2">
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas2">
+								
+							</div>
+
+							<!--LISTA 3 DE LAS MESAS DISPONIBLES PARA UNIR-->
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas3">
+								
+							</div>
+
+							<!--LISTA 4 DE LAS MESAS DISPONIBLES PARA UNIR-->
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas4">
+								
+							</div>
+
+							<!--LISTA 5 DE LAS MESAS DISPONIBLES PARA UNIR-->
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas5">
+								
+							</div>
+
+							<!--LISTA 6 DE LAS MESAS DISPONIBLES PARA UNIR-->
+							<div class="col-sm-2 col-md-6 divider" id="listaMesas6">
 								
 							</div>
 						</div>
@@ -807,7 +827,9 @@
 		$(pedidosConfirmados());
 		$(nombrePlatos());
 		$(habilitarBotones());
-		$(avatarsG());		
+		setTimeout(function(){
+			$(avatarsG());	
+		}, 1000);	
 
 		function mesasDisponiblesR(){
 			$.ajax({
@@ -829,40 +851,57 @@
 					//muestros las mesas en la plaza
 					document.getElementById("listaMesas1").innerHTML = mesas[0];
 					document.getElementById("listaMesas2").innerHTML = mesas[1];
+					document.getElementById("listaMesas3").innerHTML = mesas[2];
+					document.getElementById("listaMesas4").innerHTML = mesas[3];
+					document.getElementById("listaMesas5").innerHTML = mesas[4];
+					document.getElementById("listaMesas6").innerHTML = mesas[5];
 				}
 			});
 		}//setInterval(mesasDisponiblesR, 1000);
 
 	function cargarMesas(estado){
 		//listado de mesas disponibles del lado izquierdo
-		var lista1 = '<ul class="list-mesa__libre text-center">';
-		//listado de mesas disponibles del lado derecho 
-		var lista2 = '<ul class="list-mesa__libre text-center">';
-		//balance de cada lista
-		var contador = 0;
+		var iniLista = '<ul class="list-mesa__libre text-center">';
+		var cueLista = '';
+		var finLista = '</ul>';
+
+		//array con las listas
+		var arrayListas = new Array();				
+		//
+		var indicadorCambio = 0;
 
 		//se crea el listado de las mesas
 		for(var i=0 ; i<estado.length ; i++){
 			// si estan disponibles se ponen en lista
 			if(estado[i] == 1 && (i+1) != generalCodigoM){
-				//carga por lado maximo de nueve
-				if(contador<9){
-					//lista del lado izquierdo 
-					lista1 = lista1 + '<li class="mesa__libre" onClick="listaOut('+(i+1)+')">Mesa '+(i+1)+'</li>';
-					contador++;
+				// arma el cuerpo de la lista
+				cueLista = cueLista + '<li class="mesa__libre" onClick="listaOut('+(i+1)+')">Mesa '+(i+1)+'</li>';				
+				// maximo 10 filas por columna
+				if(indicadorCambio === 9){										
+					indicadorCambio = 0;
+					arrayListas.push(iniLista+cueLista+finLista);
+					cueLista = '';
 				}else{
-					//lista del lado derecho 
-					lista2 = lista2 + '<li class="mesa__libre" onClick="listaOut('+(i+1)+')">Mesa '+(i+1)+'</li>';
+					if((i+1) >= (estado.length)){
+						arrayListas.push(iniLista+cueLista+finLista);
+					}
+					indicadorCambio++;
 				}
 			}
 		}
 
-		lista1 = lista1 + '</ul>';
-		lista2 = lista2 + '</ul>';		
+		// si la cantidad de columnas no es la misma llena las faltante en nulo 
+		if(arrayListas.length < 6){
+			//posiciones faltante
+			var faltantes = 6 - arrayListas.length;
+			//
+			while(faltantes != 6){
+				arrayListas.push("");
+				faltantes++;	
+			}
+		}
 
-		var array = [lista1, lista2];
-
-		return array;
+		return arrayListas;
 	}
 
 	function listaOut(codMes,principal = 0){		
@@ -1003,11 +1042,11 @@
 	
 	function avatarsG(){
 		//captura el valor de los avatar
-		var avatar = '<?=$avatars?>';		
+		var avatar = '<?=$avatars?>';				
 		// varuable donde se van a tener los avatar en array
 		var arrayAvatar;
 		// si es la rimera vez que abre la mesa
-		if(generalEstadoM == 1){
+		if(generalEstadoM == 1){			
 			// si es diferente de cero (si hay un avatar)
 			if(avatar != 0){
 				//separo los avatar en array
@@ -1019,9 +1058,9 @@
 					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
 					// creo la imgrn html 
 					if(generalTamano <= 4){
-						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedido('+puesto+')">';
+						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
-						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
+						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
 					}
 					// imprimo en pantalla el avatar ya seleccionado 
 					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;				
@@ -1029,7 +1068,6 @@
 
 			}		
 		}else{
-
 			if(avatar != 0){
 				//separo los avatar en array
 				arrayAvatar = crearArray(avatar);			
@@ -1040,12 +1078,14 @@
 					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
 					// creo la imgrn html 
 					if(generalTamano <= 4){
-						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedido('+puesto+')">';
+						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
-						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
+						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
 					}
 					// imprimo en pantalla el avatar ya seleccionado 
-					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;				
+					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;		
+					$("#avatarPuesto"+puesto).html()
+					console.log($("#avatarPuesto"+puesto));		
 				}
 			}
 			
@@ -1119,7 +1159,7 @@
 				'<div class="container">'+
 					'<div class="row">'+
 						'<div class="col-sm-2"><img src="img/personajes/u'+avatar+'.svg" width="120" height="120"></div>'+
-						'<div class="col-sm-3"><br/><h3>Confirmar el avatar seleccionado</h3></div>'+
+						'<div class="col-sm-4"><br/><h3>Confirmar el avatar seleccionado</h3></div>'+
 					'</div>'+
 				'<div>',
 			type: '',
@@ -2370,31 +2410,53 @@
 	function opcionesReciboFac(){
 
 		swal({
-			title: "",
-		  	text: "Faltan platos por facturar, desea continuar en la mesa o salir a la plaza?",		  
-			html: true, // add this if you want to show HTM		  
+			title: '¿Salir o reversar factura?',						
+			type: "info",
+			text: '*Reversar en caso de que la factura tenga algún error',
 			showCancelButton: true,
-			closeOnConfirm: false,
-			closeOnCancel: false,
 			confirmButtonColor: "#5cb85c",
 			cancelButtonColor: "#EC4424",
-			confirmButtonText: "Volver a mesa",
-			cancelButtonText: "Salir",
-	  
-		},function (isConfirm) {
-	  		//url donde sera redireccionado
-			var urlDestino;				
-			// retornar a la mesa
-			if (isConfirm == true) {					
-				urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
-				location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;
-			//retornar a la plaza
-			} else {					
-				urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
-				location.href = urlDestino;	
+			confirmButtonText: "Salir",
+			cancelButtonText: "Reversar Factura",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+			function(isConfirm){
+				if (isConfirm) {
+					swal({
+						title: "Faltan platos por facturar",
+					  	text: "Desea continuar en la mesa o salir a la plaza?",	
+					  	type: 'info',	  
+						html: true, // add this if you want to show HTM		  
+						showCancelButton: true,
+						closeOnConfirm: false,
+						closeOnCancel: false,
+						confirmButtonColor: "#5cb85c",
+						cancelButtonColor: "#EC4424",
+						confirmButtonText: "Volver a mesa",
+						cancelButtonText: "Salir",
+				  
+					},function (isConfirm) {
+				  		//url donde sera redireccionado
+						var urlDestino;				
+						// retornar a la mesa
+						if (isConfirm == true) {					
+							urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
+							location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;
+						//retornar a la plaza
+						} else {					
+							urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
+							location.href = urlDestino;	
+						}
+				  		
+					});
+				}else{
+					reversarFac(generalRever,generalFactura);
+				}
 			}
-	  		
-		});
+		);			
+
+		
 
 		/*swal({
 			title: '¿Volver a mesa ó salir?',						
@@ -3182,7 +3244,7 @@
 						dataType:'json',
 						method: "GET",
 						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':generalMesaPrinc, 
-							   'mesa2':generalMesa1, 'tamano':0},			
+							   'mesa2':generalMesa1, 'tamano':0, 'avatar':avatar},			
 						success: function (data) {						
 							
 						}

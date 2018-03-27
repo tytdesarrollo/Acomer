@@ -33,7 +33,16 @@ class SiteController extends Controller
 
     public function actionPrueba(){     
 
-        return $this->render('prueba'); 
+        $prodesc   = array("CHURRASCO","CHURRASCO","PASTA VAKISOBA VEGETARIANA","PASTA VAKISOBA POLLO CAMARON","PASTA VAKISOBA MARISCOS","CHURRASCO");
+        $peduni    = array("1","1","1","1","1","1");
+        $pesvaltun = array("45200","45200","17500","27500","32000","45200");
+        $arrayCont = array("PRODES"=>$prodesc,"PEDUNI"=>$peduni,"PEDVALTUN"=>$pesvaltun);
+        $arrayFin  = array($arrayCont);
+
+        $fn_array = new funcionesArray();
+        $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($arrayFin);
+        $this->layout=false;
+        return $this->render('prueba',['arrayFin'=>json_encode($detalle1)]); 
     }   
     
     public function behaviors()
@@ -83,10 +92,9 @@ class SiteController extends Controller
         //modelo de recuperar contraseña
         $model2 = new RememberForm();
         //Se declara la clase de directorio activo
-        //$modeladp = new Ldap;
+        $modeladp = new Ldap;
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
-        //$ladpcon = $modeladp->directorioactivo();
-        $ladpcon = array("","","false");
+        $ladpcon = $modeladp->directorioactivo();       
         
         //si no posee directorio activo permite la recuperacion de la contraseña
         if($ladpcon[2]=="false"){
@@ -153,10 +161,9 @@ class SiteController extends Controller
     public function actionLogueo()
     {   
         //Declaracion de  directorio activo
-        //$modeladp = new Ldap;        
+        $modeladp = new Ldap;        
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado         
-        //$ladpcon = $modeladp->directorioactivo();
-        $ladpcon = array("","","false");
+        $ladpcon = $modeladp->directorioactivo();        
         //si hay un usuario con el id ingresado y el directorio activo esta activo
         if(isset($ladpcon[0]) && $ladpcon[2]=='true'){
             //la variable de sesion cedula le asigno el identificador del usuario
@@ -248,11 +255,11 @@ class SiteController extends Controller
             //renderizamos asignapassword
             return $this->render('asignapassword',['model' => $modelform]);
         //si el codigo devuelto por el procedimiento es 11
-        }elseif($SpLoginAcomer[1]=="11"){            
-            return $this->redirect(['site/index', "error"=>$SpLoginAcomer[2]]);   
+        }elseif($spLoginAcomer[1]=="11"){            
+            return $this->redirect(['site/index', "error"=>$spLoginAcomer[2]]);   
         //si el codigo devuelto no es ni 10 ni 11         
         }else{            
-            return $this->redirect(['site/index', "error"=>$SpLoginAcomer[2]]);            
+            return $this->redirect(['site/index', "error"=>$spLoginAcomer[2]]);            
         }
     }
 
@@ -273,6 +280,27 @@ class SiteController extends Controller
             //redireccionamos 
             return $this->redirect(['site/asignapassword', "error"=>$spLoginAcomer[2], 'tokenreset'=>Yii::$app->request->get('tokenreset') , 'usuario'=>Yii::$app->request->get('usuario'), 'operacion'=>'T']);
         }   
+    }
+
+    public function actionActivapassword()
+    {
+        //declaramos la clase del procedimiento para login acomer
+        $model = new SpLoginAcomer;
+        //llamamos la funcion que ejecuta el procedimeinto almacenado 
+        $spLoginAcomer = $model->procedimiento();
+                        
+         if(isset($_POST['activate'])){                             
+                    
+            $datos = $spLoginAcomer[2];
+                    
+            echo(($datos)?json_encode($datos):'');
+        
+        }else{
+            
+            $datos = 0; 
+            
+            echo(($datos)?json_encode($datos):''); 
+        }           
     }
 
     public function actionPrincipal(){
@@ -973,7 +1001,7 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
-            echo json_encode($cabeceraDetalle);   
+            echo json_encode($cabeceraDetalle);             
 
         }
         //echo '[{"NUMERO_FAC":["000003"],"FECHA":["17\/08\/2017"]},{"PRODES":["TORO CAESAR","ENSALDA FUSION","ENSALDA ORIENTE"],"PEDUNI":["1","1","1"],"PEDVALTUN":["24990","22015","26537"]},"73542"]';
@@ -1168,11 +1196,14 @@ class SiteController extends Controller
             'PEDUNI' => $cantidad,
             'PEDVALTUN' => $valor,            
         );    
+
+        $fn_array = new funcionesArray();
+        $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($detalle);
         
         $c5 = $get5;
         // se genera la factura para el cliente
         $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
-        $cabeceraDetalle = array($facturar, $detalle, $numeroRever);
+        $cabeceraDetalle = array($facturar, $detalle1, $numeroRever);
         echo json_encode($cabeceraDetalle);
     }
 
@@ -1297,8 +1328,15 @@ class SiteController extends Controller
                 'VALOR_IVA' => $iva           
             );                       
 
-            $full = array($detalle, $fecha[0]);
+            /*$full = array($detalle, $fecha[0]);
            
+            echo json_encode($full);*/
+            
+            $fn_array = new funcionesArray();
+            $detalle = $fn_array->arrayAdjuntarDatosVisualizarFacx($detalle);
+
+            $full = array($detalle, $fecha[0]);
+
             echo json_encode($full);
         }
         
