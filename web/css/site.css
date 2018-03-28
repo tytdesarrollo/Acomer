@@ -2455,6 +2455,9 @@ MATERIAL-SELECT
 
 
 /* ESTILOS ACOMER*/
+.avatar-hidden{
+	visibility: hidden;
+}
 .bg-acomer{
 	background-image: url(../img/bg.png);
 	background-size: cover;
@@ -3142,7 +3145,7 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 }
 .containers{
 	position: absolute;
-	transform: scale(0.5);
+	transform: scale(0.8);
 }
 .notification{
 	position: absolute;
@@ -3374,20 +3377,20 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     left: 642px;
 }
 .container__1{
-	top: 179px;
-    left: 226px;
+	top: 113px;
+    left: 202px;
 }
 .container__2{
-	top: 179px;
-    left: 226px;
+	top: 32px;
+    left: 341px;
 }
 .container__3{
-	top: 179px;
-    left: 226px;
+	top: 336px;
+    left: 109px;
 }
 .container__4{
-	top: 490px;
-    left: 431px;
+	top: 406px;
+    left: 228px;
 }
 .container__1 .not-1, .container__2 .not-1, .container__3 .not-1{
 	top: 0;
@@ -5454,7 +5457,7 @@ body.overflow-hidden {
 	}
 	.containers{
 		position: absolute;
-		transform: scale(0.7);
+		transform: scale(0.95);
 	}
 	.mesa__1{
 	top: 309px;
@@ -5681,20 +5684,20 @@ body.overflow-hidden {
 		left: 313px;
 	}
 	.container__1{
-		top: 185px;
-		left: 313px;
+		top: 164px;
+		left: 267px;
 	}
 	.container__2{
-		top: 70px;
-		left: 512px;
+		top: 56px;
+		left: 453px;
 	}
 	.container__3{
-		top: 388px;
-		left: 265px;
+		top: 461px;
+		left: 143px;
 	}
 	.container__4{
-		top: 490px;
-		left: 431px;
+		top: 555px;
+		left: 306px;
 	}
 	
 	/* Estilos para mesa de 4 puestos (min-width: 992px) */
@@ -5738,15 +5741,16 @@ body.overflow-hidden {
 /* Estilos para Dispositivos móviles (min-width: 1200px) */
 @media (min-width: 1200px){
 	.base{
-		transform: scale(1.4);
+		transform: scale(1.2);
+		transform-origin: 50% 70%;
 	}
 	.mesas{
 		position: absolute;
-		transform: scale(0.8);
+		transform: scale(0.75);
 	}
 	.containers{
 		position: absolute;
-		transform: scale(0.8);
+		transform: scale(1.1);
 	}
 	.mesa__1{
 	top: 356px;
@@ -5821,20 +5825,20 @@ body.overflow-hidden {
 		left: 177px;
 	}
 	.container__1{
-		top: 247px;
-		left: 404px;
+		top: 179px;
+		left: 380px;
 	}
 	.container__2{
-		top: 113px;
-		left: 637px;
+		top: 64px;
+		left: 579px;
 	}
 	.container__3{
-		top: 484px;
-		left: 349px;
+		top: 497px;
+		left: 248px;
 	}
 	.container__4{
-		top: 596px;
-		left: 546px;
+		top: 597px;
+		left: 416px;
 	}
 	.content-mesa .n-mesa{
 		width: 4.2em;
