@@ -3,9 +3,9 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
-<script src="/Acomer/web/js/jquery.min.js"></script>
-<script src="/Acomer/web/js/sweetalert2.all.min.js"></script>
-<script src="/Acomer/web/js/ciclosession.js"></script>
+ <?= Html::jsFile('@web/js/jquery.min.js') ?>
+  <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
+   <?= Html::jsFile('@web/js/ciclosession.js') ?>
 
 <div class="main">
 	<img src="img/plaza.png" alt="" class="img-responsive base">
@@ -24,7 +24,8 @@ use yii\widgets\ActiveForm;
 			<div class="containers container__1">
 				<div class="notification text_0-9 not-1 full">		
 					<div class="menu-trigge">
-						<div id="pedidosEmp1">										
+						<div id="pedidosEmp1">	
+							<?= Html::img('@web/img/notrest.svg', ['class'=>'img-responsive'])?>
 						</div>	
 					</div>
 					<div class="ripple-container">
@@ -306,7 +307,7 @@ use yii\widgets\ActiveForm;
 				}
 			}
 		});
-	}setInterval(containerReal, 1000);
+	}//setInterval(containerReal, 1000);
 
 	function notificacionContainer(tamano, mesa, empresa, documento, puestos, platos, cantidad, nombre){		
 		//
@@ -354,7 +355,7 @@ use yii\widgets\ActiveForm;
 		for (var i = 0; i < array.length; i++) {	
 			// si el container tiene notificacion
 			if(array[i] > 0){
-				arrayF[i] = '<img class="img-responsive" src="/Acomer/web/img/notrest.svg" alt="avatar">';
+				arrayF[i] = '<?= Html::img('@web/img/notrest.svg', ['class'=>'img-responsive'])?>';
 				$("#pedidosEmp"+(i+1)).attr('onclick','platosEntregar('+(i+1)+')');
 				cantidadNotifi++;
 			}else{
@@ -590,16 +591,16 @@ use yii\widgets\ActiveForm;
 	}
 
 
-	var delayInMilliseconds = 3000; //1 second
+	// var delayInMilliseconds = 3000; //1 second
 
-	setTimeout(function() {
-		clickPruebaaaa();
-	}, delayInMilliseconds);
+	// setTimeout(function() {
+		// clickPruebaaaa();
+	// }, delayInMilliseconds);
 
 	
-	function clickPruebaaaa()	{
-		$("#pedidosEmp1").click();
-	}
+	// function clickPruebaaaa()	{
+		// $("#pedidosEmp1").click();
+	// }
 </script>
 
 

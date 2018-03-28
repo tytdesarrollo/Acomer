@@ -1027,7 +1027,7 @@
 			for (var i=0 ; i<4 ; i++){
 				crearMesa = crearMesa +
 					'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+							
-						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive" id="imgPersona+'+(i+1)+'">'+						
+						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona+'+(i+1)+'">'+						
 						'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
 							'<div class="cnt"  onClick="seleccionaPersona('+(i+1)+')">'+
 								'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
