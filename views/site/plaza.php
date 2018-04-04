@@ -37,6 +37,20 @@ use yii\widgets\ActiveForm;
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {	    	
+    	document.getElementById("idUsuario").innerHTML = "CC."+"<?=Yii::$app->session['cedula']?>";
+    	document.getElementById("idPerfil").innerHTML = "<?=ucwords(strtolower($rol))?>";
+    });
+</script>
+
+<script type="text/javascript">
+	var codigoEmp1 = '<?=$container1?>';
+	var codigoEmp2 = '<?=$container2?>';
+	var codigoEmp3 = '<?=$container3?>';
+	var codigoEmp4 = '<?=$container4?>';
+</script>
 		
 <!--Manejo de mesas y sus notificaciones-->
 <script type="text/javascript">
@@ -66,7 +80,7 @@ use yii\widgets\ActiveForm;
 				//almaceno los valores pertenecientes al codigo de las mesas
 				var puestosMesas = arrayDatos[4];	
 				//hora de atencion a la mesa
-				var atencionMesas = arrayDatos[5];
+				var atencionMesas = arrayDatos[6];
 				//variable que contiene las mesas que se cargan en la plaza
 				var mesas;			
 				// ejecutamos la carga de las mesas
@@ -89,7 +103,7 @@ use yii\widgets\ActiveForm;
 		//complementa el esquema para mostrar las mesas
 		for (var i = 0; i < tamano; i++) {
 			// ejecuta la funcion de notificacion de mesa
-			notificacionMesa = tipoNotificacion(estadosMesas[i], atencionMesas[i], i);			
+			notificacionMesa = tipoNotificacion(estadosMesas[i], atencionMesas[i], codigosMesas[i]);			
 			//
 			imgMesa = useImg(i);
 			// mesas que se van a mostrar
@@ -151,117 +165,33 @@ use yii\widgets\ActiveForm;
 		
 		if(estado == 1){
 			// para las mesas de un solo digito
-			if(codMesa <= 8){
+			if(codMesa <= 9){
 				return '<div class="notification text_0-9 null">'
 			// para las mesas de dole digito
 			}else{
 				return '<div class="notification text_10-20 null">'
 			}
 		}else if(estado == 0){
-			//se comparan los tiempos de atencio para cambiar el tipo de notificacion
-			var date = new Date();	// funcion para fecha del sistema
-			var horaActual;
-			if(date.getHours()<10){
-				horaActual = '0'+date.getHours()+':'+date.getMinutes(); // optengo la hora y minutos del sistema
-			}else{
-				horaActual = date.getHours()+':'+date.getMinutes(); // optengo la hora y minutos del sistema
-			}
-			 
-			var arrayTiempos = atencion.split(":");  // separo las horas, los minutos  y los segundos de la hora arrojada en el pedido 
-			var horaInicial = arrayTiempos[0]+':'+arrayTiempos[1]; // armo hora y minutos 
-			var tiempos = calcularTiempo(horaInicial, horaActual); /// ejecuta la funcion que calcula la diferencia entre horas
-			
-			//alert(tiempos[0]);
-			// para las mesas de un solo digito			
-			if(codMesa <= 8){				
-				// si la diferencia son 0 horas				
-				;
-				if(tiempos[0] === '00'){
-					// si los minutos superan los 3 min y menos a 5
-					if(tiempos[1] < 3){
-						return '<div class="notification text_0-9 full" >';
-					// si los tiempos tardan entre 3 y 5 miutos 
-					}else if(tiempos[1] >= 3 && tiempos[1] < 5 ){
-						return '<div class="notification text_0-9 warning" >';
-					// si los minutos son superirores a 5
-					}else if(tiempos[1] >= 5){
-						return '<div class="notification text_0-9 danger" >';
-					// si no cumple ninguna de las anteriores
-					}else{
-						return '<div class="notification text_0-9 full" >';
-					}
-				// si supera la hora
-				}else{					
-					return '<div class="notification text_0-9 danger" >';
+			// el tiempo para la entrega esta sin retrasos
+			if(atencion == 'SIN_RETRASO'){
+				// para las mesas de un solo digito
+				if(codMesa <= 9){
+					return '<div class="notification text_0-9 full">'
+				// para las mesas de dole digito
+				}else{
+					return '<div class="notification text_10-20 full">'
 				}
-			// para las mesas de doble digito
 			}else{
-				// si la diferencia son 0 horas
-				if(tiempos[0] === '00'){
-					// si los minutos superan los 3 min y menos a 5
-					if(tiempos[1] < 3){
-						return '<div class="notification text_10-20 full" >';
-					// si los tiempos tardan entre 3 y 5 miutos 
-					}else if(tiempos[1] >= 3 && tiempos[1] < 5 ){
-						return '<div class="notification text_10-20 warning" >';
-					// si los minutos son superirores a 5
-					}else if(tiempos[1] >= 5){
-						return '<div class="notification text_10-20 danger" >';
-					// si no cumple ninguna de las anteriores
-					}else{
-						return '<div class="notification text_10-20 full" >';
-					}
-				// si supera la hora
-				}else{					
+				// si supera no supera los 15 minutos
+				if(atencion <= 15){
+					return '<div class="notification text_10-20 warning" >';
+				}else{
 					return '<div class="notification text_10-20 danger" >';
 				}
 			}
 			
+			
 		}		
-	}
-
-	function calcularTiempo(horaInicio, horaFin){
-		// se declaran las horas de inico y de fin
-		inicio = horaInicio; 
-		fin = horaFin; 
-
-		//alert(inicio+'|||'+fin);
-
-		// se convierten los datos en enteros y separando las horas de los minutos de la hora inicial
-		inicioMinutos = parseInt(inicio.substr(3,2)); 
-		inicioHoras = parseInt(inicio.substr(0,2)); 
-
-		// se convierten los datos en enteros y separando las horas de los minutos de la hora final
-		finMinutos = parseInt(fin.substr(3,2));  
-		finHoras = parseInt(fin.substr(0,2)); 
-
-		//console.log(inicioHoras+' / '+inicioMinutos+'*****'+finHoras+' / '+finMinutos);
-
-		// de restan las diferencias de las horas y minutos por aparte
-		transcurridoMinutos = finMinutos - inicioMinutos; 
-		transcurridoHoras = finHoras - inicioHoras; 
-
-
-		if (transcurridoMinutos < 0) {
-			transcurridoHoras--;
-			transcurridoMinutos = 60 + transcurridoMinutos;
-		}
-
-
-		horas = transcurridoHoras.toString();
-		minutos = transcurridoMinutos.toString();
-
-		if (horas.length < 2) {
-			horas = "0"+horas;
-		}
-
-		if (horas.length < 2) {
-		horas = "0"+horas;
-		}
-
-		var array = [horas,minutos];
-
-		return array;
 	}
 
 	function useImg(numero){
@@ -276,6 +206,13 @@ use yii\widgets\ActiveForm;
 
 <!--Manejo de los container y las notificaciones-->
 <script type="text/javascript">
+	////////////////////////////////////
+	var generalempresas;
+	var generaldocumentos;
+	var generalPuestos;
+    var generalPlatos;
+	////////////////////////////////////
+	
 	$(containerReal());
 
 	function containerReal(){
@@ -296,40 +233,58 @@ use yii\widgets\ActiveForm;
 				//almaceno los valores pertenecientes al estado de las mesas
 				var numeroMesa = arrayDatos[1];
 				//almaceno los valores pertenecientes al codigo de la empresa a la que pertenecen las mesas
-				var empresaPedido = arrayDatos[2];				
+				var empresaPedido = arrayDatos[2];		
+				//almaceno los valores de los pedidos (documento)		
+				var documentoPedido = arrayDatos[3];
+				// alamcena los valores de los puestos
+				var puestosPedido = arrayDatos[4];		
+                // almacena los valores de los platos
+                var platosPedido= arrayDatos[5];		
 
-				var notificaciones = notificacionContainer(tamano, numeroMesa, empresaPedido);	
-
-				//console.log(notificaciones[0]);
+				var notificaciones = notificacionContainer(tamano, numeroMesa, empresaPedido, documentoPedido, puestosPedido, platosPedido);	
+				
 				//muestros las mesas en la plaza
 				document.getElementById("pedidosEmp1").innerHTML = notificaciones[0];			
 				document.getElementById("pedidosEmp2").innerHTML = notificaciones[1];
+				document.getElementById("pedidosEmp3").innerHTML = notificaciones[2];
+				document.getElementById("pedidosEmp4").innerHTML = notificaciones[3];
 			}
 		});
 	}setInterval(containerReal, 1000);
 
-	function notificacionContainer(tamano, mesa, empresa){
+	function notificacionContainer(tamano, mesa, empresa, documento, puestos, platos){
+		//
+		generalempresas = empresa;
+		generaldocumentos = documento;
+		generalPuestos = puestos;
+        generalPlatos = platos;
 		// esquemas que se usan para cada container
 		var esquemaemp1 = '';
 		var esquemaemp2 = '';
+		var esquemaemp3 = '';
+		var esquemaemp4 = '';
 		//posicion de la notificacion sobre el container
 		var contadoremp1 = 1;
 		var contadoremp2 = 1;		
+		var contadoremp3 = 1;		
+		var contadoremp4 = 1;		
 		//
 		var posicionesDisp1 = new Array(0,0,0,0,0);
 		var posicionesDisp2 = new Array(0,0,0,0,0);
+		var posicionesDisp3 = new Array(0,0,0,0,0);
+		var posicionesDisp4 = new Array(0,0,0,0,0);
 		// recorrer los datos aarrojados por el cursor 
-		for (var i = 0; i < tamano; i++) {
+		for (var i = 0; i < tamano; i++) {			
 			// mostrar la notificacion dependiendo a que empresa pertenece el plato a entregar
 			switch(empresa[i]){
-				case '901.023.461-1':					
+				case codigoEmp1:					
 					// notificacion para las mesas de un digito 
 					if(mesa[i] <= 9){	
 						// recorrer las cinco notificaciones al tiempo del container y si hay disponibilidad se carga la notificacion	
 						for(var j = 0 ; j <posicionesDisp1.length ; j++){
 							if(posicionesDisp1[j] != 1){
 								esquemaemp1 = esquemaemp1 +
-									'<div class="notification text_0-9 not-'+(j+1)+' full">'+
+									'<div class="notification text_0-9 not-'+(j+1)+' full" onClick="entregarEnMesa('+i+')">'+
 										'<svg width="50" height="60">'+
 										  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
 										'</svg>'+
@@ -354,7 +309,7 @@ use yii\widgets\ActiveForm;
 						}							
 					}
 					break;
-				case '901.023.461-2':
+				case codigoEmp2:
 					// notificacion para las mesas de un digito 
 					if(mesa[i] <= 9){
 						esquemaemp2 = esquemaemp2 +
@@ -377,13 +332,70 @@ use yii\widgets\ActiveForm;
 						contadoremp2 = contadoremp2 + 1;
 					}
 					break;
+				case codigoEmp3:
+					// notificacion para las mesas de un digito 
+					if(mesa[i] <= 9){
+						esquemaemp3 = esquemaemp3 +
+							'<div class="notification text_0-9 not-'+contadoremp3+' full">'+
+								'<svg width="50" height="60">'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+								'</svg>'+
+							'</div>';
+						// aumenta 1 mas la posicion de la notificacion
+						contadoremp3 = contadoremp3 + 1;
+					// notificacion para las mesas de dos digitos
+					}else{
+						esquemaemp3 = esquemaemp3 +
+							'<div class="notification text_10-20 not-'+contadoremp3+' full">'+
+								'<svg width="50" height="60">'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+								'</svg>'+
+							'</div>';
+						// aumenta 1 mas la posicion de la notificacion
+						contadoremp3 = contadoremp3 + 1;
+					}
+					break;
+				case codigoEmp4:
+					// notificacion para las mesas de un digito 
+					if(mesa[i] <= 9){
+						esquemaemp4 = esquemaemp4 +
+							'<div class="notification text_0-9 not-'+contadoremp4+' full">'+
+								'<svg width="50" height="60">'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+								'</svg>'+
+							'</div>';
+						// aumenta 1 mas la posicion de la notificacion
+						contadoremp4 = contadoremp4 + 1;
+					// notificacion para las mesas de dos digitos
+					}else{
+						esquemaemp4 = esquemaemp4 +
+							'<div class="notification text_10-20 not-'+contadoremp4+' full">'+
+								'<svg width="50" height="60">'+
+								  '<use xlink:href="img/notification_icons.svg#not'+mesa[i]+'"></use>'+
+								'</svg>'+
+							'</div>';
+						// aumenta 1 mas la posicion de la notificacion
+						contadoremp4 = contadoremp4 + 1;
+					}
+					break;
 			}
 		}
 
 		// las notificaciones se cargan en un array 
-		var array = [esquemaemp1,esquemaemp2];
+		var array = [esquemaemp1,esquemaemp2,esquemaemp3,esquemaemp4];
 
 		return array;
+	}
+
+	function entregarEnMesa(posicion){		
+		$.ajax({
+			url:'<?php echo Url::toRoute(['site/entregarpedido']); ?>',
+			method: "GET",
+			data: {'puestos':generalPuestos[posicion],'documento':generaldocumentos[posicion],'empresa':generalempresas[posicion],'platos':generalPlatos[posicion]},	
+			success: function (data) {						
+				
+			}
+		});
 	}
 </script>
 

@@ -132,9 +132,9 @@
 							<a onClick="retrocederMesa()" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 								<i class="material-icons">&#xE317;</i>
 							</a>
-							<a onClick="showAvatars()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#personajesModal">
+							<!--<a onClick="showAvatars()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#personajesModal">
 								<i class="material-icons"></i>Prueba_Personajes
-							</a>
+							</a>-->
 						</div>
 						<div class="pull-right">
 							<a id="visualizarPedidoBtn" onClick="verPedido()" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#pedidoModal">
@@ -191,7 +191,7 @@
 							<div class="container-fluid">
 								<div class="row">
 									<div class="pull-right">
-										<a onClick="mensajeAlerta(2)" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+										<a onClick="cancelarTodo()" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
 											<i class="material-icons icon-btn">&#xE14B;</i>Cancelar Todo
 										</a>
 										<a onClick="realizarPedido()" class="btn btn-raised btn-success btn-radius btn-inline">
@@ -477,10 +477,46 @@
 													<dl class="num-fact">
 														<dt>Factura</dt>
 														<dd id="numeroFactura">#0001</dd>
+													</dl>													
+												</div>												
+											</div>																
+										</div>
+										<div class="clearfix">
+											<div class="pull-right">
+												<div class="num-factura-content">
+													<dl class="num-fact">
+														<dd id="nombreClientefac">Nombre del cliente</dd>
+													</dl>
+												</div>				
+											</div>		
+										</div>
+										<div class="clearfix">
+											<div class="pull-right">
+												<div class="num-factura-content">
+													<dl class="num-fact">														
+														<dd id="idClientefac">Codigo del cliente</dd>					
+													</dl>
+												</div>				
+											</div>		
+										</div>
+										<!--<div class="clearfix">
+											<div class="logo-factura-content pull-left">
+												
+											</div>
+											<div class="pull-right">												
+												<div class="num-factura-content">													
+													<dl class="num-fact">
+														<dt>Codigo</dt>
+														<dd id="codigoClientediv">123456789</dd>
+													</dl>
+													<dl class="num-fact">
+														<dt>Nombre</dt>
+														<dd id="nombreClientediv">Jose Perez</dd>
 													</dl>
 												</div>
+												
 											</div>
-										</div>
+										</div>-->
 										<hr>
 										<div class="detail-factura-content">
 											<div class="table-responsive">
@@ -497,11 +533,63 @@
 													</tbody>
 												</table>												
 											</div>
+											<div class="clearfix mrg__bottom-30">
+												<div class="propina-content pull-left" id="opcionesPropina">
+													<p class="fnt__Bold">¿Desea agregar propina?</p>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina1" value="0" checked="" onclick="calcularPropina(0)">
+															0%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina2" value="10" onclick="calcularPropina(10)">
+															10%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina3" value="15" onclick="calcularPropina(15)">
+															15%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina4" value="18" onclick="calcularPropina(18)">
+															18%
+														</label>
+													</div>
+													<div class="radio radio-primary">
+														<label>
+															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina5" value="0" onclick="habilitarPropina()">Otro:
+														</label>																
+													</div>	
+													<div class="radio radio-primary">
+														<input type="number" class="form-control" placeholder="$0" id="propinax" value="x" style="width:100px; font-size:20px;" disabled="true" />
+													</div>				
+												</div>
+												<div class="sub-total-factura-content pull-right">
+													<div class="iva-factura text-right fnt__Medium">
+														<span>Subtotal</span>
+														<span>Propina</span>
+														<span>IVA</span>
+													</div>
+													<div class="sub-total-factura text-right">
+														<span id="valorSubtotal">$00.000</span>
+														<span id="valorPropina">$0</span>
+														<span id="valorIva">$00.000</span>
+													</div>
+												</div>
+											</div>
 											<div class="total-factura-content clearfix">
 												<div id="btnImprimir" class="btn-factura-box pull-left">
 													<a onClick="imprimirRecibo()" id="labelImprimir"  href="#" class="btn btn-raised btn-info btn-radius btn-inline">
 														Salir<i class="material-icons">&#xE5C8;</i>
 													</a>
+												</div>
+												<div id="btnRegistroC" class="btn-factura-box pull-left">
+													<a onclick="iniciaModalCliente()" id="labelCliente"  href="#" class="btn btn-raised btn-warning btn-radius btn-inline">Cliente</a>
 												</div>
 												<div class="total-factura-box pull-right">	
 													<span class="total-txt">Total</span>
@@ -514,12 +602,64 @@
 							</div> <!-- cd-modal-content -->
 						</div> <!-- cd-modal -->
 						<a id="cerrarFacturar" class="modal-view-factura-close"><i class="material-icons">&#xE14C;</i></a>
+						<div class="modal-registro">
+							<div class="m-content">
+								<div class="client-content">
+									<div class="clt-cnt">
+										<h3 class="title-header fnt__Medium text-center">CLIENTE</h3>
+										<div class="form-group">
+											<input type="number" class="form-control" id="cltRCc" placeholder="Identificación">
+										</div>
+									</div>
+									<div class="btn-addId-content">
+										<button id="addIdClt" type="button" class="btn btn-modact btn-add-id-cl" onclick="consultarCliente()">
+											<i class="material-icons">&#xE876;</i>
+										</button>
+										<button id="closeModClt" type="button" class="btn btn-modact btn-close-cl" onclick="cerrarModalCliente()">
+											<i class="material-icons">&#xE14C;</i>
+										</button>
+									</div>
+								</div>
+								<div class="new-client-content">
+									<i class="btn-nw-clt material-icons" onclick="arrastrarCodigo()" id="cerrarRegistro">person_add</i>
+									<div class="main-cnt">
+										<div class="clt-cnt">
+											<h3 class="title-header fnt__Medium text-center txt__light-100">CLIENTE NUEVO</h3>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltNombre" type="text" placeholder="Nombre completo">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltNCc" type="number" placeholder="Identificación">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="clCdd" type="text" placeholder="Ciudad">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltDir" type="text" placeholder="Dirección">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltMail" type="text" placeholder="Correo electrónico">
+											</div>
+											<div class="form-group input-white">
+												<input class="form-control" id="cltTel" type="number" placeholder="Teléfono">
+											</div>
+										</div>
+										<div class="btn-addId-content">
+											<button type="button" class="btn btn-modreg btn-add-nw-cl" onclick="registrarCliente()">
+												Registrar
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 <?php $this->endBody() ?>
-	<script src="../web/js/modal_view_fact.js"></script>
+	<!--<script src="../web/js/modal_view_fact.js"></script>-->
+	<?= Html::jsFile('@web/js/modal_view_fact.js') ?>
 	<script>
 	  $(function () {
 		$.material.init();
@@ -545,6 +685,35 @@
 			$(this).toggleClass('active').next().find('.sub-table-wrap').slideToggle();
 			$(".toggle-row").not($(this).next()).find('.sub-table-wrap').slideUp('fast');
 		  });
+		});
+	</script>
+	<script>
+	// MODAL AGREGAR CLIENTE //
+		// Abrir modal registro de cliente
+		$("#btnRegistroC").click(function () {
+			$(".modal-registro").addClass("show-modal");
+		});
+		// Evento abrir/cerrar del formulario de cliente nuevo
+		$(".btn-nw-clt").click(function (){
+			if (!$(this).hasClass('open')){
+				$(".m-content").addClass("sld-up");
+				$(".new-client-content").addClass("active-nw-clt");
+				$(this).addClass("open");
+				$(this).html("close");
+			}
+			else if ($(this).hasClass('open')){
+				$(".m-content").removeClass("sld-up");
+				$(".new-client-content").removeClass("active-nw-clt");
+				$(this).removeClass("open");
+				$(this).html("person_add");
+			}
+			else{
+				return false;
+			}
+		});
+		// Cerrar modal registro de cliente
+		$("#closeModClt").click(function () {
+			$(".modal-registro").removeClass("show-modal");
 		});
 	</script>
 	<script>
@@ -577,6 +746,27 @@
 			input.checked = checkItAll.checked;
 		  });
 		});
+	</script>
+
+	<script type="text/javascript">
+		// limitar la entrada de numero en el codigo del clinete
+		cltRCc.oninput = function () {
+		    if (this.value.length > 11) {
+		        this.value = this.value.slice(0,11); 
+		    }
+		}
+
+		cltNCc.oninput = function () {
+		    if (this.value.length > 11) {
+		        this.value = this.value.slice(0,11); 
+		    }
+		}
+
+		cltTel.oninput = function () {
+		    if (this.value.length > 10) {
+		        this.value = this.value.slice(0,10); 
+		    }
+		}
 	</script>
 
 	<script type="text/javascript">
@@ -633,7 +823,7 @@
 					document.getElementById("listaMesas2").innerHTML = mesas[1];
 				}
 			});
-		}setInterval(mesasDisponiblesR, 1000);
+		}//setInterval(mesasDisponiblesR, 1000);
 
 	function cargarMesas(estado){
 		//listado de mesas disponibles del lado izquierdo
@@ -813,6 +1003,12 @@
 				document.getElementById("tituloMesa61").innerHTML = "Mesa "+principal;
 				document.getElementById("tituloMesa62").innerHTML = "Mesa "+codMes;
 				generalMesaPrinc = principal;
+				if(Array.isArray(codMes)){
+					generalMesa1 = codMes[0];
+				}else{
+					generalMesa1 = codMes;
+				}			
+				
 			}
 			// se genera la mesa con los 6 puestos
 			crearMesa = 
@@ -1658,7 +1854,103 @@
 		
 	}
 
+	function cancelarTodo(){
+		swal({
+			title: "Esta seguro?",
+			text: "Usted cancelara todo el pedido, incluidos los confirmados!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#4caf50",
+			confirmButtonText: "Si, Cancelar",
+			cancelButtonText: "No, Volver",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+		  	if (isConfirm) {
+		  		
+		  		var urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
+				
+		  		if(generalTamano <= 4){
+		  			$.ajax({
+						url:'<?php echo Url::toRoute(['site/cancelartodo']); ?>',	
+						method: "GET",
+						data: {'mesa':generalCodigoM, 'tamano':generalTamano},											
+						success: function (data) {										
+							//swal("", "Error al cancelar el pedido", "error");
+							if(data == 1){
+								cancelarRestoPedido();
+							}else{								
+								swal("", "Platos cancelados", "success");
+								location.href = urlDestino;	
+							}
+						}
+					});			  			
+				}else if(generalTamano >= 5 && generalTamano <= 6){					
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/cancelartodo']); ?>',	
+						method: "GET",
+						data: {'mesa1':generalMesaPrinc,'mesa2':generalMesa1,'tamano':generalTamano},									
+						success: function (data) {		
+							if(data == 1){
+								cancelarRestoPedido();
+							}else{								
+								swal("", "Platos cancelados", "success");
+								location.href = urlDestino;	
+							}
+							
+						}
+					});		
+				}
 
+				    
+		  	} else {
+			    swal("", "Proceso cancelado..", "error");
+			}
+		});
+	}
+
+	function cancelarRestoPedido(){
+		swal({
+			title: "Mesas con pedidos entregados!",
+			text: "Algunos pedidos han sido entregados y no pueden ser cancelados, desea cancelar el resto?",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#4caf50",
+			confirmButtonText: "Si, Cancelar",
+			cancelButtonText: "No, Volver",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+		  	if (isConfirm) {
+		  		
+		  		if(generalTamano <= 4){
+		  			$.ajax({
+						url:'<?php echo Url::toRoute(['site/cancelarresto']); ?>',	
+						method: "GET",
+						data: {'mesa':generalCodigoM, 'tamano':generalTamano},
+						success: function (data) {		
+							mensajeAlerta(12);							
+						}
+					});		
+				}else if(generalTamano >= 5 && generalTamano <= 6){					
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/cancelarresto']); ?>',	
+						method: "GET",
+						data: {'mesa1':generalMesaPrinc,'mesa2':generalMesa1,'tamano':generalTamano},								
+						success: function (data) {		
+							mensajeAlerta(12);
+						}
+					});		
+				}
+
+				    
+		  	} else {
+			    swal("", "Proceso cancelado..", "error");
+			}
+		});
+	}
 
 	function verDetalleConfirmado(puesto){
 		//candena conla estructura 
@@ -1852,40 +2144,18 @@
 	function opcionFacturar(){
 		// se oculta el boton de cerrar la vista de la factura
 		document.getElementById("cerrarFacturar").style.display = 'none';			
-		//mensaje de alerta y saber que accion se va a tomar
-		swal({
-			title: '¿Previsualizar factura o facturar pedido?',						
-			type: "info",
-			showCancelButton: true,
-			confirmButtonColor: "#5cb85c",
-			cancelButtonColor: "#EC4424",
-			confirmButtonText: "Facturar",
-			cancelButtonText: "Previsualizar",
-			closeOnConfirm: false,
-			closeOnCancel: false
-		},
-			function(isConfirm){
-				if (isConfirm) {
-					//se genera la factura de los puestos que ya selecciono
-					generarFactura();										
-					//muestra el boton de salir (futuro a imprimir )
-					document.getElementById("labelImprimir").innerHTML = 'Continuar';
-					//temporal
-					$("#labelImprimir").attr('onclick', 'opcionesReciboFac()');
-				} else {
-					visualizaFactura();
-					swal("", "Previsualizacion Completada", "success");
-					//se oculta el boton de salir (futuro a imprimir)
-					document.getElementById("labelImprimir").innerHTML = 'Facturar';											
-					//se muestra la opcion para cerrar la visualizacion
-					document.getElementById("cerrarFacturar").style.display = 'block';	
-					//cambio el onclick del boton
-					$(document).ready(function(){					    
-					    // clears onclick then sets click using jQuery
-					    $("#labelImprimir").attr('onclick', 'generarFactura()');
-					});					
-				}
-		});		
+
+		visualizaFactura();		
+		//se oculta el boton de salir (futuro a imprimir)
+		document.getElementById("labelImprimir").innerHTML = 'Facturar';											
+		//se muestra la opcion para cerrar la visualizacion
+		document.getElementById("cerrarFacturar").style.display = 'block';	
+		//cambio el onclick del boton
+		$(document).ready(function(){					    
+		    // clears onclick then sets click using jQuery
+		    $("#labelImprimir").attr('onclick', 'generarFactura()');
+		});	
+		
 	}	
 
 
@@ -1893,14 +2163,7 @@
 
 		swal({
 			title: "",
-		  	text: 	'<div class="row center">'+		
-		  				'<div class="col-sm-12">'+		
-							'<div class="col-sm-12">'+
-								'<span class="glyphicon glyphicon-step-backward" onclick="reversarFac('+generalRever+','+generalFactura+')"></span>'+
-								'Reversar la factura'+
-							'</div>'+	
-		  				'</div>'+	
-					'</div>',		  
+		  	text: "Faltan platos por facturar, desea continuar en la mesa o salir a la plaza?",		  
 			html: true, // add this if you want to show HTM		  
 			showCancelButton: true,
 			closeOnConfirm: false,
@@ -1979,6 +2242,78 @@
 		});		
 	}
 
+	//////////////////////////////////////////////////////////////////////////////
+	var typingTimer;                //timer identifier
+	var doneTypingInterval = 1000;  //time in ms, 5 second for example
+	var $input = $('#propinax');
+
+	//on keyup, start the countdown
+	$("#propinax").on('keyup', function () {
+		clearTimeout(typingTimer);
+		typingTimer = setTimeout(doneTyping, doneTypingInterval);
+	});
+
+	//on keydown, clear the countdown 
+	$("#propinax").on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
+
+	//user is "finished typing," do something
+	function doneTyping () {
+		var subtotalFactura = formatoNumerico($('#valorSubtotal').html());	
+		subtotalFactura = subtotalFactura.substring(1);
+		// calcula el porcentaje sobre el subtotal
+		var valorPorcentaje = document.getElementById("propinax").value;
+		
+		if(valorPorcentaje.localeCompare("") == 0 || valorPorcentaje.indexOf('.') != -1 || 
+		   valorPorcentaje.indexOf('e') != -1 || valorPorcentaje.indexOf(',') != -1){
+			valorPorcentaje = 0;
+			console.log("--"+valorPorcentaje+"--");
+		}
+		
+		//
+		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
+		valorIvaFatura = valorIvaFatura.substring(1);
+		//
+		var valorTotalFactura = parseFloat(valorIvaFatura) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura);
+
+		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
+		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());	
+
+		calcularPorcentajePropina(valorPorcentaje,subtotalFactura);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+
+	function calcularPorcentajePropina(valor,subtotal){
+		var porcentaje = (valor*100)/subtotal;
+
+		$("#optionsRadiosPropina5").attr('value', porcentaje);		
+	}
+
+	function habilitarPropina(){
+		$("#propinax").prop("disabled",false);
+		$("#propinax").focus();		
+		document.getElementById("valorPropina").innerHTML = "$0";
+	}
+
+	function calcularPropina(porcentaje){		
+		document.getElementById("propinax").value = "";
+		// valor del subtotal
+		var subtotalFactura = formatoNumerico($('#valorSubtotal').html());	
+		subtotalFactura = subtotalFactura.substring(1);
+		// calcula el porcentaje sobre el subtotal
+		var valorPorcentaje = subtotalFactura*(porcentaje/100);
+		//
+		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
+		valorIvaFatura = valorIvaFatura.substring(1);
+		//
+		var valorTotalFactura = parseFloat(valorIvaFatura) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura);
+
+		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
+		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());		
+	}	
+
 	function visualizaFactura(){	
 		
 		if(generalTamano <= 4){
@@ -1996,12 +2331,15 @@
 					var arrayDetalle = arrayDatos[0];
 					var arrayFecha = arrayDatos[1];
 
-					var totalFac = 0;			
+					var totalFac = 0;								
+					var subtotalFac = 0;
+					var ivaFac = 0;
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
+					var valorIvaPro = arrayDetalle.VALOR_IVA;
 
 					var listaProductos = '';
 
@@ -2010,16 +2348,21 @@
 							'<tr>'+
 								'<td>'+nombreProducto[i]+'</td>'+
 								'<td>'+unidadProducto[i]+'</td>'+
-								'<td>$'+valorProducto[i]+'</td>'+
+								'<td>$'+formatoMoneda(valorProducto[i])+'</td>'+
 							'</tr>';
 
-						totalFac = totalFac + parseInt(valorProducto[i]);
+						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
+						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
 					}
+
+					totalFac = subtotalFac + ivaFac;					
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
-					document.getElementById("totalFactura").innerHTML = '$'+totalFac;
+					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(totalFac.toString());
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
+					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 					
@@ -2039,12 +2382,15 @@
 					var arrayDetalle = arrayDatos[0];
 					var arrayFecha = arrayDatos[1];
 
-					var totalFac = 0;
+					var totalFac = 0;								
+					var subtotalFac = 0;
+					var ivaFac = 0;
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
+					var valorIvaPro = arrayDetalle.VALOR_IVA;
 
 					var listaProductos = '';
 
@@ -2053,21 +2399,139 @@
 							'<tr>'+
 								'<td>'+nombreProducto[i]+'</td>'+
 								'<td>'+unidadProducto[i]+'</td>'+
-								'<td>$'+valorProducto[i]+'</td>'+
+								'<td>$'+formatoMoneda(valorProducto[i])+'</td>'+
 							'</tr>';
 
-						totalFac = totalFac + parseInt(valorProducto[i]);
+						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
+						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
 					}
+
+					totalFac = subtotalFac + ivaFac;
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
-					document.getElementById("totalFactura").innerHTML = '$'+totalFac;
+					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(totalFac.toString());
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
+					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 				}
 			});
 		}
+	}
+
+	function consultarCliente(){
+		var idCliente = document.getElementById("cltRCc").value;
+
+		if(("".localeCompare(idCliente) == 0)){
+			mensajeAlerta(5);
+		}else{
+			//consulta el nombre del cliente si ya se encuentra registrado
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/consultacliente']); ?>',
+				method: "GET",
+				data: {'codigocliente':idCliente},	// full para saber si es por puestos o toda la mesa		
+				success: function (data) {										
+					if(("SIN_REGISTRO".localeCompare(data) == 0)){
+						//mensaje de alerta
+						mensajeAlerta(4);
+					}else{
+						mensajeAlerta(6,data);
+						document.getElementById("nombreClientefac").innerHTML = data;
+						document.getElementById("idClientefac").innerHTML = idCliente;
+						$("#closeModClt").attr('onclick', 'cerrarModalCliente(1)');
+						$('#closeModClt').click();
+					}
+				}
+			});
+		}
+			
+	}
+
+	function cerrarModalCliente(opcion = 0){
+		//cambia el codigo del cliente a vacio
+		if(opcion == 0){
+			document.getElementById("cltRCc").value = "";
+			document.getElementById("nombreClientefac").innerHTML = "Nombre del cliente";
+			document.getElementById("idClientefac").innerHTML = "Codigo del cliente";
+		}
+
+		console.log(opcion);
+	}
+
+	function iniciaModalCliente(){
+		 $("#closeModClt").attr('onclick', 'cerrarModalCliente()');
+	}
+
+	function registrarCliente(){
+		// captura los datos ingresados
+		var nombreCliente = document.getElementById("cltNombre").value;
+		var codigoCliente = document.getElementById("cltNCc").value;
+		var ciudadCliente = document.getElementById("clCdd").value;
+		var direccionCliente = document.getElementById("cltDir").value;
+		var correoCliente = document.getElementById("cltMail").value;
+		var telefonoCliente = document.getElementById("cltTel").value;
+
+		// comprobar que se ingresaron los datos basicos
+		if((nombreCliente.length*codigoCliente.length*correoCliente.length*ciudadCliente) != 0){
+			// comprobar que sea un correo valido
+			if(comprobarEmail(correoCliente) == 0){
+				// comprobar que sea telefono fijo o celular
+				if(((telefonoCliente.length) == 0) || ((telefonoCliente.length) == 7) || ((telefonoCliente.length) == 10)){
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/registrarcliente']); ?>',
+						method: "GET",
+						data: {'codCli':codigoCliente,'nomCli':nombreCliente,'dirCli':direccionCliente,'corCli':correoCliente,'telCli':telefonoCliente, 'ciuCli':ciudadCliente},
+						success: function (data) {										
+							//O: Cliente Ya Se Encuentra Registrado En La Base De Datos 
+							//1: Registro Completado
+							//2: Registro Erroneo
+							
+							if(data == 0){
+								mensajeAlerta(10);
+							}else if(data == 1){
+								// se cierran los modales de registro 								
+								$("#cerrarRegistro").click();
+								$("#closeModClt").click();
+								// pone el codigo del cliente en el campo donde se valida su existencia
+								document.getElementById("cltRCc").value = codigoCliente;
+								$("#addIdClt").click();
+								// muestra mensaje 
+								mensajeAlerta(9, nombreCliente);
+							}
+						}
+					});
+				}else{
+					mensajeAlerta(11);
+				}
+			}else{
+				mensajeAlerta(8, correoCliente);
+			}
+		}else{
+			mensajeAlerta(7);
+		}
+	}
+
+	function comprobarEmail (email){
+		//formato que debe terne un email
+		re=/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+		// si cumple con el formato retorna 0 si no 1
+		if(!re.exec(email)){
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+
+	function arrastrarCodigo(){
+		var codigoIngresado = document.getElementById("cltRCc").value;
+		
+		if(("".localeCompare(codigoIngresado) != 0)){
+			document.getElementById("cltNCc").value = codigoIngresado;
+		}
+		
 	}
 
 	function estadoMesaFac(){		
@@ -2094,13 +2558,7 @@
 	}
 
 	function generarFactura(){
-		//cambio el onclick del boton
-		$(document).ready(function(){					    
-		    // clears onclick then sets click using jQuery
-		    $("#labelImprimir").attr('onclick', 'opcionesReciboFac()');
-		});	
-		//muestra el boton de salir (futuro a imprimir )
-		document.getElementById("labelImprimir").innerHTML = 'Continuar';
+		
 		
 
 		//mensaje de confirmacion de facturar los puestos
@@ -2134,26 +2592,87 @@
 			function(isConfirm){
 				if (isConfirm) {
 					//ejecuta la factura en bd
-					mostrarFactura(true);
+					//mostrarFactura(true);
+					var codigoCliente = document.getElementById("cltRCc").value;
+
+					if(("".localeCompare(codigoCliente) == 0)){
+						swal({
+							title: 'Cliente no ingresado!',						
+							type: "info",
+							text: 'Desea generar la facturar con cliente nulo?',
+							showCancelButton: true,
+							confirmButtonColor: "#5cb85c",
+							cancelButtonColor: "#EC4424",
+							confirmButtonText: "Si, facturar",
+							cancelButtonText: "No, cancelar",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+							function(isConfirm){
+								if (isConfirm) {
+									//cambio el onclick del boton
+									$(document).ready(function(){					    
+									    // clears onclick then sets click using jQuery
+									    $("#labelImprimir").attr('onclick', 'opcionesReciboFac()');
+									});	
+									//muestra el boton de salir (futuro a imprimir )
+									document.getElementById("labelImprimir").innerHTML = 'Continuar';
+									//se oculta el boton cliente
+									document.getElementById("btnRegistroC").style.display = "none";
+									//se oculata las opciones de cambio de porcentaje de propina
+									document.getElementById("opcionesPropina").style.display = "none";		
+									document.getElementById("nombreClientefac").innerHTML = "N/A";		
+									document.getElementById("idClientefac").innerHTML = "N/A";		
+									//ejecuta la factura en bd
+									mostrarFactura(true);
+									// muestra el mensaje de terminado
+									swal("","Factura generada correctamente","success");
+								}else{
+									swal("","Operacion cancelada","error");
+								}
+						});		
+					}else{
+						//cambio el onclick del boton
+						$(document).ready(function(){					    
+						    // clears onclick then sets click using jQuery
+						    $("#labelImprimir").attr('onclick', 'opcionesReciboFac()');
+						});	
+						//muestra el boton de salir (futuro a imprimir )
+						document.getElementById("labelImprimir").innerHTML = 'Continuar';
+						//se oculta el boton cliente
+						document.getElementById("btnRegistroC").style.display = "none";
+						//se oculata las opciones de cambio de porcentaje de propina
+						document.getElementById("opcionesPropina").style.display = "none";									
+						//ejecuta la factura en bd
+						mostrarFactura(true);
+						// muestra el mensaje de terminado
+						swal("","Factura generada correctamente","success");
+					}
 					// muestra el mensaje de terminado
-					swal("","Factura generada correctamente","success")
+					//swal("","Factura generada correctamente","success")
 				}else{
 					// cierra el modal de la factura 
 					$("#cerrarFacturar").click();
 					// muestra el mensaje de cancelado
-					swal("","Operacion cancelada","error")
+					swal("","Operacion cancelada","error");
 				}
 		});		
 	}	
 
 	function mostrarFactura(full = false){
+		//toma el valor de la propina
+		var propina = $('input:radio[name=optionsRadiosPropina]:checked').val();
+		propina = propina.replace(",", ".");
+		propina = propina.substring(0,propina.indexOf(".")+4);
+		//codigo del cliente
+		var codigoClienteFactura = document.getElementById("cltRCc").value;
 		//cuando el tamano de la mesa es de 4 personas
 		if(generalTamano <= 4){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/facturar']); ?>',
 				dataType:'json',
 				method: "GET",
-				data: {'puestos':generalCheksPulsados, 'mesa':generalCodigoM, 'full':full},	// full para saber si es por puestos o toda la mesa		
+				data: {'puestos':generalCheksPulsados, 'mesa':generalCodigoM, 'full':full, 'propina':propina, 'codCli':codigoClienteFactura},	// full para saber si es por puestos o toda la mesa		
 				success: function (data) {						
 					//cantidad de datos que contiene cada array del json	
 					/*var tamano = Object.keys(data.foo).length;			
@@ -2188,14 +2707,17 @@
 							'<tr>'+
 								'<td>'+nombreProducto[i]+'</td>'+
 								'<td>'+unidadProducto[i]+'</td>'+
-								'<td>$'+valorProducto[i]+'</td>'+
+								'<td>$'+formatoMoneda(valorProducto[i])+'</td>'+
 							'</tr>';
 					}
 
 					// muestran los datos en la factura 				
 					document.getElementById("numeroFactura").innerHTML = arrayDatosCF[0];
 					document.getElementById("fechaFactura").innerHTML = arrayDatosCF[1];				
-					document.getElementById("totalFactura").innerHTML = '$'+arrayDatosCF[4];
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(arrayDatosCF[2].toString());	
+					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(arrayDatosCF[3].toString());	
+					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(arrayDatosCF[4].toString());
+					document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(arrayDatosCF[5].toString());	
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 
 					generalRever = data[2];
@@ -2208,7 +2730,7 @@
 				url:'<?php echo Url::toRoute(['site/facturarx']); ?>',
 				dataType:'json',
 				method: "GET",
-				data: {'puestos':generalCheksPulsados, 'mesa1':generalMesaPrinc, 'mesa2':generalMesa1, 'full':full},			
+				data: {'puestos':generalCheksPulsados, 'mesa1':generalMesaPrinc, 'mesa2':generalMesa1, 'full':full, 'propina':propina, 'codCli':codigoClienteFactura},		
 				success: function (data) {							
 					
 					//cabecera de la factura									
@@ -2236,14 +2758,17 @@
 							'<tr>'+
 								'<td>'+nombreProducto[clave]+'</td>'+
 								'<td>'+unidadProducto[clave]+'</td>'+
-								'<td>$'+valorProducto[clave]+'</td>'+
+								'<td>$'+formatoMoneda(valorProducto[clave])+'</td>'+
 							'</tr>';
 					}				
 
 					// muestran los datos en la factura 				
 					document.getElementById("numeroFactura").innerHTML = arrayDatosCF[0];
-					document.getElementById("fechaFactura").innerHTML = arrayDatosCF[1];				
-					document.getElementById("totalFactura").innerHTML = '$'+arrayDatosCF[4];
+					document.getElementById("fechaFactura").innerHTML = arrayDatosCF[1];	
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(arrayDatosCF[2].toString());	
+					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(arrayDatosCF[3].toString());				
+					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(arrayDatosCF[4].toString());
+					document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(arrayDatosCF[5].toString());
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 
 					generalRever = data[2];
@@ -2260,29 +2785,26 @@
 
 	function imprimirRecibo(){
 		swal({
-			title: "",
-		  	text: 	'<div class="row center">'+		
-		  				'<div class="col-sm-12">'+		
-							'<div class="col-sm-12">'+
-								'<span class="glyphicon glyphicon-step-backward" onclick="reversarFac('+generalRever+','+generalFactura+')"></span>'+
-								'Reversar la factura'+
-							'</div>'+	
-		  				'</div>'+	
-					'</div>',		  
-			html: true, // add this if you want to show HTM		  
-			showCancelButton: false,
+			title: '¿Salir o reversar factura?',						
+			type: "info",
+			text: '*Reversar en caso de que la factura tenga algún error',
+			showCancelButton: true,
+			confirmButtonColor: "#5cb85c",
+			cancelButtonColor: "#EC4424",
+			confirmButtonText: "Salir",
+			cancelButtonText: "Reversar Factura",
 			closeOnConfirm: false,
-			confirmButtonColor: "#5cb85c",			
-			confirmButtonText: "Salir",				  
-		},function (isConfirm) {
-
-			if (isConfirm == true) {					
-				var urlPlaza = '<?php echo Url::toRoute(['site/plaza']); ?>'
-				location.href = urlPlaza;
-			
-			} 
-	  		
-		});
+			closeOnCancel: false
+		},
+			function(isConfirm){
+				if (isConfirm) {
+					var urlPlaza = '<?php echo Url::toRoute(['site/plaza']); ?>'
+					location.href = urlPlaza;
+				}else{
+					reversarFac(generalRever,generalFactura);
+				}
+			}
+		);			
 		
 	}
 
@@ -2422,9 +2944,9 @@
 						}
 					});
 				}
-			}else if(cantidadPuestos >= 5 && cantidadPuestos <= 6){
-				if(pedidoMesasPuestas(cantidadPuestos, puestos)){
-					if(estado != 0){				
+			}else if(cantidadPuestos >= 5 && cantidadPuestos <= 6){				
+				if(estado != 0){				
+					if(pedidoMesasPuestas(cantidadPuestos, puestos)){
 						$.ajax({
 							url:'<?php echo Url::toRoute(['site/realizarpedidox']); ?>',
 							dataType:'json',
@@ -2435,21 +2957,22 @@
 								
 							}
 						});
-					}else{				
-						$.ajax({
-							url:'<?php echo Url::toRoute(['site/adicionarpedidox']); ?>',
-							dataType:'json',
-							method: "GET",
-							data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':generalMesaPrinc, 
-								   'mesa2':generalMesa1, 'tamano':0},			
-							success: function (data) {						
-								
-							}
-						});
+					}else{
+						mensajeAlerta(3);
 					}
-				}else{
-					mensajeAlerta(3);
+				}else{				
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/adicionarpedidox']); ?>',
+						dataType:'json',
+						method: "GET",
+						data: {'puestos1':puestos, 'platos1':platos , 'cantidad1':cantidad, 'termino1':termino , 'mesa1':generalMesaPrinc, 
+							   'mesa2':generalMesa1, 'tamano':0},			
+						success: function (data) {						
+							
+						}
+					});
 				}
+				
 			}
 		}else{
 			// mensaje de alerta
@@ -2655,65 +3178,167 @@
 
 	}
 
-	function mensajeAlerta(tipoAlerta){
+	function formatoMoneda(valorIn){
+		if(valorIn.indexOf(".") != -1){
+			var decimal = ","+valorIn.substring(valorIn.indexOf(".")+1,valorIn.length);
+			var valor = valorIn.substring(0,valorIn.indexOf("."));
+		}else{
+			var decimal = "";
+			var valor = valorIn;
+		}
+		//valor que se retorna
+		var valorFinal1 = '';
+		var valorFinal2 = '';
+
+		//
+		var contadorPos = 1;
+
+		for(var i=valor.length-1 ; i>=0 ; i--){						
+			if(contadorPos == 3 && i != 0){
+				valorFinal1 = valorFinal1 + valor.charAt(i) + '.';
+				contadorPos = 1;
+			}else{
+				valorFinal1 = valorFinal1 + valor.charAt(i);
+				contadorPos++;
+			}			
+		}		
+
+		for(var i=valorFinal1.length ; i>=0 ; i--){
+			valorFinal2 = valorFinal2 + valorFinal1.charAt(i);
+		}
+
+		return (valorFinal2+decimal);
+	}
+
+	function formatoNumerico(valor){
+		var caracter;
+		//valor que se retorna
+		var valorFinal = '';
+
+		for(var i=0 ; i<valor.length ; i++){						
+			
+			caracter = valor.charAt(i);
+
+			if(caracter != "."){
+				valorFinal = valorFinal + caracter;
+			}
+			
+		}		
+
+		return valorFinal;
+		
+		
+	}
+
+	function mensajeAlerta(tipoAlerta, mensajeAdd = ''){
 		switch(tipoAlerta){
 			case 1:
 				swal("Mesa sin pedido", "Tome el pedido antes de confirmarlo!", "error");
 				break;
 			case 2:
-				swal({
-				  title: "Esta seguro?",
-				  text: "Usted cancelara todo el pedido!",
-				  type: "warning",
-				  showCancelButton: true,
-				  confirmButtonColor: "#4caf50",
-				  confirmButtonText: "Si, Cancelar",
-				  cancelButtonText: "No, Volver",
-				  closeOnConfirm: false,
-				  closeOnCancel: false
-				},
-				function(isConfirm){
-				  if (isConfirm) {
-				    var urlPlaza = '<?php echo Url::toRoute(['site/plaza']); ?>'
-					location.href = urlPlaza;
-				  } else {
-				    swal("", "Proceso cancelado..", "error");
-				  }
-				});
+				
 				break;
 			case 3:
 				swal("Hay una mesa sin pedido!", "Ambas mesas deben de tener por lo menos un pedido cada una, de lo contrario reduzca su tamaño a 4!", "error");
 				break;
+			case 4:
+				swal("Usuario no registrado!", "Verifique el código ingresado o realice el debido registro!", "error");
+				break;
+			case 5:
+				swal("Campo vacío!", "Ingrese un código en el campo indicado!", "error");
+				break;
+			case 6:
+				swal("Usuario validado!", mensajeAdd, "success");
+				break;
+			case 7:
+				swal("Campos vacios!", "Llene los campos para completar el registro! ", "error");
+				break;
+			case 8:
+				swal("Correo electrónico no valido!", "Ingrese un correo electronico valido!", "error");
+				break;
+			case 9:
+				swal("Registro completado!", "Se ha registrado el cliente "+mensajeAdd, "success");
+				break;
+			case 10:
+				swal("Error al registrar!", "Ya existe un usuario registrado con el código "+mensajeAdd, "error");
+				break;
+			case 11:
+				swal("Numero de teléfono no valido!", "Ingresa un número de teléfono fijo o celular!", "error");
+				break;
+			case 12:			
+				swal({
+					title: "Proceso completado!",
+					text: "Los platos no entregados y no confirmados han sido cancelados!",
+					type: "warning",
+					showCancelButton: false,
+					confirmButtonColor: "#4caf50",
+					confirmButtonText: "OK",
+					cancelButtonText: "No, Volver",
+					closeOnConfirm: false,
+					closeOnCancel: false
+				},
+				function(isConfirm){
+				  	if (isConfirm) {				  		
+				  		if(generalTamano <= 4){				  			
+
+							urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
+							location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;	
+								
+						}else if(generalTamano >= 5 && generalTamano <= 6){												
+
+							urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
+							location.href = urlDestino+"&codigoM="+generalMesaPrinc+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;
+								
+						}
+
+						    
+				  	} else {
+					    swal("", "Proceso cancelado..", "error");
+					}
+				});
+				break;
+
 		}
 	}
 	</script>
 
+	<script type="text/javascript">
+		function funcionesInterval(){
+			var tamanoMesa = document.getElementById("numPersonas").value;			
+			// ejecucion de la funcion mesasdisponibles
+			if(generalEstadoM == 1 && tamanoMesa > 4){
+				setInterval(mesasDisponiblesR, 1000);		
+			}
+		}setInterval(funcionesInterval,1000);
+		
+	</script>
+
 <script>
 
- var avatars = document.querySelectorAll('.animate_avatar') 
- function showAvatars() {
-  // Animate each line individually
-  for(var i=0; i<avatars.length; i++) {
-   var avt= avatars[i]
-   // Define initial properties
-   dynamics.css(avt, {
-   opacity: 0,
-   scale: .1
-   })
+	var avatars = document.querySelectorAll('.animate_avatar') 
+	function showAvatars() {
+	  	// Animate each line individually
+	  	for(var i=0; i<avatars.length; i++) {
+	   		var avt= avatars[i]
+	   		// Define initial properties
+	   		dynamics.css(avt, {
+	   			opacity: 0,
+	   			scale: .1
+	   		})
 
-   // Animate to final properties
-   dynamics.animate(avt, {
-   opacity: 1,
-   scale: 1
-   }, {
-   type: dynamics.spring,
-   frequency: 300,
-   friction: 400,
-   duration: 1200,
-   delay: 200 + i * 40
-   })
-  }
- }
+		   	// Animate to final properties
+		   	dynamics.animate(avt, {
+		   		opacity: 1,
+	   			scale: 1
+	   		}, {
+	   			type: dynamics.spring,
+				frequency: 300,
+				friction: 400,
+				duration: 1200,
+				delay: 200 + i * 40
+	   		})
+	  	}
+	}
 
 </script>
 

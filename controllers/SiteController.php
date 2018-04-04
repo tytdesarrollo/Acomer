@@ -32,11 +32,9 @@ class SiteController extends Controller
 
 
     public function actionPrueba(){     
-        $fn_cocina = new SpCocinaPedidos();
-        $result = $fn_cocina->procedimiento(5555);
-
         
-        return $this->render('prueba',["result"=>$result]); 
+        
+        return $this->render('prueba'); 
     }   
     
     public function behaviors()
@@ -86,9 +84,10 @@ class SiteController extends Controller
         //modelo de recuperar contraseña
         $model2 = new RememberForm();
         //Se declara la clase de directorio activo
-        $modeladp = new Ldap;
+        //$modeladp = new Ldap;
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
-        $ladpcon = $modeladp->directorioactivo();
+        //$ladpcon = $modeladp->directorioactivo();
+        $ladpcon = array("","","false");
         
         //si no posee directorio activo permite la recuperacion de la contraseña
         if($ladpcon[2]=="false"){
@@ -155,9 +154,10 @@ class SiteController extends Controller
     public function actionLogueo()
     {   
         //Declaracion de  directorio activo
-        $modeladp = new Ldap;        
+        //$modeladp = new Ldap;        
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado         
-        $ladpcon = $modeladp->directorioactivo();
+        //$ladpcon = $modeladp->directorioactivo();
+        $ladpcon = array("","","false");
         //si hay un usuario con el id ingresado y el directorio activo esta activo
         if(isset($ladpcon[0]) && $ladpcon[2]=='true'){
             //la variable de sesion cedula le asigno el identificador del usuario
@@ -279,8 +279,17 @@ class SiteController extends Controller
     public function actionPrincipal(){
         //si hay una sesion abierta
         if (isset(Yii::$app->session['cedula'])){
-            // renderizamos
-            return $this->render('principal');
+            //cedula ingresada
+            $cedula = $_SESSION['cedula'];
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);
+
+            if($rol === 'MESERO'){
+                return $this->redirect(['site/plaza']);
+            }else if($rol === 'COCINERO'){
+                return $this->redirect(['site/cocina']);
+            }            
         }else{                                        
             //retornamos al index
             return $this->goHome();                                        
@@ -299,8 +308,34 @@ class SiteController extends Controller
     }
     
     public function actionPlaza()
-    {             
-        return $this->render('plaza');      
+    {         
+        if(!isset(Yii::$app->session['cedula'])){
+            return $this->goHome();                                        
+        }else{
+            $cedula = Yii::$app->session['cedula'];
+            $cedula = trim($cedula);
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);
+
+            if($rol === 'COCINERO'){
+                return $this->redirect(['site/cocina']);
+            }
+        }
+
+        //==========================================================
+        //codigos de los container
+        $fn_plaza = new SpMesasPlaza();
+        $codigos = $fn_plaza->procedimiento2();   
+        $container1 = $codigos[0];  
+        $container2 = $codigos[1]; 
+        $container3 = $codigos[2]; 
+        $container4 = $codigos[3]; 
+        //==========================================================
+
+
+        return $this->render('plaza', ["container1"=>$container1, "container2"=>$container2, "container3"=>$container3,
+                                       "container4"=>$container4, "rol"=>$rol]);           
     }
 
     public function actionJsonmesas(){
@@ -314,9 +349,19 @@ class SiteController extends Controller
     public function actionJsonpedidos(){
         $fn_pedidos = new SpMesasPedidos;
         //obtiene las posiciones de las mesas 
-        $datosPedidos = $fn_pedidos->procedimiento(); 
+        $datosPedidos = $fn_pedidos->procedimiento();
         //imprime los datos en tipo json         
         echo json_encode($datosPedidos);
+    }
+
+    public function actionEntregarpedido(){
+        $c1 = explode("*_", $_GET['puestos']);
+        $c2 = explode("*_", $_GET['platos']);
+        $c3 = $_GET['documento'];
+        $c4 = $_GET['empresa'];
+
+        $fn_mesas = new SpMesasPlaza();
+        $fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
     }
 
     public function actionJsonpuestosfac(){
@@ -333,7 +378,7 @@ class SiteController extends Controller
     public function actionJsonpuestosfacx(){
          //parametros pasados por GET
         $mesa1 = $_GET['mesa1'];
-        $mesa2 = $_GET['mesa2'];
+        $mesa2 = $_GET['mesa2']; 
 
         if($mesa2 == 'undefined'){
             session_start()   ;
@@ -478,7 +523,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos'];
         $get3 = $_GET['cantidad'];
         $get4 = $_GET['termino'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa'];
         
         $funcionArr = new funcionesArray();
@@ -488,7 +534,8 @@ class SiteController extends Controller
         $c2 = $funcionArr->crearArray($get2);
         $c3 = $funcionArr->crearArray($get3);
         $c4 = $funcionArr->arrayTermino($get4);
-        $c5 = $get5;//$_SESSION['cedula'];
+        $c5 = Yii::$app->session['cedula'];
+        $c5 = trim($c5);
         $c6 = $get6;
 
 
@@ -514,7 +561,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos'];
         $get3 = $_GET['cantidad'];
         $get4 = $_GET['termino'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa'];
         
         $funcionArr = new funcionesArray();
@@ -524,7 +572,8 @@ class SiteController extends Controller
         $c2 = $funcionArr->crearArray($get2);
         $c3 = $funcionArr->crearArray($get3);
         $c4 = $funcionArr->arrayTermino($get4);
-        $c5 = $get5;//$_SESSION['cedula'];
+        $c5 = Yii::$app->session['cedula'];
+        $c5 = trim($c5);
         $c6 = $get6;
 
         echo "paila";
@@ -564,7 +613,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos1'];
         $get3 = $_GET['cantidad1'];
         $get4 = $_GET['termino1'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
         
@@ -640,7 +690,8 @@ class SiteController extends Controller
         $get2 = $_GET['platos1'];
         $get3 = $_GET['cantidad1'];
         $get4 = $_GET['termino1'];        
-        $get5 = '16743485';//$_SESSION['cedula'];
+        $get5 = Yii::$app->session['cedula'];
+        $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
 
@@ -713,6 +764,94 @@ class SiteController extends Controller
 
     }
 
+    public function actionCancelartodo(){
+         //$c1: tipo de cancelacion 0: plato 1: todo el pedido
+        //$c2: codigo de la mesa donde se va hacer la cancelacion
+        //$c3: codigo del plato que se va a cancelar
+        //$c4: cantidad que se va a cancelar
+        //$c5: puesto del plato donde se va a cancelar  
+        //$c6: codigo del mensaje 0: correcto , 1: error         
+        
+        $fn_cancelar = new SpMesasPedidos();
+
+        // datos eviados por get
+        $get1 = $_GET['tamano'];
+
+        if($get1 <= 4){
+            // captura los demas datos
+            $get2 = $_GET['mesa'];
+            //parametros de entrada
+            $c1 = 1;
+            $c2 = $get2;
+            $c3 = array("");
+            $c4 = array("");
+            $c5 = array("");
+
+            $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
+
+
+        }else if($get1 >= 5 and $get1 <=6){
+            //mesa principal y la mesa unida a ella
+            $get2 = $_GET['mesa1'];
+            $get3 = $_GET['mesa2'];
+
+            //saber si hay pedidos entregados
+            $c6 = $fn_cancelar->procedimiento11($get2);
+
+            if($c6 === '0'){               
+                //parametros de entrada mesa 1
+                $c1 = 1;
+                $c2 = $get2;
+                $c3 = array("");
+                $c4 = array("");
+                $c5 = array("");
+
+                $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
+
+                //parametros de entrada mesa 1
+                $c1 = 1;
+                $c2 = $get3;
+                $c3 = array("");
+                $c4 = array("");
+                $c5 = array("");
+
+                $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
+            }
+
+            
+        }
+
+        echo $c6;        
+    }
+
+    public function actionCancelarresto(){
+        $fn_cancelar = new SpMesasPedidos();
+
+        // datos eviados por get
+        $get1 = $_GET['tamano'];
+
+        if($get1 <= 4){
+             // captura los demas datos
+            $get2 = $_GET['mesa'];
+            $c1 = $get2;
+
+            $fn_cancelar->procedimiento12($c1);
+            
+        }else if($get1 >= 5 and $get1 <=6){
+            //mesa principal y la mesa unida a ella
+            $get2 = $_GET['mesa1'];
+            $get3 = $_GET['mesa2'];
+
+            $c1 = $get2;            
+            $fn_cancelar->procedimiento12($c1);
+
+            $c1 = $get3;
+            $fn_cancelar->procedimiento12($c1);
+        }
+
+        echo 1;
+    }
+
     public function actionFacturar(){ 
         //c1: Variable correspondiente a la cedula del cliente (opcional)
         //c2: Variable correspondiente al nombre de quien queda la factura (opcional)
@@ -724,19 +863,32 @@ class SiteController extends Controller
         $get1 = $_GET['puestos'];
         $get2 = $_GET['mesa'];
         $get3 = $_GET['full'];
+        $get4 = $_GET['propina'];
+        $get5 = $_GET['codCli'];
 
         //objeto para facturar
         $fn_facturar = new SpMesasFactura();
+
+        //================================ nombre del cliente ==================
+        $nombreCli = $fn_facturar->procedimiento8($get5);        
+        if(strcmp('SIN_REGISTRO',$nombreCli) == 0){
+            $get5 = "N/A";
+            $get6 = "N/A";
+        }else{
+            $get6 = $nombreCli;
+        }
+        //================================ nombre del cliente ==================
 
         //////////////////////// respaldo de datos antes de facturar en caso de reversarla
         $numeroRever = $fn_facturar->procedimiento5($get2);
         //////////////////////// respaldo de datos antes de facturar en caso de reversarla
 
         // parametros del procedimiento
-        $c1 = "N/A";
-        $c2 = "N/A";
+        $c1 = $get5;
+        $c2 = $get6;
         $c3 = $get2;
-        $c4 = '16743485';//$_SESSION['cedula'];
+        $c4 = Yii::$app->session['cedula'];
+        $c4 = trim($c4);
         $c5 = "01";
         $c6 = $get1;        
         
@@ -752,8 +904,9 @@ class SiteController extends Controller
             $c1 = $cabecera['FECHA'][0];
             $c2 = $cabecera['HORA'][0];
             $c3 = array($cabecera['NUMERO_FAC'][0]);
+            $c5 = $get4;
             // se genera la factura para el cliente
-            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
             echo json_encode($cabeceraDetalle);
         // si es falso se facturan los puestos solicitados
@@ -769,8 +922,9 @@ class SiteController extends Controller
             $c1 = $cabecera['FECHA'][0];
             $c2 = $cabecera['HORA'][0];
             $c3 = array($cabecera['NUMERO_FAC'][0]);
+            $c5 = $get4;
             // se genera la factura para el cliente
-            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+            $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
             echo json_encode($cabeceraDetalle);   
 
@@ -788,7 +942,7 @@ class SiteController extends Controller
         $get1 = $_GET['rever'];
         $get2 = $_GET['factura'];
 
-        $c1 = $get2;
+        $c1 = $get2[0];
         $c2 = $get1;
 
         $fn_factura = new SpMesasFactura();
@@ -810,6 +964,9 @@ class SiteController extends Controller
         $get2 = $_GET['mesa1'];
         $get3 = $_GET['full'];
         $get4 = $_GET['mesa2'];
+        $get5 = $_GET['propina'];
+        $get6 = $_GET['codCli'];
+        
 
         $puestos1 = array();
         $puestos2 = array();
@@ -829,7 +986,17 @@ class SiteController extends Controller
 
 
         //objeto para facturar
-        $fn_facturar = new SpMesasFactura();        
+        $fn_facturar = new SpMesasFactura();      
+
+        //================================ nombre del cliente ==================
+        $nombreCli = $fn_facturar->procedimiento8($get6);        
+        if(strcmp('SIN_REGISTRO',$nombreCli) == 0){
+            $get6 = "N/A";
+            $get7 = "N/A";
+        }else{
+            $get7 = $nombreCli;
+        }
+        //================================ nombre del cliente ==================  
 
         //////////////////////// respaldo de datos antes de facturar en caso de reversarla
         $numeroRever = $fn_facturar->procedimiento5($get2);
@@ -838,10 +1005,11 @@ class SiteController extends Controller
         //si los puestos de una mesa estan vacion no se factura a esa mesa
         if(count($puestos1) > 0){
             //facturacion para la mesa 1
-            $c11 = "N/A";
-            $c21 = "N/A";
+            $c11 = $get6;
+            $c21 = $get7;
             $c31 = $get2;
-            $c41 = '16743485';//$_SESSION['cedula'];
+            $c41 = Yii::$app->session['cedula'];
+            $c41 = trim($c41);
             $c51 = "01";
             $c61 = $puestos1;   
             // se genera la factura general para los restaurantes
@@ -852,7 +1020,7 @@ class SiteController extends Controller
             // se sacan los datos mas detallados de la cabecera
             $c11 = $cabecera1['FECHA'][0];
             $c21 = $cabecera1['HORA'][0];
-            $c31 = array($cabecera1['NUMERO_FAC'][0]);
+            $c31 = array($cabecera1['NUMERO_FAC'][0]);        
         }else{
             // se declaran las variables vacias        
             $c11 = ""; // fecha de la factura
@@ -868,17 +1036,18 @@ class SiteController extends Controller
 
         if(count($puestos2) > 0){
             // facturacion para la mesa 2
-            $c12 = "N/A";
-            $c22 = "N/A";
+            $c12 = $get6;
+            $c22 = $get7;
             $c32 = $get4;
-            $c42 = '16743485';//$_SESSION['cedula'];
+            $c42 = Yii::$app->session['cedula'];
+            $c42 = trim($c42);
             $c52 = "01";
             $c62 = $puestos2;
             // se genera la factura general para los restaurantes
             $faturaM2 = $fn_facturar->procedimiento2($c12,$c22,$c32,$c42,$c52,$c62);
              // se toma la cabecera y los detalles de la factura generada            
             $cabecera2 = $faturaM2[0];
-            $detalle2 = $faturaM2[1];            
+            $detalle2 = $faturaM2[1];                     
             // se sacan los datos mas detallados de la cabecera
             $c12 = $cabecera2['FECHA'][0];
             $c22 = $cabecera2['HORA'][0];
@@ -920,7 +1089,8 @@ class SiteController extends Controller
         }        
         $c3 = array_filter($c3);  // se filtran los registros que se encuentren nulos        
 
-        $c4 = '16743485';//$_SESSION['cedula'];
+        $c4 = Yii::$app->session['cedula'];
+        $c4 = trim($c4);
 
         // detalle de la factura
         $producto = array();
@@ -952,8 +1122,9 @@ class SiteController extends Controller
             'PEDVALTUN' => $valor,            
         );    
         
+        $c5 = $get5;
         // se genera la factura para el cliente
-        $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4);
+        $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
         $cabeceraDetalle = array($facturar, $detalle, $numeroRever);
         echo json_encode($cabeceraDetalle);
     }
@@ -970,6 +1141,37 @@ class SiteController extends Controller
         
         //var_dump($c2)
         echo json_encode($visualiza);
+    }
+
+    public function actionConsultacliente(){
+        //c1: codigo del cliente
+        //
+        $c1 = $_GET['codigocliente'];
+
+        $fn_facturacion = new SpMesasFactura();
+        $nombreCliente = $fn_facturacion->procedimiento8($c1);
+
+        echo $nombreCliente;
+    }
+
+    public function actionRegistrarcliente(){
+        //$c1: codigo del cliente
+        //$c2: nombre completo del clinete
+        //$c3: direccion del cliente
+        //$c4: correo electronico del cliente
+        //$c5: telefono del cliente
+        //
+        $c1 = $_GET['codCli'];
+        $c2 = $_GET['nomCli'];
+        $c3 = $_GET['dirCli'];
+        $c4 = $_GET['corCli'];
+        $c5 = $_GET['telCli'];
+        $c6 = $_GET['ciuCli'];
+
+        $fn_registro = new SpMesasFactura();
+        $resultado = $fn_registro->procedimiento7($c1,$c2,$c3,$c4,$c5,$c6);
+
+        echo $resultado;
     }
 
     public function actionVisualizarfacx(){
@@ -1005,6 +1207,7 @@ class SiteController extends Controller
             $unidad = array();
             $precio = array();
             $fecha = array();
+            $iva = array();
 
             if(count($c21) != 0){
                 $pedidos1 = $model1->procedimiento9($c11,$c21);
@@ -1016,6 +1219,7 @@ class SiteController extends Controller
                     $producto[] = $detalle1['PRODUCTO'][$i];
                     $unidad[] = $detalle1['UNIDAD'][$i];
                     $precio[] = $detalle1['VALOR'][$i];
+                    $iva[] = $detalle1['VALOR_IVA'][$i];
                 }
 
                 $fecha[] = $fecha1;
@@ -1032,6 +1236,7 @@ class SiteController extends Controller
                     $producto[] = $detalle2['PRODUCTO'][$i];
                     $unidad[] = $detalle2['UNIDAD'][$i];
                     $precio[] = $detalle2['VALOR'][$i];
+                    $iva[] = $detalle2['VALOR_IVA'][$i];
                 }
 
                 $fecha[] = $fecha2;
@@ -1041,7 +1246,8 @@ class SiteController extends Controller
             $detalle = array(
                 'PRODUCTO' => $producto,
                 'UNIDAD' => $unidad,
-                'VALOR' => $precio,            
+                'VALOR' => $precio, 
+                'VALOR_IVA' => $iva           
             );                       
 
             $full = array($detalle, $fecha[0]);
@@ -1162,31 +1368,37 @@ class SiteController extends Controller
         
 
         //=============================LOGICA DE PEDIDO=======================================
-        //captura el puesto al que se le va a tomar el pedido
-        $puesto = $_GET['puesto'];
-        $codmesa = $_GET['codigoM'];
-        $tamano = $_GET['tamanoM'];
-        $estado = $_GET['estadoM'];
-        // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
-        if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
-            // variables que se pasan como parametro
-            $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
-            $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
-            $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
-            // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
-            $this->layout=false;    
-            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+        // si ninguna de estas vriables existe retorna a la plaza
+        if(isset($_GET['puesto'], $_GET['codigoM'], $_GET['tamanoM'], $_GET['estadoM'])){
+            //captura el puesto al que se le va a tomar el pedido
+            $puesto = $_GET['puesto'];
+            $codmesa = $_GET['codigoM'];
+            $tamano = $_GET['tamanoM'];
+            $estado = $_GET['estadoM'];
+            // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
+            if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+                // variables que se pasan como parametro
+                $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
+                $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
+                $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+                // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
+                $this->layout=false;    
+                return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                             "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            }else{
+                $platos = 0;
+                $cantidad = 0;
+                $puestos = 0;
+                // redirecciona a la vista menu con los parametros del menu 
+                $this->layout=false;    
+                return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                             "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            }
         }else{
-            $platos = 0;
-            $cantidad = 0;
-            $puestos = 0;
-            // redirecciona a la vista menu con los parametros del menu 
             $this->layout=false;    
-            return $this->render('menu',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            return $this->redirect(['site/plaza']); 
         }
         //=============================LOGICA DE PEDIDO=======================================        
         
@@ -1210,32 +1422,42 @@ class SiteController extends Controller
         //=============================CARGA DEL MENU=======================================
         
         //=============================LOGICA DE PEDIDO=======================================
-        //captura el puesto al que se le va a tomar el pedido
-        $puesto = $_GET['puesto'];
-        $codmesa = $_GET['codigoM'];
-        $tamano = $_GET['tamanoM'];
-        $estado = $_GET['estadoM'];
-        // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
-        if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
-            // variables que se pasan como parametro
-            $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
-            $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
-            $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
-            // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
-            $this->layout=false;    
-            return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+        
+        // si ninguna de estas vriables existe retorna a la plaza
+        if(isset($_GET['puesto'], $_GET['codigoM'], $_GET['tamanoM'], $_GET['estadoM'])){
+            //captura el puesto al que se le va a tomar el pedido
+            $puesto = $_GET['puesto'];
+            $codmesa = $_GET['codigoM'];
+            $tamano = $_GET['tamanoM'];
+            $estado = $_GET['estadoM'];
+
+            // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
+            if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+                // variables que se pasan como parametro
+                $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
+                $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
+                $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+                // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
+                $this->layout=false;    
+                return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                             "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            }else{
+                $platos = 0;
+                $cantidad = 0;
+                $puestos = 0;
+                // redirecciona a la vista menu con los parametros del menu 
+                $this->layout=false;    
+                return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
+                                             "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            }
         }else{
-            $platos = 0;
-            $cantidad = 0;
-            $puestos = 0;
-            // redirecciona a la vista menu con los parametros del menu 
             $this->layout=false;    
-            return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
-                                         "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                         "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+            return $this->redirect(['site/plaza']); 
         }
+        
+        
         //=============================LOGICA DE PEDIDO=======================================        
     }
 
@@ -1261,16 +1483,37 @@ class SiteController extends Controller
 
     public function actionCocina()
     {   
-       
+       if(!isset(Yii::$app->session['cedula'])){
+            return $this->goHome();                                        
+        }else{
+            $cedula = Yii::$app->session['cedula'];
+            $cedula = trim($cedula);
+
+            $fn_login = new SpLoginAcomer();
+            $rol = $fn_login->procedimiento2($cedula);            
+
+            if($rol === 'MESERO'){
+                return $this->redirect(['site/plaza']);
+            }
+        }
+
+        //consulta el nombre de la cocina
+        //        
+        $c1 = $cedula;
+        $c1 = trim($c1);
+
+        $fn_cocina = new SpCocinaPedidos();
+        $nomcocina = $fn_cocina->procedimiento5($c1);
 
         $this->layout="main_cocina";
-        return $this->render('cocina');      
+        return $this->render('cocina',["nomcocina"=>$nomcocina,"rol"=>$rol]);        
     }
 
     public function actionPedidoscocina(){
         //$c1: cedula del cocinero
         //  
-        $c1 = '16743485';//$_SESSION['cedula'];
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
         // se crea el objeto 
         $fn_cocina = new SpCocinaPedidos();
         // se ejecuta el procedimiento
@@ -1282,29 +1525,55 @@ class SiteController extends Controller
     public function actionPedidolisto(){
         //$c1: codigo del restaurante al que pertenece el plato
         //$c2: codigo del pedido que tiene asignado el plato
-        //$c3: puesto al que pertenece el pedido 
-        //$c4: cantidad que se esta alistando para aetregar
+        //$c3: nombre del plato
         //
         $get1 = $_GET['empresa'];
         $get2 = $_GET['pednro'];
-        $get3 = $_GET['puesto'];
-        $get4 = $_GET['cantidad'];
+        $get3 = $_GET['plato'];        
 
         $c1 = $get1;
         $c2 = $get2;
         $c3 = $get3;
-        $c4 = $get4;
+        
         
         // se crea el objeto 
         $fn_cocina = new SpCocinaPedidos();
         // se ejecuta el procedimiento
-        $result = $fn_cocina->procedimiento2($c1,$c2,$c3,$c4);
+        $result = $fn_cocina->procedimiento2($c1,$c2,$c3);
 
 
         //echo $c1; echo '<br>';
         //echo $c2; echo '<br>';
-        //echo $c3; echo '<br>';
-        //echo $c4; echo '<br>';
+        //echo $c3; echo '<br>';        
     }
+
+    public function actionAgregahistorial(){
+        //$c1: cedula del cocinero
+        //$c2: nombre del plato
+        //$c3: cantidad
+        //  
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
+        $c2 = $_GET['plato'];                
+        $c3 = $_GET['cantidad'];
+        
+        $fn_cocina = new SpCocinaPedidos;
+        $historial = $fn_cocina->procedimiento3($c1,$c2,$c3);
+
+        echo 1;
+    }
+
+    public function actionHistorialcocina(){
+        //$c1: cedula del cocinero
+        //  
+        $c1 = Yii::$app->session['cedula'];
+        $c1 = trim($c1);
+
+        $fn_cocina = new SpCocinaPedidos;
+        $historial = $fn_cocina->procedimiento4($c1);
+
+        echo json_encode($historial);
+    }
+
 
 }

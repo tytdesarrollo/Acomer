@@ -18,7 +18,8 @@ $request = Yii::$app->request;
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-	<script src="../web/js/modernizr.custom.js"></script>
+	<!--<script src="../web/js/modernizr.custom.js"></script>-->
+	<?= Html::jsFile('@web/js/modernizr.custom.js') ?>
 </head>
 <body class='bg-acomer'>
 <?php $this->beginBody() ?>
@@ -284,7 +285,8 @@ $request = Yii::$app->request;
 		</div>
 	</div>
 <?php $this->endBody() ?>
-	<script src="../web/js/modal.js"></script>
+	<!--<script src="../web/js/modal.js"></script>-->
+	<?= Html::jsFile('@web/js/modal.js') ?>
 	<script>
 		$(document).ready(function ($) {
 		  $('.default').click(function () {    
