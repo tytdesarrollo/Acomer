@@ -27,7 +27,8 @@
 	    <?php $this->head() ?>
 		<!--<script src="js/modernizr-custom.js"></script>-->
 		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="/Acomer/web/js/jquery.min.js"></script>
+		<script src="/Acomer/web/js/ciclosession.js"></script>
 	</head>
 	<body class='bg-acomer'>
 	<?php $this->beginBody() ?>
@@ -192,7 +193,7 @@
 
 				//ruta que retorna a la mesa para tomar demas pedidos
 				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
-				location.href = urlMesa+'&codigoM='+'<?=$codmesa?>'+'&tamanoM='+'<?=$tamano?>'+'&estadoM='+'<?=$estado?>'+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
+				location.href = urlMesa+'&codigoM='+'<?=$codmesa?>'+'&tamanoM='+'<?=$tamano?>'+'&estadoM='+'<?=$estado?>'+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos+'&avatars='+'<?=$avatars?>';
 				//var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
 				//location.href = urlMesa+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
 			}

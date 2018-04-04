@@ -139,6 +139,163 @@
 			//return array($mesa);
 		}		
 
+		public function arrayAdjuntarDatosVisualizarFacx($array){			
+			//array con los datos nuevos
+			$arrayProducNew = array();
+			$arrayUnidadNew = array();
+			$array_ValorNew = array();
+			$arrayValIvaNew = array();
+			//
+			$repetidor = 0;
+			$posciones = array();
+			//array con los dato antiguos
+			$arrayProduc = $array['PRODUCTO'];
+			$arrayUnidad = $array['UNIDAD'];
+			$array_Valor = $array['VALOR'];
+			$arrayValIva = $array['VALOR_IVA'];		
+			//tamano del array que llega
+			$tamano = sizeof($arrayProduc);
+			//recorre el array
+			for($i=0 ; $i<$tamano ; $i++){
+					//echo $arrayProduc[$i]."<br>";
+				for($j=0 ; $j<$tamano ; $j++){					
+					// que no sea la misma posicion a comparar					
+					if($i !== $j){												
+						// si son iguales								
+						if($arrayProduc[$i] === $arrayProduc[$j] && $arrayProduc[$i] !== 'YA_REPETIDO'){								
+							//auemnta contador de repeticiones
+							$repetidor++;					
+							// agrega la posicion donde se repite
+							array_push($posciones,$j);
+							// =se eleimna esa posicion
+							$arrayProduc[$j] = "YA_REPETIDO";
+						}
+					}
+				}				
+
+				//si el no tienen ningun repetido 
+				if($repetidor === 0){			
+					// si no es uno que ya se ha eliminado		
+					if((strcmp($arrayProduc[$i],"YA_REPETIDO") !== 0)){
+						//se agregan al array
+						array_push($arrayProducNew, $arrayProduc[$i]);
+						array_push($arrayUnidadNew, $arrayUnidad[$i]);
+						array_push($array_ValorNew, $array_Valor[$i]);
+						array_push($arrayValIvaNew, $arrayValIva[$i]);
+					}
+					
+				}else{
+					//variables que contienen el acumulado
+					$agrupaUnidad = $arrayUnidad[$i];
+					$agrupa_Valor = $array_Valor[$i];
+					$agrupaValiva = $arrayValIva[$i];
+					//calculan los valor agrupandolos
+					for($k = 0 ; $k < count($posciones) ; $k++){
+						$agrupaUnidad = $agrupaUnidad + $arrayUnidad[$posciones[$k]];
+						$agrupa_Valor = $agrupa_Valor + $array_Valor[$posciones[$k]];
+						$agrupaValiva = $agrupaValiva + $arrayValIva[$posciones[$k]];
+					}
+					// asignan los valores correspondientes
+					array_push($arrayProducNew, $arrayProduc[$i]); 		 
+					array_push($arrayUnidadNew, (string)($agrupaUnidad));
+					array_push($array_ValorNew, (string)($agrupa_Valor));
+					array_push($arrayValIvaNew, (string)($agrupaValiva));
+				}
+
+				//se elimina la posicion ya leida
+				$arrayProduc[$i] = "YA_REPETIDO";
+				
+				//se reinicia el repetidor
+				$repetidor = 0;
+				//se reinicia las posiciones de los repeticioness
+				$posciones = array();
+			}
+
+			$detalle = array(
+                'PRODUCTO' => $arrayProducNew,
+                'UNIDAD' => $arrayUnidadNew,
+                'VALOR' => $array_ValorNew,
+                'VALOR_IVA' => $arrayValIvaNew
+            ); 
+
+			return $detalle;
+		}
+
+		public function arrayAdjuntarDatosFacturarx($array){			
+			//array con los datos nuevos
+			$arrayProducNew = array();
+			$arrayUnidadNew = array();
+			$array_ValorNew = array();			
+			//
+			$repetidor = 0;
+			$posciones = array();
+			//array con los dato antiguos
+			$arrayProduc = $array[0]['PRODES'];			
+			$arrayUnidad = $array[0]['PEDUNI'];
+			$array_Valor = $array[0]['PEDVALTUN'];			
+			//tamano del array que llega
+			$tamano = sizeof($arrayProduc);
+			//recorre el array
+			for($i=0 ; $i<$tamano ; $i++){
+					//echo $arrayProduc[$i]."<br>";
+				for($j=0 ; $j<$tamano ; $j++){					
+					// que no sea la misma posicion a comparar					
+					if($i !== $j){												
+						// si son iguales								
+						if($arrayProduc[$i] === $arrayProduc[$j] && $arrayProduc[$i] !== 'YA_REPETIDO'){								
+							//auemnta contador de repeticiones
+							$repetidor++;					
+							// agrega la posicion donde se repite
+							array_push($posciones,$j);
+							// =se eleimna esa posicion
+							$arrayProduc[$j] = "YA_REPETIDO";
+						}
+					}
+				}				
+
+				//si el no tienen ningun repetido 
+				if($repetidor === 0){			
+					// si no es uno que ya se ha eliminado		
+					if((strcmp($arrayProduc[$i],"YA_REPETIDO") !== 0)){
+						//se agregan al array
+						array_push($arrayProducNew, $arrayProduc[$i]);
+						array_push($arrayUnidadNew, $arrayUnidad[$i]);
+						array_push($array_ValorNew, $array_Valor[$i]);
+					}
+					
+				}else{
+					//variables que contienen el acumulado
+					$agrupaUnidad = $arrayUnidad[$i];
+					$agrupa_Valor = $array_Valor[$i];
+					//calculan los valor agrupandolos
+					for($k = 0 ; $k < count($posciones) ; $k++){
+						$agrupaUnidad = $agrupaUnidad + $arrayUnidad[$posciones[$k]];
+						$agrupa_Valor = $agrupa_Valor + $array_Valor[$posciones[$k]];
+					}
+					// asignan los valores correspondientes
+					array_push($arrayProducNew, $arrayProduc[$i]); 		 
+					array_push($arrayUnidadNew, (string)($agrupaUnidad));
+					array_push($array_ValorNew, (string)($agrupa_Valor));
+				}
+
+				//se elimina la posicion ya leida
+				$arrayProduc[$i] = "YA_REPETIDO";
+				
+				//se reinicia el repetidor
+				$repetidor = 0;
+				//se reinicia las posiciones de los repeticioness
+				$posciones = array();
+			}
+
+			$detalle[] = array(
+                'PRODES' => $arrayProducNew,
+                'PEDUNI' => $arrayUnidadNew,
+                'PEDVALTUN' => $array_ValorNew                
+            ); 
+
+			return $detalle;
+		}
+
 		
 	} 
 

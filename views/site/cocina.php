@@ -3,7 +3,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<?= Html::jsFile('@web/js/jquery.min.js') ?>
+<?= Html::jsFile('@web/js/ciclosession.js') ?>
 <div class="row">
 	<div class="col-sm-6 pedidos_list-view">
 		<div id="conjunto">
@@ -88,8 +89,7 @@ use yii\widgets\ActiveForm;
 
 					esquema2 = 
 						'<h3 class="text-center fnt__Medium pedido__view-title">Nombre del plato</h3>'+
-						'<div class="pedido__detail-img">'+
-							'<img src="img/items/hamburguesa.png" alt="Imagen plato" class="img-responsive">'+
+						'<div class="pedido__detail-img">'+							
 						'</div>'+
 						'<div class="pedido__detail-info">'+
 							'<div class="notes mrg__top-30 text-left">'+

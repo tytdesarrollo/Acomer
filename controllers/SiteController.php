@@ -32,9 +32,17 @@ class SiteController extends Controller
 
 
     public function actionPrueba(){     
-        
-        
-        return $this->render('prueba'); 
+
+        $prodesc   = array("CHURRASCO","CHURRASCO","PASTA VAKISOBA VEGETARIANA","PASTA VAKISOBA POLLO CAMARON","PASTA VAKISOBA MARISCOS","CHURRASCO");
+        $peduni    = array("1","1","1","1","1","1");
+        $pesvaltun = array("45200","45200","17500","27500","32000","45200");
+        $arrayCont = array("PRODES"=>$prodesc,"PEDUNI"=>$peduni,"PEDVALTUN"=>$pesvaltun);
+        $arrayFin  = array($arrayCont);
+
+        $fn_array = new funcionesArray();
+        $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($arrayFin);
+        $this->layout=false;
+        return $this->render('prueba',['arrayFin'=>json_encode($detalle1)]); 
     }   
     
     public function behaviors()
@@ -84,10 +92,9 @@ class SiteController extends Controller
         //modelo de recuperar contraseña
         $model2 = new RememberForm();
         //Se declara la clase de directorio activo
-        //$modeladp = new Ldap;
+        $modeladp = new Ldap;
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado
-        //$ladpcon = $modeladp->directorioactivo();
-        $ladpcon = array("","","false");
+        $ladpcon = $modeladp->directorioactivo();       
         
         //si no posee directorio activo permite la recuperacion de la contraseña
         if($ladpcon[2]=="false"){
@@ -154,10 +161,9 @@ class SiteController extends Controller
     public function actionLogueo()
     {   
         //Declaracion de  directorio activo
-        //$modeladp = new Ldap;        
+        $modeladp = new Ldap;        
         ///Acciona el metodo directorioactivo retornando los datos pertienen al directorio activo en caso de ser usado         
-        //$ladpcon = $modeladp->directorioactivo();
-        $ladpcon = array("","","false");
+        $ladpcon = $modeladp->directorioactivo();        
         //si hay un usuario con el id ingresado y el directorio activo esta activo
         if(isset($ladpcon[0]) && $ladpcon[2]=='true'){
             //la variable de sesion cedula le asigno el identificador del usuario
@@ -249,11 +255,11 @@ class SiteController extends Controller
             //renderizamos asignapassword
             return $this->render('asignapassword',['model' => $modelform]);
         //si el codigo devuelto por el procedimiento es 11
-        }elseif($SpLoginAcomer[1]=="11"){            
-            return $this->redirect(['site/index', "error"=>$SpLoginAcomer[2]]);   
+        }elseif($spLoginAcomer[1]=="11"){            
+            return $this->redirect(['site/index', "error"=>$spLoginAcomer[2]]);   
         //si el codigo devuelto no es ni 10 ni 11         
         }else{            
-            return $this->redirect(['site/index', "error"=>$SpLoginAcomer[2]]);            
+            return $this->redirect(['site/index', "error"=>$spLoginAcomer[2]]);            
         }
     }
 
@@ -276,6 +282,27 @@ class SiteController extends Controller
         }   
     }
 
+    public function actionActivapassword()
+    {
+        //declaramos la clase del procedimiento para login acomer
+        $model = new SpLoginAcomer;
+        //llamamos la funcion que ejecuta el procedimeinto almacenado 
+        $spLoginAcomer = $model->procedimiento();
+                        
+         if(isset($_POST['activate'])){                             
+                    
+            $datos = $spLoginAcomer[2];
+                    
+            echo(($datos)?json_encode($datos):'');
+        
+        }else{
+            
+            $datos = 0; 
+            
+            echo(($datos)?json_encode($datos):''); 
+        }           
+    }
+
     public function actionPrincipal(){
         //si hay una sesion abierta
         if (isset(Yii::$app->session['cedula'])){
@@ -289,10 +316,13 @@ class SiteController extends Controller
                 return $this->redirect(['site/plaza']);
             }else if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
-            }            
+            }else{
+                session_destroy();
+                return $this->redirect(['site/index']);
+            }          
         }else{                                        
             //retornamos al index
-            return $this->goHome();                                        
+            return $this->redirect(['site/index']);
         }
     }
 
@@ -310,7 +340,7 @@ class SiteController extends Controller
     public function actionPlaza()
     {         
         if(!isset(Yii::$app->session['cedula'])){
-            return $this->goHome();                                        
+            return $this->redirect(['site/index']);
         }else{
             $cedula = Yii::$app->session['cedula'];
             $cedula = trim($cedula);
@@ -347,21 +377,32 @@ class SiteController extends Controller
     }
 
     public function actionJsonpedidos(){
+        //$c1: cedula del mesero
+        $c1 = Yii::$app->session['cedula'];
+
         $fn_pedidos = new SpMesasPedidos;
         //obtiene las posiciones de las mesas 
-        $datosPedidos = $fn_pedidos->procedimiento();
+        $datosPedidos = $fn_pedidos->procedimiento($c1);
         //imprime los datos en tipo json         
         echo json_encode($datosPedidos);
     }
 
     public function actionEntregarpedido(){
-        $c1 = explode("*_", $_GET['puestos']);
-        $c2 = explode("*_", $_GET['platos']);
+        $c1 = $_GET['puestos'];
+        $c2 = $_GET['platos'];
         $c3 = $_GET['documento'];
         $c4 = $_GET['empresa'];
 
         $fn_mesas = new SpMesasPlaza();
-        $fn_mesas->procedimiento3($c1,$c2,$c3,$c4);
+        $fn_mesas->procedimiento3($c1,$c2,$c3,$c4); 
+
+        var_dump($c1); echo '<br><br>';
+        var_dump($c2); echo '<br><br>';
+        var_dump($c3); echo '<br><br>';
+        var_dump($c4);
+
+
+        
     }
 
     public function actionJsonpuestosfac(){
@@ -417,15 +458,17 @@ class SiteController extends Controller
         }        
 
         //datos enviados desde el menu
-        if(!isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+        if(!isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'],$_GET['avatars'])){
             $platos = 0;
             $cantidad = 0;
             $puestos = 0;
             $arrpuestos = 0;
+            $avatars = 0;
         }else{
             $platos = $_GET['platos'];
             $cantidad = $_GET['cantidad'];            
             $puestos = $_GET['puestos'];
+            $avatars = $_GET['avatars'];
             // acomodar el array de los puestos
             $funciones1 = new funcionesArray();
             $funciones2 = $funciones1->crearArray($_GET['puestos']);
@@ -469,7 +512,7 @@ class SiteController extends Controller
         return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                      "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
-                                     "confirmados" => $confirmados]);
+                                     "confirmados" => $confirmados,"avatars"=>$avatars]);
         
     }
    
@@ -526,9 +569,10 @@ class SiteController extends Controller
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
         $get6 = $_GET['mesa'];
+        $get7 = $_GET['avatar'];
         
         $funcionArr = new funcionesArray();
-        //
+        
         $c1 = $funcionArr->crearArray($get1);
         $c1 = $funcionArr->arrayPuestos($c1);
         $c2 = $funcionArr->crearArray($get2);
@@ -537,15 +581,23 @@ class SiteController extends Controller
         $c5 = Yii::$app->session['cedula'];
         $c5 = trim($c5);
         $c6 = $get6;
-
+    
 
         //return $this->redirect(['site/prueba','c1'=>$c1,'c2'=>$c2,'c3'=>$c3,'c4'=>$c4,'c5'=>$c5,'c6'=>$c6]);   
         
         $pedido = new SpMesasPedidos();
         $tomarpedido = $pedido->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
 
+        $c1 = $funcionArr->crearArray($get6);
+        $c2 = $funcionArr->crearArray($get7);
+
+        $pedido->procedimeinto13($c1,$c2);
+
         return $this->redirect(['site/plaza']);
 
+        
+
+        
     }
 
     public function actionAdicionarpedido(){
@@ -564,6 +616,7 @@ class SiteController extends Controller
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
         $get6 = $_GET['mesa'];
+        $get7 = $_GET['avatar'];
         
         $funcionArr = new funcionesArray();
         //
@@ -582,6 +635,13 @@ class SiteController extends Controller
         
         $pedido = new SpMesasPedidos();
         $tomarpedido = $pedido->procedimiento4($c1,$c2,$c3,$c4,$c5,$c6);
+
+        if(strcmp($get7,"0") !== 0){
+            $c1 = $funcionArr->crearArray($get6);
+            $c2 = $funcionArr->crearArray($get7);
+
+            $pedido->procedimeinto13($c1,$c2);
+        }
 
         return $this->redirect(['site/plaza']);
     }
@@ -617,6 +677,7 @@ class SiteController extends Controller
         $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
+        $get8 = $_GET['avatar'];
         
         $fn_arrays = new funcionesArray();
 
@@ -659,6 +720,11 @@ class SiteController extends Controller
             var_dump($c10); echo '<br>';
                 echo($c11); echo '<br>';
                 echo($c12); echo '<br>';
+
+        $c1 = $fn_arrays->crearArray($get6.','.$get7);
+        $c2 = $fn_arrays->crearArray($get8);
+
+        $pedido1->procedimeinto13($c1,$c2);        
             
         }else if($_GET['tamano'] === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
@@ -694,6 +760,7 @@ class SiteController extends Controller
         $get5 = trim($get5);
         $get6 = $_GET['mesa1'];        
         $get7 = $_GET['mesa2'];
+        $get8 = $_GET['avatar'];
 
         $fn_arrays = new funcionesArray();
         $fn_adicion = new SpMesasPedidos();
@@ -725,7 +792,15 @@ class SiteController extends Controller
             // si la adicion a la mesa dos es nula no se ejecuta el procedimiento 
             if(count($arrayMesa2[0]) !== 0){
                 $adicionMesa2 = $fn_adicion->procedimiento4($c7,$c8,$c9,$c10,$c11,$c12);
-            }                  
+            }               
+
+            
+            if(strcmp($get8,"0") !== 0){
+                $c1 = $fn_arrays->crearArray($get6.",".$get7);
+                $c2 = $fn_arrays->crearArray($get8);
+
+                $fn_adicion->procedimeinto13($c1,$c2);  
+            }
 
         }else if($_GET['tamano'] === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
@@ -926,7 +1001,7 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
-            echo json_encode($cabeceraDetalle);   
+            echo json_encode($cabeceraDetalle);             
 
         }
         //echo '[{"NUMERO_FAC":["000003"],"FECHA":["17\/08\/2017"]},{"PRODES":["TORO CAESAR","ENSALDA FUSION","ENSALDA ORIENTE"],"PEDUNI":["1","1","1"],"PEDVALTUN":["24990","22015","26537"]},"73542"]';
@@ -1121,11 +1196,14 @@ class SiteController extends Controller
             'PEDUNI' => $cantidad,
             'PEDVALTUN' => $valor,            
         );    
+
+        $fn_array = new funcionesArray();
+        $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($detalle);
         
         $c5 = $get5;
         // se genera la factura para el cliente
         $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
-        $cabeceraDetalle = array($facturar, $detalle, $numeroRever);
+        $cabeceraDetalle = array($facturar, $detalle1, $numeroRever);
         echo json_encode($cabeceraDetalle);
     }
 
@@ -1250,8 +1328,15 @@ class SiteController extends Controller
                 'VALOR_IVA' => $iva           
             );                       
 
-            $full = array($detalle, $fecha[0]);
+            /*$full = array($detalle, $fecha[0]);
            
+            echo json_encode($full);*/
+            
+            $fn_array = new funcionesArray();
+            $detalle = $fn_array->arrayAdjuntarDatosVisualizarFacx($detalle);
+
+            $full = array($detalle, $fecha[0]);
+
             echo json_encode($full);
         }
         
@@ -1431,26 +1516,31 @@ class SiteController extends Controller
             $tamano = $_GET['tamanoM'];
             $estado = $_GET['estadoM'];
 
+
             // si se recibe platos, cantidad y puesto redirecciona con unos parametros 
-            if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'])){
+            if(isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'],$_GET['avatars'])){
                 // variables que se pasan como parametro
                 $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
                 $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
                 $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+                $avatars = $_GET['avatars'];
                 // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
                 $this->layout=false;    
                 return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
                                              "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado,
+                                             "avatars"=>$avatars]);
             }else{
                 $platos = 0;
                 $cantidad = 0;
                 $puestos = 0;
+                $avatars = $_GET['avatars'];
                 // redirecciona a la vista menu con los parametros del menu 
                 $this->layout=false;    
                 return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
                                              "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
-                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado]);
+                                             "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado,
+                                             "avatars"=>$avatars]);
             }
         }else{
             $this->layout=false;    
@@ -1484,7 +1574,7 @@ class SiteController extends Controller
     public function actionCocina()
     {   
        if(!isset(Yii::$app->session['cedula'])){
-            return $this->goHome();                                        
+            return $this->redirect(['site/index']);
         }else{
             $cedula = Yii::$app->session['cedula'];
             $cedula = trim($cedula);
@@ -1547,6 +1637,17 @@ class SiteController extends Controller
         //echo $c3; echo '<br>';        
     }
 
+    public function actionConsultaavatar(){
+
+        $c1 = $_GET['mesa'];
+        //crea el objeto
+        $fn_mesas = new SpMesasPedidos;
+        // ejecuta el procedimiento
+        $avatar = $fn_mesas->procedimeinto14($c1);
+
+        echo json_encode($avatar);
+    }
+
     public function actionAgregahistorial(){
         //$c1: cedula del cocinero
         //$c2: nombre del plato
@@ -1573,6 +1674,81 @@ class SiteController extends Controller
         $historial = $fn_cocina->procedimiento4($c1);
 
         echo json_encode($historial);
+    }
+
+    public function actionMesanew(){
+        //=============================DATOS ENVIADOS POR GET=======================================
+        //codigo de la mesa 
+        if(!isset($_GET['codigoM'])){
+            $this->layout=false;    
+            return $this->redirect(['site/plaza']); 
+        }else{
+            $codigomesa = $_GET['codigoM'];  
+        }
+       
+        //datos enviados desde la plaza
+        if(!isset($_GET['estadoM'])){
+            $estadomesa = 1;
+        }else{
+            $estadomesa = $_GET['estadoM'];
+        }        
+
+        //datos enviados desde el menu
+        if(!isset($_GET['platos'], $_GET['cantidad'], $_GET['puestos'],$_GET['avatars'])){
+            $platos = 0;
+            $cantidad = 0;
+            $puestos = 0;
+            $arrpuestos = 0;
+            $avatars = 0;
+        }else{
+            $platos = $_GET['platos'];
+            $cantidad = $_GET['cantidad'];            
+            $puestos = $_GET['puestos'];
+            $avatars = $_GET['avatars'];
+            // acomodar el array de los puestos
+            $funciones1 = new funcionesArray();
+            $funciones2 = $funciones1->crearArray($_GET['puestos']);
+            $arrpuestos = $funciones1->arrayNuevo(array_unique($funciones2));
+            $arrpuestos = $funciones1->arrayToChar($arrpuestos);
+
+            $tamano = $_GET['tamanoM']; //tamano de la mesa que se esta usando
+        }
+
+        if(!isset($_GET['tamanoM'])){            
+            $tamano = 4;
+        }else{
+            $tamano = $_GET['tamanoM'];
+        }
+
+
+        $model = new SpMesasPedidos();        
+        // se crea la ession correspondiente para las mesas unidas
+        if($tamano >= 5 && $tamano <= 6 && $plato = 0){
+            $mesasUnidas = $model->procedimiento3($codigomesa);
+            $mesaSecundaria = $mesasUnidas[0]['MESCODUNI'][0];
+            //inicia la session y se crea la mesa secundaria
+            session_start();
+            $_SESSION['mesa1'] = $mesaSecundaria ; 
+        }
+
+
+        // si el estado es ocupado ya hay pedido confirmado 
+        // y se consulta lo que se ha pedido
+        if($estadomesa === '0'){
+            $confirmados = 1;
+        }else{
+            $confirmados = 0;
+        }
+        //=============================DATOS ENVIADOS POR GET=======================================
+        
+
+
+        
+        $this->layout=false;    
+        return $this->render('mesanew',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
+                                     "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
+                                     "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
+                                     "confirmados" => $confirmados,"avatars"=>$avatars]);
     }
 
 
