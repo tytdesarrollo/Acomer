@@ -4020,6 +4020,428 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	transform: rotate(180deg);
 }
 
+/* Estilos para mesa de 10 puestos */
+.mesax10p.content-puestos{
+	overflow-x: auto;
+}
+.mesax10p .content-mesa{
+	width: 95%;
+	top: 50%;
+	left: 50%;
+	margin-left: -36%;
+	margin-top: -12%;
+}
+.mesax10p .content-mesa .n-mesa{
+	width: 3em;
+    height: 3em;
+    margin-top: -1.5em;
+    margin-left: -1.5em;
+}
+.content-puestos.mesax10p .puesto-libre{
+	border: 3px dashed #ffffff;
+	width: 80%;
+    height: 72%;
+}
+.content-puestos.mesax10p .puesto-libre .txt-puesto{
+	font-size: 1.1em;
+}
+.mesax10p .content__puesto-1{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	margin-left: -44%;
+	margin-top: -8.56%;
+}
+.mesax10p .content__puesto-1 .puesto-libre{
+	top: 50%;
+	left: -28%;
+	margin-top: -40%;
+}
+.mesax10p .content__puesto-2{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	margin-left: -31.5%;
+	margin-top: -21.145%;
+}
+.mesax10p .content__puesto-2 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-3{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	right: 50%;
+	margin-right: -8.2%;
+	margin-top: -21.145%;
+}
+.mesax10p .content__puesto-3 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-4{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	right: 50%;
+	margin-right: -31.4%;
+	margin-top: -21.145%;
+}
+.mesax10p .content__puesto-4 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-5{
+	position: absolute;
+    width: 16.4%;
+    height: auto;
+    top: 50%;
+    right: 50%;
+    margin-right: -54.5%;
+    margin-top: -21.145%;
+}
+.mesax10p .content__puesto-5 .puesto-libre{
+	top: -20%;
+    left: 50%;
+    margin-left: -40%;
+}
+.mesax10p .content__puesto-6{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	top: 50%;
+	margin-right: -67%;
+	margin-top: -8.56%;
+}
+.mesax10p .content__puesto-6 .puesto-libre{
+	top: 50%;
+	right: -28%;
+	margin-top: -40%;
+}
+.mesax10p .content__puesto-7{
+	position: absolute;
+    width: 16.4%;
+    height: auto;
+    right: 50%;
+    bottom: 50%;
+    margin-right: -54.5%;
+    margin-bottom: -22.05%;
+}
+.mesax10p .content__puesto-7 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-8{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -31.4%;
+	margin-bottom: -22.05%;
+}
+.mesax10p .content__puesto-8 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-9{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -8.2%;
+	margin-bottom: -22.05%;
+}
+.mesax10p .content__puesto-9 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-10{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	left: 50%;
+	bottom: 50%;
+	margin-left: -31.5%;
+	margin-bottom: -22.05%;
+}
+.mesax10p .content__puesto-10 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax10p .content__puesto-1 img{
+	transform: rotate(-90deg);
+}
+.mesax10p .content__puesto-3 img{
+	transform: rotate(0deg);
+}
+.mesax10p .content__puesto-4 img{
+	transform: rotate(0deg);
+}
+.mesax10p .content__puesto-5 img{
+	transform: rotate(0deg);
+}
+.mesax10p .content__puesto-6 img{
+	transform: rotate(90deg);
+}
+.mesax10p .content__puesto-7 img{
+	transform: rotate(180deg);
+}
+.mesax10p .content__puesto-8 img{
+	transform: rotate(180deg);
+}
+.mesax10p .content__puesto-9 img{
+	transform: rotate(180deg);
+}
+.mesax10p .content__puesto-10 img{
+	transform: rotate(180deg);
+}
+
+/* Estilos para mesa de 12 puestos */
+.mesax12p.content-puestos{
+	overflow-x: auto;
+}
+.mesax12p .content-mesa{
+	width: 118.2%;
+	top: 50%;
+	left: 50%;
+	margin-left: -36%;
+	margin-top: -12%;
+}
+.mesax12p .content-mesa .n-mesa{
+	width: 3em;
+    height: 3em;
+    margin-top: -1.5em;
+    margin-left: -1.5em;
+}
+.content-puestos.mesax12p .puesto-libre{
+	border: 3px dashed #ffffff;
+	width: 80%;
+    height: 72%;
+}
+.content-puestos.mesax12p .puesto-libre .txt-puesto{
+	font-size: 1.1em;
+}
+.mesax12p .content__puesto-1{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	margin-left: -44%;
+	margin-top: -8.56%;
+}
+.mesax12p .content__puesto-1 .puesto-libre{
+	top: 50%;
+	left: -28%;
+	margin-top: -40%;
+}
+.mesax12p .content__puesto-2{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	margin-left: -31.5%;
+	margin-top: -21.145%;
+}
+.mesax12p .content__puesto-2 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-3{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	right: 50%;
+	margin-right: -8.2%;
+	margin-top: -21.145%;
+}
+.mesax12p .content__puesto-3 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-4{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	top: 50%;
+	right: 50%;
+	margin-right: -31.4%;
+	margin-top: -21.145%;
+}
+.mesax12p .content__puesto-4 .puesto-libre{
+	top: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-5{
+	position: absolute;
+    width: 16.4%;
+    height: auto;
+    top: 50%;
+    right: 50%;
+    margin-right: -54.5%;
+    margin-top: -21.145%;
+}
+.mesax12p .content__puesto-5 .puesto-libre{
+	top: -20%;
+    left: 50%;
+    margin-left: -40%;
+}
+.mesax12p .content__puesto-6{
+	position: absolute;
+    width: 16.4%;
+    height: auto;
+    top: 50%;
+    right: 50%;
+    margin-right: -77.8%;
+    margin-top: -21.145%;
+}
+.mesax12p .content__puesto-6 .puesto-libre{
+	top: -20%;
+    left: 50%;
+    margin-left: -40%;
+}
+.mesax12p .content__puesto-7{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	top: 50%;
+	margin-right: -90%;
+	margin-top: -8.56%;
+}
+.mesax12p .content__puesto-7 .puesto-libre{
+	top: 50%;
+	right: -28%;
+	margin-top: -40%;
+}
+.mesax12p .content__puesto-8{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -77.8%;
+	margin-bottom: -22.05%;
+}
+.mesax12p .content__puesto-8 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-9{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -54.5%;
+	margin-bottom: -22.05%;
+}
+.mesax12p .content__puesto-9 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-10{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -31.4%;
+	margin-bottom: -22.05%;
+}
+.mesax12p .content__puesto-10 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-11{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	right: 50%;
+	bottom: 50%;
+	margin-right: -8.2%;
+	margin-bottom: -22.05%;
+}
+.mesax12p .content__puesto-11 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-12{
+	position: absolute;
+	width: 16.4%;
+	height: auto;
+	left: 50%;
+	bottom: 50%;
+	margin-left: -31.5%;
+	margin-bottom: -22.05%;
+}
+.mesax12p .content__puesto-12 .puesto-libre{
+	bottom: -20%;
+	left: 50%;
+	margin-left: -40%;
+}
+.mesax12p .content__puesto-1 img{
+	transform: rotate(-90deg);
+}
+.mesax12p .content__puesto-3 img{
+	transform: rotate(0deg);
+}
+.mesax12p .content__puesto-4 img{
+	transform: rotate(0deg);
+}
+.mesax12p .content__puesto-5 img{
+	transform: rotate(0deg);
+}
+.mesax12p .content__puesto-6 img{
+	transform: rotate(0deg);
+}
+.mesax12p .content__puesto-7 img{
+	transform: rotate(90deg);
+}
+.mesax12p .content__puesto-8 img{
+	transform: rotate(180deg);
+}
+.mesax12p .content__puesto-9 img{
+	transform: rotate(180deg);
+}
+.mesax12p .content__puesto-10 img{
+	transform: rotate(180deg);
+}
+.mesax12p .content__puesto-11 img{
+	transform: rotate(180deg);
+}
+.mesax12p .content__puesto-12 img{
+	transform: rotate(180deg);
+}
+
+
+
 
 /* ESTILOS DETALLE PEDIDO*/
 .content-view-pedido{
