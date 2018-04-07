@@ -191,12 +191,12 @@
 									<div class="row menos">
 										<?php echo Html::img('@web/img/personajes/uviejo1.svg', ['class'=>'animate_avatar','id'=>'pervi1'])?>
 										<?php echo Html::img('@web/img/personajes/uadulto1.svg', ['class'=>'animate_avatar','id'=>'perad1'])?>
-										<?php echo Html::img('@web/img/personajes/unino1.svg', ['class'=>'animate_avatar','id'=>'perni1'])?>
+										<!--<?php echo Html::img('@web/img/personajes/unino1.svg', ['class'=>'animate_avatar','id'=>'perni1'])?>-->
 									</div>
 									<div class="row menos">
 										<?php echo Html::img('@web/img/personajes/uviejo2.svg', ['class'=>'animate_avatar','id'=>'pervi2'])?>
 										<?php echo Html::img('@web/img/personajes/uadulto2.svg', ['class'=>'animate_avatar','id'=>'perad2'])?>
-										<?php echo Html::img('@web/img/personajes/unino2.svg', ['class'=>'animate_avatar','id'=>'perni2'])?>
+										<!--<?php echo Html::img('@web/img/personajes/unino2.svg', ['class'=>'animate_avatar','id'=>'perni2'])?>-->
 									</div>
 								</div>
 							</div>
@@ -831,6 +831,13 @@
 			$(avatarsG());	
 		}, 1000);	
 
+		if(generalEstadoM == 0){
+			setTimeout(function(){
+				$(verFactura());
+			}, 5000);	
+		}
+
+
 		function mesasDisponiblesR(){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/jsonmesas']); ?>',
@@ -1136,12 +1143,12 @@
 		if(getNew.length == 0){
 			generalAvatars = 0;
 		}else{
-			console.log(arrayToChar(getNew));
+			generalAvatars = arrayToChar(getNew);
 		}
 
 
 		var nuevoAvatar =
-			'<img src="img/puesto_left.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona+'+puesto+'">'+						
+			'<img src="img/puesto_left.svg" alt="Puesto '+puesto+'" class="img-responsive avatar-hidden" id="imgPersona+'+puesto+'">'+						
 			'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
 				'<div class="cnt"  onClick="seleccionaPersona('+puesto+')">'+
 					'<span class="txt-puesto">Puesto</br>#'+puesto+'</span>'+
@@ -1242,7 +1249,7 @@
 			for(var i=0 ; i<6 ; i++){
 				crearMesa = crearMesa+
 					'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+
-						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive" id="imgPersona'+(i+1)+'">'+
+						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona'+(i+1)+'">'+
 						'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
 							'<div class="cnt" onClick="seleccionaPersona('+(i+1)+')">'+
 								'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
@@ -1255,7 +1262,7 @@
 				'<div class="content-puestos mesax8p">'+
 					'<div class="content-scroll-mesa">'+
 						'<div class="content-mesa">'+
-							'<?= Html::img('@web/img/mesa_8_puestos.svg', ['alt' => 'Mesa 6 puestos', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/mesa_8_puestos.svg', ['alt' => 'Mesa 6 puestos', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="n-mesa">'+
 								'<span>#1</span>'+
 							'</div>'+
@@ -1267,7 +1274,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-1">'+
-							'<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#1</span>'+
@@ -1275,7 +1282,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-2">'+
-							'<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#2</span>'+
@@ -1283,7 +1290,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-3">'+
-							'<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#3</span>'+
@@ -1291,7 +1298,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-4">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#4</span>'+
@@ -1299,7 +1306,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-5">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#5</span>'+
@@ -1307,7 +1314,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-6">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 6', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 6', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#6</span>'+
@@ -1315,7 +1322,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-7">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 7', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 7', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#7</span>'+
@@ -1323,7 +1330,7 @@
 							'</div>'+
 						'</div>'+
 						'<div class="content__puesto-8">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 8', 'class' => 'img-responsive',]) ?>'+
+							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 8', 'class' => 'img-responsive avatar-hidden',]) ?>'+
 							'<div class="puesto-libre">'+
 								'<div class="cnt">'+
 									'<span class="txt-puesto">Puesto</br>#8</span>'+
@@ -1397,7 +1404,25 @@
 	function habilitarBotones(){
 		// habilitar el boton de la facturacion
 		if(generalEstadoM == 1){
-			document.getElementById("facturarPedidoBtn").style.display = 'none';			
+			$("#facturarPedidoBtn").hide();
+		}else{
+			//se oculta hasta no tener resultado de la consulta
+			$("#facturarPedidoBtn").hide();
+
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/mostrarbotonfactura']); ?>',				
+				method: "GET",
+				data: {'mesa':generalCodigoM},
+				success: function (data) {											
+					//identifica si se muestra el boton o no 
+					if("NO_MOSTRAR".localeCompare(data) == 0){
+						$("#facturarPedidoBtn").hide();
+					}else if("MOSTRAR".localeCompare(data) == 0){
+						$("#facturarPedidoBtn").show();
+					}
+				}
+			});	
+
 		}
 
 		//habilir el boton de visualizar el pedido 
@@ -1507,6 +1532,8 @@
 		}else if(cantidad >=5 && cantidad <= 6){
 			listaPedidosX(cantidad);
 		}
+
+		verDetallePedidoMesa();
 	}
 
 	function verFactura(){
@@ -2148,7 +2175,7 @@
 		var contenidoPedido = '';
 
 		if(generalTamano <= 4){
-
+			// mostrar los pedidos que no esten confirmados
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
 					for(var i=0 ; i<arrPlatos.length ; i++){
@@ -2160,6 +2187,7 @@
 								'<td class="desc">'+
 									'<div class="nom-item">'+
 										'<p>'+arrPlatos[i]+'</p>'+
+										'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
 									'</div>'+
 									'<div class="val-item">'+
 										'<p></p>'+
@@ -2172,6 +2200,7 @@
 				}	
 			}
 
+			// mostrar los platos que han sido confirmados
 			if(Array.isArray(generalConfirmPlatos)){
 				if(generalConfirmPlatos.length > 0){
 					for(var i=0 ; i<generalConfirmPlatos.length ; i++){
@@ -2183,6 +2212,57 @@
 								'<td class="desc">'+
 									'<div class="nom-item">'+
 										'<p>'+generalConfirmPlatos[i]+'</p>'+
+										'<p style="color:#b79d8b">Puesto '+generalConfirmPuestos[i]+'</p>'+
+									'</div>'+
+									'<div class="val-item">'+
+										'<p></p>'+
+									'</div>'+
+								'</td>'+
+								'<td class="cant"><p>x'+generalConfirmCantidad[i]+'</p></td>'+
+								'<td class="cant"><p><i class="material-icons icon-btn">&#xe877;</i></p></td>'+					
+							'</tr>';
+					}
+				}
+			}
+		}else if(generalTamano>= 5 && generalTamano <= 6){
+			//mostrar los platos que no se han confirmado
+			if(Array.isArray(arrPlatos)){
+				if(arrPlatos.length > 0){
+					for(var i=0 ; i<arrPlatos.length ; i++){
+						contenidoPedido = contenidoPedido +
+							'<tr>'+
+								'<td class="icn">'+
+									'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
+								'</td>'+
+								'<td class="desc">'+
+									'<div class="nom-item">'+
+										'<p>'+arrPlatos[i]+'</p>'+
+										'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
+									'</div>'+
+									'<div class="val-item">'+
+										'<p></p>'+
+									'</div>'+
+								'</td>'+
+								'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
+								'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
+							'</tr>';
+					}
+				}	
+			}
+
+			// mostrar los platos que han sido confirmados
+			if(Array.isArray(generalConfirmPlatos)){
+				if(generalConfirmPlatos.length > 0){
+					for(var i=0 ; i<generalConfirmPlatos.length ; i++){
+						contenidoPedido = contenidoPedido +
+							'<tr>'+
+								'<td class="icn">'+
+									'<img src="img/categorias/'+generalConfirmImagen[i]+'" class="img-item">'+							
+								'</td>'+
+								'<td class="desc">'+
+									'<div class="nom-item">'+
+										'<p>'+generalConfirmPlatos[i]+'</p>'+
+										'<p style="color:#b79d8b">Puesto '+generalConfirmPuestos[i]+'</p>'+
 									'</div>'+
 									'<div class="val-item">'+
 										'<p></p>'+
@@ -2198,6 +2278,7 @@
 
 		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Mesa '+generalCodigoM+'</h5>';
 		document.getElementById("platosDetalle").innerHTML = contenidoPedido;
+		document.getElementById("mesaDetalle").innerHTML = '';
 	}
 
 	function verDetalleConfirmado(puesto){
@@ -2227,7 +2308,7 @@
 		}
 
 		document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
-		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Mesa '+generalCodigoM+'</h5>';
+		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Puesto '+puesto+'</h5>';
 		document.getElementById("platosDetalle").innerHTML = contenidoPedido;
 	}
 
@@ -3006,7 +3087,7 @@
 					//cabecera de la factura									
 					var cabFactura = data[0];
 					//detalle de la factura
-					var detFactura = data[1];				
+					var detFactura = data[1];	 console.log(detFactura);			
 					// cabecera de la factura
 					var arrayDatosCF = $.map(cabFactura, function(value, index) {
 		    			return [value];
@@ -3182,6 +3263,7 @@
 		//vuelve a cargar los puestos con pedidos
 		verPedido();
 		cancelarAvatar(puesto);
+		nombrePlatos();
 	}
 
 	function realizarPedido(){
@@ -3349,6 +3431,8 @@
 					
 					generalNombrePlatos = arrayDatos[0];
 					generalNombreImages = arrayDatos[1];
+
+					verDetallePedidoMesa();
 				}
 			});	
 		}
