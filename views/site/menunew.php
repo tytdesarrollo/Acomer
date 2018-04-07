@@ -253,7 +253,19 @@
 				//parametros de la url
 				var urlParams = urlActual.substring(posParams);
 
+				for (var i=urlParams.length ; i>=0 ; i--) {
 
+					var cadenaOpuesta = urlParams.substring(urlParams.length-i,urlParams.length);
+					var caracter = cadenaOpuesta.substring(0,1);
+					
+
+					if(caracter.localeCompare(",") == 0){
+						urlParams = urlParams.substring(0,urlParams.length-i);
+						break;
+					}
+					
+				}
+				
 				location.href = urlMesa+urlParams;
 				
 			}

@@ -32,17 +32,12 @@ class SiteController extends Controller
 
 
     public function actionPrueba(){     
-
-        $prodesc   = array("CHURRASCO","CHURRASCO","PASTA VAKISOBA VEGETARIANA","PASTA VAKISOBA POLLO CAMARON","PASTA VAKISOBA MARISCOS","CHURRASCO");
-        $peduni    = array("1","1","1","1","1","1");
-        $pesvaltun = array("45200","45200","17500","27500","32000","45200");
-        $arrayCont = array("PRODES"=>$prodesc,"PEDUNI"=>$peduni,"PEDVALTUN"=>$pesvaltun);
-        $arrayFin  = array($arrayCont);
-
-        $fn_array = new funcionesArray();
-        $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($arrayFin);
+        
+        $fn_array = new SpMesasFactura();
+        $result = $fn_array->procedimiento9(1);
+        
         $this->layout=false;
-        return $this->render('prueba',['arrayFin'=>json_encode($detalle1)]); 
+        return $this->render('prueba',['result'=>$result]); 
     }   
     
     public function behaviors()
@@ -388,26 +383,19 @@ class SiteController extends Controller
     }
 
     public function actionEntregarpedido(){
-        $c1 = $_GET['puestos'];
-        $c2 = $_GET['platos'];
-        $c3 = $_GET['documento'];
-        $c4 = $_GET['empresa'];
+        $c1 = Yii::$app->request->get('puestos');
+        $c2 = Yii::$app->request->get('platos');
+        $c3 = Yii::$app->request->get('documento');
+        $c4 = Yii::$app->request->get('empresa');
 
         $fn_mesas = new SpMesasPlaza();
         $fn_mesas->procedimiento3($c1,$c2,$c3,$c4); 
-
-        var_dump($c1); echo '<br><br>';
-        var_dump($c2); echo '<br><br>';
-        var_dump($c3); echo '<br><br>';
-        var_dump($c4);
-
-
         
     }
 
     public function actionJsonpuestosfac(){
         //parametros pasados por GET
-        $c1 = $_GET['mesa'];
+        $c1 = Yii::$app->request->get('mesa');
 
         $fn_fac_puestos = new SpMesasFactura;
         //obtiene las posiciones de las mesas 
@@ -418,8 +406,8 @@ class SiteController extends Controller
 
     public function actionJsonpuestosfacx(){
          //parametros pasados por GET
-        $mesa1 = $_GET['mesa1'];
-        $mesa2 = $_GET['mesa2']; 
+        $mesa1 = Yii::$app->request->get('mesa1');
+        $mesa2 = Yii::$app->request->get('mesa2');
 
         if($mesa2 == 'undefined'){
             session_start()   ;
@@ -447,14 +435,14 @@ class SiteController extends Controller
             $this->layout=false;    
             return $this->redirect(['site/plaza']); 
         }else{
-            $codigomesa = $_GET['codigoM'];  
+            $codigomesa = Yii::$app->request->get('codigoM');
         }
        
         //datos enviados desde la plaza
         if(!isset($_GET['estadoM'])){
             $estadomesa = 1;
         }else{
-            $estadomesa = $_GET['estadoM'];
+            $estadomesa = Yii::$app->request->get('estadoM');
         }        
 
         //datos enviados desde el menu
@@ -465,23 +453,23 @@ class SiteController extends Controller
             $arrpuestos = 0;
             $avatars = 0;
         }else{
-            $platos = $_GET['platos'];
-            $cantidad = $_GET['cantidad'];            
-            $puestos = $_GET['puestos'];
-            $avatars = $_GET['avatars'];
+            $platos = Yii::$app->request->get('platos');
+            $cantidad = Yii::$app->request->get('cantidad');
+            $puestos = Yii::$app->request->get('puestos');
+            $avatars = Yii::$app->request->get('avatars');
             // acomodar el array de los puestos
             $funciones1 = new funcionesArray();
-            $funciones2 = $funciones1->crearArray($_GET['puestos']);
+            $funciones2 = $funciones1->crearArray(Yii::$app->request->get('puestos'));
             $arrpuestos = $funciones1->arrayNuevo(array_unique($funciones2));
             $arrpuestos = $funciones1->arrayToChar($arrpuestos);
 
-            $tamano = $_GET['tamanoM']; //tamano de la mesa que se esta usando
+            $tamano = Yii::$app->request->get('tamanoM'); //tamano de la mesa que se esta usando
         }
 
         if(!isset($_GET['tamanoM'])){            
             $tamano = 4;
         }else{
-            $tamano = $_GET['tamanoM'];
+            $tamano = Yii::$app->request->get('tamanoM');
         }
 
 
@@ -519,7 +507,7 @@ class SiteController extends Controller
 
     public function actionVarsesions(){
         //cantidad de personas en la mesa
-        $tamano = $_GET['tamano'];
+        $tamano = Yii::$app->request->get('tamano');
 
         // dependiendo del tamano de la mesa se crear n variables de session
         if($tamano > 4 && $tamano <= 6){
@@ -530,9 +518,9 @@ class SiteController extends Controller
             session_start(); 
             //modifica la variable con la mesa correspondiente
             if(is_array($_GET['mesa1'])){
-                $_SESSION['mesa1'] = $_GET['mesa1'][0];
+                $_SESSION['mesa1'] = Yii::$app->request->get('mesa1')[0];
             }else{
-                $_SESSION['mesa1'] = $_GET['mesa1'];  
+                $_SESSION['mesa1'] = Yii::$app->request->get('mesa1');
             }
             
             echo $_SESSION["mesa1"];
@@ -542,7 +530,7 @@ class SiteController extends Controller
 
 
     public function actionJsonmesasunidas(){
-        $in_var = $_GET['mesaclick'];
+        $in_var = Yii::$app->request->get('mesaclick');
 
         $clase = new SpMesasPedidos();
         $procedimiento = $clase->procedimiento3($in_var);
@@ -562,14 +550,14 @@ class SiteController extends Controller
         //c6: Variable correspondiente al arraY al codigo de la mesa
         
         //capturas los datos enviados por get
-        $get1 = $_GET['puestos'];
-        $get2 = $_GET['platos'];
-        $get3 = $_GET['cantidad'];
-        $get4 = $_GET['termino'];        
+        $get1 = Yii::$app->request->get('puestos');
+        $get2 = Yii::$app->request->get('platos');
+        $get3 = Yii::$app->request->get('cantidad');
+        $get4 = Yii::$app->request->get('termino');
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
-        $get6 = $_GET['mesa'];
-        $get7 = $_GET['avatar'];
+        $get6 = Yii::$app->request->get('mesa');
+        $get7 = Yii::$app->request->get('avatar');
         
         $funcionArr = new funcionesArray();
         
@@ -609,14 +597,14 @@ class SiteController extends Controller
         //c6: Variable correspondiente al arraY al codigo de la mesa
         
         //capturas los datos enviados por get
-        $get1 = $_GET['puestos'];
-        $get2 = $_GET['platos'];
-        $get3 = $_GET['cantidad'];
-        $get4 = $_GET['termino'];        
+        $get1 = Yii::$app->request->get('puestos');
+        $get2 = Yii::$app->request->get('platos');
+        $get3 = Yii::$app->request->get('cantidad');
+        $get4 = Yii::$app->request->get('termino');
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
-        $get6 = $_GET['mesa'];
-        $get7 = $_GET['avatar'];
+        $get6 = Yii::$app->request->get('mesa');
+        $get7 = Yii::$app->request->get('avatar');
         
         $funcionArr = new funcionesArray();
         //
@@ -669,21 +657,21 @@ class SiteController extends Controller
         
         //capturas los datos enviados por get   
         //pedido para la mesa principal     
-        $get1 = $_GET['puestos1'];
-        $get2 = $_GET['platos1'];
-        $get3 = $_GET['cantidad1'];
-        $get4 = $_GET['termino1'];        
+        $get1 = Yii::$app->request->get('puestos1');
+        $get2 = Yii::$app->request->get('platos1');
+        $get3 = Yii::$app->request->get('cantidad1');
+        $get4 = Yii::$app->request->get('termino1');
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
-        $get6 = $_GET['mesa1'];        
-        $get7 = $_GET['mesa2'];
-        $get8 = $_GET['avatar'];
+        $get6 = Yii::$app->request->get('mesa1');
+        $get7 = Yii::$app->request->get('mesa2');
+        $get8 = Yii::$app->request->get('avatar');
         
         $fn_arrays = new funcionesArray();
 
         //0: dos mesas unidas
         //1: tres mesas unidad
-        if($_GET['tamano'] === '0'){
+        if(Yii::$app->request->get('tamano') === '0'){
             $arrayMesa1 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'1');
             $arrayMesa2 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'2');
             
@@ -714,19 +702,13 @@ class SiteController extends Controller
             $pedido1 = new SpMesasPedidos();
             $tomarpedido1 = $pedido1->procedimiento5($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14,$c15);
 
-            var_dump($c7); echo '<br>';
-            var_dump($c8); echo '<br>';
-            var_dump($c9); echo '<br>';
-            var_dump($c10); echo '<br>';
-                echo($c11); echo '<br>';
-                echo($c12); echo '<br>';
 
-        $c1 = $fn_arrays->crearArray($get6.','.$get7);
-        $c2 = $fn_arrays->crearArray($get8);
+            $c1 = $fn_arrays->crearArray($get6.','.$get7);
+            $c2 = $fn_arrays->crearArray($get8);
 
-        $pedido1->procedimeinto13($c1,$c2);        
+            $pedido1->procedimeinto13($c1,$c2);        
             
-        }else if($_GET['tamano'] === '1'){
+        }else if(Yii::$app->request->get('tamano') === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
             echo 'a';
         }        
@@ -752,20 +734,20 @@ class SiteController extends Controller
         //c12: Variable correspondiente al arraY al codigo de la mesa
         
         //capturas los datos enviados por get
-        $get1 = $_GET['puestos1'];
-        $get2 = $_GET['platos1'];
-        $get3 = $_GET['cantidad1'];
-        $get4 = $_GET['termino1'];        
+        $get1 = Yii::$app->request->get('puestos1');
+        $get2 = Yii::$app->request->get('platos1');
+        $get3 = Yii::$app->request->get('cantidad1');
+        $get4 = Yii::$app->request->get('termino1');        
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
-        $get6 = $_GET['mesa1'];        
-        $get7 = $_GET['mesa2'];
-        $get8 = $_GET['avatar'];
+        $get6 = Yii::$app->request->get('mesa1');        
+        $get7 = Yii::$app->request->get('mesa2');
+        $get8 = Yii::$app->request->get('avatar');
 
         $fn_arrays = new funcionesArray();
         $fn_adicion = new SpMesasPedidos();
 
-        if($_GET['tamano'] === '0'){
+        if(Yii::$app->request->get('tamano') === '0'){
             //los arrays correspondientes a la mesa 1
             $arrayMesa1 = $fn_arrays->arrayPorPuesto($get1,$get2,$get3,$get4,'1');
             $c1 = $fn_arrays->arrayPuestos($arrayMesa1[0]);
@@ -802,7 +784,7 @@ class SiteController extends Controller
                 $fn_adicion->procedimeinto13($c1,$c2);  
             }
 
-        }else if($_GET['tamano'] === '1'){
+        }else if(Yii::$app->request->get('tamano') === '1'){
             //toma de pedido con el procedimiento para 3 mesas unidas
             echo 'a';
         }  
@@ -821,7 +803,7 @@ class SiteController extends Controller
         
         // codigo de la mesa que 
         $c1 = 0;
-        $c2 = $_GET['mesa'];
+        $c2 = Yii::$app->request->get('mesa');
         $c3 = array($_GET['plato']);
         $c4 = array($_GET['cantidad']);
         $c5 = array($_GET['puesto']);
@@ -850,11 +832,11 @@ class SiteController extends Controller
         $fn_cancelar = new SpMesasPedidos();
 
         // datos eviados por get
-        $get1 = $_GET['tamano'];
+        $get1 = Yii::$app->request->get('tamano');
 
         if($get1 <= 4){
             // captura los demas datos
-            $get2 = $_GET['mesa'];
+            $get2 = Yii::$app->request->get('mesa');
             //parametros de entrada
             $c1 = 1;
             $c2 = $get2;
@@ -867,8 +849,8 @@ class SiteController extends Controller
 
         }else if($get1 >= 5 and $get1 <=6){
             //mesa principal y la mesa unida a ella
-            $get2 = $_GET['mesa1'];
-            $get3 = $_GET['mesa2'];
+            $get2 = Yii::$app->request->get('mesa1');
+            $get3 = Yii::$app->request->get('mesa2');
 
             //saber si hay pedidos entregados
             $c6 = $fn_cancelar->procedimiento11($get2);
@@ -1173,16 +1155,20 @@ class SiteController extends Controller
         $valor    = array();
 
         //union del detalle de cada una de las mesas
-        for ($i = 0 ; $i < count($detalle1['PRODES']) ; $i++) {                                  
-            array_push($producto  , $detalle1['PRODES'][$i]);
-            array_push($cantidad  , $detalle1['PEDUNI'][$i]);
-            array_push($valor     , $detalle1['PEDVALTUN'][$i]);                  
+        if(strcmp($detalle1['PRODES'][0],"") !== 0){
+            for ($i = 0 ; $i < count($detalle1['PRODES']) ; $i++) {                                  
+                array_push($producto  , $detalle1['PRODES'][$i]);
+                array_push($cantidad  , $detalle1['PEDUNI'][$i]);
+                array_push($valor     , $detalle1['PEDVALTUN'][$i]);                  
+            }
         }
 
-        for ($i = 0 ; $i < count($detalle2['PRODES']) ; $i++) {                                  
-            array_push($producto  , $detalle2['PRODES'][$i]);
-            array_push($cantidad  , $detalle2['PEDUNI'][$i]);
-            array_push($valor     , $detalle2['PEDVALTUN'][$i]);                  
+        if(strcmp($detalle2['PRODES'][0],"") !== 0){
+            for ($i = 0 ; $i < count($detalle2['PRODES']) ; $i++) {                                  
+                array_push($producto  , $detalle2['PRODES'][$i]);
+                array_push($cantidad  , $detalle2['PEDUNI'][$i]);
+                array_push($valor     , $detalle2['PEDVALTUN'][$i]);                  
+            }
         }
 
         // elimina los valor que el array contenga vacios
@@ -1190,12 +1176,11 @@ class SiteController extends Controller
         $cantidad = array_filter($cantidad);
         $valor    = array_filter($valor);
 
-        // se crea el array calve valor
         $detalle[] = array(
             'PRODES' => $producto,
             'PEDUNI' => $cantidad,
             'PEDVALTUN' => $valor,            
-        );    
+        );                   
 
         $fn_array = new funcionesArray();
         $detalle1 = $fn_array->arrayAdjuntarDatosFacturarx($detalle);
@@ -1204,7 +1189,7 @@ class SiteController extends Controller
         // se genera la factura para el cliente
         $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
         $cabeceraDetalle = array($facturar, $detalle1, $numeroRever);
-        echo json_encode($cabeceraDetalle);
+        echo json_encode($cabeceraDetalle);        
     }
 
     public function actionVisualizarfac(){
@@ -1229,7 +1214,7 @@ class SiteController extends Controller
         $fn_facturacion = new SpMesasFactura();
         $nombreCliente = $fn_facturacion->procedimiento8($c1);
 
-        echo $nombreCliente;
+        echo utf8_decode(utf8_encode($nombreCliente));
     }
 
     public function actionRegistrarcliente(){
@@ -1749,6 +1734,17 @@ class SiteController extends Controller
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                      "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
                                      "confirmados" => $confirmados,"avatars"=>$avatars]);
+    }
+
+    public function actionMostrarbotonfactura(){
+        //c1: mesa que se va a consultar
+        //
+        $c1 = Yii::$app->request->get('mesa');
+        //modelo para eecutar el procedimiento
+        $fn_facturacion = new SpMesasFactura();
+        $mensaje = $fn_facturacion->procedimiento9($c1);
+
+        echo $mensaje;
     }
 
 

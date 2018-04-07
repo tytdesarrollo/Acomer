@@ -3,9 +3,9 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
- <?= Html::jsFile('@web/js/jquery.min.js') ?>
-  <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
-   <?= Html::jsFile('@web/js/ciclosession.js') ?>
+<?= Html::jsFile('@web/js/jquery.min.js') ?>
+<?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
+<?= Html::jsFile('@web/js/ciclosession.js') ?>
 
 <div class="main">
 	<img src="img/plaza.png" alt="" class="img-responsive base">
@@ -24,8 +24,7 @@ use yii\widgets\ActiveForm;
 			<div class="containers container__1">
 				<div class="notification text_0-9 not-1 full">		
 					<div class="menu-trigge">
-						<div id="pedidosEmp1">	
-							<?= Html::img('@web/img/notrest.svg', ['class'=>'img-responsive'])?>
+						<div id="pedidosEmp1">										
 						</div>	
 					</div>
 					<div class="ripple-container">
@@ -295,10 +294,10 @@ use yii\widgets\ActiveForm;
 				var notificaciones = notificacionContainer(tamano, numeroMesa, empresaPedido, documentoPedido, puestosPedido, platosPedido, cantidadPedido, nombrePedido);	
 				
 				//muestros las mesas en la plaza				
-				document.getElementById("pedidosEmp1").innerHTML = notificaciones[0]; console.log(notificaciones[0]);
-				document.getElementById("pedidosEmp2").innerHTML = notificaciones[1]; console.log(notificaciones[1]);
-				document.getElementById("pedidosEmp3").innerHTML = notificaciones[2]; console.log(notificaciones[2]);
-				document.getElementById("pedidosEmp4").innerHTML = notificaciones[3]; console.log(notificaciones[3]);
+				document.getElementById("pedidosEmp1").innerHTML = notificaciones[0];
+				document.getElementById("pedidosEmp2").innerHTML = notificaciones[1];
+				document.getElementById("pedidosEmp3").innerHTML = notificaciones[2];
+				document.getElementById("pedidosEmp4").innerHTML = notificaciones[3];
 				
 				if(estadoPedido[0] == "NO"){					
 					$("div.btn-side-close").attr("onClick","platosEntregar(5)");
@@ -307,7 +306,7 @@ use yii\widgets\ActiveForm;
 				}
 			}
 		});
-	}//setInterval(containerReal, 1000);
+	}setInterval(containerReal, 1000);
 
 	function notificacionContainer(tamano, mesa, empresa, documento, puestos, platos, cantidad, nombre){		
 		//
@@ -589,18 +588,6 @@ use yii\widgets\ActiveForm;
 
 
 	}
-
-
-	// var delayInMilliseconds = 3000; //1 second
-
-	// setTimeout(function() {
-		// clickPruebaaaa();
-	// }, delayInMilliseconds);
-
-	
-	// function clickPruebaaaa()	{
-		// $("#pedidosEmp1").click();
-	// }
 </script>
 
 
