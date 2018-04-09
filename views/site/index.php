@@ -173,12 +173,13 @@
 		<?php }; ?>
 
 		<?php
-			if($request->get('error')){
+			if($request->get('error')){				
 		?>
 
 			<script>
-	 			$(document).ready(function(){
-	  				swal(<?php echo '"'.$request->get('error').'"'; ?>, "", "error");
+	 			$(document).ready(function(){	 				
+	 				var mensajeError = '<?=$request->get('error');?>';
+	  				swal(mensajeError, "", "error");
 	 			});
 			</script>
 
