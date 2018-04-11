@@ -7,13 +7,15 @@
 	use PDO;
 	use yii\base\Model;
 
-	Class SpMesasPlaza extends Model{
+	Class SpMesasPlaza extends Model{		
 
 		public function procedimiento(){
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//cursor que recibira los datos de las mesas
 			$cursor_mesas;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -38,9 +40,11 @@
 			//$c4: codigo del container 4
 			//
 			//dsn de la conexion a la base de datos
-			$db = Yii::$app->params['awadb'];		
+			$db = Yii::$app->params['awadb'];
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CODIGO_CONTAINERS(:c1,:c2,:c3,:c4); END;");
 			//pasa los parametros del proceimiento
@@ -62,16 +66,18 @@
 			//$c4: codigo del container
 			//
 			//dsn de la conexion a la base de datos
-			$db = Yii::$app->params['awadb'];		
+			$db = Yii::$app->params['awadb'];
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ENTREGAR_PEDIDO_MESA(:c1,:c2,:c3,:c4); END;");
 			//pasa los parametros del proceimiento
 			oci_bind_array_by_name($stid, ":c1", $c1, 100, -1, SQLT_CHR);
 			oci_bind_array_by_name($stid, ":c2", $c2, 100, -1, SQLT_CHR);			
-			oci_bind_by_name($stid, ":c3", $c3, 10);
-			oci_bind_by_name($stid, ":c4", $c4, 13);
+			oci_bind_array_by_name($stid, ":c3", $c3, 100, -1, SQLT_CHR);
+			oci_bind_array_by_name($stid, ":c4", $c4, 100, -1, SQLT_CHR);		
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
 		}

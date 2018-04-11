@@ -12,8 +12,10 @@
 		public function procedimiento(){
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la base de datos 
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//cursores que recibiran los datos del menu
 			$cursor_categorias; 
 			$cursor_subcategorias;

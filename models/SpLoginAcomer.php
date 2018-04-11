@@ -7,7 +7,8 @@
 	use PDO;
 	use yii\base\Model;
 
-	Class SpLoginAcomer extends Model{
+
+	Class SpLoginAcomer extends Model{		
 
 		public function procedimiento(){
 			//============================================
@@ -53,7 +54,7 @@
 			$rows->bindParam(":V_IN_OPER"	  , $V_IN_OPER	   , PDO::PARAM_STR);
 			$rows->bindParam(":V_IN_ACT_PASS" , $V_IN_ACT_PASS , PDO::PARAM_STR);
 			$rows->bindParam(":V_OUT_USER_ID" , $V_OUT_USER_ID , PDO::PARAM_INT,200);			
-			$rows->bindParam(":V_OUT_MESS"	  , $V_OUT_MESS    , PDO::PARAM_STR,200);
+			$rows->bindParam(":V_OUT_MESS"	  , $V_OUT_MESS    , PDO::PARAM_STR,600);
 			$rows->bindParam(":V_OUT_COD_MESS", $V_OUT_COD_MESS, PDO::PARAM_INT,200);
 
 			//Se ejecuta el procedimiento 

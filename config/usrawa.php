@@ -11,11 +11,11 @@ return [
     )
     (CONNECT_DATA=
       (SERVER=dedicated)
-      (SERVICE_NAME=AWAJAVA)
+      (SERVICE_NAME=orcl.talentos)
     )
   );charset=AL32UTF8;', // Oracle
-    'username' => 'USR_AWA',
-    'password' => '0RCAWASYST',
+    'username' => 'USR_SAIC',
+    'password' => 'SAIC123WEB',
 	'charset' => 'utf8',
 		
 ];

@@ -7,13 +7,15 @@
 	use PDO;
 	use yii\base\Model;
 
-	Class SpMesasFactura extends Model{
+	Class SpMesasFactura extends Model{		
 
 		public function procedimiento($c1){
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//cursor que recibira los datos de las mesas
 			$cursor_puestos;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -35,8 +37,10 @@
 		public function procedimiento2($c1,$c2,$c3,$c4,$c5,$c6){
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//cursor que recibira los datos de las mesas
 			$cursor_puestos;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -75,9 +79,11 @@
 			//$c2: estado de la mesa despues de facturar
 			//
 			//dsn de la conexion a la base de datos
-			$db = Yii::$app->params['awadb'];		
+			$db = Yii::$app->params['awadb'];	
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];	
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ESTADO_MESA_FAC(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -99,8 +105,10 @@
 			//
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURA_CLIENTE(:c1,:c2,:c3,:c4,:c5,:c6); END;");
 			//inicializa el cursor pasa como parametro
@@ -126,8 +134,10 @@
 			//
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURA_RESPALDO(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -145,8 +155,10 @@
 			
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURACION_REVER(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -168,10 +180,12 @@
 				//1: REGISTRO COMPLETADO
 				//2: REGISTRO ERRONEO
 			//
-			//dsn de la conexion a la base de datos
+			//dsn de la conexion a la base de datos			
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_REGISTRO_CLIENTE(:c1,:c2,:c3,:c4,:c5,:C6,:c7); END;");			
 			//pasa los parametros del proceimiento
@@ -194,8 +208,10 @@
 			//
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect('USR_AWA', '0RCAWASYST', $db);
+			$conexion = oci_connect($usuario, $contrasena, $db);						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_DATOS_CLIENTE(:c1,:c2); END;");		
 			//pasa los parametros del proceimiento
@@ -206,6 +222,27 @@
 
 			return $c2;
 			
+		}
+
+		public function procedimiento9($c1){
+			//$c1: codigo de la mesa
+			//$c2: mensaje
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect($usuario, $contrasena, $db);						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CTRL_ENTREGA_PEDyFAC(:c1,:c2); END;");		
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 10);
+			oci_bind_by_name($stid, ":c2", $c2, 20);	
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+
+			return $c2;
 		}
 
 	}
