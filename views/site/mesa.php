@@ -55,7 +55,7 @@
 					</div>
 				</div>
 				<div class="text-center">
-					<h2 class="txt__light-70">Selecciona el número de puestos</h2>
+					<h2 class="txt__light-70">Selecciona el número de personas</h2>
 				</div>
 				<div class="content-select-puestos mrg__bottom-30">
 					<div class="input-group">
@@ -64,7 +64,7 @@
 								<span class="glyphicon glyphicon-minus"></span>
 							</button>
 						</span>
-						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="6">
+						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="8">
 						<span class="input-group-btn">
 							<button type="button" class="btn btn-default btn-number plus" data-type="plus" data-field="selectPuestos">
 								  <span class="glyphicon glyphicon-plus"></span>
@@ -145,6 +145,14 @@
 					<div class="content-puestos mesax8p" id="mesaPuestos8">
 						
 					</div>
+					<!--DIV PARA LA MESA CON 10 PUESTO-->
+					<div class="content-puestos mesax10p" id="mesaPuestos10">
+						
+					</div>
+					<!--DIV PARA LA MESA CON 12 PUESTO-->
+					<div class="content-puestos mesax12p" id="mesaPuestos12">
+						
+					</div>					
 				</div>
 
 				<div class="top-bar-btns">
@@ -162,7 +170,7 @@
 								<i class="material-icons icon-btn">&#xE556;</i>Ver pedido
 							</a>
 							<a id="facturarPedidoBtn" onClick="verFactura()" class="btn btn-raised btn-success btn-radius btn-inline" data-toggle="modal" data-target="#facturaModal">
-								<i class="material-icons icon-btn">&#xE8B0;</i>Facturar
+								<i class="material-icons icon-btn">&#xE8B0;</i>Opciones de factura
 							</a>
 						</div>
 					</div>
@@ -238,7 +246,7 @@
 														<td>Mesa sin pedidos por confirmar</td>														
 													</tr>													
 												<?php else: ?>
-													<?php if ($tamano <= 4): ?>
+													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 8)): ?>
 														<tr class="default active">
 															<td id="tituloMesa4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestos4">arrow</span></td>											
@@ -293,7 +301,7 @@
 														<td>Mesa sin pedidos confirmados</td>														
 													</tr>													
 												<?php else: ?>
-													<?php if ($tamano <= 4): ?>
+													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 8)): ?>
 														<tr class="default active">
 															<td id="tituloMesaC4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestosC4">arrow</span></td>											
@@ -473,6 +481,66 @@
 															</div>
 														</td>
 														<td id="tituloPuestoFac6">Pedido puesto 6</td>
+													</tr>
+													<tr id="facturaPuesto7">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check7">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac7">Pedido puesto 7</td>
+													</tr>
+													<tr id="facturaPuesto8">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check8">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac8">Pedido puesto 8</td>
+													</tr>
+													<tr id="facturaPuesto9">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check9">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac9">Pedido puesto 9</td>
+													</tr>
+													<tr id="facturaPuesto10">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check10">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac10">Pedido puesto 10</td>
+													</tr>
+													<tr id="facturaPuesto11">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check11">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac11">Pedido puesto 11</td>
+													</tr>
+													<tr id="facturaPuesto12">
+														<td class="select-cell">
+															<div class="checkbox">
+															  <label>
+																<input name="name1" type="checkbox" id="check12">
+															  </label>
+															</div>
+														</td>
+														<td id="tituloPuestoFac12">Pedido puesto 11</td>
 													</tr>
 												</tbody>
 											</table>
@@ -978,12 +1046,13 @@
 			document.getElementById('mesaPuestos8').style.display = 'none';
 			
 		}else{			
-			// oculta la seleccion de puesto y muestra la mesa
-			$(".main-content-select-puestos").removeClass("in");
-			$(".main-content-select-puestos").addClass("out");
-			$(".main-content-unir-mesa").addClass("in");
+			
 			// si la cantidad varia entre 5 y 6
 			if(cantidad >= 5 && cantidad <= 6){
+				// oculta la seleccion de puesto y muestra la mesa
+				$(".main-content-select-puestos").removeClass("in");
+				$(".main-content-select-puestos").addClass("out");
+				$(".main-content-unir-mesa").addClass("in");
 				// oculto las mesas con mas o menos puestos que la necesaria
 				document.getElementById('mesaPuestos4').style.display = 'none';
 				document.getElementById('mesaPuestos6').style.display = 'block';
@@ -999,20 +1068,19 @@
 						break;
 				}
 			}else if(cantidad >= 7 && cantidad <= 8){
+				//ejecuta la creacion de la mesa
+				creacion = crearMesa(cantidad);
+				//se muestra en el div
+				document.getElementById("mesaPuestos8").innerHTML = creacion;
+				// oculto el seleccionar puestos
+				$(".main-content-select-puestos").removeClass("in");
+				$(".main-content-select-puestos").addClass("out");
+				//muestro las mesa de 4 puestos 
+				$(".main-content-mesa").addClass("in");
 				// oculto las mesas con mas o menos puestos que la necesaria
 				document.getElementById('mesaPuestos4').style.display = 'none';
 				document.getElementById('mesaPuestos6').style.display = 'none';
 				document.getElementById('mesaPuestos8').style.display = 'block';
-				// si es verdadero indica que la mesa apenas se va armar
-				// de lo contrario ya se ha realizado un pedido y debe cargar la mesa para seguir pidiendo			
-				switch(indicador){
-					case true:
-						$(mesasDisponiblesR());	
-						break;
-					case false:
-						listaOut();
-						break;
-				}
 			}
 		}
 	}	
@@ -1042,7 +1110,29 @@
 						'</div>'+
 					'</div>';
 			}
-		}                
+		} else if(cantidad >= 7 && cantidad <= 8){			
+			crearMesa = 				
+				'<div class="content-mesa">'+
+					'<img src="img/mesa_8_puestos.svg" alt="Mesa 8 puestos" class="img-responsive">'+					
+					'<div class="n-mesa">'+
+						'<span>#'+generalCodigoM+'</span>'+
+					'</div>'+
+				'</div>';
+
+			for(var i=0 ; i<8 ; i++){
+				crearMesa = crearMesa+
+					'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+
+						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona'+(i+1)+'">'+							
+						'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
+							'<div class="cnt" onClick="seleccionaPersona('+(i+1)+')">'+
+								'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+			}		
+						
+						
+		}              
 
 		return crearMesa;
 	}
@@ -1064,12 +1154,12 @@
 					var puesto = arrayAvatar[i].substring(arrayAvatar[i].length-1);
 					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
 					// creo la imgrn html 
-					if(generalTamano <= 4){
+					if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
 					}
-					// imprimo en pantalla el avatar ya seleccionado 
+					// imprimo en pantalla el avatar ya seleccionado 					
 					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;				
 				}
 
@@ -1084,7 +1174,7 @@
 					var puesto = arrayAvatar[i].substring(arrayAvatar[i].length-1);
 					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
 					// creo la imgrn html 
-					if(generalTamano <= 4){
+					if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
@@ -1112,7 +1202,7 @@
 
 					for(var i=0 ; i<arrPuestos.length ; i++){
 
-						if(generalTamano <= 4){
+						if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 							var imgAvatar = '<img src="img/personajes/'+arrAvatar[i]+'" alt="Puesto '+arrPuestos[i]+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedido('+arrPuestos[i]+')">';	
 						}else if(generalTamano >= 4 && generalTamano <= 6){
 							var imgAvatar = '<img src="img/personajes/'+arrAvatar[i]+'" alt="Puesto '+arrPuestos[i]+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedidoX('+arrPuestos[i]+','+generalMesaPrinc+')">';
@@ -1160,7 +1250,24 @@
 
 	function arrayAvatar(avatar,puesto){
 
-		swal({
+		if(generalAvatars == 0){
+			generalAvatars = avatar+puesto;
+		}else{
+			generalAvatars = generalAvatars+","+avatar+puesto;
+		}
+		
+		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
+			hacerPedido(puesto);
+		}else if(generalTamano >= 5 && generalTamano <= 6){
+			if(generalEstadoM == 1){
+				hacerPedidoX(puesto,generalCodigoM);
+			}else{
+				hacerPedidoX(puesto,generalMesaPrinc);
+			}
+		}
+
+		// CONFIRMAR AVATAR POR SI SE HABILITA ALGUN DIA
+		/*swal({
 			title: '',
 			text: 
 				'<div class="container">'+
@@ -1200,7 +1307,7 @@
 				}
 	  		}
 		  		
-			});
+		});*/
 		
 	}
 
@@ -1221,7 +1328,7 @@
 		//varible que contendra los datos de la mesa con los puests que se va a crear
 		var crearMesa = '';
 		//console.log('<?=$codigomesa?>');
-		if(cantidad >= 4 && cantidad <= 6){	
+		if(cantidad >= 5 && cantidad <= 6){	
 			//
 			if(generalEstadoM == 0){
 				document.getElementById("tituloMesa61").innerHTML = "Mesa "+principal;
@@ -1257,88 +1364,6 @@
 						'</div>'+
 					'</div>';
 			}				
-		}else if(cantidad >= 7 && cantidad <= 8){
-			crearMesa = 
-				'<div class="content-puestos mesax8p">'+
-					'<div class="content-scroll-mesa">'+
-						'<div class="content-mesa">'+
-							'<?= Html::img('@web/img/mesa_8_puestos.svg', ['alt' => 'Mesa 6 puestos', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="n-mesa">'+
-								'<span>#1</span>'+
-							'</div>'+
-							'<div class="n-mesa">'+
-								'<span>#2</span>'+
-							'</div>'+
-							'<div class="n-mesa">'+
-								'<span>#3</span>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-1">'+
-							'<?= Html::img('@web/img/puesto_left.svg', ['alt' => 'Puesto 1', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#1</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-2">'+
-							'<?= Html::img('@web/img/puesto_top.svg', ['alt' => 'Puesto 2', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#2</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-3">'+
-							'<?= Html::img('@web/img/puesto_right.svg', ['alt' => 'Puesto 3', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#3</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-4">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 4', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#4</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-5">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 5', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#5</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-6">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 6', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#6</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-7">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 7', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#7</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-						'<div class="content__puesto-8">'+
-							'<?= Html::img('@web/img/puesto_bottom.svg', ['alt' => 'Puesto 8', 'class' => 'img-responsive avatar-hidden',]) ?>'+
-							'<div class="puesto-libre">'+
-								'<div class="cnt">'+
-									'<span class="txt-puesto">Puesto</br>#8</span>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-				'</div>';
 		}
 
 		return crearMesa;
@@ -1407,7 +1432,8 @@
 			$("#facturarPedidoBtn").hide();
 		}else{
 			//se oculta hasta no tener resultado de la consulta
-			$("#facturarPedidoBtn").hide();
+			$("#labelImprimir").hide();
+			$("#btnRegistroC").hide();
 
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/mostrarbotonfactura']); ?>',				
@@ -1416,9 +1442,13 @@
 				success: function (data) {											
 					//identifica si se muestra el boton o no 
 					if("NO_MOSTRAR".localeCompare(data) == 0){
-						$("#facturarPedidoBtn").hide();
+						$("#labelImprimir").hide();
+						$("#btnRegistroC").hide();
+						$("#btn-fact").html("Visualizar");
 					}else if("MOSTRAR".localeCompare(data) == 0){
-						$("#facturarPedidoBtn").show();
+						$("#labelImprimir").show();
+						$("#btnRegistroC").show();
+						$("#btn-fact").html("Facturar");
 					}
 				}
 			});	
@@ -1460,7 +1490,7 @@
 		switch (estado){
 			case '1':
 				//console.log(estado);
-				if(tamano <= 4){
+				if(tamano <= 4 || (tamano >= 7 && tamano <= 8)){
 					//$(".main-content-mesa").addClass("out");
 					$(".main-content-mesa").removeClass("in");
 					$(".main-content-select-puestos").removeClass("out");
@@ -1527,7 +1557,7 @@
 		// cantidad de personas que estan seleccionadas 
 		var cantidad = generalTamano;
 		// si es menor o igual que 4
-		if(cantidad <= 4){
+		if(cantidad <= 4 || (cantidad >= 7 && cantidad <= 8)){
 			listaPedidos();					
 		}else if(cantidad >=5 && cantidad <= 6){
 			listaPedidosX(cantidad);
@@ -1540,7 +1570,7 @@
 		// cantidad de personas que estan seleccionadas 
 		var cantidad = generalTamano;
 		// si es menor o igual que 4 solo es una mesa
-		if(cantidad <= 4){
+		if(cantidad <= 4  || (cantidad >=7 && cantidad <= 8)){
 			listaFactura();
 		}else if(cantidad >= 5 && cantidad <= 6){
 			listaFacturaX();
@@ -1707,7 +1737,7 @@
 		//si ya hay pedidos confirmados
 		if(generalConfirmado == '1'){
 			// si el tamano de la mesa es 4
-			if(generalTamano <= 4){
+			if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
 				var mesa = generalCodigoM;
 
 				$.ajax({
@@ -1728,7 +1758,7 @@
 						generalConfirmPlaCod = arrayDatos[3];
 						generalConfirmImagen = arrayDatos[4];
 						
-						if(generalTamano <= 4){
+						if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
 							mostrarConfirmados(arrayDatos[2]);
 						}
 					}
@@ -1923,7 +1953,7 @@
 
 	function cancelarConfirmado(cantidad, posicionArray){			
 
-		if(generalTamano <= 4){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 			//mensaje de confirmacion
 			swal({
 				title: "¿Cantidad a cancelar?",
@@ -2079,7 +2109,7 @@
 		  		
 		  		var urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
 				
-		  		if(generalTamano <= 4){
+		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 		  			$.ajax({
 						url:'<?php echo Url::toRoute(['site/cancelartodo']); ?>',	
 						method: "GET",
@@ -2133,7 +2163,7 @@
 		function(isConfirm){
 		  	if (isConfirm) {
 		  		
-		  		if(generalTamano <= 4){
+		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 		  			$.ajax({
 						url:'<?php echo Url::toRoute(['site/cancelarresto']); ?>',	
 						method: "GET",
@@ -2174,7 +2204,7 @@
 		//contenido del pedido
 		var contenidoPedido = '';
 
-		if(generalTamano <= 4){
+		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
 			// mostrar los pedidos que no esten confirmados
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
@@ -2350,7 +2380,7 @@
 					// contador de repeticioines
 					var contador = 0;
 					//recorre los puestos disponibles
-					for (var i=1 ; i<=6 ; i++){		
+					for (var i=1 ; i<=12 ; i++){		
 						// recorre el array que tiene los puestos disponibles 
 						for (var j=0 ; j<puestosFac.length ; j++){
 							// si el puesto i esta en el array suma 		
@@ -2372,7 +2402,7 @@
 					document.getElementById("tituloMesaFac").innerHTML = 'Mesa sin pedidos';
 					document.getElementById("checkAll").style.display = 'none';
 					//no se muestran los puestos  y se muestra mensaje
-					for(var k=1 ; k<=6 ; k++){
+					for(var k=1 ; k<=12 ; k++){
 						document.getElementById(nombreDiv+k).style.display = 'none';					
 					}
 				}
@@ -2424,7 +2454,7 @@
 						// contador de repeticioines
 						var contador = 0;
 						//recorre los puestos disponibles
-						for (var i=1 ; i<=6 ; i++){		
+						for (var i=1 ; i<=12 ; i++){		
 							// recorre el array que tiene los puestos disponibles 
 							for (var j=0 ; j<puestosFacG.length ; j++){
 								// si el puesto i esta en el array suma						
@@ -2459,7 +2489,7 @@
 						document.getElementById("tituloMesaFac").innerHTML = 'Mesa sin pedidos';
 						document.getElementById("checkAll").style.display = 'none';
 						//no se muestran los puestos  y se muestra mensaje
-						for(var k=1 ; k<=6 ; k++){
+						for(var k=1 ; k<=12 ; k++){
 							document.getElementById(nombreDiv+k).style.display = 'none';					
 						}
 					}
@@ -2667,7 +2697,7 @@
 
 	function visualizaFactura(){	
 		
-		if(generalTamano <= 4){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/visualizarfac']); ?>',
 				dataType:'json',
@@ -2950,12 +2980,12 @@
 						swal({
 							title: 'Cliente no ingresado!',						
 							type: "info",
-							text: 'Desea generar la facturar con cliente nulo?',
+							text: 'Se generaría la factura con cliente nulo.',//Si genera la factura con cliente nulo, no se podrá enviar la factura al correo
 							showCancelButton: true,
 							confirmButtonColor: "#5cb85c",
 							cancelButtonColor: "#EC4424",
-							confirmButtonText: "Si, facturar",
-							cancelButtonText: "No, cancelar",
+							confirmButtonText: "Continuar y facturar",
+							cancelButtonText: "Cancelar",
 							closeOnConfirm: false,
 							closeOnCancel: false
 						},
@@ -3018,7 +3048,7 @@
 		//codigo del cliente
 		var codigoClienteFactura = document.getElementById("cltRCc").value;
 		//cuando el tamano de la mesa es de 4 personas
-		if(generalTamano <= 4){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/facturar']); ?>',
 				dataType:'json',
@@ -3282,13 +3312,13 @@
 		
 		// si hay pedidos para confirmar se hace el pedido si no sale error
 		if(platos != 0){
-			if(cantidadPuestos <= 4){
+			if(cantidadPuestos <= 4 || (cantidadPuestos >= 7 && cantidadPuestos <= 8)){
 				if(estado != 0){				
 					$.ajax({
 						url:'<?php echo Url::toRoute(['site/realizarpedido']); ?>',
 						dataType:'json',
 						method: "GET",
-						data: {'puestos':puestos, 'platos':platos , 'cantidad':cantidad, 'termino':termino , 'mesa':mesa, 'avatar':avatar},			
+						data: {'puestos':puestos, 'platos':platos , 'cantidad':cantidad, 'termino':termino , 'mesa':mesa, 'avatar':avatar, "tamano":cantidadPuestos},			
 						success: function (data) {						
 							
 						}
@@ -3641,7 +3671,7 @@
 				},
 				function(isConfirm){
 				  	if (isConfirm) {				  		
-				  		if(generalTamano <= 4){				  			
+				  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){				  			
 
 							urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
 							location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;	
@@ -3668,7 +3698,7 @@
 		function funcionesInterval(){
 			var tamanoMesa = document.getElementById("numPersonas").value;			
 			// ejecucion de la funcion mesasdisponibles
-			if(generalEstadoM == 1 && tamanoMesa > 4){
+			if(generalEstadoM == 1 && tamanoMesa >= 5 && tamanoMesa <= 6){
 				setInterval(mesasDisponiblesR, 9000);		
 			}
 		}setInterval(funcionesInterval,1000);

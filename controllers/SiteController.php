@@ -33,11 +33,9 @@ class SiteController extends Controller
 
     public function actionPrueba(){     
         
-        $fn_array = new SpMesasFactura();
-        $result = $fn_array->procedimiento9(1);
         
         $this->layout=false;
-        return $this->render('prueba',['result'=>$result]); 
+        return $this->render('prueba'); 
     }   
     
     public function behaviors()
@@ -581,6 +579,11 @@ class SiteController extends Controller
 
         $pedido->procedimeinto13($c1,$c2);
 
+        //actualiza los puesto de la mesa
+        $c1 = Yii::$app->request->get('mesa');
+        $c2 = Yii::$app->request->get('tamano');
+        $tomarpedido = $pedido->procedimiento15($c1,$c2);
+
         return $this->redirect(['site/plaza']);
 
         
@@ -834,7 +837,7 @@ class SiteController extends Controller
         // datos eviados por get
         $get1 = Yii::$app->request->get('tamano');
 
-        if($get1 <= 4){
+        if($get1 <= 4 || ($get1 >= 7 && $get1 <= 8)){
             // captura los demas datos
             $get2 = Yii::$app->request->get('mesa');
             //parametros de entrada
@@ -965,6 +968,9 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            //
+            $fn_facturar->procedimiento10($facturar2['NUMERO_FAC'][0]);
+            //
             echo json_encode($cabeceraDetalle);
         // si es falso se facturan los puestos solicitados
         }else if($get3 === "true"){
@@ -983,6 +989,9 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            //
+            $fn_facturar->procedimiento10($facturar2['NUMERO_FAC'][0]);
+            //            
             echo json_encode($cabeceraDetalle);             
 
         }
@@ -1189,6 +1198,9 @@ class SiteController extends Controller
         // se genera la factura para el cliente
         $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
         $cabeceraDetalle = array($facturar, $detalle1, $numeroRever);
+        //
+        $fn_facturar->procedimiento10($facturar['NUMERO_FAC'][0]);
+        //
         echo json_encode($cabeceraDetalle);        
     }
 
