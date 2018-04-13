@@ -245,4 +245,27 @@
 			return $c2;
 		}
 
+		public function procedimiento10($c1){
+			//$c1: codigo de la factura
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect($usuario, $contrasena, $db);						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN SP_ACOMER_FACTURA_EMAIL(:c1,:c2,:c3); END;");		
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 10);
+			oci_bind_by_name($stid, ":c2", $c2, 50);
+			oci_bind_by_name($stid, ":c3", $c3, 32676);
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+
+
+			
+			//echo $c3;
+		}
+
 	}

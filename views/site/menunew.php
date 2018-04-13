@@ -27,8 +27,8 @@
 	    <?php $this->head() ?>
 		<!--<script src="js/modernizr-custom.js"></script>-->
 		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
-		<script src="/Acomer/web/js/jquery.min.js"></script>
-		<script src="/Acomer/web/js/ciclosession.js"></script>
+		<?= Html::jsFile('@web/js/jquery.min.js') ?>
+		<?= Html::jsFile('@web/js/ciclosession.js') ?>		
 	</head>
 	<body class='bg-acomer'>
 	<?php $this->beginBody() ?>
@@ -252,21 +252,37 @@
 				var posParams = urlActual.search("&");
 				//parametros de la url
 				var urlParams = urlActual.substring(posParams);
+				
 
-				for (var i=urlParams.length ; i>=0 ; i--) {
+				//se cancela el avatar tambien seleccionado
+				for (var i=1 ; i<=urlParams.length ; i++) {					
 
 					var cadenaOpuesta = urlParams.substring(urlParams.length-i,urlParams.length);
+					
 					var caracter = cadenaOpuesta.substring(0,1);
 					
-
-					if(caracter.localeCompare(",") == 0){
-						urlParams = urlParams.substring(0,urlParams.length-i);
-						break;
+					// si es la primera vez que toma un pedido en mesa
+					if('<?=$platos?>'.localeCompare("0") == 0){
+						if(caracter.localeCompare("&") == 0){
+							urlParams = urlParams.substring(0,urlParams.length-i);
+							console.log("url break: "+urlParams);
+							break;
+						}	
 					}
+
+					// despues de haber tomado el primer pedido en mesa
+					if('<?=$platos?>'.localeCompare("0") != 0){
+						if(caracter.localeCompare(",") == 0){
+							urlParams = urlParams.substring(0,urlParams.length-i);
+							console.log("url break: "+urlParams);
+							break;
+						}	
+					}					
 					
-				}
+				}	
 				
-				location.href = urlMesa+urlParams;
+				location.href = urlMesa+"&"+urlParams;
+				
 				
 			}
 

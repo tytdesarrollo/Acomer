@@ -9,14 +9,12 @@
 	AppAsset::register($this);
 
 	$this->title = 'Acomer';
-	
-		$fn_facturacion = new SpMesasFactura();
-        $nombreCliente = $fn_facturacion->procedimiento8('1143265985');
 
-        echo $nombreCliente; echo "<br>";
-        
-        echo (utf8_encode($nombreCliente));
+	$prueba = new SpMesasFactura();
+	$prueba->procedimiento10('1');
+	
 ?>
+
 
 
 
