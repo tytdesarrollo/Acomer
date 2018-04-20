@@ -10,8 +10,11 @@
 
 	$this->title = 'Acomer';
 
-	$prueba = new SpMesasFactura();
-	$prueba->procedimiento10('1');
+	$fn_menus = new SpMesasFactura;
+    $datosMenus = $fn_menus->procedimiento10(1);
+
+    
+
 	
 ?>
 

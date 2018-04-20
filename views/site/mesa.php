@@ -40,6 +40,28 @@
 	    <?= Html::jsFile('@web/js/jquery.min.js') ?>
 		<?= Html::jsFile('@web/js/ciclosession.js') ?>
 	    <?php $this->head() ?>
+	    <style type="text/css">
+			.loader {
+				border: 16px solid #f3f3f3;
+				border-radius: 50%;
+				border-top: 16px solid #3498db;
+				width: 120px;
+				height: 120px;
+				-webkit-animation: spin 2s linear infinite; /* Safari */
+				animation: spin 2s linear infinite;
+			}
+
+			/* Safari */
+			@-webkit-keyframes spin {
+			  	0% { -webkit-transform: rotate(0deg); }
+			  	100% { -webkit-transform: rotate(360deg); }
+			}
+
+			@keyframes spin {
+			  	0% { transform: rotate(0deg); }
+			  	100% { transform: rotate(360deg); }
+			}
+		</style>
 	</head>
 	<body class='bg-acomer'>
 	<?php $this->beginBody() ?>
@@ -64,7 +86,7 @@
 								<span class="glyphicon glyphicon-minus"></span>
 							</button>
 						</span>
-						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="8">
+						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="12">
 						<span class="input-group-btn">
 							<button type="button" class="btn btn-default btn-number plus" data-type="plus" data-field="selectPuestos">
 								  <span class="glyphicon glyphicon-plus"></span>
@@ -246,7 +268,7 @@
 														<td>Mesa sin pedidos por confirmar</td>														
 													</tr>													
 												<?php else: ?>
-													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 8)): ?>
+													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 12)): ?>
 														<tr class="default active">
 															<td id="tituloMesa4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestos4">arrow</span></td>											
@@ -301,7 +323,7 @@
 														<td>Mesa sin pedidos confirmados</td>														
 													</tr>													
 												<?php else: ?>
-													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 8)): ?>
+													<?php if ($tamano <= 4 || ($tamano >= 7 && $tamano <= 12)): ?>
 														<tr class="default active">
 															<td id="tituloMesaC4">Mesa <?=$codigomesa?></td>	
 															<td><span class="arrow" id="flechaPuestosC4">arrow</span></td>											
@@ -540,7 +562,7 @@
 															  </label>
 															</div>
 														</td>
-														<td id="tituloPuestoFac12">Pedido puesto 11</td>
+														<td id="tituloPuestoFac12">Pedido puesto 12</td>
 													</tr>
 												</tbody>
 											</table>
@@ -667,11 +689,13 @@
 														<span>Subtotal</span>
 														<span>Propina</span>
 														<span>IVA</span>
+														<span>Impuesto</span>
 													</div>
 													<div class="sub-total-factura text-right">
 														<span id="valorSubtotal">$00.000</span>
 														<span id="valorPropina">$0</span>
 														<span id="valorIva">$00.000</span>
+														<span id="valorImpConsumo">$00.000</span>
 													</div>
 												</div>
 											</div>
@@ -1012,6 +1036,12 @@
 		}else if (cantidad >= 7 && cantidad <= 8){
 			//se muestra en el div
 			document.getElementById("mesaPuestos8").innerHTML = creacion;
+		}else if (cantidad >= 9 && cantidad <= 10){
+			//se muestra en el div
+			document.getElementById("mesaPuestos10").innerHTML = creacion;
+		}else if (cantidad >= 11 && cantidad <= 12){
+			//se muestra en el div
+			document.getElementById("mesaPuestos12").innerHTML = creacion;
 		}
 
 		$(".main-content-unir-mesa").addClass("out");
@@ -1044,7 +1074,9 @@
 			document.getElementById('mesaPuestos4').style.display = 'block';
 			document.getElementById('mesaPuestos6').style.display = 'none';
 			document.getElementById('mesaPuestos8').style.display = 'none';
-			
+			document.getElementById('mesaPuestos10').style.display = 'none';
+			document.getElementById('mesaPuestos12').style.display = 'none';
+
 		}else{			
 			
 			// si la cantidad varia entre 5 y 6
@@ -1057,6 +1089,8 @@
 				document.getElementById('mesaPuestos4').style.display = 'none';
 				document.getElementById('mesaPuestos6').style.display = 'block';
 				document.getElementById('mesaPuestos8').style.display = 'none';
+				document.getElementById('mesaPuestos10').style.display = 'none';
+				document.getElementById('mesaPuestos12').style.display = 'none';
 				// si es verdadero indica que la mesa apenas se va armar
 				// de lo contrario ya se ha realizado un pedido y debe cargar la mesa para seguir pidiendo			
 				switch(indicador){
@@ -1067,6 +1101,7 @@
 						listaOut();
 						break;
 				}
+
 			}else if(cantidad >= 7 && cantidad <= 8){
 				//ejecuta la creacion de la mesa
 				creacion = crearMesa(cantidad);
@@ -1081,6 +1116,42 @@
 				document.getElementById('mesaPuestos4').style.display = 'none';
 				document.getElementById('mesaPuestos6').style.display = 'none';
 				document.getElementById('mesaPuestos8').style.display = 'block';
+				document.getElementById('mesaPuestos10').style.display = 'none';
+				document.getElementById('mesaPuestos12').style.display = 'none';
+
+			}else if(cantidad >= 9 && cantidad <= 10){
+				//ejecuta la creacion de la mesa
+				creacion = crearMesa(cantidad);
+				//se muestra en el div
+				document.getElementById("mesaPuestos10").innerHTML = creacion;
+				// oculto el seleccionar puestos
+				$(".main-content-select-puestos").removeClass("in");
+				$(".main-content-select-puestos").addClass("out");
+				//muestro las mesa de 4 puestos 
+				$(".main-content-mesa").addClass("in");
+				// oculto las mesas con mas o menos puestos que la necesaria
+				document.getElementById('mesaPuestos4').style.display = 'none';
+				document.getElementById('mesaPuestos6').style.display = 'none';
+				document.getElementById('mesaPuestos8').style.display = 'none';
+				document.getElementById('mesaPuestos10').style.display = 'block';
+				document.getElementById('mesaPuestos12').style.display = 'none';
+
+			}else if(cantidad >= 11 && cantidad <= 12){
+				//ejecuta la creacion de la mesa
+				creacion = crearMesa(cantidad);
+				//se muestra en el div
+				document.getElementById("mesaPuestos12").innerHTML = creacion;
+				// oculto el seleccionar puestos
+				$(".main-content-select-puestos").removeClass("in");
+				$(".main-content-select-puestos").addClass("out");
+				//muestro las mesa de 4 puestos 
+				$(".main-content-mesa").addClass("in");
+				// oculto las mesas con mas o menos puestos que la necesaria
+				document.getElementById('mesaPuestos4').style.display = 'none';
+				document.getElementById('mesaPuestos6').style.display = 'none';
+				document.getElementById('mesaPuestos8').style.display = 'none';
+				document.getElementById('mesaPuestos10').style.display = 'none';
+				document.getElementById('mesaPuestos12').style.display = 'block';
 			}
 		}
 	}	
@@ -1088,51 +1159,45 @@
 	function crearMesa(cantidad){
 		//varible que contendra los datos de la mesa con los puests que se va a crear
 		var crearMesa = '';
+		var cantidadReal;
 
 		if(cantidad <= 4){
-			//se crea la mesa 
-			crearMesa = 
-				'<div class="content-mesa">'+
-					'<img src="img/mesa_4_puestos.svg" alt="Mesa 4 puestos" class="img-responsive">'+					
-					'<div class="n-mesa">'+
-						'<span>#'+generalCodigoM+'</span>'+
+			// se asigna el valor del tamano real de la mesa
+			cantidadReal = 4; 
+
+		}else if(cantidad >= 7 && cantidad <= 8){
+			// se asigna el valor del tamano real de la mesa
+			cantidadReal = 8; 
+
+		}else if(cantidad >= 9 && cantidad <= 10){
+			// se asigna el valor del tamano real de la mesa
+			cantidadReal = 10; 
+
+		}else if(cantidad >= 11 && cantidad <= 12){
+			// se asigna el valor del tamano real de la mesa
+			cantidadReal = 12; 
+		}
+
+		//se crea la mesa 
+		crearMesa = 
+			'<div class="content-mesa">'+
+				'<img src="img/mesa_'+cantidadReal+'_puestos.svg" alt="Mesa '+cantidadReal+' puestos" class="img-responsive">'+					
+				'<div class="n-mesa">'+
+					'<span>#'+generalCodigoM+'</span>'+
+				'</div>'+
+			'</div>';
+
+		for (var i=0 ; i<cantidadReal ; i++){
+			crearMesa = crearMesa +
+				'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+							
+					'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona+'+(i+1)+'">'+						
+					'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
+						'<div class="cnt"  onClick="seleccionaPersona('+(i+1)+')">'+
+							'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
+						'</div>'+
 					'</div>'+
 				'</div>';
-
-			for (var i=0 ; i<4 ; i++){
-				crearMesa = crearMesa +
-					'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+							
-						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona+'+(i+1)+'">'+						
-						'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
-							'<div class="cnt"  onClick="seleccionaPersona('+(i+1)+')">'+
-								'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
-			}
-		} else if(cantidad >= 7 && cantidad <= 8){			
-			crearMesa = 				
-				'<div class="content-mesa">'+
-					'<img src="img/mesa_8_puestos.svg" alt="Mesa 8 puestos" class="img-responsive">'+					
-					'<div class="n-mesa">'+
-						'<span>#'+generalCodigoM+'</span>'+
-					'</div>'+
-				'</div>';
-
-			for(var i=0 ; i<8 ; i++){
-				crearMesa = crearMesa+
-					'<div class="content__puesto-'+(i+1)+'" id="avatarPuesto'+(i+1)+'">'+
-						'<img src="img/puesto_left.svg" alt="Puesto '+(i+1)+'" class="img-responsive avatar-hidden" id="imgPersona'+(i+1)+'">'+							
-						'<div class="puesto-libre" data-toggle="modal" data-target="#personajesModal">'+
-							'<div class="cnt" onClick="seleccionaPersona('+(i+1)+')">'+
-								'<span class="txt-puesto">Puesto</br>#'+(i+1)+'</span>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
-			}		
-						
-						
-		}              
+		}     
 
 		return crearMesa;
 	}
@@ -1150,17 +1215,27 @@
 				arrayAvatar = crearArray(avatar);			
 				//recorre los avatares por puesto
 				for(var i=0 ; i<arrayAvatar.length ; i++){
-					// separo el puesto y la imagen 
-					var puesto = arrayAvatar[i].substring(arrayAvatar[i].length-1);
-					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
+					// separo el puesto y la imagen 															
+					var puesto = arrayAvatar[i].substring(arrayAvatar[i].length-3);					
+					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-3);		
+
+					if(isNaN(puesto)){
+						puesto = arrayAvatar[i].substring(arrayAvatar[i].length-1);					
+						img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
+					}else{
+						puesto = arrayAvatar[i].substring(arrayAvatar[i].length-2);					
+						img = arrayAvatar[i].substring(0,arrayAvatar[i].length-2);
+					}
+					
 					// creo la imgrn html 
-					if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+					if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
-					}
+					}						
 					// imprimo en pantalla el avatar ya seleccionado 					
-					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;				
+					document.getElementById("avatarPuesto"+puesto).innerHTML = imgAvatar;		
+
 				}
 
 			}		
@@ -1174,7 +1249,7 @@
 					var puesto = arrayAvatar[i].substring(arrayAvatar[i].length-1);
 					var img = arrayAvatar[i].substring(0,arrayAvatar[i].length-1);
 					// creo la imgrn html 
-					if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+					if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedido('+puesto+')">';
 					}else if(generalTamano >= 4 && generalTamano <= 6){
 						var imgAvatar = '<img src="img/personajes/'+img+'.svg" alt="Puesto '+puesto+'" class="img-responsive" id="imgPersona'+puesto+'" onClick="hacerPedidoX('+puesto+','+generalCodigoM+')">';
@@ -1202,7 +1277,7 @@
 
 					for(var i=0 ; i<arrPuestos.length ; i++){
 
-						if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+						if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 							var imgAvatar = '<img src="img/personajes/'+arrAvatar[i]+'" alt="Puesto '+arrPuestos[i]+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedido('+arrPuestos[i]+')">';	
 						}else if(generalTamano >= 4 && generalTamano <= 6){
 							var imgAvatar = '<img src="img/personajes/'+arrAvatar[i]+'" alt="Puesto '+arrPuestos[i]+'" class="img-responsive" id="imgPersona+'+puesto+'" onClick="hacerPedidoX('+arrPuestos[i]+','+generalMesaPrinc+')">';
@@ -1256,7 +1331,7 @@
 			generalAvatars = generalAvatars+","+avatar+puesto;
 		}
 		
-		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
+		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 			hacerPedido(puesto);
 		}else if(generalTamano >= 5 && generalTamano <= 6){
 			if(generalEstadoM == 1){
@@ -1490,7 +1565,7 @@
 		switch (estado){
 			case '1':
 				//console.log(estado);
-				if(tamano <= 4 || (tamano >= 7 && tamano <= 8)){
+				if(tamano <= 4 || (tamano >= 7 && tamano <= 12)){
 					//$(".main-content-mesa").addClass("out");
 					$(".main-content-mesa").removeClass("in");
 					$(".main-content-select-puestos").removeClass("out");
@@ -1557,7 +1632,7 @@
 		// cantidad de personas que estan seleccionadas 
 		var cantidad = generalTamano;
 		// si es menor o igual que 4
-		if(cantidad <= 4 || (cantidad >= 7 && cantidad <= 8)){
+		if(cantidad <= 4 || (cantidad >= 7 && cantidad <= 12)){
 			listaPedidos();					
 		}else if(cantidad >=5 && cantidad <= 6){
 			listaPedidosX(cantidad);
@@ -1570,7 +1645,7 @@
 		// cantidad de personas que estan seleccionadas 
 		var cantidad = generalTamano;
 		// si es menor o igual que 4 solo es una mesa
-		if(cantidad <= 4  || (cantidad >=7 && cantidad <= 8)){
+		if(cantidad <= 4  || (cantidad >=7 && cantidad <= 12)){
 			listaFactura();
 		}else if(cantidad >= 5 && cantidad <= 6){
 			listaFacturaX();
@@ -1737,7 +1812,7 @@
 		//si ya hay pedidos confirmados
 		if(generalConfirmado == '1'){
 			// si el tamano de la mesa es 4
-			if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
+			if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 				var mesa = generalCodigoM;
 
 				$.ajax({
@@ -1758,7 +1833,7 @@
 						generalConfirmPlaCod = arrayDatos[3];
 						generalConfirmImagen = arrayDatos[4];
 						
-						if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
+						if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 							mostrarConfirmados(arrayDatos[2]);
 						}
 					}
@@ -1953,7 +2028,7 @@
 
 	function cancelarConfirmado(cantidad, posicionArray){			
 
-		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 			//mensaje de confirmacion
 			swal({
 				title: "¿Cantidad a cancelar?",
@@ -1985,11 +2060,20 @@
 		  			// la cantidad ingresada a cancelar	
 					var cantidadCancelar = document.getElementById("cantidadSweet").innerHTML;	    		
 					//
+					var puestoCncelar;
+
+					if(generalConfirmPuestos[posicionArray].length == 1){
+						puestoCncelar = "0"+generalConfirmPuestos[posicionArray];
+					}else{
+						puestoCncelar = generalConfirmPuestos[posicionArray];
+					}
+					console.log(puestoCncelar);
+					//
 		    		$.ajax({
 						url:'<?php echo Url::toRoute(['site/cancelarpedido']); ?>',						
 						method: "GET",
 						data: {'mesa':generalCodigoM,'plato':generalConfirmPlaCod[posicionArray],
-							   'cantidad':cantidadCancelar,'puesto':'0'+generalConfirmPuestos[posicionArray]},		
+							   'cantidad':cantidadCancelar,'puesto':puestoCncelar},		
 						success: function (data) {
 							// mensaje a mostrar
 							var mensaje;
@@ -2109,7 +2193,7 @@
 		  		
 		  		var urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
 				
-		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 		  			$.ajax({
 						url:'<?php echo Url::toRoute(['site/cancelartodo']); ?>',	
 						method: "GET",
@@ -2163,7 +2247,7 @@
 		function(isConfirm){
 		  	if (isConfirm) {
 		  		
-		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+		  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 		  			$.ajax({
 						url:'<?php echo Url::toRoute(['site/cancelarresto']); ?>',	
 						method: "GET",
@@ -2204,7 +2288,7 @@
 		//contenido del pedido
 		var contenidoPedido = '';
 
-		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 8)){
+		if(generalTamano <= 4 || (generalTamano >= 7 && generalTamano <= 12)){
 			// mostrar los pedidos que no esten confirmados
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
@@ -2656,7 +2740,10 @@
 		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
 		valorIvaFatura = valorIvaFatura.substring(1);
 		//
-		var valorTotalFactura = parseFloat(valorIvaFatura) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura);
+		var valorImpConsumo = formatoNumerico($('#valorImpConsumo').html());	
+		valorImpConsumo = valorImpConsumo.substring(1);	
+		//
+		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.')) + parseFloat(valorImpConsumo.replace(',','.'));
 
 		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
 		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());	
@@ -2689,7 +2776,10 @@
 		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
 		valorIvaFatura = valorIvaFatura.substring(1);
 		//
-		var valorTotalFactura = parseFloat(valorIvaFatura) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura);
+		var valorImpConsumo = formatoNumerico($('#valorImpConsumo').html());	
+		valorImpConsumo = valorImpConsumo.substring(1);		
+		//
+		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.')) + parseFloat(valorImpConsumo.replace(',','.'));
 
 		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
 		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());		
@@ -2697,7 +2787,7 @@
 
 	function visualizaFactura(){	
 		
-		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/visualizarfac']); ?>',
 				dataType:'json',
@@ -2715,12 +2805,14 @@
 					var totalFac = 0;								
 					var subtotalFac = 0;
 					var ivaFac = 0;
+					var impcons = 0;
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
 					var valorIvaPro = arrayDetalle.VALOR_IVA;
+					var valorImpConsumo = arrayDetalle.IMP_CONSUMO;
 
 					var listaProductos = '';
 
@@ -2734,9 +2826,10 @@
 
 						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
 						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
+						impcons = impcons + parseFloat(valorImpConsumo[i]);
 					}
 
-					totalFac = subtotalFac + ivaFac;					
+					totalFac = subtotalFac + ivaFac + impcons;					
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
@@ -2744,6 +2837,7 @@
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
 					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
+					document.getElementById("valorImpConsumo").innerHTML = '$'+formatoMoneda(impcons.toString());
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 					
@@ -2766,12 +2860,14 @@
 					var totalFac = 0;								
 					var subtotalFac = 0;
 					var ivaFac = 0;
+					var impcons = 0;
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
 					var valorIvaPro = arrayDetalle.VALOR_IVA;
+					var valorImpConsumo = arrayDetalle.IMP_CONSUMO;
 
 					var listaProductos = '';
 
@@ -2785,9 +2881,10 @@
 
 						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
 						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
+						impcons = impcons + parseFloat(valorImpConsumo[i]);
 					}
 
-					totalFac = subtotalFac + ivaFac;
+					totalFac = subtotalFac + ivaFac + impcons;
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
@@ -2795,6 +2892,7 @@
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
 					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
+					document.getElementById("valorImpConsumo").innerHTML = '$'+formatoMoneda(impcons.toString());
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 				}
@@ -2939,9 +3037,8 @@
 	}
 
 	function generarFactura(){
-		
-		
-
+		// CONFIRMAR LOS PUESTO A FACTURAR por si lo piden algun dia
+		/*
 		//mensaje de confirmacion de facturar los puestos
 		var mensajePuestos = ''		
 
@@ -2971,7 +3068,8 @@
 			closeOnCancel: false
 		},
 			function(isConfirm){
-				if (isConfirm) {
+				if (isConfirm) {*/
+
 					//ejecuta la factura en bd
 					//mostrarFactura(true);
 					var codigoCliente = document.getElementById("cltRCc").value;
@@ -2980,7 +3078,7 @@
 						swal({
 							title: 'Cliente no ingresado!',						
 							type: "info",
-							text: 'Se generaría la factura con cliente nulo.',//Si genera la factura con cliente nulo, no se podrá enviar la factura al correo
+							text: 'Si genera la factura con cliente nulo, no se podrá enviar la factura al correo.',//Se generaría la factura con cliente nulo.
 							showCancelButton: true,
 							confirmButtonColor: "#5cb85c",
 							cancelButtonColor: "#EC4424",
@@ -3007,7 +3105,7 @@
 									//ejecuta la factura en bd
 									mostrarFactura(true);
 									// muestra el mensaje de terminado
-									swal("","Factura generada correctamente","success");
+									//swal("","Factura generada correctamente","success");
 								}else{
 									swal("","Operacion cancelada","error");
 								}
@@ -3027,8 +3125,8 @@
 						//ejecuta la factura en bd
 						mostrarFactura(true);
 						// muestra el mensaje de terminado
-						swal("","Factura generada correctamente","success");
-					}
+						//swal("","Factura generada correctamente","success");
+					}/*
 					// muestra el mensaje de terminado
 					//swal("","Factura generada correctamente","success")
 				}else{
@@ -3037,10 +3135,23 @@
 					// muestra el mensaje de cancelado
 					swal("","Operacion cancelada","error");
 				}
-		});		
+		});		*/
 	}	
 
 	function mostrarFactura(full = false){
+		/***********************************************************************/
+		swal({
+			title: "<div id='divLoader' class='loader center-block'></div>",
+			text: "<div id='textoLoader'>Generando factura...</div>",			
+			html:true,
+			showCancelButton: false,		
+			showConfirmButton: false,		
+			cancelButtonColor: "#0288D1",
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "",
+			closeOnConfirm: false		
+		});
+		/***********************************************************************/
 		//toma el valor de la propina
 		var propina = $('input:radio[name=optionsRadiosPropina]:checked').val();
 		propina = propina.replace(",", ".");
@@ -3048,7 +3159,7 @@
 		//codigo del cliente
 		var codigoClienteFactura = document.getElementById("cltRCc").value;
 		//cuando el tamano de la mesa es de 4 personas
-		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){
+		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){
 			$.ajax({
 				url:'<?php echo Url::toRoute(['site/facturar']); ?>',
 				dataType:'json',
@@ -3103,6 +3214,7 @@
 
 					generalRever = data[2];
 					generalFactura = arrayDatosCF[0];
+					swal.close();
 					estadoMesaFac();
 				}
 			});
@@ -3154,6 +3266,7 @@
 
 					generalRever = data[2];
 					generalFactura = arrayDatosCF[0];
+					swal.close();
 					estadoMesaFac();
 				}
 			});
@@ -3207,7 +3320,11 @@
 					//aumenta contador en uno
 					contador++;
 					//almacena el nombre 
-					nombreChecks.push(nombre.substring(nombre.length-1,nombre.length));
+					if(nombre.length > 6){
+						nombreChecks.push(nombre.substring(nombre.length-2,nombre.length));
+					}else{
+						nombreChecks.push(nombre.substring(nombre.length-1,nombre.length));	
+					}					
 				}			
 				
 			}
@@ -3221,7 +3338,7 @@
 			document.getElementById('btn-fact').style.display = 'block';		
 		}
 
-		generalCheksPulsados = nombreChecks;
+		generalCheksPulsados = nombreChecks;		
 		
 	}setInterval(validarCheck, 1000);
 
@@ -3312,7 +3429,7 @@
 		
 		// si hay pedidos para confirmar se hace el pedido si no sale error
 		if(platos != 0){
-			if(cantidadPuestos <= 4 || (cantidadPuestos >= 7 && cantidadPuestos <= 8)){
+			if(cantidadPuestos <= 4 || (cantidadPuestos >= 7 && cantidadPuestos <= 12)){
 				if(estado != 0){				
 					$.ajax({
 						url:'<?php echo Url::toRoute(['site/realizarpedido']); ?>',
@@ -3671,7 +3788,7 @@
 				},
 				function(isConfirm){
 				  	if (isConfirm) {				  		
-				  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 8)){				  			
+				  		if(generalTamano <= 4 || (generalTamano >=7 && generalTamano <= 12)){				  			
 
 							urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
 							location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;	

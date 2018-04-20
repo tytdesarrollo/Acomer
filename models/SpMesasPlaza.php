@@ -15,7 +15,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//cursor que recibira los datos de las mesas
 			$cursor_mesas;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -44,7 +44,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CODIGO_CONTAINERS(:c1,:c2,:c3,:c4); END;");
 			//pasa los parametros del proceimiento
@@ -70,7 +70,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ENTREGAR_PEDIDO_MESA(:c1,:c2,:c3,:c4); END;");
 			//pasa los parametros del proceimiento

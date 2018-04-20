@@ -569,7 +569,12 @@ class SiteController extends Controller
         $c6 = $get6;
     
 
-        //return $this->redirect(['site/prueba','c1'=>$c1,'c2'=>$c2,'c3'=>$c3,'c4'=>$c4,'c5'=>$c5,'c6'=>$c6]);   
+        /*var_dump($c1);
+        var_dump($c2);
+        var_dump($c3);
+        var_dump($c4);
+        echo $c5; echo "<br>";
+        echo $c6;*/
         
         $pedido = new SpMesasPedidos();
         $tomarpedido = $pedido->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
@@ -837,7 +842,7 @@ class SiteController extends Controller
         // datos eviados por get
         $get1 = Yii::$app->request->get('tamano');
 
-        if($get1 <= 4 || ($get1 >= 7 && $get1 <= 8)){
+        if($get1 <= 4 || ($get1 >= 7 && $get1 <= 12)){
             // captura los demas datos
             $get2 = Yii::$app->request->get('mesa');
             //parametros de entrada

@@ -134,7 +134,7 @@
 			})();
 		</script>
 
-		<script>
+		<script>			
 			// funcion que se ejecuta para tomar el pedido
 			function tomapedido(){
 				// arrays con los datos del pedido
