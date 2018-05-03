@@ -127,7 +127,7 @@ use yii\widgets\ActiveForm;
 				document.getElementById("mesasPlaza").innerHTML = mesas;
 			}
 		});
-	}setInterval(tiempoReal, 1000);
+	}setInterval(tiempoReal, 5000);
 
 	// funcion que permite montar las mesas en la plaza
 	function cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas){
@@ -170,7 +170,8 @@ use yii\widgets\ActiveForm;
 		var route = "<?php echo Url::toRoute(['site/mesa'])?>";
 		//mensaje de confirmacion si la mesa esta ocupada
 		if(estado == 0){
-			swal({
+			// confirmacion para entrar a la mesa que esta ocupada
+			/*swal({
 				  title: "",
 				  text: "La mesa esta ocupada, desea ingresar?",
 				  type: "info",
@@ -189,7 +190,9 @@ use yii\widgets\ActiveForm;
 				  } else {
 				    swal("", "Proceso cancelado..", "error");
 				  }
-				});			
+				});		*/
+			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+			location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;	
 		}else{
 			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
 			location.href = route+"&codigoM="+codigo;
@@ -306,7 +309,7 @@ use yii\widgets\ActiveForm;
 				}
 			}
 		});
-	}setInterval(containerReal, 1000);
+	}setInterval(containerReal, 5000);
 
 	function notificacionContainer(tamano, mesa, empresa, documento, puestos, platos, cantidad, nombre){		
 		//
@@ -597,7 +600,7 @@ use yii\widgets\ActiveForm;
 
 
 <script type="text/javascript">
-	setTimeout(function(){
+	/*setTimeout(function(){
 		$("#pedidosEmp2").click();
-	}, 5000);	
+	}, 5000);	*/
 </script>
