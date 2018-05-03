@@ -28,7 +28,13 @@
 		<!--<script src="js/modernizr-custom.js"></script>-->
 		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
 		<?= Html::jsFile('@web/js/jquery.min.js') ?>
-		<?= Html::jsFile('@web/js/ciclosession.js') ?>		
+		<?= Html::jsFile('@web/js/ciclosession.js') ?>	
+
+		<style type="text/css">
+			someinput::-ms-clear {
+			    display: none;
+			}
+		</style>	
 	</head>
 	<body class='bg-acomer'>
 	<?php $this->beginBody() ?>
@@ -55,27 +61,32 @@
 							<div class="cat__grid-content-scroller">
 								<div class="cat__grid-details">
 									<h2 class="cat__title-main">
-										<?php echo $ketc['DESCRIPCION']?>
-									</h2>
-									<?php if ($ketc['DESCRIPCION']=='Bebidas'): ?>
-									<p class="cat_description">
-										Descripción de <?php echo $ketc['DESCRIPCION']?>
-									</p>
-									<?php else: ?>
-									<p class="cat_description">
-										Descripción comida de <?php echo $ketc['DESCRIPCION']?>
-									</p>
-									<?php endif ?>	
+										<?php echo $ketc['DESCRIPCION']?>										
+									</h2>									
+									<p class="cat_description"  id="searchGeneral<?=$ketc['COD_CATEGORIA']?>" onclick="activarSearch('contentSearch<?=$ketc['COD_CATEGORIA']?>','searchGeneral<?=$ketc['COD_CATEGORIA']?>')" >
+
+										<!--Descripción de <?php echo $ketc['DESCRIPCION']?> -->
+										<i class="material-icons" style=" position: relative; top: 5px; left: 5px;">&#xE8B6;</i> Buscar 
+									</p>									
+	
+									<div class="input-group" id="contentSearch<?=$ketc['COD_CATEGORIA']?>" style="display: none;">
+										<span class="input-group-addon">
+											<i class="material-icons">&#xE8B6;</i>
+										</span>
+										<input type="search" class="form-control" placeholder="Buscar" id="Search<?=$ketc['COD_CATEGORIA']?>" style=" border-radius: 10px; border: 1px solid #666666;">
+									</div>
+
+									
 								</div>
 								<div class="content">
 									<div class="grid">
 										<?php foreach ($comidas as $keyco): ?>								
 											<?php if ($keyco['CATEGORIA']==$ketc['COD_CATEGORIA']): ?>
-												<div class="product">
+												<div class="product" id="<?=$keyco['COD_PRODUCTO'].$ketc['COD_CATEGORIA']?>">
 													<div class="product__info">
 														<img class="product__image" src="img/categorias/<?=$ketc['IMAGEN']?>" alt="Carne" />
 														<h3 class="product__title"><?=$keyco['NOMBRE']?></h3>
-														<span class="product__price highlight">$<?php echo number_format($keyco['PRECIO']);?></span>
+														<span class="product__price highlight">$<?php echo number_format($keyco['PRECIO']);?> *</span>
 														<div class="content-count" id="<?php echo $id_content_count; ?>">
 															<div class="input-group">
 																<span class="input-group-btn">
@@ -97,6 +108,7 @@
 															<i class="material-icons check">&#xE876;</i>
 															<span class="action__text" >Agregar</span> 
 														</label>
+														<label style="font-size: 11px;"><?=$keyco['MENSAJE']?> </label>
 													</div>
 												</div><!-- /product 1 -->	
 												<?php $id_content_count += 1; ?>
@@ -112,7 +124,7 @@
 						</div>
 					</div>
 					<?php endforeach ?>
-					<button class="action__close-products" aria-label="Close"><i class="material-icons">&#xE317;</i></button>
+					<button class="action__close-products" aria-label="Close" onclick="desactivarSearch()"><i class="material-icons">&#xE317;</i></button>
 				</div>
 			</div>
 		</div>
@@ -187,9 +199,6 @@
 
 				}
 				
-				console.log(codigos);
-				console.log(cantidad);
-				console.log(puestos);
 
 				//ruta que retorna a la mesa para tomar demas pedidos
 				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
@@ -341,3 +350,81 @@
 	</body>
 </html>
 <?php $this->endPage() ?>
+
+
+<script type="text/javascript">
+
+	var comidas = JSON.parse('<?=json_encode($comidas)?>'); // platos donde se van a buscar las palabras de los inputs
+	var categorias = JSON.parse('<?=json_encode($categorias)?>'); // datos de las categorias 
+	var searchActivo; // id de buscador que se usa para una categoira x
+	var searchPulsado; // id de la descripcion que muestra el input
+	var searchInput; // id del input search
+	var idCateg; // id se la categoria en la que esta buscando
+
+	ationSearch();
+
+	function ationSearch(){
+		//
+		for(i=0 ; i<categorias.length ; i++){
+
+			var id = "#Search"+categorias[i]['COD_CATEGORIA'];
+			var codigo = categorias[i]['COD_CATEGORIA'];
+
+			$(id).on('keyup', function () {
+				var categoria = this.id.substring(this.id.length-2, this.id.length);
+				var identificador = "#"+this.id;
+
+				doneTyping(categoria,identificador);				
+			});			
+		}
+	}
+
+	//user is "finished typing," do something
+	function doneTyping(codigoCategoria, idInput) { 
+		
+		var digitado = $(idInput).val();
+
+		for(i=0 ; i<comidas.length ; i++){
+
+			if(comidas[i]['CATEGORIA'].localeCompare(codigoCategoria) == 0){
+
+				var codigoBloque = "#"+comidas[i]['COD_PRODUCTO']+codigoCategoria;
+				codigoBloque =codigoBloque.replace(/ /g , "");
+
+				var nombrePlato = comidas[i]['NOMBRE'];			
+
+				if(nombrePlato.indexOf(digitado.toUpperCase()) == -1){					
+					$(codigoBloque).hide();
+				}else{
+					$(codigoBloque).show();
+				}
+			}
+		}
+	}	
+
+	function activarSearch(idSearch,idGeneral){				
+		$("#"+idSearch).show();
+		$("#"+idGeneral).hide();
+
+		searchActivo = idSearch;
+		searchPulsado = idGeneral;
+		
+		var idBuscador = "Search"+idSearch.substring(idSearch.length, idSearch.length-2);
+		searchInput = idBuscador;
+		idCateg = idSearch.substring(idSearch.length, idSearch.length-2)
+
+		document.getElementById(idBuscador).focus();
+	}
+
+	function desactivarSearch(idSearch){		
+		$("#"+searchActivo).hide();
+		$("#"+searchPulsado).show();		
+
+		$("#"+searchInput).val('');
+
+		doneTyping(idCateg,"#"+searchInput);
+
+		searchActivo = '';
+	}
+
+</script>

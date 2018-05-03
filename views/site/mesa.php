@@ -200,6 +200,7 @@
 			</div>
 
 			<!--MODAL DEL Prueba_P-->
+			<!-- se descomenta si se quiere ontrol de tipo de personas que piden
 			<div class="modal list-pedidos fade" id="personajesModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content modal_personajes">
@@ -221,19 +222,17 @@
 									<div class="row menos">
 										<?php echo Html::img('@web/img/personajes/uviejo1.svg', ['class'=>'animate_avatar','id'=>'pervi1'])?>
 										<?php echo Html::img('@web/img/personajes/uadulto1.svg', ['class'=>'animate_avatar','id'=>'perad1'])?>
-										<!--<?php echo Html::img('@web/img/personajes/unino1.svg', ['class'=>'animate_avatar','id'=>'perni1'])?>-->
 									</div>
 									<div class="row menos">
 										<?php echo Html::img('@web/img/personajes/uviejo2.svg', ['class'=>'animate_avatar','id'=>'pervi2'])?>
 										<?php echo Html::img('@web/img/personajes/uadulto2.svg', ['class'=>'animate_avatar','id'=>'perad2'])?>
-										<!--<?php echo Html::img('@web/img/personajes/unino2.svg', ['class'=>'animate_avatar','id'=>'perni2'])?>-->
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<!--MODAL DEL PEDIDO-->
 			<div class="modal list-pedidos fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel">
 				<div class="modal-dialog" role="document">
@@ -688,14 +687,12 @@
 													<div class="iva-factura text-right fnt__Medium">
 														<span>Subtotal</span>
 														<span>Propina</span>
-														<span>IVA</span>
-														<span>Impuesto</span>
+														<span>Impuestos</span>														
 													</div>
 													<div class="sub-total-factura text-right">
 														<span id="valorSubtotal">$00.000</span>
 														<span id="valorPropina">$0</span>
-														<span id="valorIva">$00.000</span>
-														<span id="valorImpConsumo">$00.000</span>
+														<span id="valorIva">$00.000</span>														
 													</div>
 												</div>
 											</div>
@@ -1388,14 +1385,19 @@
 
 	function seleccionaPersona(puesto){
 		// muestra los 
-		showAvatars();
+		//showAvatars();
 
+		// si se activa la seleccion de avatar esta linea se comenta y la de arriba de descomenta
+		arrayAvatar("adulto1",puesto);
+
+		//por si algun dia se necesita tipo de personas que eligen 
+		/*
 		$("#pervi1").attr('onclick', 'arrayAvatar("viejo1",'+(puesto)+')');
 		$("#perad1").attr('onclick', 'arrayAvatar("adulto1",'+(puesto)+')');
 		$("#perni1").attr('onclick', 'arrayAvatar("nino1",'+(puesto)+')');
 		$("#pervi2").attr('onclick', 'arrayAvatar("viejo2",'+(puesto)+')');
 		$("#perad2").attr('onclick', 'arrayAvatar("adulto2",'+(puesto)+')');
-		$("#perni2").attr('onclick', 'arrayAvatar("nino2",'+(puesto)+')');
+		$("#perni2").attr('onclick', 'arrayAvatar("nino2",'+(puesto)+')');*/
 		
 	}
 
@@ -2293,23 +2295,25 @@
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
 					for(var i=0 ; i<arrPlatos.length ; i++){
-						contenidoPedido = contenidoPedido +
-							'<tr>'+
-								'<td class="icn">'+
-									'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
-								'</td>'+
-								'<td class="desc">'+
-									'<div class="nom-item">'+
-										'<p>'+arrPlatos[i]+'</p>'+
-										'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
-									'</div>'+
-									'<div class="val-item">'+
-										'<p></p>'+
-									'</div>'+
-								'</td>'+
-								'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
-								'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
-							'</tr>';
+						if(arrCantidad[i] != 0){
+							contenidoPedido = contenidoPedido +
+								'<tr>'+
+									'<td class="icn">'+
+										'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
+									'</td>'+
+									'<td class="desc">'+
+										'<div class="nom-item">'+
+											'<p>'+arrPlatos[i]+'</p>'+
+											'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
+										'</div>'+
+										'<div class="val-item">'+
+											'<p></p>'+
+										'</div>'+
+									'</td>'+
+									'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
+									'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
+								'</tr>';
+						}
 					}
 				}	
 			}
@@ -2343,23 +2347,25 @@
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
 					for(var i=0 ; i<arrPlatos.length ; i++){
-						contenidoPedido = contenidoPedido +
-							'<tr>'+
-								'<td class="icn">'+
-									'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
-								'</td>'+
-								'<td class="desc">'+
-									'<div class="nom-item">'+
-										'<p>'+arrPlatos[i]+'</p>'+
-										'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
-									'</div>'+
-									'<div class="val-item">'+
-										'<p></p>'+
-									'</div>'+
-								'</td>'+
-								'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
-								'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
-							'</tr>';
+						if(arrCantidad[i] != 0){
+							contenidoPedido = contenidoPedido +
+								'<tr>'+
+									'<td class="icn">'+
+										'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
+									'</td>'+
+									'<td class="desc">'+
+										'<div class="nom-item">'+
+											'<p>'+arrPlatos[i]+'</p>'+
+											'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
+										'</div>'+
+										'<div class="val-item">'+
+											'<p></p>'+
+										'</div>'+
+									'</td>'+
+									'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+
+									'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
+								'</tr>';
+						}
 					}
 				}	
 			}
@@ -2421,7 +2427,7 @@
 			}			
 		}
 
-		document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
+		//document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
 		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Puesto '+puesto+'</h5>';
 		document.getElementById("platosDetalle").innerHTML = contenidoPedido;
 	}
@@ -2740,10 +2746,7 @@
 		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
 		valorIvaFatura = valorIvaFatura.substring(1);
 		//
-		var valorImpConsumo = formatoNumerico($('#valorImpConsumo').html());	
-		valorImpConsumo = valorImpConsumo.substring(1);	
-		//
-		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.')) + parseFloat(valorImpConsumo.replace(',','.'));
+		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.'));
 
 		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
 		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());	
@@ -2771,15 +2774,12 @@
 		var subtotalFactura = formatoNumerico($('#valorSubtotal').html());	
 		subtotalFactura = subtotalFactura.substring(1);
 		// calcula el porcentaje sobre el subtotal
-		var valorPorcentaje = subtotalFactura*(porcentaje/100);
+		var valorPorcentaje = Math.round(subtotalFactura*(porcentaje/100));
 		//
 		var valorIvaFatura  = formatoNumerico($('#valorIva').html());	
-		valorIvaFatura = valorIvaFatura.substring(1);
+		valorIvaFatura = valorIvaFatura.substring(1);		
 		//
-		var valorImpConsumo = formatoNumerico($('#valorImpConsumo').html());	
-		valorImpConsumo = valorImpConsumo.substring(1);		
-		//
-		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.')) + parseFloat(valorImpConsumo.replace(',','.'));
+		var valorTotalFactura = parseFloat(valorIvaFatura.replace(',','.')) + parseFloat(valorPorcentaje) + parseFloat(subtotalFactura.replace(',','.'));
 
 		document.getElementById("valorPropina").innerHTML = '$'+formatoMoneda(valorPorcentaje.toString());	
 		document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(valorTotalFactura.toString());		
@@ -2804,15 +2804,13 @@
 
 					var totalFac = 0;								
 					var subtotalFac = 0;
-					var ivaFac = 0;
-					var impcons = 0;
+					var ivaFac = 0;					
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
-					var valorIvaPro = arrayDetalle.VALOR_IVA;
-					var valorImpConsumo = arrayDetalle.IMP_CONSUMO;
+					var valorIvaPro = arrayDetalle.VALOR_IVA;					
 
 					var listaProductos = '';
 
@@ -2825,19 +2823,17 @@
 							'</tr>';
 
 						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
-						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
-						impcons = impcons + parseFloat(valorImpConsumo[i]);
+						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);						
 					}
 
-					totalFac = subtotalFac + ivaFac + impcons;					
+					totalFac = subtotalFac + ivaFac;					
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
 					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(totalFac.toString());
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
-					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
-					document.getElementById("valorImpConsumo").innerHTML = '$'+formatoMoneda(impcons.toString());
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());					
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 					
@@ -2859,15 +2855,13 @@
 
 					var totalFac = 0;								
 					var subtotalFac = 0;
-					var ivaFac = 0;
-					var impcons = 0;
+					var ivaFac = 0;					
 
 					// lista de productos
 					var nombreProducto = arrayDetalle.PRODUCTO;
 					var unidadProducto = arrayDetalle.UNIDAD;
 					var valorProducto = arrayDetalle.VALOR;
-					var valorIvaPro = arrayDetalle.VALOR_IVA;
-					var valorImpConsumo = arrayDetalle.IMP_CONSUMO;
+					var valorIvaPro = arrayDetalle.VALOR_IVA;					
 
 					var listaProductos = '';
 
@@ -2880,19 +2874,17 @@
 							'</tr>';
 
 						subtotalFac = subtotalFac + parseFloat(valorProducto[i]);
-						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);
-						impcons = impcons + parseFloat(valorImpConsumo[i]);
+						ivaFac = ivaFac + parseFloat(valorIvaPro[i]);					
 					}
 
-					totalFac = subtotalFac + ivaFac + impcons;
+					totalFac = subtotalFac + ivaFac;
 
 					document.getElementById("numeroFactura").innerHTML = '####';
 					document.getElementById("fechaFactura").innerHTML = arrayFecha;				
 					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(totalFac.toString());
 					document.getElementById("listadoFactura").innerHTML = listaProductos;
 					document.getElementById("valorIva").innerHTML = '$'+formatoMoneda(ivaFac.toString());
-					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());
-					document.getElementById("valorImpConsumo").innerHTML = '$'+formatoMoneda(impcons.toString());
+					document.getElementById("valorSubtotal").innerHTML = '$'+formatoMoneda(subtotalFac.toString());					
 
 					document.getElementById("cerrarFacturar").style.display = 'block';
 				}
@@ -3549,12 +3541,13 @@
 							'</div>'+
 						'</td>'+
 						'<td class="cant"><p>x'+arrCantidad[i]+'</p></td>'+												
+						'<td class="cant"><p><i class="material-icons icon-btn">&#xe876;</i></p></td>'+					
 					'</tr>';
 			}
 		}
 		
-		document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
-		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Mesa '+mesa+'</h5>';
+		//document.getElementById("puestoDetalle").innerHTML = '<span class="txt__lightorange">Puesto '+puesto+'</span>';	
+		document.getElementById("mesaDetalle").innerHTML = '<h5 class="text-right txt__light-70">Puesto '+puesto+'</h5>';
 		document.getElementById("platosDetalle").innerHTML = contenidoPedido;
 			
 
