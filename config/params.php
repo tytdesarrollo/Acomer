@@ -15,6 +15,6 @@ return[
 			      (SERVICE_NAME=orcl.talentos)
 			    )
 	  		)',
-'usuario'=>'USR_SAIC',    //USR_AWA	  		//USR_SAIC
-'password'=>'SAIC123WEB' //0RCAWASYST       //SAIC123WEB
+'usuario'=>'USR_SAIC',    //USR_AWA	  		//USR_SAIC      //USR_WEBPRU
+'password'=>'SAIC123WEB' //0RCAWASYST       //SAIC123WEB	//WEBPRU123
 ];
