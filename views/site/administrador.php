@@ -72,8 +72,25 @@
 				background: #009688;
 				color:white;
 			}
-
 			
+			#catForm label{
+				color: black;
+			}		
+			.deleteIcon{
+				color: red;
+			}
+
+			.editIcon{
+				color: #f7f71e;
+			}
+
+			table img{
+				width: 32px;
+			}
+
+			#bodyContModal3 img{
+				width: 81px;
+			}
 		</style>
 
 		<script type="text/javascript">
@@ -115,25 +132,25 @@
 						<ul class="nav nav-tabs">
 							<li  class="active">
 								<a href="#tab1" data-toggle="tab">
-									<i class="material-icons">attach_money</i> Cuentas
+									<i class="material-icons">attach_money</i> CUENTAS
 								</a>
 							</li>
 							<li class="divider"><div class="ln"></div></li>							
 							<li >
 								<a href="#tab2" data-toggle="tab">
-									<i class="material-icons">&#xE889;</i> Historial de ventas
+									<i class="material-icons">&#xE889;</i> HISTORIAL DE VENTAS
 								</a>
 							</li>
 							<!--<li class="divider"><div class="ln"></div></li>							
 							<li >								
 								<a href="#tab3" data-toggle="tab">									
-									<i class="material-icons icon-btn">&#xE561;</i> Menu de restaurantes
+									<i class="material-icons icon-btn">&#xE561;</i> MENU RESTAURANTES
 								</a>
-							</li>		-->					
+							</li>-->
 							<li class="divider"><div class="ln"></div></li>
 							<li >
 								<a href="#tab4" data-toggle="tab">
-									<i class="material-icons">&#xE8A1;</i> Cierres
+									<i class="material-icons">&#xE8A1;</i> CIERRES
 								</a>
 							</li>									
 														
@@ -144,7 +161,7 @@
 					<!--CUENTAS-->
 						<div class="tab-pane fade active in" id="tab1">
 							<div class="heading">
-								<h3 class="fnt__Medium text-center"><strong>Cuentas</strong></h3>
+								<h3 class="fnt__Medium text-center"><strong>CUENTAS</strong></h3>
 							</div>
 							<div class="body">		
 
@@ -170,10 +187,10 @@
 										<thead class="thead">
 											<tr>
 												<th>NIT</th>
-												<th>Empresa</th>
-												<th>Total bruto*</th>												
-												<th>Total impuesto</th>
-												<th>Total neto</th>
+												<th>EMPRESA</th>
+												<th>TOTAL BRUTO*</th>												
+												<th>TOTAL IMPUESTOS</th>
+												<th>TOTAL NETO</th>
 											</tr>
 										</thead>
 										<tbody id="bodyCuenta1">											
@@ -199,63 +216,16 @@
 										</tbody>
 									</table>
 
-								</div>	
-
-								<div class="row"></div>
-
-								<hr>
+								</div>									
 								
-								
-								<!--<div class="col-md-12">									
-									<h4 class="fnt__Medium"><strong>Detalle por platos</strong></h4>								
-									<table class="table table-striped" id="dataTable1">
-										<thead iclass="thead">
-											<tr>
-												<th>Codigo</th>
-												<th>Nombre</th>
-												<th>Cantidad vendida</th>
-												<th>Precio unidad*</th>
-												<th>Impuesto</th>
-												<th>Total neto</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>BEBID-CCN</td>
-												<td>Coca-Cola normal</td>
-												<td>3</td>
-												<td>3.500</td>
-												<td>500</td>
-												<td>11.000</td>
-											</tr>
-											<tr>
-												<td>BEBID-RON</td>
-												<td>RON</td>
-												<td>1</td>
-												<td>45.000</td>
-												<td>2.500</td>
-												<td>47.500</td>
-											</tr>												
-											<tr>
-												<td></td>
-												<th>Total</th>
-												<th>4</th>
-												<th>48.500</th>
-												<th>3.000</th>
-												<th>58.500</th>
-											</tr>
-										</tbody>
-									</table>
-									*Precio sin impuesto
-									
-								</div>	-->						
+											
 							</div>
 						</div>
 					
 					<!--HISTORIAL DE VENTAS-->
 						<div class="tab-pane fade in" id="tab2">
 							<div class="heading">
-								<h3 class="fnt__Medium text-center"><strong>Historial de ventas</strong></h3>
+								<h3 class="fnt__Medium text-center"><strong>HISTORIAL DE VENTAS</strong></h3>
 							</div>							
 							<div class="body">
 								<hr>
@@ -277,10 +247,10 @@
 											<tr>
 												<th scope="col"></th>
 												<th scope="col">NIT</th>
-												<th scope="col">Restaurante</th>
-												<th scope="col"># Documento</th>
-												<th scope="col">Fecha</th>
-												<th scope="col">Valor facturado</th>
+												<th scope="col">RESTAURANTE</th>
+												<th scope="col"># DOCUMENTO</th>
+												<th scope="col">FECHA</th>
+												<th scope="col">VALOR FACTURADO</th>
 											</tr>
 										</thead>
 										<tbody id="tBodyHist">
@@ -291,7 +261,7 @@
 													<td><span id='histemp<?=$i?>'><?=$documentos['EMPRESA'][$i]?></span></td>
 													<td><span id='histdoc<?=$i?>'><?=$documentos['DOCUMENTO'][$i]?></span></td>
 													<td><?=$documentos['FECHA'][$i]?></span></td>
-													<td><span id='histval<?=$i?>'><?=$documentos['VALOR'][$i]?></span></td>
+													<td><span id='histval<?=$i?>'><?=number_format($documentos['VALOR'][$i], 2)?></span></td>
 											    </tr>	
 											<?php endfor ?>											
 										</tbody>
@@ -303,7 +273,7 @@
 					<!--MENU DE RESTAURANTE-->
 						<div class="tab-pane fade in" id="tab3">
 							<div class="heading">
-								<h3 class="fnt__Medium text-center"><strong>Menu de restaurantes</strong></h3>
+								<h3 class="fnt__Medium text-center"><strong>MENU DE RESTAURANTES</strong></h3>
 							</div>
 							<div class="body">
 								<hr>
@@ -316,8 +286,36 @@
 											</div>																						
 										</div>
 										<div class="row">
-											<div id="catForm" class="col-md-12">
-												formulario Categoria
+											<div id="catForm" class="col-md-12">	
+												<hr>
+												<div class="col-md-12">
+													<h4><strong>LISTA DE CATEGORIAS</strong></h4>													
+												</div>												
+												<div class="col-md-12">													
+													<table class="table table-striped" id="dataTable6" style="width: 100%">
+														<thead class="thead">
+															<tr>
+																<th>CODIGO</th>
+																<th>NOMBRE</th>
+																<th>IMAGEN</th>
+																<th>EDITAR</th>
+																<th>ELIMINAR</th>
+															</tr>
+														</thead>
+														<tbody>
+															
+														</tbody>
+													</table>
+													<!--<div class="form-group">
+														<label for="nombreEmpresa" >Nombre de la empresa</label>
+														<select id="nombreEmpresa" class="form-control" class="custom-select custom-select-sm">												  	
+														  	<option value="1" selected>Container 1</option>
+														  	<option value="2">Container 2</option>
+														  	<option value="2">Container 3</option>
+														  	<option value="2">Container 4</option>
+														</select>
+													</div>-->
+												</div>
 											</div>
 											<div id="plaForm" class="col-md-12">
 												formulario Platos
@@ -331,7 +329,7 @@
 					<!--CIERRES-->
 						<div class="tab-pane fade in" id="tab4">
 							<div class="heading">
-								<h3 class="fnt__Medium text-center"><strong>Cierres</strong></h3>
+								<h3 class="fnt__Medium text-center"><strong>CIERRES</strong></h3>
 							</div>
 							<div class="body">
 								<hr>								
@@ -342,26 +340,14 @@
 								<div class="col-md-12">
 									<table class="table table-striped">
 										<thead class="thead">
-											<tr>																								
-												<!--<th scope="col">Fecha inicio</th>
-												<th scope="col">Hora inicio</th>
-												<th scope="col">Fecha fin</th>
-												<th scope="col">Hora fin</th>-->
-												<th scope="col">Tipo de cierre</th>
-												<th scope="col">Confirmar</th>
+											<tr>
+												<th scope="col">TIPO DE CIERRE</th>
+												<th scope="col">CONFIRMAR</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>												
-												<!--<td>10/05/2018</td>
-												<td>3:10:00 PM</td>
-												<td>11/05/2018</td>
-												<td>2:55:00 AM</td>-->
-												<td>
-													<!--<select class="custom-select custom-select-sm">												  		
-													  	<option value="1" selected>Total</option>
-													  	<option value="2">Parcial</option>													  	
-													</select>-->
+											<tr>																								
+												<td>													
 													TOTAL
 												</td>
 												<td>
@@ -380,16 +366,16 @@
 								</div>
 								<br>
 								<div class="col-md-12">
-									<table class="table table-striped" id="dataTable3">
+									<table class="table table-striped" id="dataTable3" style="width: 100%">
 										<thead class="thead">
 											<tr>
 												<th scope="col"></th>
-												<th scope="col">Codigo</th>
-												<th scope="col">Fecha inicio</th>
-												<th scope="col">Hora inicio</th>
-												<th scope="col">Fecha fin</th>
-												<th scope="col">Hora fin</th>
-												<th scope="col">Tipo de cierre</th>												
+												<th scope="col">CODIGO</th>
+												<th scope="col">FECHA INICIO</th>
+												<th scope="col">HORA INICIO</th>
+												<th scope="col">FECHA FIN</th>
+												<th scope="col">HORA FIN</th>
+												<th scope="col">TIPO DE CIERRE</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -418,20 +404,20 @@
   					<div class="modal-dialog modal-lg">
     					<div class="modal-content">
       						<div class="modal-header text-center">
-        						<h4 class="modal-tittle"><strong id="tituloModal">Detalle de documento</strong></h4>
+        						<h4 class="modal-tittle"><strong id="tituloModal">DETALLE DE DOCUMENTO</strong></h4>
       						</div>
 							 <div class="modal-body">
 						 		<div class="container-fluid" id="contenidoModal">
 						 			<div id="headContModal"></div>
 						 			<hr>
 						 			<div id="bodyContModal">
-						 				<table class="table table-striped" id="dataTable4">
+						 				<table class="table table-striped" id="dataTable4" style="width: 100%">
 						 					<thead  class="thead">
-						 						<th>Producto</th>
-												<th>Cantidad</th>
-												<th>Precio Unidad*</th>
-												<th>Impuesto</th>
-												<th>Precio Venta</th>				 												 						
+						 						<th>PRODUCTO</th>
+												<th>CANTIDAD</th>
+												<th>PRECIO UNIDAD*</th>
+												<th>IMPUESTO</th>
+												<th>PRECIO VENTA</th>				 												 						
 						 					</thead>
 						 					<tbody>
 						 						
@@ -459,7 +445,7 @@
   					<div class="modal-dialog modal-lg">
     					<div class="modal-content">
       						<div class="modal-header text-center">
-        						<h4 class="modal-tittle"><strong id="tituloModal2">Detalle de cierre</strong></h4>
+        						<h4 class="modal-tittle"><strong id="tituloModal2">DETALLE DE CIERRE</strong></h4>
       						</div>
 							 <div class="modal-body">
 						 		<div class="container-fluid" id="contenidoModal2">
@@ -483,7 +469,7 @@
 						 			</div>
 						 			<hr>
 						 			<div id="bodyContModal2">
-						 				<table class="table table-striped" id="dataTable5">
+						 				<table class="table table-striped" id="dataTable5" style="width: 100%">
 						 					<thead  class="thead">
 						 						<th>NIT</th>
 												<th>EMPRESA</th>
@@ -506,7 +492,66 @@
       							<button type="button" class="btn btn-default" data-dismiss="modal">
     								<span class="glyphicon glyphicon-remove"></span>
                         			<span class="hidden-xs"> Cerrar</span> 
+    							</button>      							        
+    						</div>
+      						
+    					</div>
+  					</div>
+				</div>
+
+			<!--MODAL DE EDITAR CATEGORIA-->
+			<div id="ModalContent3" class="modal fade" role="dialog" >
+  					<div class="modal-dialog modal-lg">
+    					<div class="modal-content">
+      						<div class="modal-header text-center">
+        						<h4 class="modal-tittle"><strong id="tituloModal3">EDITAR CATEGORIA</strong></h4>
+      						</div>
+							 <div class="modal-body">
+						 		<div class="container-fluid" id="contenidoModal3">
+						 			<div id="headContModal3">
+						 				
+						 			</div>
+						 			<hr>
+						 			<div id="bodyContModal3">
+						 				<div class="form-group">
+											<label class="font-style-form" for="nomCategoria">Nombre de la categoria</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<input type="text" class="form-control" id="nomCategoria" placeholder="Ingrese nombre de la categoria">
+												</div>												
+											</div>						    				
+						    			</div>		
+						    			<div class="form-group">						    				
+											<label class="font-style-form" for="imgCategoria">Imagen de la categoria</label>
+											<br>											
+						    				<select id="imgCategoria" class="form-control">
+												<option value="arroz_cat_icon">Imagen 1</option>
+												<option value="aves_cat_icon">Imagen 2</option>
+												<option value="bebidas_cat_icon">Imagen 3</option>
+												<option value="carnes_cat_icon">Imagen 4</option>
+												<option value="especiales_cat_icon">Imagen 5</option>
+												<option value="mar_cat_icon">Imagen 6</option>
+												<option value="pastas_cat_icon">Imagen 7</option>
+												<option value="vegetales_cat_icon">Imagen 8</option>
+											</select>
+						    			</div>				    			
+						    			<img id="imgEditCat" src="img/categorias/especiales_cat_icon.png">
+						 			</div>
+						 			<hr>
+						 			<div id="footContModal2">
+						 				
+						 			</div>						 			
+								</div>
+							</div>      						
+    						<div class="modal-footer">
+      							<button type="button" class="btn btn-default" data-dismiss="modal">
+    								<span class="glyphicon glyphicon-remove"></span>
+                        			<span class="hidden-xs"> Cerrar</span> 
     							</button>         
+    							<button type="button" class="btn btn-default">
+    								<span class="glyphicon glyphicon-floppy-saved"></span>
+                        			<span class="hidden-xs"> Guardar</span> 
+    							</button> 
     						</div>
       						
     					</div>
@@ -519,27 +564,15 @@
 		
 	</body>
 </html>
+<?= Html::cssFile('@web/css/dataTables.bootstrap4.css')?>
+<?= Html::jsFile('@web/js/jquery.dataTables.js') ?>
+<?= Html::jsFile('@web/js/dataTables.bootstrap4.js') ?>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.css"/>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>   
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-        /*$("#dataTable1").dataTable({
-        	"language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "zeroRecords": "Lo sentimos no hay nada para mostrar",
-                    "info": "Pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "Registros no disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros)",
-                    "paginate": {
-                      "previous": "Previo",
-                      "next": "Siguiente",
-                    },
-                    "search": "Buscar:"
-                }
-        });*/
+	$(document).ready(function(){      
 
         $("#dataTable2").dataTable({
         	"language": {
@@ -555,22 +588,7 @@
                     "search": "Buscar:"
                 }
         });
-
-        /*$("#dataTable3").dataTable({
-        	"language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "zeroRecords": "Lo sentimos no hay nada para mostrar",
-                    "info": "Pagina _PAGE_ de _PAGES_",
-                    "infoEmpty": "Registros no disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros)",
-                    "paginate": {
-                      "previous": "Previo",
-                      "next": "Siguiente",
-                    },
-                    "search": "Buscar:"
-                }
-        });*/
-
+        
         $("#dataTable4").dataTable({
         	"language": {
                     "lengthMenu": "Mostrar _MENU_ registros por pagina",
@@ -593,8 +611,8 @@
 <script type="text/javascript">
 	
 	//carga inicial
-	showForm('CAT');
-	checkCierre(0);	
+	$(showForm('CAT'));
+	$(checkCierre(0));	
 
 	function showForm(form){
 		switch(form){
@@ -721,7 +739,7 @@
 	});
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	cargarCierres();
+	$(cargarCierres());
 
 	function cargarCierres(){
 		$("#dataTable3").dataTable({				
@@ -746,7 +764,7 @@
 	
 	function mostrarDetalleCierre(posicion){
 		$('#ModalContent2').modal('show');
-		$("#tituloModal2").html("Detalle de cierre");
+		$("#tituloModal2").html("DETALLE DE CIERRE");
 
 		var codigoCierre = $("#cierreId"+posicion).html();
 		
@@ -754,7 +772,7 @@
 			url:'<?php echo Url::toRoute(['site/detallecierres']); ?>',
 			dataType:'json',
 			method: "GET",
-			data: {'codigo':codigoCierre},
+			data: {'codigo':codigoCierre,"opcion":1},
 			success: function (data) {						
 				//cantidad de datos que contiene cada array del json	
 				//var tamano = Object.keys(data.MESCODUNI).length;			
@@ -762,36 +780,43 @@
 				var arrayDatos = $.map(data, function(value, index) {
 	    			return [value];
 				});	
-
-
-				var detalleCursor = arrayDatos[0];
-				var impuestos = arrayDatos[1];
-				var subTotal = arrayDatos[2];
-				var propinaVol = arrayDatos[3];
-				var totalNeto = arrayDatos[4];
-
-				var tabla = '';
-
-				for(var i=0 ; i<detalleCursor['EMPRESA'].length ; i++){
-					tabla = tabla +
-						'<tr>'+
-							'<td>'+detalleCursor['EMPRESA'][i]+'</td>'+
-							'<td>'+detalleCursor['GEN_EMP_NOM'][i]+'</td>'+
-							'<td>'+detalleCursor['VEN_FAC_PROCOD'][i]+'</td>'+
-							'<td>'+detalleCursor['VEN_REF_PRODES'][i]+'</td>'+
-							'<td>'+detalleCursor['CANT'][i]+'</td>'+
-							'<td>$'+formatoMoneda(detalleCursor['TOTAL'][i])+'</td>'+
-						'</tr>';
-				}
+				
+				var impuestos = arrayDatos[0];
+				var subTotal = arrayDatos[1];
+				var propinaVol = arrayDatos[2];
+				var totalNeto = arrayDatos[3];				
 
 				$('#subtotalCierre').html(formatoMoneda(subTotal));
 				$('#propinaCierre').html(formatoMoneda(propinaVol));
 				$('#impuestosCierre').html(formatoMoneda(impuestos));
-				$('#netoCierre').html(formatoMoneda(totalNeto));
-
-				$("#bodyTableModal2").html(tabla);
+				$('#netoCierre').html(formatoMoneda(totalNeto));				
 			}
 		});	
+
+
+		$("#dataTable5").dataTable({				
+			"destroy":true,
+	    	"ajax":{
+	    		"url":"<?php echo Url::toRoute(['site/detallecierres']); ?>",
+	    		"method":"GET",
+	    		"data":{
+	    			"codigo":codigoCierre,
+					"opcion":2
+	    		}
+	    	},
+	    	"language": {
+	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
+	                "info": "Pagina _PAGE_ de _PAGES_",
+	                "infoEmpty": "Registros no disponibles",
+	                "infoFiltered": "(filtrado de _MAX_ registros)",
+	                "paginate": {
+	                  "previous": "Previo",
+	                  "next": "Siguiente",
+	                },
+	                "search": "Buscar:"
+	            }
+	    });	
 
 
 	}
@@ -800,9 +825,64 @@
 		$.ajax({
 			url:'<?php echo Url::toRoute(['site/realizacierre']); ?>',							
 			success: function (data) {	
-				swal("Cierre completado", "Revisa abajo el detalle del cierre", "success");
+				swal("Cierre completado", "El detalle del cierre se encuentra en el historial", "success");
+				cargarCierre();
 			}
 		});	
+
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	$(cargarMenus());
+
+	function cargarMenus(){
+		$("#dataTable6").dataTable({				
+			"destroy":true,
+	    	"ajax":{
+	    		"url":"<?php echo Url::toRoute(['site/adminmenus']); ?>",
+	    		"method":"GET",
+	    		"data":{
+					"opcion":1
+	    		}
+	    	},
+	    	responsive: true,
+	    	"language": {
+	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
+	                "info": "Pagina _PAGE_ de _PAGES_",
+	                "infoEmpty": "Registros no disponibles",
+	                "infoFiltered": "(filtrado de _MAX_ registros)",
+	                "paginate": {
+	                  "previous": "Previo",
+	                  "next": "Siguiente",
+	                },
+	                "search": "Buscar:"
+	            }
+	    });	
+	}
+
+	function editarCategoria(codigo){
+		var idTag = "#categoriaId"+codigo;
+		var codigoCategoria = $(idTag).html();
+
+		switch(codigo){
+			case 'nuevo':
+				alert("crear una categoria");
+				break;
+			default:
+				var nombreCategoria = $("#nombreCatId"+codigo).html();
+				$("#nomCategoria").val(nombreCategoria);
+				break;
+		}
+
+		$('#ModalContent3').modal('show');
+	}
+
+	function eliminarCategoria(codigo){
+		var idTag = "#categoriaId"+codigo;
+		var codigoCategoria = $(idTag).html();
+
+		alert(codigoCategoria);
 
 	}
 
@@ -810,7 +890,7 @@
 	/*var dateNow = new Date();
 	var today = dateNow.getDate()+"/"+(dateNow.getMonth()+1)+"/"+dateNow.getFullYear();*/
 
-	consultaCuenta();
+	$(consultaCuenta());	
 	
 	$("#fechaCuenta").change(function(){
 		var fecha = formato(this.value);	
@@ -837,42 +917,41 @@
 				var totalPropina = arrayDatos[1];
 				var totalNeto = arrayDatos[2];
 
-				if(totalNeto.localeCompare('') != 0){
-					var codigos  = detalleEmp['EMPRESA'];
-					var nombres = detalleEmp['GEN_EMP_NOM'];
-					var impuestos = detalleEmp['IMPUESTOS'];
-					var total = detalleEmp['TOTAL'];
-					var bruto = detalleEmp['TOTAL_SIN_IMPUESTOS'];
+				
+				var codigos  = detalleEmp['EMPRESA'];
+				var nombres = detalleEmp['GEN_EMP_NOM'];
+				var impuestos = detalleEmp['IMPUESTOS'];
+				var total = detalleEmp['TOTAL'];
+				var bruto = detalleEmp['TOTAL_SIN_IMPUESTOS'];
 
 
-					var detalleTable = '';
-					var subtotal = 0;
-					var totalImpuestos = 0;
+				var detalleTable = '';
+				var subtotal = 0;
+				var totalImpuestos = 0;
 
-					for (var i=0 ; i<codigos.length; i++) {
-						detalleTable = detalleTable +
-							'<tr>'+							
-								'<td>'+codigos[i]+' 1</td>'+
-								'<td>'+nombres[i]+'</td>'+
-								'<td>'+formatoMoneda(bruto[i])+'</td>'+
-								'<td>'+formatoMoneda(impuestos[i])+'</td>'+
-								'<td>'+formatoMoneda(total[i])+'</td>'+
-							'</tr>';
+				for (var i=0 ; i<codigos.length; i++) {
+					detalleTable = detalleTable +
+						'<tr>'+							
+							'<td>'+codigos[i]+'</td>'+
+							'<td>'+nombres[i]+'</td>'+
+							'<td>$'+formatoMoneda(bruto[i])+'</td>'+
+							'<td>$'+formatoMoneda(impuestos[i])+'</td>'+
+							'<td>$'+formatoMoneda(total[i])+'</td>'+
+						'</tr>';
 
+					if(codigos[i].localeCompare("N/A") != 0){
 						subtotal = subtotal + parseFloat(bruto[i]);
 						totalImpuestos = totalImpuestos + parseFloat(impuestos[i]);
+					}
+				}				
 
-					}				
-
-					
-					$("#bodyCuenta1").html(detalleTable);	
-					$("#subtotalCuenta").html(formatoMoneda(subtotal.toString()));
-					$("#propinaCuenta").html(formatoMoneda(totalPropina));
-					$("#impuestosCuenta").html(formatoMoneda(totalImpuestos.toString()));
-					$("#netoCuenta").html(formatoMoneda(totalNeto));
-				}else{
-					console.log("asasas");
-				}
+				
+				$("#bodyCuenta1").html(detalleTable);	
+				$("#subtotalCuenta").html(formatoMoneda(subtotal.toString()));
+				$("#propinaCuenta").html(formatoMoneda(totalPropina));
+				$("#impuestosCuenta").html(formatoMoneda(totalImpuestos.toString()));
+				$("#netoCuenta").html(formatoMoneda(totalNeto));
+				
 
 			}
 		});	
