@@ -1807,7 +1807,7 @@ class SiteController extends Controller
                     '"<span '.$empId.'>'.$documentos['EMPRESA'][$i].'</span>",'.
                     '"<span '.$docId.'>'.$documentos['DOCUMENTO'][$i].'</span>",'.
                     '"'.$documentos['FECHA'][$i].'",'.
-                    '"<span '.$valId.'>'.$documentos['VALOR'][$i].'</span>"'.
+                    '"<span '.$valId.'>'.number_format($documentos['VALOR'][$i], 2).'</span>"'.
                 '],';
         }
 
@@ -1832,9 +1832,9 @@ class SiteController extends Controller
                 '['.
                     '"'.$documentos['PLATO'][$i].'",'.
                     '"'.$documentos['CANTIDAD'][$i].'",'.
-                    '"'.$documentos['VALOR'][$i].'",'.
-                    '"'.$documentos['IMPUESTO'][$i].'",'.
-                    '"'.$documentos['TOTAL'][$i].'"'.
+                    '"'.number_format($documentos['VALOR'][$i], 2).'",'.
+                    '"'.number_format($documentos['IMPUESTO'][$i], 2).'",'.
+                    '"'.number_format($documentos['TOTAL'][$i], 2).'"'.
                 '],';
         }
 
@@ -1892,36 +1892,87 @@ class SiteController extends Controller
     }
 
     public function actionDetallecierres(){        
-        $c1 =  Yii::$app->request->get('codigo');
-
+        $c1 = Yii::$app->request->get('codigo');
+        $opcion = Yii::$app->request->get('opcion');
+        // 1: datos para la tabla detalle
+        // 2: datos para la cabecer
 
         $admin = new SpAdministracion();
         $cierre = $admin->procedimiento6($c1);
 
-        echo json_encode($cierre);
+        switch($opcion){
+            case 1:
+                $datosCab = array($cierre[1],$cierre[2],$cierre[3],$cierre[4]);
+                echo json_encode($datosCab);    
+                break;
+            case 2:
+                $datosDetalle = $cierre[0];
+                $jsonTable = '';
+
+                for ($i=0 ; $i<count($datosDetalle['EMPRESA']) ; $i++) {                     
+
+                    $jsonTable = $jsonTable .
+                        '['.                            
+                            '"'.$datosDetalle['EMPRESA'][$i].'",'.
+                            '"'.$datosDetalle['GEN_EMP_NOM'][$i].'",'.
+                            '"'.$datosDetalle['VEN_FAC_PROCOD'][$i].'",'.
+                            '"'.$datosDetalle['VEN_REF_PRODES'][$i].'",'.
+                            '"'.$datosDetalle['CANT'][$i].'",'.
+                            '"'.number_format($datosDetalle['TOTAL'][$i], 2).'"'.
+                        '],';
+                }
+
+                $jsonTable = substr($jsonTable,0,-1);
+                $jsonTable = '{"data":['.$jsonTable.']}';
+                //
+                echo $jsonTable;        
+                break;
+            
+        }
     }
 
+    public function actionAdminmenus(){
+        $opcion = Yii::$app->request->get('opcion');
+        // 1: categorias
+        // 2: platos
+        // 
+        $fn_menus = new SpMenusPlaza;
+        $datosMenus = $fn_menus->procedimiento();   
 
-/*$empresas = $datos[0];
-        
+        switch ($opcion) {
+            case 1:
+                $datosCategoria = $datosMenus[0];
+                $jsonTable = '';
 
-        $jsonTable = '';
+                for ($i=0 ; $i<count($datosCategoria) ; $i++) {       
+                    $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarCategoria(".$i.")'> edit</i>";              
+                    $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarCategoria(".$i.")'> delete</i>";
+                    $imagenCateg = "<img id='imgCat".$i."' src='img/categorias/".$datosCategoria[$i]['IMAGEN']."' >";
 
-        for ($i=0 ; $i<count($empresas['EMPRESA']) ; $i++) {            
+                    $categoriaId = "id='categoriaId".$i."'";
+                    $nombreCatId = "id='nombreCatId".$i."'";
 
-            $jsonTable = $jsonTable .
-                '['.
-                    '"'.$empresas['GEN_EMP_NOM'][$i].'",'.
-                    '"'.$empresas['TOTAL_SIN_IMPUESTOS'][$i].'",'.
-                    '"'.$empresas['IMPUESTOS'][$i].'",'.
-                    '"'.$empresas['TOTAL'][$i].'"'.
-                '],';
+                    $jsonTable = $jsonTable .
+                        '['.
+                            '"<span '.$categoriaId.'>'.$datosCategoria[$i]['COD_CATEGORIA'].'</span>",'.                            
+                            '"<span '.$nombreCatId.'>'.$datosCategoria[$i]['DESCRIPCION'].'</span>",'.
+                            '"'.$imagenCateg.'",'.
+                            '"'.$iconEdit.'",'.
+                            '"'.$iconDelete.'"'.
+                        '],';
+                }
+
+                $jsonTable = substr($jsonTable,0,-1);
+                $jsonTable = '{"data":['.$jsonTable.']}';
+                //
+                echo $jsonTable; 
+                break;
+            
+            case 2:
+                
+                break;
         }
-
-        $jsonTable = substr($jsonTable,0,-1);
-        $jsonTable = '{"data":['.$jsonTable.']}';*/
-        //
-
+    }
 
 
 }
