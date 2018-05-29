@@ -15,7 +15,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//cursor que recibira los datos de las mesas
 			$cursor_puestos;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -40,7 +40,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//cursor que recibira los datos de las mesas
 			$cursor_puestos;
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
@@ -83,7 +83,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];	
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ESTADO_MESA_FAC(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -108,7 +108,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURA_CLIENTE(:c1,:c2,:c3,:c4,:c5,:c6); END;");
 			//inicializa el cursor pasa como parametro
@@ -137,7 +137,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURA_RESPALDO(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -158,7 +158,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURACION_REVER(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -185,7 +185,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_REGISTRO_CLIENTE(:c1,:c2,:c3,:c4,:c5,:C6,:c7); END;");			
 			//pasa los parametros del proceimiento
@@ -211,7 +211,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_DATOS_CLIENTE(:c1,:c2); END;");		
 			//pasa los parametros del proceimiento
@@ -233,7 +233,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CTRL_ENTREGA_PEDyFAC(:c1,:c2); END;");		
 			//pasa los parametros del proceimiento
@@ -243,6 +243,65 @@
 			oci_execute($stid);		
 
 			return $c2;
+		}
+
+		public function procedimiento10($c1){
+			//$c1: codigo de la factura
+			//$c2: correo del cliente
+			//$c3: esquema html de la factura
+			//$c4: prodcutos facturados
+			//$c5: valores de la factura			
+			//
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_FACTURA_EMAIL(:c1,:c2,:c3,:c4,:c5); END;");		
+			//
+			$c4 = oci_new_cursor($conexion);
+			$c5 = oci_new_cursor($conexion);
+			//pasa los parametros del proceimiento
+			oci_bind_by_name($stid, ":c1", $c1, 10);
+			oci_bind_by_name($stid, ":c2", $c2, 50);
+			oci_bind_by_name($stid, ":c3", $c3, 32676);
+			oci_bind_by_name($stid, ":c4", $c4, -1, OCI_B_CURSOR);		
+			oci_bind_by_name($stid, ":c5", $c5, -1, OCI_B_CURSOR);		
+
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+			oci_execute($c4,OCI_DEFAULT);   
+			oci_execute($c5,OCI_DEFAULT);   
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c4, $cursor1);
+			oci_fetch_all($c5, $cursor2);
+
+			/****************************************************************************************************************************/
+			if($c2 !== 'N/A'){
+				//se arman los array con la informacion de la factura como parametro de url (GET)
+				$parametrosProductos = http_build_query(array($cursor1), 'productos');
+				$parametrosCabecera = http_build_query(array($cursor2), 'cabecera');
+
+				// reemplazan los nombres de los parametros
+				$parametrosProductos = str_replace("productos0","productos",$parametrosProductos);
+				$parametrosCabecera = str_replace("cabecera0","cabecera",$parametrosCabecera);
+
+				// se arama la ur 
+				$pagina = "http://www.talentsw.com/Acomer/intento1/phpmailer/examples/smtp.php?".$parametrosProductos."&".$parametrosCabecera;;
+				
+			   	// se ejecuta l envio de la factura por correo
+				$ejecuta = @file_get_contents($pagina);	
+				
+				/*if($ejecuta === false){
+					echo "error";
+				}else{
+					echo $ejecucion;
+				}*/
+			}
+			/****************************************************************************************************************************/
+			
 		}
 
 	}

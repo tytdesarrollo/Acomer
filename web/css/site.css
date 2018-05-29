@@ -3869,15 +3869,15 @@ a.txt__light-100:hover, a.txt__light-100:focus{
     margin-top: -1.5em;
     margin-left: -1.5em;
 }
-.mesax8p .content-mesa .n-mesa:nth-child(2){
-	margin-left: calc(-32% + -1.5em);
-}
-.mesax8p .content-mesa .n-mesa:nth-child(3){
-	margin-left: -1.5em;
-}
-.mesax8p .content-mesa .n-mesa:nth-child(4){
-	margin-left: calc(32% + -1.5em);
-}
+/* .mesax8p .content-mesa .n-mesa:nth-child(2){ */
+	/* margin-left: calc(-32% + -1.5em); */
+/* } */
+/* .mesax8p .content-mesa .n-mesa:nth-child(3){ */
+	/* margin-left: -1.5em; */
+/* } */
+/* .mesax8p .content-mesa .n-mesa:nth-child(4){ */
+	/* margin-left: calc(32% + -1.5em); */
+/* } */
 .content-puestos.mesax8p .puesto-libre{
 	border: 3px dashed #ffffff;
 	width: 80%;
@@ -5870,9 +5870,29 @@ body.overflow-hidden {
 		margin-left: calc(24% + -1.75em);
 	}
 }
-
+/* Estilos para Dispositivos móviles (min-width: 960px) */
+@media (min-width: 960px) {
+	.base{
+		transform: scale(1.12);
+		transform-origin: 50% 135%;
+	}
+	.content-mesas{
+		top: 24px;
+		left: 96px;
+		margin-top: 0px;
+	}
+}
 /* Estilos para Dispositivos móviles (min-width: 992px) */
 @media (min-width: 992px) {
+	.base{
+		transform: scale(1.4);
+		transform-origin: 50% 40%;
+	}
+	.content-mesas{
+		top: 0;
+		left: 0;
+		margin-top: 45px;
+	}
 	.mesas{
 		position: absolute;
 		transform: scale(0.6);

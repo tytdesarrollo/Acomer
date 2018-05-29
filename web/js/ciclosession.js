@@ -27,7 +27,8 @@ function tiempoSession(){
 	// calcula las horas y minutos que han transcurrido 
 	var tiempos = calcularTiempo(date1,date2);
 	// si transcurren mas de 30 min de inactivida la session se cierra 
-	if(tiempos[1] >= 60){
+	if(tiempos[1] >= 30){		
+
 		swal({
 		  	title: "",
 			text: "La sesion ha caducado! ",

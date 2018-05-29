@@ -20,7 +20,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];	
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db,'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_PEDIDOS_COCINA(:c1,:c2,:c3,:C4); END;");
 			//inicializa el cursor pasa como parametro
@@ -55,7 +55,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_ENTREGA_PEDIDO(:c1,:c2,:c3); END;");
 			//se pasan los parametros del procedimiento 
@@ -76,7 +76,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];	
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_HISTORIAL_COCINA(:c1,:c2,:c3); END;");
 			//se pasan los parametros del procedimiento 
@@ -96,7 +96,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_HISTCOCINA(:c1,:c2); END;");
 			//inicializa el cursor pasa como parametro
@@ -122,7 +122,7 @@
 			$usuario = Yii::$app->params['usuario'];
 			$contrasena = Yii::$app->params['password'];		
 			//establece la conexion con la bese de dato AWA
-			$conexion = oci_connect($usuario, $contrasena, $db);						
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
 			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_NOMBRE_COCINAS(:c1,:c2); END;");			
 			//se pasan los parametros del procedimiento 
