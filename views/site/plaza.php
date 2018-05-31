@@ -127,7 +127,7 @@ use yii\widgets\ActiveForm;
 				document.getElementById("mesasPlaza").innerHTML = mesas;
 			}
 		});
-	}setInterval(tiempoReal, 1000);
+	}setInterval(tiempoReal, 5000);
 
 	// funcion que permite montar las mesas en la plaza
 	function cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas){
@@ -170,7 +170,8 @@ use yii\widgets\ActiveForm;
 		var route = "<?php echo Url::toRoute(['site/mesa'])?>";
 		//mensaje de confirmacion si la mesa esta ocupada
 		if(estado == 0){
-			swal({
+			// confirmacion para entrar a la mesa que esta ocupada
+			/*swal({
 				  title: "",
 				  text: "La mesa esta ocupada, desea ingresar?",
 				  type: "info",
@@ -189,7 +190,9 @@ use yii\widgets\ActiveForm;
 				  } else {
 				    swal("", "Proceso cancelado..", "error");
 				  }
-				});			
+				});		*/
+			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+			location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;	
 		}else{
 			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
 			location.href = route+"&codigoM="+codigo;
@@ -306,7 +309,7 @@ use yii\widgets\ActiveForm;
 				}
 			}
 		});
-	}setInterval(containerReal, 1000);
+	}setInterval(containerReal, 5000);
 
 	function notificacionContainer(tamano, mesa, empresa, documento, puestos, platos, cantidad, nombre){		
 		//
@@ -338,7 +341,7 @@ use yii\widgets\ActiveForm;
 					contadoremp2++;
 					break;
 				case codigoEmp3:
-					contadoremp4++;
+					contadoremp3++;
 					break;
 				case codigoEmp4:
 					contadoremp4++;
@@ -377,9 +380,7 @@ use yii\widgets\ActiveForm;
 		return arrayF;
 	}
 
-	function platosEntregar(codigoRestaurantes = 0){	
-
-		console.log(codigoRestaurantes);
+	function platosEntregar(codigoRestaurantes = 0){			
 
 		var esquemaEntrega = '';
 		
@@ -446,7 +447,8 @@ use yii\widgets\ActiveForm;
 				break;
 		}
 
-		for(var i=0 ; i<generalMesas.length ; i++){
+
+		for(var i=0 ; i<generalMesas.length ; i++){						
 
 			if((codEmp.localeCompare(generalempresas[i]) == 0) || codEmp == 'full'){
 
@@ -496,11 +498,12 @@ use yii\widgets\ActiveForm;
 
 	function pedidosEnlistdos(){
 		var lista =  ($('div.list-group').children('div'));		
+
 		var arrayConfirm = new Array();
 
 		for(var i=0 ; i<lista.length ; i++){
 			if($(lista[i]).hasClass('ok')){
-				arrayConfirm.push(lista[i].id.substring(lista[i].id.length-1));
+				arrayConfirm.push(lista[i].id.substring(lista[i].id.length-1));				
 			}
 		}
 
@@ -513,14 +516,19 @@ use yii\widgets\ActiveForm;
 
 		for(var i=0 ; i<arrayConfirm.length ; i++){
 			lista = lista+'<li class="list-group-item" onClick="quitarConfirm('+i+')" id="listConf'+i+'">'+generalNombre[i]+' <font size=2><i>M-'+generalMesas[i]+'</i></font></li>';
-			array1.push(generalPuestos[i]);
-			array2.push(generalPlatos[i]);
-			array3.push(generaldocumentos[i]);
-			array4.push(generalempresas[i]);
+			array1.push(generalPuestos[arrayConfirm[i]]);
+			array2.push(generalPlatos[arrayConfirm[i]]);
+			array3.push(generaldocumentos[arrayConfirm[i]]);
+			array4.push(generalempresas[arrayConfirm[i]]);
 		}
 
 		if(array1.length > 0){
-			swal({
+
+			entregarEnMesa(array1,array2,array3,array4);
+			
+
+			// CONFIRMAR LOS PLATOS POR SI ALGUN DIA SE VUELVE HABILITAR
+			/*swal({
 				title: '¿Confirmar platos a entregar?',
 				text: 
 					'<div>'+
@@ -548,7 +556,7 @@ use yii\widgets\ActiveForm;
 		  			entregarEnMesa(array1,array2,array3,array4);
 		  		}
 			  		
-				});
+				});*/
 			
 		}
 
@@ -591,4 +599,8 @@ use yii\widgets\ActiveForm;
 </script>
 
 
-<!--http://localhost:8000/Acomer/web/index.php?r=site%2Fmesa&maxpuestos=4&codigo=1-->
+<script type="text/javascript">
+	/*setTimeout(function(){
+		$("#pedidosEmp2").click();
+	}, 5000);	*/
+</script>

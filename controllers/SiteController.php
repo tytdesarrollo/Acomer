@@ -25,6 +25,7 @@ use app\models\SpMesasPedidos;
 use app\models\funcionesArray;
 use app\models\SpMesasFactura;
 use app\models\SpCocinaPedidos;
+use app\models\SpAdministracion;
 
 
 class SiteController extends Controller
@@ -33,11 +34,9 @@ class SiteController extends Controller
 
     public function actionPrueba(){     
         
-        $fn_array = new SpMesasFactura();
-        $result = $fn_array->procedimiento9(1);
         
         $this->layout=false;
-        return $this->render('prueba',['result'=>$result]); 
+        return $this->render('prueba'); 
     }   
     
     public function behaviors()
@@ -311,6 +310,8 @@ class SiteController extends Controller
                 return $this->redirect(['site/plaza']);
             }else if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
+            }else if($rol === 'ADMINISTRADOR'){
+                return $this->redirect(['site/administrador']);
             }else{
                 session_destroy();
                 return $this->redirect(['site/index']);
@@ -571,7 +572,12 @@ class SiteController extends Controller
         $c6 = $get6;
     
 
-        //return $this->redirect(['site/prueba','c1'=>$c1,'c2'=>$c2,'c3'=>$c3,'c4'=>$c4,'c5'=>$c5,'c6'=>$c6]);   
+        /*var_dump($c1);
+        var_dump($c2);
+        var_dump($c3);
+        var_dump($c4);
+        echo $c5; echo "<br>";
+        echo $c6;*/
         
         $pedido = new SpMesasPedidos();
         $tomarpedido = $pedido->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6);
@@ -580,6 +586,11 @@ class SiteController extends Controller
         $c2 = $funcionArr->crearArray($get7);
 
         $pedido->procedimeinto13($c1,$c2);
+
+        //actualiza los puesto de la mesa
+        $c1 = Yii::$app->request->get('mesa');
+        $c2 = Yii::$app->request->get('tamano');
+        $tomarpedido = $pedido->procedimiento15($c1,$c2);
 
         return $this->redirect(['site/plaza']);
 
@@ -834,7 +845,7 @@ class SiteController extends Controller
         // datos eviados por get
         $get1 = Yii::$app->request->get('tamano');
 
-        if($get1 <= 4){
+        if($get1 <= 4 || ($get1 >= 7 && $get1 <= 12)){
             // captura los demas datos
             $get2 = Yii::$app->request->get('mesa');
             //parametros de entrada
@@ -965,6 +976,9 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            //
+            $fn_facturar->procedimiento10($facturar2['NUMERO_FAC'][0]);
+            //
             echo json_encode($cabeceraDetalle);
         // si es falso se facturan los puestos solicitados
         }else if($get3 === "true"){
@@ -983,6 +997,9 @@ class SiteController extends Controller
             // se genera la factura para el cliente
             $facturar2 = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
             $cabeceraDetalle = array($facturar2, $detalle, $numeroRever);
+            //
+            $fn_facturar->procedimiento10($facturar2['NUMERO_FAC'][0]);
+            //            
             echo json_encode($cabeceraDetalle);             
 
         }
@@ -1189,6 +1206,9 @@ class SiteController extends Controller
         // se genera la factura para el cliente
         $facturar = $fn_facturar->procedimiento4($c1,$c2,$c3,$c4,$c5);
         $cabeceraDetalle = array($facturar, $detalle1, $numeroRever);
+        //
+        $fn_facturar->procedimiento10($facturar['NUMERO_FAC'][0]);
+        //
         echo json_encode($cabeceraDetalle);        
     }
 
@@ -1745,6 +1765,213 @@ class SiteController extends Controller
         $mensaje = $fn_facturacion->procedimiento9($c1);
 
         echo $mensaje;
+    }
+
+    public function actionAdministrador(){
+
+        if(!isset(Yii::$app->session['cedula'])){
+            return $this->redirect(['site/index']);
+        }
+
+        $fecha = getdate();
+        $hoy = $fecha['mday']."/".$fecha['mon']."/".$fecha['year'];
+
+
+        $admin = new SpAdministracion();
+        $documentos = $admin->procedimiento1($hoy);
+
+        $this->layout=false;
+        return $this->render('administrador',["documentos"=> $documentos]);
+    }
+
+    public function actionDocumentos(){
+        $fecha =  Yii::$app->request->get('fechaHist');
+
+        $admin = new SpAdministracion();
+        $documentos = $admin->procedimiento1($fecha);
+
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($documentos['NIT']) ; $i++) { 
+            $iconTable = "<i class='material-icons'  onclick='mostrarDetallesVentas(".$i.")'> &#xE417;</i>";
+
+            $nitId = "id='histnit".$i."'";
+            $empId = "id='histemp".$i."'";
+            $docId = "id='histdoc".$i."'";
+            $valId = "id='histval".$i."'";
+
+            $jsonTable = $jsonTable .
+                '['.
+                    '"'.$iconTable.'",'.
+                    '"<span '.$nitId.'>'.$documentos['NIT'][$i].'</span>",'.
+                    '"<span '.$empId.'>'.$documentos['EMPRESA'][$i].'</span>",'.
+                    '"<span '.$docId.'>'.$documentos['DOCUMENTO'][$i].'</span>",'.
+                    '"'.$documentos['FECHA'][$i].'",'.
+                    '"<span '.$valId.'>'.number_format($documentos['VALOR'][$i], 2).'</span>"'.
+                '],';
+        }
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';
+        //
+        echo $jsonTable;
+    }
+
+    public function actionDetalledocumentos(){
+        $c1 =  Yii::$app->request->get('empresa');
+        $c2 =  Yii::$app->request->get('documento');
+
+        $admin = new SpAdministracion();
+        $documentos = $admin->procedimiento2($c1,$c2);
+
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($documentos['PLATO']) ; $i++) {            
+
+            $jsonTable = $jsonTable .
+                '['.
+                    '"'.$documentos['PLATO'][$i].'",'.
+                    '"'.$documentos['CANTIDAD'][$i].'",'.
+                    '"'.number_format($documentos['VALOR'][$i], 2).'",'.
+                    '"'.number_format($documentos['IMPUESTO'][$i], 2).'",'.
+                    '"'.number_format($documentos['TOTAL'][$i], 2).'"'.
+                '],';
+        }
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';
+        //
+        echo $jsonTable;
+    }
+
+    public function actionDetalleempresa(){
+        $c1 =  Yii::$app->request->get('fecha');
+
+        $admin = new SpAdministracion();
+        $datos = $admin->procedimiento3($c1);
+        
+        echo json_encode($datos);
+    }
+
+    public function actionRealizacierre(){
+        $admin = new SpAdministracion();
+        $platos = $admin->procedimiento4();
+
+        echo "ok";
+    }
+
+
+    public function actionCierres(){        
+
+        $admin = new SpAdministracion();
+        $cierre = $admin->procedimiento5();
+
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($cierre['GEN_CIE_ID']) ; $i++) { 
+            $iconTable = "<i class='material-icons'  onclick='mostrarDetalleCierre(".$i.")'> &#xE417;</i>";
+
+            $cierreId = "id='cierreId".$i."'";
+
+            $jsonTable = $jsonTable .
+                '['.
+                    '"'.$iconTable.'",'.
+                    '"<span '.$cierreId.'>'.$cierre['GEN_CIE_ID'][$i].'",'.
+                    '"'.$cierre['GEN_CIE_FECHINI'][$i].'",'.
+                    '"'.$cierre['GEN_CIE_HORAINI'][$i].'",'.
+                    '"'.$cierre['GEN_CIE_FECHFIN'][$i].'",'.
+                    '"'.$cierre['GEN_CIE_HORAFIN'][$i].'",'.
+                    '"'.$cierre['GEN_CIE_TIPPROC'][$i].'"'.
+                '],';
+        }
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';
+        //
+        echo $jsonTable;        
+    }
+
+    public function actionDetallecierres(){        
+        $c1 = Yii::$app->request->get('codigo');
+        $opcion = Yii::$app->request->get('opcion');
+        // 1: datos para la tabla detalle
+        // 2: datos para la cabecer
+
+        $admin = new SpAdministracion();
+        $cierre = $admin->procedimiento6($c1);
+
+        switch($opcion){
+            case 1:
+                $datosCab = array($cierre[1],$cierre[2],$cierre[3],$cierre[4]);
+                echo json_encode($datosCab);    
+                break;
+            case 2:
+                $datosDetalle = $cierre[0];
+                $jsonTable = '';
+
+                for ($i=0 ; $i<count($datosDetalle['EMPRESA']) ; $i++) {                     
+
+                    $jsonTable = $jsonTable .
+                        '['.                            
+                            '"'.$datosDetalle['EMPRESA'][$i].'",'.
+                            '"'.$datosDetalle['GEN_EMP_NOM'][$i].'",'.
+                            '"'.$datosDetalle['VEN_FAC_PROCOD'][$i].'",'.
+                            '"'.$datosDetalle['VEN_REF_PRODES'][$i].'",'.
+                            '"'.$datosDetalle['CANT'][$i].'",'.
+                            '"'.number_format($datosDetalle['TOTAL'][$i], 2).'"'.
+                        '],';
+                }
+
+                $jsonTable = substr($jsonTable,0,-1);
+                $jsonTable = '{"data":['.$jsonTable.']}';
+                //
+                echo $jsonTable;        
+                break;
+            
+        }
+    }
+
+    public function actionAdminmenus(){
+        $opcion = Yii::$app->request->get('opcion');
+        // 1: categorias
+        // 2: platos
+        // 
+        $fn_menus = new SpMenusPlaza;
+        $datosMenus = $fn_menus->procedimiento();   
+
+        switch ($opcion) {
+            case 1:
+                $datosCategoria = $datosMenus[0];
+                $jsonTable = '';
+
+                for ($i=0 ; $i<count($datosCategoria) ; $i++) {       
+                    $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarCategoria(".$i.")'> edit</i>";              
+                    $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarCategoria(".$i.")'> delete</i>";
+                    $imagenCateg = "<img id='imgCat".$i."' src='img/categorias/".$datosCategoria[$i]['IMAGEN']."' >";
+
+                    $categoriaId = "id='categoriaId".$i."'";
+                    $nombreCatId = "id='nombreCatId".$i."'";
+
+                    $jsonTable = $jsonTable .
+                        '['.
+                            '"<span '.$categoriaId.'>'.$datosCategoria[$i]['COD_CATEGORIA'].'</span>",'.                            
+                            '"<span '.$nombreCatId.'>'.$datosCategoria[$i]['DESCRIPCION'].'</span>",'.
+                            '"'.$imagenCateg.'",'.
+                            '"'.$iconEdit.'",'.
+                            '"'.$iconDelete.'"'.
+                        '],';
+                }
+
+                $jsonTable = substr($jsonTable,0,-1);
+                $jsonTable = '{"data":['.$jsonTable.']}';
+                //
+                echo $jsonTable; 
+                break;
+            
+            case 2:
+                
+                break;
+        }
     }
 
 

@@ -85,7 +85,11 @@
 			//ciclo para llenado del array
 			for($i=0 ; $i<sizeof($puestos) ; $i++){
 				//valor en la posicion 
-				$puestosNew[$i] = "0".$puestos[$i];
+				if($puestos[$i] <= 9){
+					$puestosNew[$i] = "0".$puestos[$i];
+				}else{
+					$puestosNew[$i] = $puestos[$i];
+				}
 			}
 			//retorna
 			return $puestosNew;
