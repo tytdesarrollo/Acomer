@@ -14,8 +14,8 @@ return [
       (SERVICE_NAME=orcl.talentos)
     )
   );charset=AL32UTF8;', // Oracle
-    'username' => 'USR_SAIC',   //USR_AWA      //USR_SAIC      //USR_WEBPRU
-    'password' => 'SAIC123WEB', //0RCAWASYST   //SAIC123WEB    //WEBPRU123
+    'username' => 'USR_WEBPRU',   //USR_AWA      //USR_SAIC      //USR_WEBPRU
+    'password' => 'WEBPRU123', //0RCAWASYST   //SAIC123WEB    //WEBPRU123
 	'charset' => 'utf8',
 		
 ];
