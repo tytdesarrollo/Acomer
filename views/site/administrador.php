@@ -17,7 +17,7 @@
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-	<head>
+	<head>		
 	    <meta charset="<?= Yii::$app->charset ?>">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <?= Html::csrfMetaTags() ?>
@@ -26,12 +26,7 @@
 
 		<style type="text/css">					
 
-			#fechaCuenta{
-				width: 185px;
-    			height: 31px;
-			}
-
-			#fechaHist{
+			#fechaCuenta, #fechaHist, #fechaFactura, #horaFactura, #fecIniCierre, #fecFinCierre, #horaIniCierre, #horaFinCierre{
 				width: 185px;
     			height: 31px;
 			}
@@ -68,7 +63,7 @@
 				color: black;
 			}
 
-			#btnCierre {
+			#btnCierre, #btnAnadir, #btnFacturar {
 				background: #009688;
 				color:white;
 			}
@@ -91,7 +86,64 @@
 			#bodyContModal3 img{
 				width: 81px;
 			}
+
+			.ui-menu .ui-menu-item {
+			    margin: 0;
+			    cursor: pointer;
+			    list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+			}
+
+			li {
+			    display: list-item;
+			    text-align: -webkit-match-parent;
+			}
+
+			.ul {
+			    display: none;
+			    top: 416.469px;
+			    left: 317px;
+			    width: 932px;
+			}
+			.ui-widget.ui-widget-content {
+			    border: 1px solid #d3d3d3;
+			}
+			.ui-widget-content {
+			    border: 1px solid #aaaaaa;
+			    background: #ffffff;
+			    color: #222222;
+			}
+			.ui-widget {
+			    font-family: Verdana,Arial,sans-serif;
+			    font-size: 1.1em;
+			}
+			.ui-menu {
+			    list-style: none;
+			    padding: 0;
+			    margin: 0;
+			    display: block;
+			    outline: 0;
+			}
+			.ui-autocomplete {
+			    position: absolute;
+			    top: 0;
+			    left: 0;
+			    cursor: default;
+			}
+			.ui-front {
+			    z-index: 100;
+			}
+			
+			.hrNotvisible{
+				border: 0;
+				clear:both;
+				display:block;
+				width: 96%;
+				background-color:#FFF;
+				height: 1px;
+			}
+			
 		</style>
+		<?= Html::jsFile('@web/js/jquery.min.js') ?>
 
 		<script type="text/javascript">
 			
@@ -107,7 +159,7 @@
 						<p class="txt__light-100">
 							
 							<div class="pull-right">
-								<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" onclick="salir()">
+								<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" onclick="salir()" id="btnSalida">
 									<i class="material-icons icon-btn">&#xE14C;</i>Salir
 								</a>
 							</div>
@@ -144,7 +196,7 @@
 								</li>
 								<li class="divider"><div class="ln"></div></li>							
 								<li >								
-									<a href="#tab3" data-toggle="tab">									
+									<a href="#tab3" data-toggle="tab" id="tab3Click">									
 										<i class="material-icons icon-btn">&#xE561;</i> MENU RESTAURANTES
 									</a>
 								</li>
@@ -152,6 +204,12 @@
 								<li >
 									<a href="#tab4" data-toggle="tab">
 										<i class="material-icons">&#xE8A1;</i> CIERRES
+									</a>
+								</li>	
+								<li class="divider"><div class="ln"></div></li>
+								<li >
+									<a href="#tab5" data-toggle="tab">
+										<i class="material-icons">insert_drive_file</i> FACTURAR
 									</a>
 								</li>		
 							<?php else: ?>
@@ -162,9 +220,15 @@
 								</li>
 								<li class="divider"><div class="ln"></div></li>
 								<li >
-									<a href="#tab4" data-toggle="tab">
-										<i class="material-icons">&#xE8A1;</i> CIERRES
+								<a href="#tab4" data-toggle="tab">
+									<i class="material-icons">&#xE8A1;</i> CIERRES
+								</a>
+								<li class="divider"><div class="ln"></div></li>
+								<li >
+									<a href="#tab5" data-toggle="tab">
+										<i class="material-icons">insert_drive_file</i> FACTURAR
 									</a>
+								</li>
 							<?php endif ?>				
 						</ul>
 					</div>
@@ -261,7 +325,7 @@
 								<hr>
 
 								<div class="col-md-12">
-									<table class="table table-striped" id="dataTable2">
+									<table class="table table-striped" id="dataTable2" style="width: 100%;overflow-x:auto;">
 										<thead class="thead">
 											<tr>
 												<th scope="col"></th>
@@ -321,12 +385,12 @@
 												<hr>
 												<div class="col-md-12">
 													<h4><strong>LISTA DE CATEGORIAS</strong></h4>	
-													<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="editarCategoria('nuevo')">
+													<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="editarCategoria('nuevo')" style="z-index: 2;">
 														<i class="material-icons">add</i> crear
 													</a>												
 												</div>												
-												<div class="col-md-12">													
-													<table class="table table-striped" id="dataTable6" style="width: 100%">
+												<div class="col-md-12" style="z-index: 1;">													
+													<table class="table table-striped" id="dataTable6" style="width: 100%;" >
 														<thead class="thead">
 															<tr>
 																<th>CODIGO</th>
@@ -346,12 +410,12 @@
 												<hr>
 												<div class="col-md-12">
 													<h4><strong>LISTA DE PLATOS</strong></h4>	
-													<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="editarPlato('nuevo')">
+													<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="editarPlato('nuevo')" style="z-index: 2;">
 														<i class="material-icons">add</i> crear
 													</a>												
 												</div>												
-												<div class="col-md-12">													
-													<table class="table table-striped" id="dataTable7" style="width: 100%">
+												<div class="col-md-12" style="z-index: 1;">													
+													<table class="table table-striped" id="dataTable7" style="width: 100%;overflow-x:auto;">
 														<thead class="thead">
 															<tr>
 																<th>CODIGO</th>
@@ -364,6 +428,7 @@
 																<th>TIEMPO (min)</th>
 																<th>NIT</th>
 																<th>EMPRESA</th>
+																<th>DESCRIPCION</th>
 																<th>EDITAR</th>
 																<th>ELIMINAR</th>
 															</tr>
@@ -392,26 +457,70 @@
 								</div>
 								<br>
 								<div class="col-md-12">
-									<table class="table table-striped">
+									<table class="table table-striped" style="width: 100%;">
 										<thead class="thead">
 											<tr>
-												<th scope="col">TIPO DE CIERRE</th>
-												<th scope="col">CONFIRMAR</th>
+												<th scope="col">FECHAS</th>
+												<th scope="col">HORAS</th>					
 											</tr>
 										</thead>
 										<tbody>
-											<tr>																								
-												<td>													
-													TOTAL
+											<tr>													
+												<td>
+													<div class="col-md-6">
+														<label class="font-style-form" for="fecIniCierre">Fecha de incio</label>
+														<div class="input-group" id="contentSearch">
+															<span class="input-group-addon">
+																<i class="material-icons" >date_range</i>
+															</span>
+															<input type="date" class="form-control" id="fecIniCierre" max="<?php echo date("Y-m-d");?>">
+														</div>
+													</div>			
+												</td>												
+												<td>
+													<div class="col-md-6">
+														<label class="font-style-form" for="horaIniCierre">Hora de incio</label>
+														<div class="input-group" id="contentSearch">															
+															<span class="input-group-addon">
+																<i class="material-icons" >hourglass_empty</i>
+															</span>
+															<input type="time" class="form-control" id="horaIniCierre" disabled="disabled">
+														</div>
+													</div>	
+												</td>
+											</tr>
+
+											<tr>
+												<td>
+													<div class="col-md-6">
+														<label class="font-style-form" for="fecFinCierre">Fecha fin</label>
+														<div class="input-group" id="contentSearch">															
+															<span class="input-group-addon">
+																<i class="material-icons" >date_range</i>
+															</span>
+															<input type="date" class="form-control" id="fecFinCierre" disabled="disabled">
+														</div>
+													</div>	
 												</td>
 												<td>
-													<input type="checkbox" id="confirmCierre" onclick="checkCierre(1)">													
-												</td>
+													<div class="col-md-6">
+														<label class="font-style-form" for="horaFinCierre">Hora fin</label>
+														<div class="input-group" id="contentSearch">															
+															<span class="input-group-addon">
+																<i class="material-icons" >hourglass_empty</i>
+															</span>
+															<input type="time" class="form-control" id="horaFinCierre" disabled="disabled">
+														</div>
+													</div>
+												</td>												
 										    </tr>	
 										</tbody>
 									</table>									
 								</div>								
 								<div class="col-md-12 text-center">
+									Confirmar: <input type="checkbox" id="confirmCierre" onclick="checkCierre(1)">
+								</div>			
+								<div class="col-md-12 text-center">									
 									<button class="btn btn-primary" id="btnCierre" onclick="realizarCierre()">Realizar cierre</button>
 								</div>
 								<hr>
@@ -420,7 +529,7 @@
 								</div>
 								<br>
 								<div class="col-md-12">
-									<table class="table table-striped" id="dataTable3" style="width: 100%">
+									<table class="table table-striped" id="dataTable3" style="width: 100%;overflow-x:auto;" >
 										<thead class="thead">
 											<tr>
 												<th scope="col"></th>
@@ -447,6 +556,200 @@
 								</div>
 							</div>
 						</div>
+
+					<!--FACTURAR-->
+						<div class="tab-pane fade in" id="tab5">
+							<div class="heading">
+								<h3 class="fnt__Medium text-center"><strong>FACTURAR</strong></h3>
+							</div>
+							<div class="body">
+								<hr>
+							<!--HORA Y FECHA DE PROCEDO-->
+								<div class="col-md-12">									
+									<h5><strong>HORA Y FECHA DE PROCESO*</strong></h5>
+								</div>								
+								<div class="row">									
+									<div class="col-md-6">
+										<div class="input-group" id="contentSearch">
+											<span class="input-group-addon">
+												<i class="material-icons" >date_range</i>
+											</span>
+											<input type="date" class="form-control" id="fechaFactura">
+										</div>
+									</div>						
+									<div class="col-md-6">
+										<div class="input-group" id="contentSearch">
+											<span class="input-group-addon">
+												<i class="material-icons" >hourglass_empty</i>
+											</span>
+											<input type="time" class="form-control" id="horaFactura">
+										</div>
+									</div>																		
+								</div>	
+								<hr>
+							<!--LISTA DE PEDIDOS-->
+								<div class="col-md-12">									
+									<h5><strong>PEDIDO*</strong></h5>
+								</div>	
+								<div class="col-md-3">
+									<label class="font-style-form" for="codPlatosFactura">Codigo de plato</label>
+									<input type="text" class="form-control" id="codPlatosFactura" disabled="disabled">
+								</div>
+								<div class="col-md-4">
+									<label class="font-style-form" for="platosFactura">Selecciona el plato pedido</label>
+									<input type="text" class="form-control" id="platosFactura">
+								</div>			
+								<div class="col-md-3">
+									<label class="font-style-form" for="cantidadPlato">Selecciona cantidad</label>
+									<input type="number" class="form-control" id="cantidadPlato" value="1">
+								</div>									
+								<div class="col-md-2">
+									<button class="btn btn-primary" id="btnAnadir" onclick="anadirPlato()">AÑADIR</button>
+								</div>
+								<div class="row"></div>
+								<hr>
+								<div class="col-md-12">									
+									<h5><strong>LISTA PEDIDO*</strong></h5>
+								</div>	
+								<div class="col-md-12">
+									<table class="table table-striped" id="tablePedido">
+										<thead>
+											<th>CODIGO</th>
+											<th>PLATO</th>
+											<th>CANTIDAD</th>											
+											<th></th>
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+								<div class="row"></div>
+								<hr>
+							<!--DATOS DE FACTURACION-->
+								<div class="col-md-12">									
+									<h5><strong>DATOS DE FACTURA*</strong></h5>
+								</div>
+								
+								<div class="col-md-6">
+									<label class="font-style-form" for="meseroFactura">Codigo de mesero</label>
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >person_pin</i>
+										</span>
+										<input type="number" class="form-control" id="meseroFactura" placeholder="Cedula del mesero">
+									</div>
+								</div>																	
+															
+								<div class="col-md-6">
+									<label class="font-style-form" for="codigoMesa">Codigo de mesa</label>
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >location_on</i>
+										</span>
+										<input type="number" class="form-control" id="codigoMesa" placeholder="Codigo de la mesa">
+									</div>
+								</div>																										
+
+								<div class="col-md-12">
+									<hr class="hrNotvisible">
+								</div>
+
+								<div class="col-md-6">								
+									<label class="font-style-form" for="formaPagos">Forma de pago</label>	
+									<select id="formaPagos" class="form-control">
+				    					<option id="default" selected="selected" value="default">Selecciona una forma de pago</option>
+				    					<option id="01" value="01">Efectivo</option>
+				    					<option id="02" value="02">Tarjeta</option>
+				    					<option id="03" value="03">Ambos</option>
+									</select>
+								</div>								
+																			
+								<div class="col-md-6">
+									<label class="font-style-form" for="numAutorizacion">Numero de autorizacion</label>	
+									<div class="input-group" id="autorizacionContent">										
+										<span class="input-group-addon">
+											<i class="material-icons" >payment</i>
+										</span>
+										<input type="number" class="form-control" id="numAutorizacion" placeholder="Ingresa el numero de autorizacione">
+									</div>
+								</div>	
+
+								<div class="row"></div>
+								<hr>
+								<div class="col-md-12">									
+									<h5><strong>ATENCIONES</strong></h5>
+								</div>	
+								<div class="col-md-6">	
+									<label class="font-style-form" for="atencion1">Atenciones de <?=$container1?></label>		
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >attach_money</i>
+										</span>
+										<input type="number" class="form-control" id="atencion1" placeholder="Ingrese antencion de <?=$container1?>">
+									</div>																
+								</div>
+								<div class="col-md-6">		
+									<label class="font-style-form" for="atencion2">Atenciones de <?=$container2?></label>		
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >attach_money</i>
+										</span>
+										<input type="number" class="form-control" id="atencion2" placeholder="Ingrese antencion de <?=$container2?>">
+									</div>																
+								</div>
+								<div class="col-md-12">
+									<hr class="hrNotvisible">
+								</div>
+								<div class="col-md-6">	
+									<label class="font-style-form" for="atencion3">Atenciones de <?=$container3?></label>		
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >attach_money</i>
+										</span>
+										<input type="number" class="form-control" id="atencion3" placeholder="Ingrese antencion de <?=$container3?>">
+									</div>																		
+								</div>
+								<div class="col-md-6">		
+									<label class="font-style-form" for="atencion4">Atenciones de <?=$container4?></label>		
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >attach_money</i>
+										</span>
+										<input type="number" class="form-control" id="atencion4" placeholder="Ingrese antencion de <?=$container4?>">
+									</div>																	
+								</div>
+								<div class="row"></div>
+								<hr>
+								<div class="col-md-12">									
+									<h5><strong>PROPINA*</strong></h5>
+								</div>	
+								<div class="col-md-6">	
+									<label class="font-style-form" for="valorPropina">Valor de la propina</label>	
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >attach_money</i>
+										</span>
+										<input type="number" class="form-control" id="valorPropina" placeholder="Ingrese valor de la propina">
+									</div>																		
+								</div>
+								<div class="col-md-6">	
+									<label class="font-style-form" for="cedulaCliente">Cedula del cliente</label>	
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >person_pin</i>
+										</span>
+										<input type="number" class="form-control" id="cedulaCliente" placeholder="Ingrese cedula del cliente">
+									</div>																		
+								</div>
+								<div class="col-md-12">
+									<hr class="hrNotvisible">
+								</div>
+								<div class="col-md-12">	
+									<button class="btn btn-primary" id="btnFacturar" onclick="visualizaFactura()" style="width: 100%">FACTURAR</button>																		
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -462,11 +765,14 @@
       						</div>
 							 <div class="modal-body">
 						 		<div class="container-fluid" id="contenidoModal">
-						 			<div id="headContModal"></div>
+						 			<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="imprimirFactura()" id="impFacBtn" style="z-index: 2;">
+										<i class="material-icons">print</i> Imprimir
+									</a>
+						 			<div id="headContModal"></div>						 				
 						 			<hr>
 						 			<div id="bodyContModal">
 						 				<h4 class="modal-tittle"><strong>PLATOS VENDIDOS</strong></h4>
-						 				<table class="table table-striped" id="dataTable4" style="width: 100%">
+						 				<table class="table table-striped" id="dataTable4" style="width: 100%;overflow-x:auto;">
 						 					<thead  class="thead">
 						 						<th>PRODUCTO</th>
 												<th>CANTIDAD</th>
@@ -484,7 +790,7 @@
 						 			<div id="footContModal">						 				
 						 				<!--TABLA DE ATENCIONES-->
 						 				<h4 class="modal-tittle"><strong>ATENCIONES</strong></h4>
-										<table class="table table-striped" id="tableDetAtencion" style="width: 100%">
+										<table class="table table-striped" id="tableDetAtencion" style="width: 100%;overflow-x:auto;">
 											<thead class="thead">
 												<tr>
 													<th>NIT</th>
@@ -583,13 +889,15 @@
 												<th>SUB TOTAL</th>
 												<th>PROPINAS</th>
 												<th>IMPUESTOS</th>
+												<th>ATENCIONES</th>
 												<th>TOTAL</th>
 											</thead>							
 											<tbody>
 												<tr>
 													<td>$<span id="subtotalCierre"></span></td>											
 													<td>$<span id="propinaCierre"></span></td>	
-													<td>$<span id="impuestosCierre"></span></td>											
+													<td>$<span id="impuestosCierre"></span></td>		
+													<td>$<span id="descuentosCierre"></span></td>									
 													<td><strong>$<span id="netoCierre"></span></strong></td>
 												</tr>
 											</tbody>
@@ -597,13 +905,13 @@
 						 			</div>
 						 			<hr>
 						 			<div id="bodyContModal2">
-						 				<table class="table table-striped" id="dataTable5" style="width: 100%">
+						 				<table class="table table-striped table-responsive" id="dataTable5" style="width: 100%;overflow-x:auto;">
 						 					<thead  class="thead">
 						 						<th>NIT</th>
 												<th>EMPRESA</th>
 												<th>CODIGO PRODUCTO</th>
 												<th>NOMBRE PRODUCTO</th>
-												<th>CANTIDAD</th>				 												 						
+												<th>CANTIDAD</th>
 												<th>TOTAL</th>				 												 						
 						 					</thead>
 						 					<tbody id="bodyTableModal2">
@@ -732,6 +1040,14 @@
 						    					<?php endfor ?>													
 											</select>							    				
 						    			</div>	
+						    			<div class="form-group">
+											<label id="labelcodPlato" class="font-style-form" for="nomPlato">Codigo del plato</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<input type="text" class="form-control" id="codPlato" placeholder="" disabled="disabled">
+												</div>												
+											</div>						    				
+						    			</div>	
 						 				<div class="form-group">
 											<label class="font-style-form" for="nomPlato">Nombre del plato</label>    								    				
 											<div class="row">										
@@ -749,6 +1065,14 @@
 						    						<option id="<?=$categorias[$i]["COD_CATEGORIA"]?>" value="<?=$categorias[$i]["COD_CATEGORIA"]?>"><?=$categorias[$i]["DESCRIPCION"]?></option>	
 						    					<?php endfor ?>													
 											</select>																						
+						    			</div>	
+						    			<div class="form-group">
+											<label class="font-style-form" for="descplato">Descripcion del plato</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">													
+													<textarea class="form-control" id="descplato"></textarea>
+												</div>												
+											</div>						    				
 						    			</div>	
 						    			<div class="form-group">
 						    				<div class="row">
@@ -875,7 +1199,7 @@
   					</div>
 				</div>
 			</div>				
-		<?php $this->endBody() ?>
+		<?php $this->endBody() ?>		
 
 		
 	</body>
@@ -883,14 +1207,18 @@
 <?= Html::cssFile('@web/css/dataTables.bootstrap4.css')?>
 <?= Html::jsFile('@web/js/jquery.dataTables.js') ?>
 <?= Html::jsFile('@web/js/dataTables.bootstrap4.js') ?>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>	
 
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
 
 <script type="text/javascript">
 	$(document).ready(function(){      
 
         $("#dataTable2").dataTable({
+        	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
         	"language": {
                     "lengthMenu": "Mostrar _MENU_ registros por pagina",
                     "zeroRecords": "Lo sentimos no hay nada para mostrar",
@@ -906,6 +1234,10 @@
         });
         
         $("#dataTable4").dataTable({
+        	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
         	"language": {
                     "lengthMenu": "Mostrar _MENU_ registros por pagina",
                     "zeroRecords": "Lo sentimos no hay nada para mostrar",
@@ -925,16 +1257,30 @@
 
 
 <script type="text/javascript">
-	var rolIniciado = "<?=$rol?>";	
+	var rolIniciado = "<?=$rol?>";
+	var movCategoria = "<?=$movcat?>";
+
+	var nombreContainer1 = "<?=$nitcontainer1?>";
+	var nombreContainer2 = "<?=$nitcontainer2?>";
+	var nombreContainer3 = "<?=$nitcontainer3?>";
+	var nombreContainer4 = "<?=$nitcontainer4?>";
+
 	//carga inicial
 	$(showForm('CAT'));
 	$(checkCierre(0));	
+	$(movimientoCategoria());
+
+	function movimientoCategoria(){
+		if(movCategoria == 1){
+			$("#tab3Click").click();
+		}
+	}
 
 	function showForm(form){
 		switch(form){
 			case 'CAT':
 				$('#catForm').show();
-				$('#plaForm').hide();
+				$('#plaForm').hide();				
 				break;
 			case 'PLA':
 				$('#catForm').hide();
@@ -943,26 +1289,87 @@
 		}
 	}
 
-	function checkCierre(action){
+	function checkCierre(action){				
 		switch(action){
 			case 0:
 				$("#confirmCierre").attr('onclick', 'checkCierre(1)');
-				$("#btnCierre").prop("disabled",true);						
+				$("#btnCierre").prop("disabled",true);		
+				$("#fecIniCierre").attr("disabled",false);
+				$("#fecFinCierre").attr("disabled",false);
+				$("#horaIniCierre").attr("disabled",false);
+				$("#horaFinCierre").attr("disabled",false);				
 				break;
 			case 1:
-				$("#confirmCierre").attr('onclick', 'checkCierre(0)');
-				$("#btnCierre").prop("disabled",false);
+				var fecha1 = $("#fecIniCierre").val();
+				var fecha2 = $("#fecFinCierre").val();
+				var time1 = $("#horaIniCierre").val();
+				var time2 = $("#horaFinCierre").val();
+
+				var tamano = fecha1.length * fecha2.length * time1.length * time2.length;
+
+				if(tamano == 0){
+					swal("Campos vacios","Compete los campos para generar el cierre","info");
+					$("#confirmCierre").attr("checked",false);
+				}
+				else{
+					var hora1 = time1.substring(0,2);
+					var minuto1 = time1.substring(3,5);
+					var hora2 = time2.substring(0,2);
+					var minuto2 = time2.substring(3,5);
+
+					var date1 = new Date(fecha1);
+					date1.setHours(hora1);
+					date1.setMinutes(minuto1);
+					var date2 = new Date(fecha2);
+					date2.setHours(hora2);
+					date2.setMinutes(minuto2);					
+
+					if(date1 > date2){
+						swal("Fechas erroneas","La fecha inicial debe ser menor a la final","info");
+						$("#confirmCierre").attr("checked",false);
+
+						$("#fecIniCierre").attr("disabled",false);
+						$("#fecFinCierre").attr("disabled",false);
+						$("#horaIniCierre").attr("disabled",false);
+						$("#horaFinCierre").attr("disabled",false);						
+					}else{
+						$("#fecIniCierre").attr("disabled",true);
+						$("#fecFinCierre").attr("disabled",true);
+						$("#horaIniCierre").attr("disabled",true);
+						$("#horaFinCierre").attr("disabled",true);
+						
+						$("#confirmCierre").attr('onclick', 'checkCierre(0)');
+						$("#btnCierre").prop("disabled",false);
+					}
+				}
 				break;
 		}
 	}
 
 	function salir(){
-		var urlCerrar = "<?php echo Url::toRoute(['site/salida'])?>";
-		location.href = urlCerrar;
+		if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){
+			var urlCerrar = "<?php echo Url::toRoute(['site/salida'])?>";
+			location.href = urlCerrar;			
+		}else{
+			var urlPlaza = "<?php echo Url::toRoute(['site/plaza'])?>";
+			location.href = urlPlaza;
+		}
+			
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$("#detailFacDoc").hide();
+
+	function imprimirFactura(documento){
+		$.ajax({
+			url:'<?php echo Url::toRoute(['site/imprimirfactura']); ?>',
+			dataType:'json',
+			method: "GET",
+			data: {
+				'codigoFactura':documento,			
+			}		
+		});
+	}
 	
 	function mostrarDetallesVentas(posicion){
 		var codigoVenta = $("#histdoc"+posicion).html();
@@ -997,10 +1404,15 @@
 				'</table>';		
 
 			$("#headContModal").html(tableCabecera);
+			$("#impFacBtn").attr("onclick","imprimirFactura("+codigoVenta+")");
 
 			/*******************************************/
 			/*DETALLE DE PLATOS*/
-			$("#dataTable4").dataTable({	
+			$("#dataTable4").dataTable({
+				responsive: true,	    	
+	        	scrollX: true,
+	        	scrollY: true,
+	        	scrollCollapse: true,	
 				"destroy":true,
 		    	"ajax":{
 		    		"url":"<?php echo Url::toRoute(['site/detalledocumentos']); ?>",
@@ -1026,6 +1438,10 @@
 			/*******************************************/
 			/*ATENCIONES*/
 		    $("#tableDetAtencion").dataTable({	
+		    	responsive: true,	    	
+	        	scrollX: true,
+	        	scrollY: true,
+	        	scrollCollapse: true,
 				"destroy":true,
 		    	"ajax":{
 		    		"url":"<?php echo Url::toRoute(['site/detalleatencion']); ?>",
@@ -1051,6 +1467,10 @@
 		    /*******************************************/
 			/*VALORES POR EMPRESA*/
 		   	$("#tableDetailFac").dataTable({	
+		   		responsive: true,	    	
+		    	scrollX: true,
+		    	scrollY: true,
+		    	scrollCollapse: true,
 				"destroy":true,
 		    	"ajax":{
 		    		"url":"<?php echo Url::toRoute(['site/detallexempresa']); ?>",
@@ -1110,6 +1530,10 @@
 	    			"fechaHist":fecha
 	    		}
 	    	},
+	    	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
 	    	"language": {
 	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
 	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
@@ -1130,6 +1554,10 @@
 
 	function cargarCierres(){
 		$("#dataTable3").dataTable({				
+			responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
 			"destroy":true,
 	    	"ajax":{
 	    		"url":"<?php echo Url::toRoute(['site/cierres']); ?>"    		
@@ -1171,11 +1599,13 @@
 				var impuestos = arrayDatos[0];
 				var subTotal = arrayDatos[1];
 				var propinaVol = arrayDatos[2];
-				var totalNeto = arrayDatos[3];				
+				var descuentos = arrayDatos[3];
+				var totalNeto = arrayDatos[4];				
 
 				$('#subtotalCierre').html(formatoMoneda(subTotal));
 				$('#propinaCierre').html(formatoMoneda(propinaVol));
 				$('#impuestosCierre').html(formatoMoneda(impuestos));
+				$('#descuentosCierre').html(formatoMoneda(descuentos));
 				$('#netoCierre').html(formatoMoneda(totalNeto));				
 			}
 		});	
@@ -1191,6 +1621,10 @@
 					"opcion":2
 	    		}
 	    	},
+	    	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
 	    	"language": {
 	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
 	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
@@ -1209,15 +1643,63 @@
 	}
 
 	function realizarCierre(){
-		$.ajax({
-			url:'<?php echo Url::toRoute(['site/realizacierre']); ?>',							
-			success: function (data) {	
-				swal("Cierre completado", "El detalle del cierre se encuentra en el historial", "success");
-				cargarCierres();
-			}
-		});	
+		var fechaInicioCierre = formato($("#fecIniCierre").val());
+		var horaInicioCierre = $("#horaIniCierre").val()+":00";
+		var fechaFinCierre = formato($("#fecFinCierre").val());
+		var horaFinCierre = $("#horaFinCierre").val()+":00";
+
+		var tamano = fechaInicioCierre.length * horaInicioCierre.length * fechaFinCierre.length * horaFinCierre.length;
+
+		if(tamano == 0){
+			swal("Campos vacíos","Llene los campos faltantes para realizar el cierre","info");
+		}else{						
+
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/realizacierre']); ?>',
+				method: "GET",
+				data: {'fechaIni':fechaInicioCierre,'horaIni':horaInicioCierre,'fechaFin':fechaFinCierre,'horaFin':horaFinCierre},			
+				success: function (data) {	
+					var mensajes = JSON.parse(data);
+
+					if(mensajes[0].localeCompare("1") == 0){
+						swal("Cierre completado", "El detalle del cierre se encuentra en el historial con codigo "+mensajes[1], "success");
+						cargarCierres();
+					}else{
+						swal("Fechas repetidas","Las fechas ingresadas están en rango de cierres ya realizados. Verifica en el historial que las fechas seleccionadas no estén dentro del rango de otros cierres.","info");
+					}
+
+					
+				}
+			});
+		}			
 
 	}
+
+	$("#fecIniCierre").change(function(){
+		var date = new Date();
+
+		if(date.getMonth() < 10){
+			var fechaLimite = date.getFullYear()+"-0"+(date.getMonth()+1)+"-"+date.getDate();
+		}else{
+			var fechaLimite = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+		}
+		
+		var fechaIngresda = this.value;
+		//fecha minima de fin de cierre
+		$("#fecFinCierre").val(fechaIngresda);
+		$("#fecFinCierre").attr("min",fechaIngresda);
+		$("#fecFinCierre").attr("max",fechaLimite);
+		$("#fecFinCierre").attr("disabled",false);
+		//hora minima de inicio de cierre
+		$("#horaIniCierre").attr("disabled",false);
+		$("#horaIniCierre").val("00:00");
+
+		//hora minima de inicio de cierre
+		$("#horaFinCierre").attr("disabled",false);
+		$("#horaFinCierre").val("23:59");
+	});
+
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	$(cargarMenus());
@@ -1329,8 +1811,11 @@
 	    		"data":{
 					"opcion":2
 	    		}
-	    	},
-	    	responsive: true,
+	    	},	    	
+	    	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
 	    	"language": {
 	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
 	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
@@ -1344,6 +1829,8 @@
 	                "search": "Buscar:"
 	            }
 	    });	
+
+		
 	}
 
 
@@ -1366,18 +1853,27 @@
 				$("#nomPlato").val("");
 				$("#tiempoPre").val("");				
 				$("#preNetPlato").val("");
-				$("#precBruPlato").val("");
+				$("#precBruPlato").val("");			
+				$("#descplato").val("")	;
+				$("#labelcodPlato").hide();
+				$("#codPlato").hide();
 				break;
 			default:				
 				$("#tituloModal4").html("EDITAR PLATO");
-
+				$("#labelcodPlato").show();
+				$("#codPlato").show();				
 				//Empresa a la que pertenece el plato
 				var empresaPlato = $("#nitEmpPlatoId"+codigo).html();
 				//se selecciona la imagen
 				$("option[value='"+empresaPlato+"']").attr('selected','selected');
 
 				// nombre de la categoria seleccionada
-				var nombrePlato = $("#nombrePlaId"+codigo).html();				
+				var codigoePlato = $("#platoId"+codigo).html();
+				//se imprime el nombre
+				$("#codPlato").val(codigoePlato);
+
+				// nombre de la categoria seleccionada
+				var nombrePlato = $("#nombrePlaId"+codigo).html();
 				//se imprime el nombre
 				$("#nomPlato").val(nombrePlato);
 
@@ -1385,6 +1881,11 @@
 				var categoriaPlato = $("#codigoCatPlId"+codigo).html();
 				//se muestra la categoria 
 				$("option[value="+categoriaPlato+"]").attr('selected','selected');
+
+				// descripcion del plato
+				var descripPlato = $("#descPlatoId"+codigo).html();
+				//se imprime la descripcion
+				$("#descplato").val(descripPlato);
 
 				// tiempo del plato
 				var tiempoPlato = $("#tiempoPlaId"+codigo).html();
@@ -1413,10 +1914,7 @@
 	}
 
 	function eliminarPlato(codigo){
-		// id del tag 
-		var idTag = "#platoId"+codigo;
-		// codigo de la categoria seleccionado
-		var codigoPlato = $(idTag).html();
+
 		var nombrePlato = $("#nombrePlaId"+codigo).html();
 
 		swal({
@@ -1436,7 +1934,26 @@
 		},function (inputValue) {
 	  		if (inputValue === false) return false;
 	  		if (inputValue === true) {	
-	  			alert("eliminado");
+
+	  			var idPlato = $("#platoId"+codigo).html();
+	  			var empresaPlato = $("#nitEmpPlatoId"+codigo).html();
+	  			
+				$.ajax({
+					url:'<?php echo Url::toRoute(['site/funcionesplatos']); ?>',							
+					method: "GET",
+					data: {'opcion':'DELET','plato':idPlato,'empresa':empresaPlato},
+					success: function (data) {	
+						
+						if(data.localeCompare("ok") == 0){
+							$("#cerrarDelCateg").click();
+							cargarPlatos();
+							swal("Eliminado","El plato ha sido eliminada correctamente ","success");
+						}
+					},
+					error: function (error){
+						swal("Error al eliminar","Vuelve a intentarlo o comunica con el administrador","error");
+					}
+				});			
 	  		}
 		  		
 		});
@@ -1472,6 +1989,9 @@
 								$("#cerrarEditCateg").click();
 								cargarMenus();
 								swal("Editada","La categoría '"+editNameCat+"' ha sido editada correctamente ","success");
+								$(".confirm").click(function(){
+									window.location.href = window.location.href + "&movcat=true";
+								});
 							}
 						},
 						error: function (error){
@@ -1509,7 +2029,7 @@
 								cargarMenus();
 								swal("Creada","La categoría '"+newNameCat+"' ha sido creada correctamente ","success");
 								$(".confirm").click(function(){
-									location.reload();
+									window.location.href = window.location.href + "&movcat=true";
 								});
 							}
 						},
@@ -1565,6 +2085,13 @@
 		if(catePlato.localeCompare("default") == 0){
 			catePlato = "";
 		}
+
+		//descripcion del plato
+		var descPlato = $("#descplato").val();
+		if(descPlato.localeCompare("default") == 0){
+			descPlato = "";
+		}
+
 		//tiempo asignado
 		var tiempoPlato = $("#tiempoPre").val();
 		if(tiempoPlato.localeCompare("default") == 0){
@@ -1581,7 +2108,7 @@
 			precioPlato = "";
 		}
 		// identificar que no hay datos nulos
-		var tamano = empresaPlato.length * nombrePlato.length * catePlato.length * tiempoPlato.length * unidadTiempoPl.length * precioPlato.length;
+		var tamano = empresaPlato.length * nombrePlato.length * catePlato.length * tiempoPlato.length * unidadTiempoPl.length * precioPlato.length * descPlato.length;
 
 		if(tamano == 0){
 			swal("Campos vacíos","Por favor complete los campos faltantes","error");
@@ -1589,30 +2116,87 @@
 			// accion 
 			switch(action){
 				case 'EDIT':
-					
+					var codigoPlato = $("#codPlato").val();
+
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/funcionesplatos']); ?>',							
+						method: "GET",
+						data: {'opcion':'EDIT','codigo':codigoPlato,'nombre':nombrePlato,'precio':precioPlato,'categoria':catePlato,'descripcion':descPlato,'tiempo':tiempoPlato,'empresa':empresaPlato,'unidadT':unidadTiempoPl},
+						success: function (data) {	
+
+							if(data.localeCompare("ok") == 0){
+								$("#cerrarEditPlato").click();
+								cargarPlatos();
+								swal("Editado","El plato '"+nombrePlato+"' ha sido editado correctamente ","success");								
+							}
+						},
+						error: function (error){
+							swal("Error al editar","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});		
 					break;
-				case 'NEW':				
+				case 'NEW':	
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/funcionesplatos']); ?>',							
+						method: "GET",
+						data: {'opcion':'NEW','empresa':empresaPlato,'nombre':nombrePlato,'categoria':catePlato,'tiempo':tiempoPlato,'unidadT':unidadTiempoPl,'precio':precioPlato,'desc':descPlato},
+						success: function (data) {	
+
+							if(data.localeCompare("ok") == 0){
+								$("#cerrarEditPlato").click();
+								cargarPlatos();
+								swal("Creada","El plato '"+nombrePlato+"' ha sido creada correctamente ","success");								
+							}
+						},
+						error: function (error){
+							swal("Error al guardar","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});			
 
 					break;
 			}
 		}			
-		//console.log(empresaPlato+", "+nombrePlato+", "+catePlato+", "+tiempoPlato+", "+unidadTiempoPl+", "+precioPlato+", "+tamano);
-
+		console.log(empresaPlato+", "+nombrePlato+", "+catePlato+", "+tiempoPlato+", "+unidadTiempoPl+", "+precioPlato+", "+descPlato);
 	}	
+
+	// CALCULAR EL VALOR SIN IMPUESTO
+	var typingTimer;                //timer identifier
+	var doneTypingInterval = 1000;  //time in ms, 5 second for example
+	var $input = $('#preNetPlato');
+
+	//on keyup, start the countdown
+	$("#preNetPlato").on('keyup', function () {
+		clearTimeout(typingTimer);
+		typingTimer = setTimeout(doneTyping, doneTypingInterval);
+	});
+
+	//on keydown, clear the countdown 
+	$("#preNetPlato").on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
+
+	//user is "finished typing," do something
+	function doneTyping () {
+		var valorPlato = $("#preNetPlato").val();
+		var precioBruto = parseFloat(valorPlato / 1.08).toFixed(2);;
+		
+		$("#precBruPlato").val(precioBruto);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*var dateNow = new Date();
 	var today = dateNow.getDate()+"/"+(dateNow.getMonth()+1)+"/"+dateNow.getFullYear();*/
 
-	if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){		
+	if(rolIniciado.localeCompare("ADMINISTRADOR") != 0){		
 		//activacion de tab
 		$("#tab1").removeClass("active");
 		$("#tab3").addClass("active");
 		//ejecuta la consulta de la cuentas
 		$(consultaCuenta());	
 		setInterval(consultaCuenta, 5000);
+		//
+		$("#btnSalida").html("volver");
 	}
-	
 	
 	$("#fechaCuenta").change(function(){
 		var fecha = formato(this.value);	
@@ -1663,6 +2247,200 @@
 
 			}
 		});	
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	$(document).ready(function(){
+
+		var arrayPhp1 = new Array();
+		var arrayPhp2 = new Array();
+
+		arrayPhp1 = '<?php echo json_encode($platos)?>';
+		arrayPhp2 = '<?php echo json_encode($codPlatos)?>';
+
+		var platosFactura = JSON.parse(arrayPhp1);
+		var codPlatosFactura = JSON.parse(arrayPhp2);
+
+		$("#platosFactura").autocomplete({
+	  		source: platosFactura,
+	  		select: function (e, ui) {		       
+		        var value = ui.item.value;		        
+		        for (var i=0 ; i<codPlatosFactura.length ; i++){			        	
+					if(value.localeCompare(platosFactura[i]) == 0){
+						$("#codPlatosFactura").focusin();
+						$("#codPlatosFactura").val(codPlatosFactura[i]);
+					}
+				}	
+			}
+		});		
+	});	
+
+	var rowCont = 0;
+
+	function anadirPlato(){
+		var codigo = $("#codPlatosFactura").val();
+		var nombre = $("#platosFactura").val();
+		var cantidad = $("#cantidadPlato").val();
+
+		var tamano = codigo.length * nombre.length * cantidad.length;
+
+		if(tamano == 0){
+			swal("Campos vacíos","Llene los campos para agregar al pedido","info");
+		}else{
+			$("#tablePedido").append('<tr id="row'+rowCont+'"><td class="codigoPlatoRow">'+codigo+'</td><td>'+nombre+'</td><td class="cantidadPlatoRow">'+cantidad+'</td><td><i class="material-icons deleteIcon btn-link" onclick="quitarRow('+rowCont+')">close</i></td></tr>');
+
+			rowCont++;
+
+			$("#codPlatosFactura").val("");
+			$("#platosFactura").val("");
+			$("#cantidadPlato").val("1");
+		}			
+	}
+
+	function quitarRow(id){
+		$("#row"+id).remove();		
+	}
+
+	$("#autorizacionContent").hide();
+
+	$("#formaPagos").change(function(event) {
+		if(this.value.localeCompare("02") == 0 || this.value.localeCompare("03") == 0){
+			$("#autorizacionContent").show();
+			$("#numAutorizacion").show();			
+		}else{
+			$("#autorizacionContent").hide();
+			$("#numAutorizacion").hide();			
+		}
+	});
+	
+	function visualizaFactura(){
+		// fecha de proceso
+		var fechaFacturacion = $("#fechaFactura").val();
+		fechaFacturacion = formato(fechaFacturacion);
+		// hora de procesor
+		var horaFacturacion = $("#horaFactura").val();
+		// codigos de los platos 
+		var platosFacturacion = new Array();
+		//
+		var puestosFacturacion = new Array();
+		var terminosFacturacion = new Array();
+
+		$(".codigoPlatoRow").each(function(){
+			platosFacturacion.push($(this).html());	
+			puestosFacturacion.push("01");
+			terminosFacturacion.push("");
+		});
+		// cantidad de los platos
+		var cantidadFacturacion = new Array();
+		 
+		$(".cantidadPlatoRow").each(function(){
+			cantidadFacturacion.push($(this).html());			
+		});
+		// cedula del mesero
+		var meseroFacturacion = $("#meseroFactura").val();
+		// numero de mesa
+		var mesaFacturacion = $("#codigoMesa").val();
+		// forma de pago
+		var formPagoFacturacion = $("#formaPagos").val();
+		// numero de autorizcion
+		var numAutFacturacion = $("#numAutorizacion").val();
+		// atencion 1
+		var atencion1Facturacion = $("#atencion1").val();
+		// atencion 2
+		var atencion2Facturacion = $("#atencion2").val();
+		// atencion 3
+		var atencion3Facturacion = $("#atencion3").val();
+		// atencion 4
+		var atencion4Facturacion = $("#atencion4").val();
+		// propina 
+		var propinaFacturacion = $("#valorPropina").val();
+		// cedula cliente
+		var cedulaFacturacion = $("#cedulaCliente").val();
+
+
+		if(formPagoFacturacion.localeCompare("02") == 0 || formPagoFacturacion.localeCompare("03") == 0){
+			var camposObligados = fechaFacturacion.length * horaFacturacion.length * platosFacturacion.length * cantidadFacturacion.length * meseroFacturacion.length * mesaFacturacion.length * propinaFacturacion.length * numAutFacturacion.length;		
+		}else{
+			var camposObligados = fechaFacturacion.length * horaFacturacion.length * platosFacturacion.length * cantidadFacturacion.length * meseroFacturacion.length * mesaFacturacion.length * propinaFacturacion.length;
+		}
+
+		if(camposObligados == 0){
+			swal("Campos vacíos","Los campos indicados con * son obligatorios, por favor complételos","info");
+		}else{
+			// saber si han atenciones
+			var camposAtencion = atencion1Facturacion.length + atencion2Facturacion.length + atencion3Facturacion.length + atencion4Facturacion.length;
+
+			if(camposAtencion == 0){
+				var atencionFacturacion = new Array("0");
+				var empresasFacturacion = new Array("0");
+			}else{
+				var atenciones = new Array(atencion1Facturacion,atencion2Facturacion,atencion3Facturacion,atencion4Facturacion);
+
+				var atencionFacturacion = new Array();
+				var empresasFacturacion = new Array();
+
+				for(var i=0 ; i < atenciones.length ; i++){
+					if(atenciones[i].localeCompare("") != 0){
+						atencionFacturacion.push(atenciones[i]);
+						switch(i){
+							case 0:
+								empresasFacturacion.push(nombreContainer1);
+								break;
+							case 1:
+								empresasFacturacion.push(nombreContainer2);
+								break;
+							case 2:
+								empresasFacturacion.push(nombreContainer3);
+								break;
+							case 3:
+								empresasFacturacion.push(nombreContainer4);
+								break;						
+						}
+					}
+				}
+			}
+
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/facturaretrasada']); ?>',				
+				method: "GET",
+				data: {
+					'fecha':fechaFacturacion,
+					'hora':horaFacturacion+":00",
+					'puestos':puestosFacturacion,
+					'productos':platosFacturacion,
+					'cantidad':cantidadFacturacion,
+					'termino':terminosFacturacion,
+					'mesero':meseroFacturacion,
+					'mesa':mesaFacturacion,
+					'cliente':cedulaFacturacion,
+					'formapago':formPagoFacturacion,
+					'numautorizacion':numAutFacturacion,
+					'valoratencion':atencionFacturacion,
+					'empresaatencion':empresasFacturacion,
+					'propina':propinaFacturacion
+				},
+				success: function (data) {											
+					swal("Factura ingresada correctamente","EL número de la factura ingresa es "+data,"success");
+					//limpiar el formulario
+					$("#fechaFactura").val();
+					$("#horaFactura").val();
+					$("#meseroFactura").val();
+					$("#codigoMesa").val();
+					$("#formaPagos").val();
+					$("#numAutorizacion").val();
+					$("#atencion1").val();
+					$("#atencion2").val();
+					$("#atencion3").val();
+					$("#atencion4").val();
+					$("#valorPropina").val();
+					$("#cedulaCliente").val();
+				},
+				error: function(error) {
+					swal("Error al ingresar factura","Vuelve a intentarlo o comunícate con el administrador","error");
+				}
+			});	
+
+		}
+		
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -184,11 +184,9 @@ AppAsset::register($this);
 							<li class="divider"></li>											
 							<li>								
 								<div class="pull-right">
-								<?= Html::beginForm(['/site/salida'],
-								'post', 
-								['class' => 'form-inline']); ?>
-								<?= Html::submitButton('Salir',['class' => 'btn btn-raised btn-default btn-sm']) ?>
-								<?= Html::endForm() ?>
+									<div class="form-inline">										
+										<button class="btn btn-raised btn-default btn-sm" onclick="opcionesPlaza()">Opciones</button>						
+									</div>	
 								</div>
 							</li>
 						</ul>

@@ -36,7 +36,7 @@ AppAsset::register($this);
 				<h3 class="nom-emp" id="tituloCocina">NOMBRE COCINA</h3>
 			</div>
 			<div class="pull-right">
-				<a href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos" onclick="consultarHistorial()">
+				<a id="histCocina" href="" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-toggle="modal" data-target="#historialPedidos" >
 					<i class="material-icons icon-btn">&#xE889;</i>Historial
 				</a>
 				<div class="content__icon-menu__aux">
@@ -147,18 +147,18 @@ AppAsset::register($this);
 				</div>
 			</div>
 			<div class="modal-body">
-				<h2 class="text-center">Historial de pedidos</h2>
+				<h2 class="text-center">Historial de pedidos terminados</h2>
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="content-fact">
-							<div class="table-responsive" id="tablaHistorial">
-								<table class="table table-hover" >
+							<div class="table-responsive" >
+								<table class="table table-hover" id="tablaHistorial" style="width: 100%">
 									<thead>
 										<tr>
-											<th>Plato</th>
-											<th>Cantidad</th>
-											<th>Fecha</th>
-											<th>Hora terminado</th>
+											<th>PLATO</th>
+											<th>CANTIDAD</th>
+											<th>FECHA</th>
+											<th>HORA</th>
 										</tr>
 									</thead>
 									<tbody id="cuerpoHistroial">
@@ -204,5 +204,9 @@ AppAsset::register($this);
   $(function () {
     $.material.init();
 	$('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $(document).ready(function(){
+  	$("#histCocina").attr("onClick","consultarHistorial()");
   });
 </script>
