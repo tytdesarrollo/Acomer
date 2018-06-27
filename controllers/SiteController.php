@@ -2112,7 +2112,7 @@ class SiteController extends Controller
         $datos = $fn_factura->procedimiento16($c1);
         $datos = json_encode($datos);
 
-        $url = "http://192.168.10.127:8094/imp/example/interface/imp_Factura.php?params=".$datos;
+        $url = "http://192.168.194.127:8094/imp/example/interface/imp_Factura.php?params=".$datos;        
 
         /*echo $url;
         echo "<br><br>";*/
