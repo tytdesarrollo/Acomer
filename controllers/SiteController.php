@@ -851,7 +851,7 @@ class SiteController extends Controller
         // datos eviados por get
         $get1 = Yii::$app->request->get('tamano');
 
-        if($get1 <= 4 || ($get1 >= 7 && $get1 <= 12)){
+        if($get1 >= 0 && $get1 <= 12){
             // captura los demas datos
             $get2 = Yii::$app->request->get('mesa');
             //parametros de entrada
@@ -864,35 +864,6 @@ class SiteController extends Controller
             $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
 
 
-        }else if($get1 >= 5 and $get1 <=6){
-            //mesa principal y la mesa unida a ella
-            $get2 = Yii::$app->request->get('mesa1');
-            $get3 = Yii::$app->request->get('mesa2');
-
-            //saber si hay pedidos entregados
-            $c6 = $fn_cancelar->procedimiento11($get2);
-
-            if($c6 === '0'){               
-                //parametros de entrada mesa 1
-                $c1 = 1;
-                $c2 = $get2;
-                $c3 = array("");
-                $c4 = array("");
-                $c5 = array("");
-
-                $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
-
-                //parametros de entrada mesa 1
-                $c1 = 1;
-                $c2 = $get3;
-                $c3 = array("");
-                $c4 = array("");
-                $c5 = array("");
-
-                $c6 = $fn_cancelar->procedimiento8($c1,$c2,$c3,$c4,$c5);
-            }
-
-            
         }
 
         echo $c6;        
@@ -1544,7 +1515,24 @@ class SiteController extends Controller
         $fn_cocina = new SpCocinaPedidos;
         $historial = $fn_cocina->procedimiento4($c1);
 
-        echo json_encode($historial);
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($historial['PLATO']) ; $i++) {             
+
+            $jsonTable = $jsonTable .
+                '['.                    
+                    '"'.$historial['PLATO'][$i].'",'.
+                    '"'.$historial['CANTIDAD'][$i].'",'.
+                    '"'.$historial['FECHA'][$i].'",'.
+                    '"'.$historial['HORAFIN'][$i].'"'.                  
+                '],';
+        }
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';
+        //
+        echo $jsonTable;
+        
     }
 
     public function actionMesanew(){
@@ -1656,12 +1644,40 @@ class SiteController extends Controller
         //categorias disonibles
         $fn_menus = new SpMenusPlaza();
         $categorias = $fn_menus->procedimiento()[0];
+
+        $platos_data = $fn_menus->procedimiento()[3];     
+        $platos = array();           
+        $codPlatos = array();           
+        for($i=0 ; $i <= count($platos_data)-1 ; $i++){
+            array_push($platos, $platos_data[$i]["NOMBRE"]);
+            array_push($codPlatos, $platos_data[$i]["COD_PRODUCTO"]);
+        }         
         //
         $fn_menus_new = new SpCrearMenus();
         $empresas = $fn_menus_new->procedimiento7();
 
+        //saber si se hay movimiento en una categoria
+        if(!isset(Yii::$app->session['movcat'])){
+            $movcat = 0;
+        }else{
+            $movcat = 1;
+        }
+
+
+        //codigos de los container
+        $fn_plaza = new SpMesasPlaza();
+        $codigos = $fn_plaza->procedimiento2();   
+        $nitcontainer1 = $codigos[0];  
+        $nitcontainer2 = $codigos[1]; 
+        $nitcontainer3 = $codigos[2]; 
+        $nitcontainer4 = $codigos[3]; 
+        $container1 = $codigos[4];  
+        $container2 = $codigos[5]; 
+        $container3 = $codigos[6]; 
+        $container4 = $codigos[7]; 
+
         $this->layout=false;
-        return $this->render('administrador',["documentos"=> $documentos,"categorias"=>$categorias,"imgcategorias"=>$imgcategorias,"empresas"=>$empresas,"rol"=>$rol]);
+        return $this->render('administrador',["documentos"=> $documentos,"categorias"=>$categorias,"imgcategorias"=>$imgcategorias,"empresas"=>$empresas,"rol"=>$rol,"movcat"=>$movcat,"platos"=>$platos,"codPlatos"=>$codPlatos, "container1"=>$container1,"container2"=>$container2,"container3"=>$container3,"container4"=>$container4,"nitcontainer1"=>$nitcontainer1,"nitcontainer2"=>$nitcontainer2,"nitcontainer3"=>$nitcontainer3,"nitcontainer4"=>$nitcontainer4]);
     }
 
     public function actionDocumentos(){
@@ -1792,10 +1808,16 @@ class SiteController extends Controller
     }
 
     public function actionRealizacierre(){
-        $admin = new SpAdministracion();
-        $platos = $admin->procedimiento4();
+        $c1 =  Yii::$app->request->get('fechaIni');
+        $c2 =  Yii::$app->request->get('horaIni');
+        $c3 =  Yii::$app->request->get('fechaFin');
+        $c4 =  Yii::$app->request->get('horaFin');
 
-        echo "ok";
+        $admin = new SpAdministracion();
+        $platos = $admin->procedimiento4($c1,$c2,$c3,$c4);
+        //$platos = array("0","0");
+
+        echo json_encode($platos);
     }
 
 
@@ -1840,19 +1862,19 @@ class SiteController extends Controller
 
         switch($opcion){
             case 1:
-                $datosCab = array($cierre[1],$cierre[2],$cierre[3],$cierre[4]);
+                $datosCab = array($cierre[1],$cierre[2],$cierre[3],$cierre[4],$cierre[5]);
                 echo json_encode($datosCab);    
                 break;
             case 2:
                 $datosDetalle = $cierre[0];
                 $jsonTable = '';
 
-                for ($i=0 ; $i<count($datosDetalle['EMPRESA']) ; $i++) {                     
+                for ($i=0 ; $i<count($datosDetalle['NIT']) ; $i++) {                     
 
                     $jsonTable = $jsonTable .
                         '['.                            
-                            '"'.$datosDetalle['EMPRESA'][$i].'",'.
-                            '"'.$datosDetalle['GEN_EMP_NOM'][$i].'",'.
+                            '"'.$datosDetalle['NIT'][$i].'",'.
+                            '"'.$datosDetalle['NOMBRE'][$i].'",'.
                             '"'.$datosDetalle['VEN_FAC_PROCOD'][$i].'",'.
                             '"'.$datosDetalle['VEN_REF_PRODES'][$i].'",'.
                             '"'.$datosDetalle['CANT'][$i].'",'.
@@ -1924,6 +1946,7 @@ class SiteController extends Controller
                     $tiempoPlaId = "id='tiempoPlaId".$i."'";
                     $nitEmpPlatoId = "id='nitEmpPlatoId".$i."'";
                     $nomEmpPlatoId = "id='nomEmpPlatoId".$i."'";
+                    $descPlatoId = "id='descPlatoId".$i."'";
 
                     $jsonTable = $jsonTable .
                         '['.
@@ -1936,6 +1959,7 @@ class SiteController extends Controller
                             '"<span '.$tiempoPlaId.'>'.$datosPlatos[$i]['TIEMPO'].'",'.
                             '"<span '.$nitEmpPlatoId.'>'.$datosPlatos[$i]['COD_EMPRESA'].'",'.
                             '"<span '.$nomEmpPlatoId.'>'.$datosPlatos[$i]['EMPRESA'].'",'.
+                            '"<span '.$descPlatoId.'>'.$datosPlatos[$i]['DESCRIPCION'].'",'.
                             '"'.$iconEdit.'",'.
                             '"'.$iconDelete.'"'.
                         '],';
@@ -1996,6 +2020,129 @@ class SiteController extends Controller
                 echo "ok";
                 break;
         }       
+
+    }
+
+    public function actionFuncionesplatos(){             
+        //accion a realizar
+        $opcion = Yii::$app->request->get('opcion');
+
+        // funcion con los proceidmientos
+        $fn_plato = new SpCrearMenus();
+
+        switch ($opcion) {
+            case 'NEW':
+                //datos del plato a crear o editar
+                $c1 = array(Yii::$app->request->get('empresa'));
+                $c2 = array(Yii::$app->request->get('nombre'));
+                $c3 = array(Yii::$app->request->get('categoria'));                
+                $c4 = array(Yii::$app->request->get('desc'));
+                $c5 = array(Yii::$app->request->get('precio'));
+                $c6 = array("");
+                $c7 = Yii::$app->request->get('tiempo');
+                $unidadt = Yii::$app->request->get('unidadT');
+                
+
+                //tiempo en minutos
+                switch($unidadt){
+                    case "seg":
+                        $c7 = array((string)ceil($c7 / 60));
+                        break;
+                    case "min":
+                        $c7 = array((string)$c7);
+                        break;
+                    case "hor":
+                        $c7 = array((string)ceil(($c7 / 60) / 60));
+                        break;
+                }
+
+                $fn_plato->procedimiento2($c1,$c2,$c3,$c4,$c5,$c6,$c7);
+                echo 'ok';                
+                break;
+            
+            case 'EDIT':
+             //datos del plato a crear o editar
+                $c1 = Yii::$app->request->get('codigo');
+                $c2 = Yii::$app->request->get('nombre');
+                $c3 = Yii::$app->request->get('precio');               
+                $c4 = "";
+                $c5 = Yii::$app->request->get('categoria');
+                $c6 = Yii::$app->request->get('descripcion');
+                $c7 = Yii::$app->request->get('tiempo');
+                $unidadt = Yii::$app->request->get('unidadT');
+                $c8 = Yii::$app->request->get('empresa');       
+
+                //tiempo en minutos
+                switch($unidadt){
+                    case "seg":
+                        $c7 = (string)ceil($c7 / 60);
+                        break;
+                    case "min":
+                        $c7 = (string)$c7;
+                        break;
+                    case "hor":
+                        $c7 = (string)ceil(($c7 / 60) / 60);
+                        break;
+                }         
+
+                $fn_plato->procedimiento4($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8);
+                echo 'ok';  
+                break;
+            case 'DELET':
+                //c1: codigo de la categoria
+                //c2: codigo de la empresa
+                //
+                //datos para crear la categoria
+                $c1 = Yii::$app->request->get('plato');
+                $c2 = Yii::$app->request->get('empresa');
+                //ejecuta el procedimiento para almacenar 
+                $fn_plato->procedimiento5($c1,$c2);
+                echo "ok";
+                break;
+        }       
+    }
+
+    public function actionImprimirfactura(){
+
+        $this->layout=false;
+
+        $c1 = Yii::$app->request->get('codigoFactura');
+
+        $fn_factura = new SpMesasFactura();
+        $datos = $fn_factura->procedimiento16($c1);
+        $datos = json_encode($datos);
+
+        $url = "http://192.168.10.127:8094/imp/example/interface/imp_Factura.php?params=".$datos;
+
+        /*echo $url;
+        echo "<br><br>";*/
+        //
+        //echo @file_get_contents($url);         
+        header('Location: '.$url);
+        exit;
+
+    }
+
+    public function actionFacturaretrasada(){
+        $c1 = Yii::$app->request->get('fecha');
+        $c2 = Yii::$app->request->get('hora');
+        $c3 = Yii::$app->request->get('puestos');
+        $c4 = Yii::$app->request->get('productos');
+        $c5 = Yii::$app->request->get('cantidad');
+        $c6 = Yii::$app->request->get('termino');
+        $c7 = Yii::$app->request->get('mesero');
+        $c8 = Yii::$app->request->get('mesa');
+        $c9 = Yii::$app->request->get('cliente');
+        $c10 = Yii::$app->request->get('formapago');
+        $c11 = Yii::$app->request->get('numautorizacion');
+        $c12 = Yii::$app->request->get('valoratencion');
+        $c13 = Yii::$app->request->get('empresaatencion');
+        $c14 = Yii::$app->request->get('propina');
+
+        $fn_factura = new SpAdministracion();
+        $numFac = $fn_factura->procedimiento10($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14);
+
+        echo $numFac;
 
     }
 

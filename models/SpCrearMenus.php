@@ -30,7 +30,7 @@
 		    oci_execute($stid);
 		}
 
-		public function procedimiento2($c1,$c2,$c3,$c4,$c5,$c6){
+		public function procedimiento2($c1,$c2,$c3,$c4,$c5,$c6,$c7){
 			//c1: codigo de la empresa a la que pertenece el plato
 			//c2: nombre del plato
 			//c3: codigo de la categoria 
@@ -80,14 +80,15 @@
 		    oci_execute($stid);	
 		}
 
-		public function procedimiento4($c1,$c2,$c3,$c4,$c5,$c6){
+		public function procedimiento4($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8){
 			//c1: codigo del plato
 			//c2: nombre del plato
 			//c3: precio del plato 
 			//c4: imagen del plato 
 			//c5: codigo de la categoria 
-			//c6: tiempo del plato
-			//c7: codigo de la empresa
+			//c6: descripcion del plato
+			//c7: tiempo del plato
+			//c8: codigo de la empresa
 			//
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];		
@@ -96,15 +97,16 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');		
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_EDIT_PLATO_MENU(:c1,:c2,:c3,:c4,:c5,:c6,:c7); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_EDIT_PLATO_MENU(:c1,:c2,:c3,:c4,:c5,:c6,:c7,:c8); END;");
 			//parametros del procedimiento
 			oci_bind_by_name($stid, ":c1", $c1, 20);
 			oci_bind_by_name($stid, ":c2", $c2, 200);
 			oci_bind_by_name($stid, ":c3", $c3, 10);
 			oci_bind_by_name($stid, ":c4", $c4, 255);
 			oci_bind_by_name($stid, ":c5", $c5, 8);
-			oci_bind_by_name($stid, ":c6", $c6, 8);
-			oci_bind_by_name($stid, ":c7", $c7, 13);
+			oci_bind_by_name($stid, ":c6", $c6, 800);
+			oci_bind_by_name($stid, ":c7", $c7, 8);
+			oci_bind_by_name($stid, ":c8", $c8, 13);
 			//ejecuta el procedimiento 
 		    oci_execute($stid);	
 		}

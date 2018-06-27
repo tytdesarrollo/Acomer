@@ -38,6 +38,10 @@
 			//$c2: codigo del container 2
 			//$c3: codigo del container 3
 			//$c4: codigo del container 4
+			//$c5: nombre del container 1 
+			//$c6: nombre del container 2
+			//$c7: nombre del container 3
+			//$c8: nombre del container 4
 			//
 			//dsn de la conexion a la base de datos
 			$db = Yii::$app->params['awadb'];
@@ -46,16 +50,20 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CODIGO_CONTAINERS(:c1,:c2,:c3,:c4); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CODIGO_CONTAINERS(:c1,:c2,:c3,:c4,:c5,:c6,:c7,:c8); END;");
 			//pasa los parametros del proceimiento
 			oci_bind_by_name($stid, ":c1", $c1, 13);
 			oci_bind_by_name($stid, ":c2", $c2, 13);
 			oci_bind_by_name($stid, ":c3", $c3, 13);
 			oci_bind_by_name($stid, ":c4", $c4, 13);
+			oci_bind_by_name($stid, ":c5", $c5, 100);
+			oci_bind_by_name($stid, ":c6", $c6, 100);
+			oci_bind_by_name($stid, ":c7", $c7, 100);
+			oci_bind_by_name($stid, ":c8", $c8, 100);
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
 
-			return array($c1, $c2, $c3, $c4);
+			return array($c1, $c2, $c3, $c4, $c5, $c6, $c7 ,$c8);
 
 		}
 

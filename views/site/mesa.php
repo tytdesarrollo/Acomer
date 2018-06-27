@@ -2386,10 +2386,22 @@
 					document.getElementById("totalFactura").innerHTML = '$'+formatoMoneda(totalPagar.toString());	
 
 					swal.close();
+					imprimirFactura(numeroFactura);
 					estadoMesaFac();
 				}
 			});
 		}
+	}
+
+	function imprimirFactura(numeroFactura){
+		$.ajax({
+			url:'<?php echo Url::toRoute(['site/imprimirfactura']); ?>',
+			dataType:'json',
+			method: "GET",
+			data: {
+				'codigoFactura':numeroFactura,			
+			}		
+		});
 	}
 
 	function imprimirRecibo(){

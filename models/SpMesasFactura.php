@@ -523,4 +523,37 @@
 			return array($cursor,$c4,$c5,$c6,$c7,$c8);
 		}
 
+		public function procedimiento16($c1){
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');	
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN VENTAS_DETIMPFACTU(:c1,:c2,:c3,:c4,:c5,:c6,:c7,:c8,:c9,:c10,:c11); END;");
+
+			$c2 = oci_new_cursor($conexion);
+
+			oci_bind_by_name($stid, ":c1", $c1, 20);
+			oci_bind_by_name($stid, ":c2", $c2, -1, OCI_B_CURSOR);
+			oci_bind_by_name($stid, ":c3", $c3, 15);
+			oci_bind_by_name($stid, ":c4", $c4, 15);
+			oci_bind_by_name($stid, ":c5", $c5, 15);
+			oci_bind_by_name($stid, ":c6", $c6, 15);
+			oci_bind_by_name($stid, ":c7", $c7, 15);
+			oci_bind_by_name($stid, ":c8", $c8, 20);
+			oci_bind_by_name($stid, ":c9", $c9, 20);
+			oci_bind_by_name($stid, ":c10", $c10, 20);
+			oci_bind_by_name($stid, ":c11", $c11, 20);
+
+			// se ejecuta el procedimiento 
+			oci_execute($stid);		
+			oci_execute($c2,OCI_DEFAULT);    
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c2, $cursor);
+
+			return array($cursor,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11);
+		}
+
 	}
