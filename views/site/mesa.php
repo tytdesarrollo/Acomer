@@ -26,6 +26,8 @@
 	    <title><?= Html::encode($this->title) ?></title>
 	    <?= Html::jsFile('@web/js/jquery.min.js') ?>
 		<?= Html::jsFile('@web/js/ciclosession.js') ?>
+		<?= Html::cssFile('@web/css/multi.min.css') ?>
+		<?= Html::jsFile('@web/js/multi.min.js') ?>	
 	    <?php $this->head() ?>
 	    <style type="text/css">
 			.loader {
@@ -801,6 +803,64 @@
 					</div>
 				</div>
 			</div>
+
+
+			<div id="modalNotas" class="modal fade" role="dialog" >
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+						<div class="modal-header text-center">
+						<div class="container-fluid">
+							<!--<div class="row">									
+								<div class="pull-right">
+									<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+										<i class="material-icons icon-btn">&#xE14C;</i>Salir
+									</a>
+								</div>
+							</div>-->
+						</div>
+						</div>
+					<div class="modal-body">	
+						<h4 class="text-center">NOTA DE PLATO</h4>
+						<h4 class="text-center" id="notaPlatoName"></h4>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="content-fact">
+									<div id="content-notas">	
+										<div class="input-group">
+											<input type="text" id="notaPlato" class="form-control" placeholder="Ingresa nota" >
+											<div class="input-group-btn">    <!-- Buttons -->
+												<a type="button" class="btn btn-raised btn-success btn-radius btn-inline" onclick="addOption()">AÑADIR</a>
+											</div>
+										</div>
+										<div id="selectOptionNote">
+											<select multiple="multiple" name="favorite_fruits" id="opcionNotasPlato">
+												
+										    </select>'
+										</div>												
+									</div>									
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<a class="btn btn-raised btn-success btn-radius btn-inline" id="btnSaveNote">
+									GUARDAR
+									<div class="ripple-container"></div>
+								</a>
+								<a class="btn btn-raised btn-organge-grad btn-radius btn-inline" onclick="cerrarModal()">
+				     				CANCELAR
+				    			</a>
+				    			<a class="btn btn-raised btn-organge-grad btn-radius btn-inline" id="btnDeleteNote">
+				     				<i class="material-icons">delete</i>
+				    			</a>
+							</div>
+						</div>
+					</div>      						
+					<div class="modal-footer">
+							        							
+					</div>
+						
+				</div>
+			</div>
+		</div>
 		</div>
 <?php $this->endBody() ?>
 	<!--<script src="../web/js/modal_view_fact.js"></script>-->
@@ -918,6 +978,7 @@
 		var generalEstadoM = '<?=$estadomesa?>';
 		var generalCodigoM = '<?=$codigomesa?>';
 		var generalPlatos = '<?=$platos?>';		
+		var generalNotas = '<?=$notas?>';
 		var generalCantidad = '<?=$cantidad?>';
 		var generalPuestos = '<?=$puestos?>';		
 		var generalTamano = '<?=$tamano?>'; 
@@ -1245,8 +1306,16 @@
 		if(pedidoAcumu == 0){			
 			location.href = url+"&puesto="+puesto+'&codigoM='+generalCodigoM+'&tamanoM='+tamano+'&estadoM='+'<?=$estadomesa?>'+'&avatars='+generalAvatars;
 		}else{
-			location.href = url+"&puesto="+puesto+'&codigoM='+generalCodigoM+'&tamanoM='+tamano+'&estadoM='+'<?=$estadomesa?>'+
-							    "&platos="+generalPlatos+'&cantidad='+generalCantidad+'&puestos='+generalPuestos+'&avatars='+generalAvatars;
+			location.href = url + 
+					"&puesto="+puesto+
+					'&codigoM='+generalCodigoM+
+					'&tamanoM='+tamano+
+					'&estadoM='+'<?=$estadomesa?>'+
+					"&platos="+generalPlatos+
+					'&cantidad='+generalCantidad+
+					'&puestos='+generalPuestos+
+					'&avatars='+generalAvatars+
+					'&notas='+generalNotas;
 		}
 	}	
 
@@ -1634,7 +1703,7 @@
 
 	function verDetallePedidoMesa(){		
 		//datos en texto plano de los platos la cantidad y el puesto
-		var platos = generalPlatos;
+		var platos = generalPlatos; 		
 		var cantidad = generalCantidad;
 		var puestos = generalPuestos;	
 
@@ -1643,6 +1712,7 @@
 		var arrCantidad = crearArray(cantidad);
 		var arrPuestos = crearArray(puestos);
 		var arrImagen = generalNombreImages;
+		var arrcodigosNotas = crearArray(generalPlatos);
 		//contenido del pedido
 		var contenidoPedido = '';
 
@@ -1651,13 +1721,14 @@
 			if(Array.isArray(arrPlatos)){
 				if(arrPlatos.length > 0){
 					for(var i=0 ; i<arrPlatos.length ; i++){
+
 						if(arrCantidad[i] != 0){
 							contenidoPedido = contenidoPedido +
 								'<tr>'+
 									'<td class="icn">'+
 										'<img src="img/categorias/'+arrImagen[i]+'" class="img-item">'+							
 									'</td>'+
-									'<td class="desc">'+
+									'<td class="desc" onclick="verNota(\''+arrPlatos[i]+'\','+i+',\''+arrcodigosNotas[i]+'\')">'+
 										'<div class="nom-item">'+
 											'<p>'+arrPlatos[i]+'</p>'+
 											'<p style="color:#b79d8b">Puesto '+arrPuestos[i]+'</p>'+
@@ -2476,15 +2547,18 @@
 		var platos = generalPlatos;
 		var cantidad = generalCantidad;
 		var puestos = generalPuestos;
+		var notasPl = generalNotas;
 		// acomodan los textos planos en array
 		var arrPlatos = crearArray(platos);
 		var arrCantidad = crearArray(cantidad);
 		var arrPuestos = crearArray(puestos);
+		var arrNotas = crearArray(notasPl);
 
 		//array con los pedidos nuevos
 		var arrPlatosNew = Array();
 		var arrCantidadNew = Array();
 		var arrPuestosNew = Array();
+		var arrNotasNew = Array();
 		var contador = 0; // rellenar los array new
 
 		//recorre los array de los pedidos
@@ -2494,6 +2568,7 @@
 				arrPlatosNew[contador] = arrPlatos[j];
 				arrCantidadNew[contador] = arrCantidad[j];
 				arrPuestosNew[contador] = arrPuestos[j];
+				arrNotasNew[contador] = arrNotas[j];
 
 				contador++;
 			}			
@@ -2504,6 +2579,7 @@
 			arrPlatosNew[0] = 0;
 			arrCantidadNew[0] = 0;
 			arrPuestosNew[0] = 0;
+			arrNotasNew[0] = 0;
 		}
 
 		//elimina el dis que esta mostrando el puesto 
@@ -2513,11 +2589,13 @@
 		var platosTxt = arrayToChar(arrPlatosNew);
 		var cantidadTxt = arrayToChar(arrCantidadNew);
 		var puestoTxt = arrayToChar(arrPuestosNew);
+		var notasTxt = arrayToChar(arrNotasNew);
 
 		//cambio el valor de las variables que manejan los pedidos 
 		generalPlatos = platosTxt;
 		generalCantidad = cantidadTxt;
-		generalPuestos = puestoTxt;		
+		generalPuestos = puestoTxt;
+		generalNotas = notasTxt;
 
 		// array con los puestos que hay sin repetir
 		var arrayPuestosSinRep = crearArray(generalarrPuestos);		
@@ -2548,8 +2626,9 @@
 		var mesa = generalCodigoM;
 		var estado = generalEstadoM;
 		var avatar = generalAvatarsDb;
+		var notas = generalNotas;
 		//datos en array 
-		var arrplatos = crearArray(platos);
+		var arrplatos = crearArray(platos);		
 		var termino = arrplatos.length;
 		//cantidad de personas seleccionadas
 		var cantidadPuestos = document.getElementById("numPersonas").value;
@@ -2562,7 +2641,7 @@
 						url:'<?php echo Url::toRoute(['site/realizarpedido']); ?>',
 						dataType:'json',
 						method: "GET",
-						data: {'puestos':puestos, 'platos':platos , 'cantidad':cantidad, 'termino':termino , 'mesa':mesa, 'avatar':avatar, "tamano":cantidadPuestos},			
+						data: {'puestos':puestos, 'platos':platos , 'cantidad':cantidad, 'notas':notas , 'mesa':mesa, 'avatar':avatar, "tamano":cantidadPuestos},			
 						success: function (data) {						
 							
 						}
@@ -2583,8 +2662,7 @@
 			// mensaje de alerta
 			mensajeAlerta(1);
 		}
-
-		//console.log();
+		
 	}
 
 	function verDetallePedido(puesto, mesa){
@@ -2598,6 +2676,7 @@
 		var arrCantidad = crearArray(cantidad);
 		var arrPuestos = crearArray(puestos);
 		var arrImagen = generalNombreImages;
+		var arrcodigosNotas = crearArray(generalPlatos);
 
 		/*console.log(arrPlatos);
 		console.log(arrCantidad);
@@ -2613,7 +2692,7 @@
 						'<td class="icn">'+
 							'<img src="img/categorias/'+arrImagen[i]+'" alt="" class="img-item">'+							
 						'</td>'+
-						'<td class="desc">'+
+						'<td class="desc" onclick="verNota(\''+arrPlatos[i]+'\','+i+',\''+arrcodigosNotas[i]+'\')">'+
 							'<div class="nom-item">'+
 								'<p>'+arrPlatos[i]+'</p>'+
 							'</div>'+
@@ -2688,6 +2767,32 @@
 		return arrayRetornar;
 	}
 
+	function crearArray2(datos, separador){
+		//array que se retorna
+		var arrayRetornar = new Array();
+		//cadena que entra y se va a estar modificando
+		var cadena = datos+separador;		
+		//posicion de la coma
+		var posComa = cadena.indexOf(separador) ;			
+		//valor que se estara insertando en el array
+		var valorCadena;
+
+		while(posComa != -1){			
+			// el valor va desde el primer caracter hasta el ultimo antes de la coma
+			valorCadena = cadena.substr(0,posComa);			
+			// si la posicion de la coma es dferente de -1 llena el cursor
+			if(posComa != -1){				
+				arrayRetornar.push(valorCadena);
+			}
+			//se borra los datos que hay detras de la primer coma junto con ella 
+			cadena = cadena.substr(posComa + separador.length);
+			// se busca la posicion de la siguiente coma 
+			posComa = cadena.indexOf(separador);
+		}
+
+		return arrayRetornar;
+	}
+
 	function arrayToChar(array){
 		//cadena que va tener los datos del array
 		var char = '';
@@ -2695,6 +2800,21 @@
 		for (var i=0 ; i<array.length ; i++) {
 			//anida con los datos nuevos
 			char = char + array[i] + ",";
+		}
+		//elimina la ultima coma
+		char = char.substr(0, char.length-1);
+		//retorna el valor 
+		return char;
+
+	}
+
+	function arrayToChar2(array,separador){
+		//cadena que va tener los datos del array
+		var char = '';
+		// ciclo para rellenar la variable char
+		for (var i=0 ; i<array.length ; i++) {
+			//anida con los datos nuevos
+			char = char + array[i] + separador;
 		}
 		//elimina la ultima coma
 		char = char.substr(0, char.length-1);
@@ -2925,6 +3045,91 @@
 		
 	});
 	/************ATENCIONES*************/	
+
+	/************NOTAS*************/
+	var contadorPedido = 0;
+
+	function cerrarModal(){
+		$('#modalNotas').modal('hide');		
+	}
+
+	function verNota(nombrePlato, posicion, id){
+		$('#modalNotas').modal('show');
+		$("#notaPlatoName").html(nombrePlato);
+		$("#btnSaveNote").attr('onclick','guardarNotaPlato("'+posicion+'")');
+
+		var opcionesNota1 = '';
+		var notasPlatos = crearArray(generalNotas);		
+		var notaDelPlato = crearArray2(notasPlatos[posicion],"*_");
+
+		contadorPedido = 0;
+
+		for(var i=0 ; i<notaDelPlato.length ; i++){
+			opcionesNota1 = opcionesNota1 + '<option selected="selected">'+notaDelPlato[i]+'</option>';			
+			contadorPedido++;
+		}
+
+		$("#selectOptionNote").html(
+			'<select multiple="multiple" name="favorite_fruits" id="opcionNotasPlato">'+
+				opcionesNota1+
+		    '</select>'
+		);
+
+		var select = document.getElementById('opcionNotasPlato');
+    	multi(select,{
+    		'search_placeholder': 'Buscar...',
+    	});
+
+    	$("#btnDeleteNote").attr("onclick","eliminarNota(\'"+posicion+"\')");
+
+	}
+
+	function addOption(){				
+
+		var valorNuevo = $("#notaPlato").val();
+		valorNuevo = valorNuevo.toUpperCase();
+
+    	$("#opcionNotasPlato").append('<option selected="selected">'+valorNuevo+'</option>');
+    	$(".non-selected-wrapper").append('<a tabindex="0" class="item selected" role="button" data-value="'+valorNuevo+'" multi-index="'+contadorPedido+'">'+valorNuevo+'</a>')
+    	$(".selected-wrapper").append('<a tabindex="0" class="item selected" role="button" data-value="'+valorNuevo+'" multi-index="'+contadorPedido+'">'+valorNuevo+'</a>')
+
+    	var select = document.getElementById('opcionNotasPlato');
+    	multi(select,{
+    		'search_placeholder': 'Buscar...',
+    	});
+
+    	$("#notaPlato").val("");
+
+    	contadorPedido++;
+    }
+
+    function guardarNotaPlato(posicion){
+    	var notasArray = crearArray(generalNotas);    	
+
+    	var inputSelects = $("#opcionNotasPlato").val();
+
+		if(!!inputSelects){						
+			notasArray[posicion] = arrayToChar(inputSelects);
+			notasArray[posicion] = notasArray[posicion].replace(new RegExp(',', 'gi'), '*_');
+
+			generalNotas = arrayToChar(notasArray);
+			cerrarModal();
+		}else{
+			swal("Datos vacíos","Debe agregar una nota, de lo contrario cancele la operación","warning");
+		}	
+    	
+    }
+
+    function eliminarNota(posicion){
+
+    	var notasArray = crearArray(generalNotas);    	
+    	notasArray[posicion] = '';
+		generalNotas = arrayToChar(notasArray);
+
+		cerrarModal();				
+
+    }
+	/************NOTAS*************/	
 
 	function habilitarAuth(idAuth){
 		$("#"+idAuth).prop("disabled",false);

@@ -456,11 +456,13 @@ class SiteController extends Controller
             $puestos = 0;
             $arrpuestos = 0;
             $avatars = 0;
+            $notas = 0;
         }else{
             $platos = Yii::$app->request->get('platos');
             $cantidad = Yii::$app->request->get('cantidad');
             $puestos = Yii::$app->request->get('puestos');
             $avatars = Yii::$app->request->get('avatars');
+            $notas = Yii::$app->request->get('notas');
             // acomodar el array de los puestos
             $funciones1 = new funcionesArray();
             $funciones2 = $funciones1->crearArray(Yii::$app->request->get('puestos'));
@@ -507,7 +509,7 @@ class SiteController extends Controller
         return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                      "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
-                                     "confirmados" => $confirmados,"avatars"=>$avatars,"empresas"=>$empresas]);
+                                     "confirmados" => $confirmados,"avatars"=>$avatars,"empresas"=>$empresas,"notas"=>$notas]);
         
     }
    
@@ -560,7 +562,7 @@ class SiteController extends Controller
         $get1 = Yii::$app->request->get('puestos');
         $get2 = Yii::$app->request->get('platos');
         $get3 = Yii::$app->request->get('cantidad');
-        $get4 = Yii::$app->request->get('termino');
+        $get4 = Yii::$app->request->get('notas');
         $get5 = Yii::$app->session['cedula'];
         $get5 = trim($get5);
         $get6 = Yii::$app->request->get('mesa');
@@ -572,7 +574,7 @@ class SiteController extends Controller
         $c1 = $funcionArr->arrayPuestos($c1);
         $c2 = $funcionArr->crearArray($get2);
         $c3 = $funcionArr->crearArray($get3);
-        $c4 = $funcionArr->arrayTermino($get4);
+        $c4 = explode(',',$get4);
         $c5 = Yii::$app->session['cedula'];
         $c5 = trim($c5);
         $c6 = $get6;
@@ -1365,24 +1367,26 @@ class SiteController extends Controller
                 $platos = $_GET['platos']; // los platos que se han pedido en la mesa 
                 $cantidad = $_GET['cantidad']; // cantidad de platos que se han pedido  en la mesa
                 $puestos = $_GET['puestos']; // numero de los puestos donde se han pedido
+                $notas = $_GET['notas']; // notas de los platos
                 $avatars = $_GET['avatars'];
                 // redirecciona a la vista menu con los parametros del menu y de los pedidos de la mesa ya hechos 
                 $this->layout=false;    
                 return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
                                              "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                              "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado,
-                                             "avatars"=>$avatars]);
+                                             "avatars"=>$avatars,"notas"=>$notas]);
             }else{
                 $platos = 0;
                 $cantidad = 0;
                 $puestos = 0;
+                $notas = 0;
                 $avatars = $_GET['avatars'];
                 // redirecciona a la vista menu con los parametros del menu 
                 $this->layout=false;    
                 return $this->render('menunew',["categorias" => $categorias, "comidas" => $comidas, "puesto" => $puesto,
                                              "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                              "codmesa" => $codmesa, "tamano" => $tamano, "estado" => $estado,
-                                             "avatars"=>$avatars]);
+                                             "avatars"=>$avatars,"notas"=>$notas]);
             }
         }else{
             $this->layout=false;    
@@ -1803,6 +1807,55 @@ class SiteController extends Controller
 
         $admin = new SpAdministracion();
         $datos = $admin->procedimient9($c1);
+
+        /*$detalleEmp = $datos[0];
+        $totales = $datos[1];
+        $acumuMes = $datos[2];
+        $acumuAno = $datos[3];
+        $acumuSem = $datos[4];
+
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($detalleEmp['NIT']) ; $i++) {            
+        
+            $jsonTable = $jsonTable .
+                '['.
+                    '"'.$detalleEmp['EMPRESA'][$i].'",'.
+                    '"'.number_format($detalleEmp['TOTAL'][$i], 2,',', '.').'",'.
+                    '"'.$detalleEmp['PORC_DIA'][$i].'",'.
+                    '"'.number_format($acumuSem['ACUM_SEMA'][$i], 2,',', '.').'",'.
+                    '"'.$acumuSem['PORC_SEMA'][$i].'",'.
+                    '"'.number_format($acumuMes['ACUM_MES'][$i], 2,',', '.').'",'.
+                    '"'.$acumuMes['PORC_MES'][$i].'",'.
+                    '"'.number_format($acumuAno['ACUM_YEAR'][$i], 2,',', '.').'",'.
+                    '"'.$acumuAno['PORC_YEAR'][$i].'",'.
+                    '"'.number_format($detalleEmp['SUBTOTAL'][$i], 2,',', '.').'",'.
+                    '"'.number_format($detalleEmp['IMPUESTOS'][$i], 2,',', '.').'",'.
+                    '"'.number_format($detalleEmp['ATENCIONES'][$i], 2,',', '.').'"'.
+                '],';           
+        }
+
+        $jsonTable = $jsonTable .
+            '['.
+                '"TOTALES",'.
+                '"'.number_format($totales['VALOR'][0], 2,',', '.').'",'.
+                '"100%",'.
+                '"'.number_format($detalleEmp['TOTAL_SEMA'][0], 2,',', '.').'",'.
+                '"100%",'.
+                '"'.number_format($detalleEmp['TOTAL_MES'][0], 2,',', '.').'",'.
+                '"100%",'.
+                '"'.number_format($detalleEmp['TOTAL_YEAR'][0], 2,',', '.').'",'.
+                '"100%",'.
+                '"'.number_format($totales['SUBTOTAL'][0], 2,',', '.').'",'.
+                '"'.number_format($totales['IMPUESTO'][0], 2,',', '.').'",'.
+                '"'.number_format($totales['ATENCIONES'][0], 2,',', '.').'"'.
+            '],'; 
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';*/
+
+        //
+        //echo $jsonTable;
         
         echo json_encode($datos);
     }
@@ -2144,6 +2197,41 @@ class SiteController extends Controller
 
         echo $numFac;
 
+    }
+
+    public function actionCarganotaspedido(){
+        $c1 = Yii::$app->request->get('categoria');
+        $c2 = Yii::$app->request->get('plato');
+
+        $models = new SpMenusPlaza();
+        $data = $models->procedimiento2($c1,$c2);
+
+        echo json_encode($data);
+    }
+
+    public function actionNotasadmin(){
+        $fn_notas = new SpAdministracion;
+
+        $datosNotas = $fn_notas->procedimiento11('READ',0,'','');           
+        $jsonTable = '';
+
+        for ($i=0 ; $i<count($datosNotas['NOTA_DESCRIPCION']) ; $i++) {       
+            $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarPlato(".$i.")'> edit</i>";              
+            $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarPlato(".$i.")'> delete</i>";            
+
+            $jsonTable = $jsonTable .
+                '['.
+                    '"'.$datosNotas['NOTA_DESCRIPCION'][$i].'",'.
+                    '"'.$datosNotas['CATE_PLA'][$i].'",'.
+                    '"'.$iconEdit.'",'.
+                    '"'.$iconDelete.'"'.
+                '],';
+        }
+
+        $jsonTable = substr($jsonTable,0,-1);
+        $jsonTable = '{"data":['.$jsonTable.']}';
+        //
+        echo $jsonTable; 
     }
 
 

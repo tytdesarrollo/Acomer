@@ -47,4 +47,33 @@
 			// retorna los datos devueltos por el procedimiento
 			return array($cursor1, $cursor2, $cursor3, $cursor4);
 		}
+
+		public function procedimiento2($c1, $c2){
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la base de datos 
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');						
+			//cursores que recibiran los datos del menu
+			$cursor_categorias; 
+			$cursor_subcategorias;
+			$cursor_terminos;
+			$cursor_comidas;
+			// llamado al rocedimiento con los parametros correspondientes
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_NOTAS_PEDIDO(:c1,:c2,:c3); END;");
+			//inicializa los cursores
+			$c3 = oci_new_cursor($conexion);
+			//
+			oci_bind_by_name($stid, ":c1", $c1, 8);
+			oci_bind_by_name($stid, ":c2", $c2, 20);
+			oci_bind_by_name($stid, ':c3',$c3, -1 , OCI_B_CURSOR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+			oci_execute($c3,OCI_DEFAULT);
+			//se extrae los datos del cursor en un array
+			oci_fetch_all($c3, $arr); 
+
+			return $arr;
+		}
 	} 
