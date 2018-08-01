@@ -16,5 +16,5 @@ return[
 			    )
 	  		)',
 'usuario'=>'USR_WEBPRU',    //USR_AWA	  		//USR_SAIC      //USR_WEBPRU
-'password'=>'WEBPRU123' //0RCAWASYST       //SAIC123WEB	//WEBPRU123
+'password'=>'WEBPRU123' 	//0RCAWASYST       //SAIC123WEB	   //WEBPRU123
 ];

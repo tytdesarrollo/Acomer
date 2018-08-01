@@ -207,23 +207,35 @@
 			//establece la conexion con la bese de dato AWA
 			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');									
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CUENTA_ADMIN(:c1,:c2,:c3); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CUENTA_ADMIN(:c1,:c2,:c3,:c4,:c5,:c6); END;");
 			//inicializa el cursor pasa como parametro
 			$c2 = oci_new_cursor($conexion);
 			$c3 = oci_new_cursor($conexion);
+			$c4 = oci_new_cursor($conexion);
+			$c5 = oci_new_cursor($conexion);
+			$c6 = oci_new_cursor($conexion);
 			//se pasan los parametros del procedimiento 
 			oci_bind_by_name($stid, ":c1", $c1, 10);			
 			oci_bind_by_name($stid, ':c2', $c2,-1, OCI_B_CURSOR);
 			oci_bind_by_name($stid, ':c3', $c3,-1, OCI_B_CURSOR);
+			oci_bind_by_name($stid, ':c4', $c4,-1, OCI_B_CURSOR);
+			oci_bind_by_name($stid, ':c5', $c5,-1, OCI_B_CURSOR);
+			oci_bind_by_name($stid, ':c6', $c6,-1, OCI_B_CURSOR);
 			//se ejecuta el procidimiento 
 			oci_execute($stid);
 			oci_execute($c2,OCI_DEFAULT);
 			oci_execute($c3,OCI_DEFAULT);
+			oci_execute($c4,OCI_DEFAULT);
+			oci_execute($c5,OCI_DEFAULT);
+			oci_execute($c6,OCI_DEFAULT);			
 			//se extrae los datos del cursor en un array
 			oci_fetch_all($c2, $cursor1);
 			oci_fetch_all($c3, $cursor2);
+			oci_fetch_all($c4, $cursor3);
+			oci_fetch_all($c5, $cursor4);
+			oci_fetch_all($c6, $cursor5);
 			//retona el array de datos
-			return array($cursor1,$cursor2);
+			return array($cursor1,$cursor2,$cursor3,$cursor4,$cursor5);
 		}
 
 		public function procedimiento10($c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$c10,$c11,$c12,$c13,$c14){
@@ -269,5 +281,32 @@
 			oci_fetch_all($c16, $cursor1);
 
 			return $c15;
+		}
+
+		public function procedimiento11($c1,$c2,$c3,$c4){
+			//dsn de la conexion a la base de datos
+			$db = Yii::$app->params['awadb'];
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
+			//establece la conexion con la bese de dato AWA
+			$conexion = oci_connect($usuario, $contrasena, $db, 'AL32UTF8');
+			//se hace el llamado al procedimietno que trae la informacion de las mesas
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_OPCIONES_NOTA(:c1,:c2,:c3,:c4,:c5); END;");
+			//inicializa el cursor pasa como parametro
+			$c5 = oci_new_cursor($conexion);
+			//
+			oci_bind_by_name($stid, ":c1", $c1, 200);
+			oci_bind_by_name($stid, ":c2", $c2, 10);	
+			oci_bind_by_name($stid, ":c3", $c3, 100);
+			oci_bind_by_name($stid, ":c4", $c4, 20);	
+			oci_bind_by_name($stid, ":c5", $c5, -1, OCI_B_CURSOR);
+			//se ejecuta el procidimiento 
+			oci_execute($stid);
+			oci_execute($c5,OCI_DEFAULT);
+
+			oci_fetch_all($c5, $cursor1);
+
+			return $cursor1;
+
 		}
 	} 

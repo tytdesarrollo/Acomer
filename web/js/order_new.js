@@ -60,7 +60,7 @@
 		removeCtrl.className = 'actions action--remove';
 		removeCtrl.innerHTML = '<i class="material-icons">&#xE14C;</i><span class="action__text action__text--invisible">Eliminar<span>';
 		removeCtrl.addEventListener('click', function() {
-			self.remove(item);
+			self.remove(item);			
 		});
 	
 		var productImageEl = item.querySelector('img.product__image').cloneNode(true);
@@ -70,7 +70,9 @@
 		mostrarconta.innerHTML = 'x'+contador;
 	
 
-		preview.appendChild(productImageEl);
+		preview.appendChild(productImageEl).addEventListener('click', function() {
+			verNotaPlato(this.parentElement.getAttribute("data-info"));
+		});		
 		preview.appendChild(removeCtrl);
 		preview.appendChild(mostrarconta);
 
@@ -81,6 +83,7 @@
 	};
 
 	CompareBasket.prototype.remove = function(item) {
+		removeNote(item);
 		classie.remove(this.el, 'compare-basket--full');
 		classie.remove(item, 'product--selected');
 		var preview = this.el.querySelector('[data-idx = "' + items.indexOf(item) + '"]');
