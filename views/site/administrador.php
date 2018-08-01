@@ -141,6 +141,14 @@
 				background-color:#FFF;
 				height: 1px;
 			}
+
+			.centerThead{
+				 text-align: center;
+			}
+
+			.centerTbody{
+				text-align: right;
+			}
 			
 		</style>
 		<?= Html::jsFile('@web/js/jquery.min.js') ?>
@@ -213,6 +221,11 @@
 									</a>
 								</li>		
 							<?php else: ?>
+								<li >
+									<a href="#tab1" data-toggle="tab">
+										<i class="material-icons">attach_money</i> CUENTAS
+									</a>
+								</li>
 								<li class="active">								
 									<a href="#tab3" data-toggle="tab">									
 										<i class="material-icons icon-btn">&#xE561;</i> MENU RESTAURANTES
@@ -236,9 +249,9 @@
 
 					<!--CUENTAS-->
 						<?php if ($rol === "ADMINISTRADOR"): ?>
-						<div class="tab-pane fade active in" id="tab1">	
+						  <div class="tab-pane fade active in" id="tab1">	
 						<?php else: ?>
-						<div class="tab-pane fade in" id="tab1">
+						  <div class="tab-pane fade in" id="tab1">
 						<?php endif ?>						
 							<div class="heading">
 								<h3 class="fnt__Medium text-center"><strong>CUENTAS</strong></h3>
@@ -263,41 +276,34 @@
 								
 								<div class="col-md-12">					
 									<!--<h4 class="fnt__Medium"><strong>Detalle por empresa</strong></h4>-->
-									<table class="table table-striped">
-										<thead class="thead">
+									<table class="table table-striped table-bordered table-responsive" id="dataTable8" style="width: 100%;overflow-x:auto;">
+										<thead class="thead" align="center">
 											<tr>
-												<th>NIT</th>
-												<th>EMPRESA</th>
-												<th>TOTAL BRUTO*</th>												
-												<th>TOTAL IMPUESTOS</th>
-												<th>TOTAL ATENCIONES</th>
-												<th>TOTAL NETO</th>
+												<th></th>		
+												<th class="centerThead" colspan="2">NETO DIA</th>
+												<th class="centerThead" colspan="6">ACUMULADOS</th>
+												<th class="centerThead" colspan="3">TOTAL DIARIO</th>	
+											</tr>
+											<tr>
+												<th class="centerThead">EMPRESA</th>		
+												<th class="centerThead">NETO</th>										
+												<th class="centerThead">%</th>
+												<th class="centerThead">SEMANA</th>
+												<th class="centerThead">%</th>
+												<th class="centerThead">MES</th>
+												<th class="centerThead">%</th>
+												<th class="centerThead">AÑO</th>												
+												<th class="centerThead">%</th>
+												<th class="centerThead">BRUTO*</th>												
+												<th class="centerThead">IMPUESTOS</th>
+												<th class="centerThead">ATENCIONES</th>											
 											</tr>
 										</thead>
 										<tbody id="bodyCuenta1">											
 
 										</tbody>
 									</table>
-									*No incluye impuesto
-									<br><br><br>
-									<table class="table table-striped">			
-										<thead class="thead">
-											<th>SUB TOTAL</th>
-											<th>PROPINAS</th>
-											<th>IMPUESTOS</th>
-											<th>ATENCIONES</th>
-											<th>TOTAL</th>
-										</thead>							
-										<tbody>
-											<tr>
-												<td>$<span id="subtotalCuenta"></span></td>
-												<td>$<span id="propinaCuenta"></span></td>
-												<td>$<span id="impuestosCuenta"></span></td>
-												<td>$<span id="atencionesCuenta"></span></td>
-												<td><strong>$<span id="netoCuenta"></span></strong></td>
-											</tr>
-										</tbody>
-									</table>
+									*No incluye impuesto									
 
 								</div>									
 								
@@ -328,7 +334,7 @@
 									<table class="table table-striped" id="dataTable2" style="width: 100%;overflow-x:auto;">
 										<thead class="thead">
 											<tr>
-												<th scope="col"></th>
+												<th scope="col" class="order-data-tables"></th>
 												<th scope="col">NIT</th>
 												<th scope="col">RESTAURANTE</th>
 												<th scope="col"># DOCUMENTO</th>
@@ -376,8 +382,9 @@
 									<div class="col-md-12">
 										<div class="row">
 											<div class="col-md-6">												
-												<button class="btn btn-link" onclick="showForm('CAT')">CATEGORIA</button>
-												<button class="btn btn-link" onclick="showForm('PLA')">Platos</button>
+												<button class="btn btn-link click-order-table" onclick="showForm('CAT')">CATEGORIA</button>
+												<button class="btn btn-link click-order-table" onclick="showForm('PLA')">Platos</button>
+												<button class="btn btn-link click-order-table" onclick="showForm('NTS')">NOTAS</button>
 											</div>																						
 										</div>
 										<div class="row">
@@ -396,9 +403,9 @@
 																<th>CODIGO</th>
 																<th>NOMBRE</th>
 																<th>IMAGEN</th>
-																<th>EDITAR</th>
+																<th class="order-data-tables">EDITAR</th>
 																<th>ELIMINAR</th>
-															</tr>
+															</tr>	
 														</thead>
 														<tbody>
 															
@@ -429,7 +436,31 @@
 																<th>NIT</th>
 																<th>EMPRESA</th>
 																<th>DESCRIPCION</th>
-																<th>EDITAR</th>
+																<th class="order-data-tables">EDITAR</th>
+																<th>ELIMINAR</th>
+															</tr>
+														</thead>
+														<tbody>
+															
+														</tbody>
+													</table>													
+												</div>
+											</div>
+											<div id="notaForm" class="col-md-12">	
+												<hr>
+												<div class="col-md-12">
+													<h4><strong>LISTA DE NOTAS</strong></h4>	
+													<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="editarNota('nuevo')" style="z-index: 2;">
+														<i class="material-icons">add</i> crear
+													</a>												
+												</div>												
+												<div class="col-md-12" style="z-index: 1;">													
+													<table class="table table-striped" id="dataTable9" style="width: 100%;" >
+														<thead class="thead">
+															<tr>
+																<th>DESCRIPCION NOTA</th>
+																<th>CATEGORIA / PLATO</th>
+																<th class="order-data-tables">EDITAR</th>
 																<th>ELIMINAR</th>
 															</tr>
 														</thead>
@@ -532,7 +563,7 @@
 									<table class="table table-striped" id="dataTable3" style="width: 100%;overflow-x:auto;" >
 										<thead class="thead">
 											<tr>
-												<th scope="col"></th>
+												<th scope="col" class="order-data-tables"></th>
 												<th scope="col">CODIGO</th>
 												<th scope="col">FECHA INICIO</th>
 												<th scope="col">HORA INICIO</th>
@@ -1198,6 +1229,58 @@
     					</div>
   					</div>
 				</div>
+
+			<!--MODAL DE EDITAR CATEGORIA-->
+				<div id="ModalContent6" class="modal fade" role="dialog" >
+  					<div class="modal-dialog modal-lg">
+    					<div class="modal-content">
+      						<div class="modal-header text-center">
+        						<h4 class="modal-tittle"><strong id="tituloModal6">EDITAR NOTAS</strong></h4>
+      						</div>
+							 <div class="modal-body">
+						 		<div class="container-fluid" id="contenidoModal6">
+						 			<div id="headContModal6">
+						 				
+						 			</div>
+						 			<hr>
+						 			<div id="bodyContModal6">
+						 				<script type="text/javascript">
+						 					console.log('<?php echo json_encode($platos)?>');
+						 					console.log('<?php echo json_encode($codPlatos)?>');
+						 				</script>	
+
+										
+										<div class="col-md-12">
+											<label class="font-style-form" for="codOptionNewNote">Codigo plato o categoria</label>
+											<input type="text" class="form-control" id="codOptionNewNote">
+										</div>	
+
+										<div class="col-md-12">
+											<label class="font-style-form" for="optionNewNote">Plato o categoria para asignarle una nota</label>
+											<input type="text" class="form-control" id="optionNewNote">
+										</div>	
+											
+						 			</div>
+						 			<hr>
+						 			<div id="footContModal6">
+						 				
+						 			</div>						 			
+								</div>
+							</div>      						
+    						<div class="modal-footer">
+      							<button type="button" class="btn btn-default" data-dismiss="modal" id="cerrarEditNotas">
+    								<span class="glyphicon glyphicon-remove"></span>
+                        			<span class="hidden-xs"> Cerrar</span> 
+    							</button>         
+    							<button type="button" class="btn btn-default" id="btnSaveNotas">
+    								<span class="glyphicon glyphicon-floppy-saved"></span>
+                        			<span class="hidden-xs"> Guardar</span> 
+    							</button> 
+    						</div>
+      						
+    					</div>
+  					</div>
+				</div>
 			</div>				
 		<?php $this->endBody() ?>		
 
@@ -1280,11 +1363,18 @@
 		switch(form){
 			case 'CAT':
 				$('#catForm').show();
-				$('#plaForm').hide();				
+				$('#plaForm').hide();	
+				$('#notaForm').hide();
 				break;
 			case 'PLA':
 				$('#catForm').hide();
 				$('#plaForm').show();
+				$('#notaForm').hide();
+				break;
+			case 'NTS':
+				$('#catForm').hide();
+				$('#plaForm').hide();
+				$('#notaForm').show();
 				break;
 		}
 	}
@@ -1704,6 +1794,7 @@
 	
 	$(cargarMenus());
 	$(cargarPlatos());
+	$(cargarNotas());
 
 	function cargarMenus(){
 		$("#dataTable6").dataTable({				
@@ -1959,6 +2050,79 @@
 		});
 	}
 
+	function cargarNotas(){
+		$("#dataTable9").dataTable({				
+			"destroy":true,
+	    	"ajax":{
+	    		"url":"<?php echo Url::toRoute(['site/notasadmin']); ?>",
+	    		"method":"GET",
+	    		"data":{
+					"opcion":2
+	    		}
+	    	},	    	
+	    	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
+	    	"language": {
+	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
+	                "info": "Pagina _PAGE_ de _PAGES_",
+	                "infoEmpty": "Registros no disponibles",
+	                "infoFiltered": "(filtrado de _MAX_ registros)",
+	                "paginate": {
+	                  "previous": "Previo",
+	                  "next": "Siguiente",
+	                },
+	                "search": "Buscar:"
+	            }
+	    });	
+	}
+
+	function editarNota(codigo){
+		// id del tag 
+		var idTag = "#platoId"+codigo;
+		// codigo de la categoria seleccionado
+		var codigoPlato = $(idTag).html();
+
+		switch(codigo){
+			case 'nuevo':
+				
+				break;
+			default:				
+				
+				break;
+		}
+
+		$('#ModalContent6').modal('show');
+	}
+
+
+	$(document).ready(function(){
+
+		var arrayPhpNotas1 = new Array();
+		var arrayPhpNotas2 = new Array();
+
+		arrayPhpNotas1 = '<?php echo json_encode($platos)?>';
+		arrayPhpNotas2 = '<?php echo json_encode($codPlatos)?>';
+
+		var opcionCodNotanueva = JSON.parse(arrayPhpNotas1);
+		var opcionNotanueva = JSON.parse(arrayPhpNotas2);
+
+		$("#optionNewNote").autocomplete({
+	  		source: opcionCodNotanueva,
+	  		select: function (e, ui) {		       
+		        var value = ui.item.value;		        
+		        for (var i=0 ; i<opcionNotanueva.length ; i++){			        	
+					if(value.localeCompare(opcionCodNotanueva[i]) == 0){
+						$("#codOptionNewNote").focusin();
+						$("#codOptionNewNote").val(opcionNotanueva[i]);
+					}
+				}	
+			}
+		});		
+	});	
+
 	function accionBtnEditCateg(action){				
 		//accion correspondiente
 		switch(action){
@@ -2185,8 +2349,7 @@
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*var dateNow = new Date();
-	var today = dateNow.getDate()+"/"+(dateNow.getMonth()+1)+"/"+dateNow.getFullYear();*/
-
+	var today = dateNow.getDate()+"/"+(dateNow.getMonth()+1)+"/"+dateNow.getFullYear();*/	
 	if(rolIniciado.localeCompare("ADMINISTRADOR") != 0){		
 		//activacion de tab
 		$("#tab1").removeClass("active");
@@ -2196,6 +2359,9 @@
 		setInterval(consultaCuenta, 5000);
 		//
 		$("#btnSalida").html("volver");
+	}else{
+		$(consultaCuenta());	
+		setInterval(consultaCuenta, 5000);
 	}
 	
 	$("#fechaCuenta").change(function(){
@@ -2220,29 +2386,75 @@
 				});					
 
 				var detalleEmp = arrayDatos[0];				
-				var totales = arrayDatos[1];				
+				var totales = arrayDatos[1];	
+				var acumuMes = arrayDatos[2];				
+				var acumuAno = arrayDatos[3];
+				var acumuSem = arrayDatos[4];
 
 				var detalleTable = '';				
 
 				for (var i=0 ; i<detalleEmp['NIT'].length; i++) {
 					detalleTable = detalleTable +
-						'<tr>'+							
-							'<td>'+detalleEmp['NIT'][i]+'</td>'+
+						'<tr>'+														
 							'<td>'+detalleEmp['EMPRESA'][i]+'</td>'+
-							'<td>$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
-							'<td>$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
-							'<td>$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+
-							'<td>$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
+							'<td class="centerTbody">'+detalleEmp['PORC_DIA'][i]+'%</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(acumuSem['ACUM_SEMA'][i])+'</td>'+
+							'<td class="centerTbody">'+acumuSem['PORC_SEMA'][i]+'%</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(acumuMes['ACUM_MES'][i])+'</td>'+
+							'<td class="centerTbody">'+acumuMes['PORC_MES'][i]+'%</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(acumuAno['ACUM_YEAR'][i])+'</td>'+							
+							'<td class="centerTbody">'+acumuAno['PORC_YEAR'][i]+'%</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
+							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+							
 						'</tr>';					
 				}				
 
+				detalleTable = detalleTable +
+					'<tr>'+														
+						'<th>TOTALES</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['VALOR'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_SEMA'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_MES'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_YEAR'][0])+'</th>'+						
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['SUBTOTAL'][0])+'</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['IMPUESTO'][0])+'</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['ATENCIONES'][0])+'</th>'+							
+					'</tr>';	
+
 				
+				//totales['PROPINA'][0]
 				$("#bodyCuenta1").html(detalleTable);					
-				$("#subtotalCuenta").html(formatoMoneda(totales['SUBTOTAL'][0]));
-				$("#propinaCuenta").html(formatoMoneda(totales['PROPINA'][0]));
-				$("#impuestosCuenta").html(formatoMoneda(totales['IMPUESTO'][0]));
-				$("#atencionesCuenta").html(formatoMoneda(totales['ATENCIONES'][0]));
-				$("#netoCuenta").html(formatoMoneda(totales['VALOR'][0]));
+
+				/*$("#dataTable8").dataTable({
+		        	responsive: true,	    	
+		        	scrollX: true,
+		        	scrollY: true,
+		        	scrollCollapse: true,
+		        	"destroy":true,
+		        	"language": {
+		                    "lengthMenu": "Mostrar _MENU_ registros por pagina",
+		                    "zeroRecords": "Lo sentimos no hay nada para mostrar",
+		                    "info": "Pagina _PAGE_ de _PAGES_",
+		                    "infoEmpty": "Registros no disponibles",
+		                    "infoFiltered": "(filtrado de _MAX_ registros)",
+		                    "paginate": {
+		                      "previous": "Previo",
+		                      "next": "Siguiente",
+		                    },
+		                    "search": "Buscar:"
+		                },
+		            "bLengthChange" : false, 
+		            "bPaginate": false,
+		            "bFilter": false,
+		            "bInfo":false
+
+		        });*/
 				
 
 			}
@@ -2286,7 +2498,7 @@
 		if(tamano == 0){
 			swal("Campos vacíos","Llene los campos para agregar al pedido","info");
 		}else{
-			$("#tablePedido").append('<tr id="row'+rowCont+'"><td class="codigoPlatoRow">'+codigo+'</td><td>'+nombre+'</td><td class="cantidadPlatoRow">'+cantidad+'</td><td><i class="material-icons deleteIcon btn-link" onclick="quitarRow('+rowCont+')">close</i></td></tr>');
+			$("#tablePedido").append('<tr id="row'+rowCont+'"><td class="codigoPlatoRow">'+codigo+'</td><td>'+nombre+'</td><td class="cantidadPlatoRow">'+cantidad+'</td><td><i class="material-icons deleteIcon btn-link" onclick="quitarRow('+rowCont+')">close</i></td></tr>').addClass("filaPlatosFactura");
 
 			rowCont++;
 
@@ -2421,18 +2633,19 @@
 				success: function (data) {											
 					swal("Factura ingresada correctamente","EL número de la factura ingresa es "+data,"success");
 					//limpiar el formulario
-					$("#fechaFactura").val();
-					$("#horaFactura").val();
-					$("#meseroFactura").val();
-					$("#codigoMesa").val();
-					$("#formaPagos").val();
-					$("#numAutorizacion").val();
-					$("#atencion1").val();
-					$("#atencion2").val();
-					$("#atencion3").val();
-					$("#atencion4").val();
-					$("#valorPropina").val();
-					$("#cedulaCliente").val();
+					$("#fechaFactura").val("");
+					$("#horaFactura").val("");
+					$("#meseroFactura").val("");
+					$("#codigoMesa").val("");
+					$("#formaPagos").val("");
+					$("#numAutorizacion").val("");
+					$("#atencion1").val("");
+					$("#atencion2").val("");
+					$("#atencion3").val("");
+					$("#atencion4").val("");
+					$("#valorPropina").val("");
+					$("#cedulaCliente").val("");										
+
 				},
 				error: function(error) {
 					swal("Error al ingresar factura","Vuelve a intentarlo o comunícate con el administrador","error");
@@ -2478,7 +2691,20 @@
 		}
 
 		return (valorFinal2+decimal);
-	}
+	}	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	$(document).ready(function(){
+		/*setTimeout(function(){
+			$(".order-data-tables").click();
+  		}, 5000);*/
+		
+		$(".click-order-table").click(function(){
+			$(".order-data-tables").click();
+		});
+
+	});
 </script>
 
 <?php $this->endPage() ?>

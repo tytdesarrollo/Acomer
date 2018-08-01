@@ -10,20 +10,13 @@
 
 	$this->title = 'Acomer';
 
+	$c1 = 'ERMINO MEDIO,SIN CEBOLLA*_SIN VINAGRETA,';
+	$c2 = explode(',',$c1);
+
+	var_dump($c2);
 	
-	$fn_menus = new SpMenusPlaza();
-	$platos_data = $fn_menus->procedimiento()[3];   
-
-
-    $platos = array();   
-    for($i=0 ; $i <= count($platos_data)-1 ; $i++){
-        array_push($platos, $platos_data[$i]["NOMBRE"]);
-    }    
-
-    var_dump($platos);
+	
 ?>
-
-
 
 
 

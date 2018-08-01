@@ -29,6 +29,8 @@
 		<?= Html::jsFile('@web/js/modernizr-custom.js') ?>
 		<?= Html::jsFile('@web/js/jquery.min.js') ?>
 		<?= Html::jsFile('@web/js/ciclosession.js') ?>	
+		<?= Html::cssFile('@web/css/multi.min.css') ?>
+		<?= Html::jsFile('@web/js/multi.min.js') ?>	
 
 		<style type="text/css">
 			someinput::-ms-clear {
@@ -85,7 +87,7 @@
 												<div class="product" id="<?=$keyco['COD_PRODUCTO'].$ketc['COD_CATEGORIA']?>">
 													<div class="product__info">
 														<img class="product__image" src="img/categorias/<?=$ketc['IMAGEN']?>" alt="Carne" />
-														<h3 class="product__title"><?=$keyco['NOMBRE']?></h3>
+														<h3 class="product__title" plt-cod="<?=$keyco['COD_PRODUCTO']?>"><?=$keyco['NOMBRE']?></h3>
 														<span class="product__price highlight">$<?php echo number_format($keyco['PRECIO']);?> *</span>
 														<div class="content-count" id="<?php echo $id_content_count; ?>">
 															<div class="input-group">
@@ -102,11 +104,13 @@
 																</span>
 															</div>
 														</div>
-														<label class="actions action--button action--compare-add" id="45">
-															<input class="check-hidden" type="checkbox"/><!--onclick="tomapedido('<?php echo $keyco['COD_PRODUCTO']?>')"-->
+														<label class="actions action--button action--compare-add">
+															<!---->
+															<input class="check-hidden" type="checkbox"/>
 															<i class="material-icons plus">&#xE145;</i>
 															<i class="material-icons check">&#xE876;</i>
-															<span class="action__text" >Agregar</span> 
+															<span class="action__text">Agregar</span>
+															<i id="<?=$keyco['COD_PRODUCTO']?>" class="material-icons plus idPato" onclick="notaPedido('<?=$keyco['COD_PRODUCTO']?>','<?=$keyco['NOMBRE']?>','<?=$ketc['COD_CATEGORIA']?>')" data-cat="<?=$ketc['COD_CATEGORIA']?>" style="width: 20%;">note_add</i> <!--bookmark_border-->
 														</label>
 														<label style="font-size: 11px;"><?=$keyco['MENSAJE']?> </label>
 													</div>
@@ -135,6 +139,64 @@
     			</a>
    			</div>
   		</div>
+
+
+  		<div id="modalNotas" class="modal fade" role="dialog" >
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+						<div class="modal-header text-center">
+						<div class="container-fluid">
+							<!--<div class="row">									
+								<div class="pull-right">
+									<a href="#" class="btn btn-raised btn-organge-grad btn-radius btn-inline" data-dismiss="modal" aria-label="Close">
+										<i class="material-icons icon-btn">&#xE14C;</i>Salir
+									</a>
+								</div>
+							</div>-->
+						</div>
+						</div>
+					<div class="modal-body">	
+						<h4 class="text-center">NOTA DE PLATO</h4>
+						<h4 class="text-center" id="notaPlatoName"></h4>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="content-fact">
+									<div id="content-notas">	
+										<div class="input-group">
+											<input type="text" id="notaPlato" class="form-control" placeholder="Ingresa nota" >
+											<div class="input-group-btn">    <!-- Buttons -->
+												<a type="button" class="btn btn-raised btn-success btn-radius btn-inline" onclick="addOption()">AÑADIR</a>
+											</div>
+										</div>
+										<div id="selectOptionNote">
+											<select multiple="multiple" name="favorite_fruits" id="opcionNotasPlato">
+												
+										    </select>'
+										</div>												
+									</div>									
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<a class="btn btn-raised btn-success btn-radius btn-inline" id="btnSaveNote">
+									GUARDAR
+									<div class="ripple-container"></div>
+								</a>
+								<a class="btn btn-raised btn-organge-grad btn-radius btn-inline" onclick="cerrarModal()">
+				     				CANCELAR
+				    			</a>
+				    			<a class="btn btn-raised btn-organge-grad btn-radius btn-inline" id="btnDeleteNote">
+				     				<i class="material-icons">delete</i>
+				    			</a>
+							</div>
+						</div>
+					</div>      						
+					<div class="modal-footer">
+							        							
+					</div>
+						
+				</div>
+			</div>
+		</div>
 	<?php $this->endBody() ?>
 	<!--<script src="../web/js/main-menu-new.js"></script>-->
 	<!--<script src="../web/js/order_new.js"></script>-->
@@ -198,13 +260,26 @@
 					puestos = puestosPedido;
 
 				}
-				
+
+
+				var notas = notasConPedidos(codigosPlatos);
 
 				//ruta que retorna a la mesa para tomar demas pedidos
 				var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
-				location.href = urlMesa+'&codigoM='+'<?=$codmesa?>'+'&tamanoM='+'<?=$tamano?>'+'&estadoM='+'<?=$estado?>'+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos+'&avatars='+'<?=$avatars?>';
+				urlMesa = urlMesa +
+					'&codigoM='+'<?=$codmesa?>'+
+					'&tamanoM='+'<?=$tamano?>'+
+					'&estadoM='+'<?=$estado?>'+
+					'&platos='+codigos+
+					'&cantidad='+cantidad+
+					'&puestos='+puestos+
+					'&avatars='+'<?=$avatars?>'+
+					'&notas='+notas;
+				location.href = urlMesa;		
+
 				//var urlMesa = '<?php echo Url::toRoute(['site/mesa'])?>';
 				//location.href = urlMesa+'&platos='+codigos+'&cantidad='+cantidad+'&puestos='+puestos;
+				//
 			}
 
 			//funcion para comodar todo lo escogido del menu
@@ -214,9 +289,9 @@
 				// se llena el array
 				<?php foreach($comidas as $keyCC){ ?>
 			        listaPlatos.push('<?php echo $keyCC['COD_PRODUCTO']; ?>');
-			    <?php } ?>
+			    <?php } ?>			    
 				//obtengo la lista de los div que se generan por cada producto que se ha adicionado 
-				var listaPedido =  ($('div.compare-basket').children('div'));				
+				var listaPedido =  ($('div.compare-basket').children('div'));					
 				//cada div adicionado los separo y los acomodo en un array
 				var arrayDatos = $.map(listaPedido, function(value, index) {
 					return [value];
@@ -225,11 +300,13 @@
 				var tamano = arrayDatos.length;
 				// array donde se almacena los valor 
 				var idDiv = new Array();
+				var idPltPedido = new Array();
 				// recorro el array y obtengo el id de cada uno 				
 				for(var i=0 ; i<tamano ; i++){
 					//obtengo el id del div y la cantida seleccionada 
 					idDiv.push(arrayDatos[i].id);
-				}
+					idPltPedido.push($(arrayDatos[i]).attr("data-info"));
+				}				
 				//
 				var cantidadPedido = new Array();
 				var codigoPedido = new Array();
@@ -237,17 +314,23 @@
 				for(var j=0 ; j<idDiv.length ; j++){
 					var temp = idDiv[j].split(":");
 					cantidadPedido.push(temp[1]);
-					codigoPedido.push(temp[0]);
-				}
 
-				for(var k=0 ; k<codigoPedido.length ; k++){
-					codigoPedido[k] = listaPlatos[codigoPedido[k]]
+					var buscarID = idPltPedido[j].substring(idPltPedido[j].indexOf("plt-cod"));
+			    	buscarID = (buscarID.substring(buscarID.indexOf("\""),buscarID.indexOf(">"))).trim();    	
+			    	buscarID = buscarID.substr(1,buscarID.length-2);
+
+					codigoPedido.push(buscarID);
 				}				
+
+				/*for(var k=0 ; k<codigoPedido.length ; k++){
+					codigoPedido[k] = listaPlatos[codigoPedido[k]]
+				}	*/			
 				//console.log(cantidadPedido);
 				//console.log(codigoPedido);
 
 				var datosTotal = new Array();
 				datosTotal = [cantidadPedido,codigoPedido];
+
 
 				return datosTotal;
 			}
@@ -427,4 +510,298 @@
 		searchActivo = '';
 	}
 
+	/////////////////////////
+	var contadorPedido = 0;
+	var nombrePlatoNota = new Array();
+	var codigoPlato = new Array();
+	var notaPlato = new Array();
+
+	function cerrarModal(){
+		$('#modalNotas').modal('hide');		
+	}
+
+	function notaPedido(id,nombre,categoria){		
+
+		$("#notaPlatoName").html(nombre);
+
+		//$('#modalNotas').modal('show');
+		$('#modalNotas').modal({backdrop: 'static', keyboard: false})
+
+		$("#btnSaveNote").attr('onclick','guardarNotaPlato("'+id+'","'+nombre+'")');
+
+		$.ajax({
+			url:'<?php echo Url::toRoute(['site/carganotaspedido']); ?>',	
+			dataType:'json',								
+			method: "GET",
+			data: {'categoria':categoria,'plato':id},
+			success: function (data) {	
+				//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+				var arrayDatos = $.map(data, function(value, index) {
+	    			return [value];
+				});		
+
+				$("#opcionNotasPlato").html("");				
+				$(".non-selected-wrapper").html("");	
+				$(".selected-wrapper").html("");
+
+				var notasPlato = arrayDatos[0];
+				var opcionesNota1 = '';
+				var opcionesNota2 = '';
+
+				for(var i=0 ; i<notasPlato.length ; i++){
+					opcionesNota1 = opcionesNota1 + '<option>'+notasPlato[i]+'</option>';
+					opcionesNota2 = opcionesNota2 + '<a tabindex="0" class="item" role="button" data-value="'+notasPlato[i]+'" multi-index="'+i+'">'+notasPlato[i]+'</a>';
+
+					contadorPedido = i;
+				}
+
+				$("#opcionNotasPlato").html(opcionesNota1);				
+				$(".non-selected-wrapper").html(opcionesNota2);				
+
+				var select = document.getElementById('opcionNotasPlato');
+		    	multi(select,{
+		    		'search_placeholder': 'Buscar...',
+		    	});		
+
+		    	$("#btnDeleteNote").hide();		
+			}
+		});	
+	}	
+
+	function guardarNotaPlato(idPlato, nomPlato){				
+		var inputSelects = $("#opcionNotasPlato").val();
+
+		if(!!inputSelects){
+
+			var platoRepetido = -1;
+
+			for(var i=0 ; i<codigoPlato.length ; i++){
+				if(codigoPlato[i].localeCompare(idPlato) == 0){
+					platoRepetido = i;
+				}
+			}
+
+			if(platoRepetido < 0){
+				nombrePlatoNota.push(nomPlato);
+				codigoPlato.push(idPlato);
+				notaPlato.push(arrayToChar(inputSelects));
+			}else{
+				notaPlato[platoRepetido] = arrayToChar(inputSelects);
+			}	
+
+			cerrarModal();
+		}else{
+			swal("Datos vacíos","Debe agregar una nota, de lo contrario cancele la operación","warning");
+		}
+
+	}
+
+	function addOption(){		
+		contadorPedido++;
+
+		var valorNuevo = $("#notaPlato").val();
+		valorNuevo = valorNuevo.toUpperCase();
+
+    	$("#opcionNotasPlato").append('<option selected="selected">'+valorNuevo+'</option>');
+    	$(".non-selected-wrapper").append('<a tabindex="0" class="item selected" role="button" data-value="'+valorNuevo+'" multi-index="'+contadorPedido+'">'+valorNuevo+'</a>')
+    	$(".selected-wrapper").append('<a tabindex="0" class="item selected" role="button" data-value="'+valorNuevo+'" multi-index="'+contadorPedido+'">'+valorNuevo+'</a>')
+
+    	var select = document.getElementById('opcionNotasPlato');
+    	multi(select,{
+    		'search_placeholder': 'Buscar...',
+    	});
+
+    	$("#notaPlato").val("");
+    }
+
+    function removeNote(item){
+
+    	var idPlato = (item.id);
+    	idPlato = idPlato.substring(0, idPlato.length-2);
+    	
+    	for(var i=0 ; i<codigoPlato.length ; i++){
+    		if(codigoPlato[i].localeCompare(idPlato) == 0){
+    			nombrePlatoNota.splice(i, 1);
+    			codigoPlato.splice(i, 1);
+				notaPlato.splice(i, 1);
+    		}
+    	}
+
+    }
+
+    function verNotaPlato(atributo){    
+    	//capturar e id del plato que esta clickeando
+    	var idPlato = atributo.substring(atributo.indexOf("<i id="));
+    	idPlato = (idPlato.substring(idPlato.indexOf("\""),idPlato.indexOf("class"))).trim();    	
+    	idPlato = idPlato.substr(1,idPlato.length-2);
+    	// captura el codigo de la categoria a la que pertenece el plato
+    	var idCategNota = atributo.substring(atributo.indexOf("data-cat"));
+    	idCategNota = (idCategNota.substring(idCategNota.indexOf("\""),idCategNota.indexOf("style"))).trim();
+    	idCategNota = idCategNota.substr(1,idCategNota.length-2);    	
+    	//array que contiene las notas dle plato
+    	var notasArray = new Array();
+    	//identifico el plato ue selecciono en el array de las notas
+    	for(var i=0 ; i<codigoPlato.length ; i++){
+    		if(idPlato.localeCompare(codigoPlato[i]) == 0){
+    			notasArray = crearArray(notaPlato[i]);
+    			$("#notaPlatoName").html(nombrePlatoNota[i]);
+    		}
+    	}
+    	//limpia el selector de notas
+    	$("#opcionNotasPlato").html("");				
+		$(".non-selected-wrapper").html("");	
+		$(".selected-wrapper").html("");
+
+    	$.ajax({
+			url:'<?php echo Url::toRoute(['site/carganotaspedido']); ?>',	
+			dataType:'json',								
+			method: "GET",
+			data: {'categoria':idCategNota,'plato':idPlato},
+			success: function (data) {	
+				//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+				var arrayDatos = $.map(data, function(value, index) {
+	    			return [value];
+				});
+
+				var notasPlato = arrayDatos[0];		
+				var notaCount = 0;		
+				var opcionesNota1 = '';
+
+				contadorPedido = 0;
+
+				for(var i=0 ; i<notasPlato.length ; i++){					
+
+					for(var j=0 ; j<notasArray.length ; j++){						
+
+						if(notasPlato[i].localeCompare(notasArray[j]) == 0){														
+							notaCount++;							
+						}
+					}					
+
+					if(notaCount == 0){
+						//opcion en input no selecciondos
+						opcionesNota1 = opcionesNota1 + '<option>'+notasPlato[i]+'</option>';												
+					}
+
+					notaCount = 0;					
+				}
+
+
+				for(var i=0 ; i<notasArray.length ; i++){						
+					//option en el input que fueron seleccionados
+					opcionesNota1 = opcionesNota1 + '<option selected="selected">'+notasArray[i]+'</option>';															
+				}	
+						
+				$("#selectOptionNote").html(
+						'<select multiple="multiple" name="favorite_fruits" id="opcionNotasPlato">'+
+							opcionesNota1+
+					    '</select>'
+					);
+
+				var select = document.getElementById('opcionNotasPlato');
+
+		    	multi(select,{
+		    		'search_placeholder': 'Buscar...',
+		    	});			    			    	
+		    	
+				/*$(".selected-wrapper").append(opcionesNota3);*/
+
+		    	$('#modalNotas').modal('show');		
+		    	$("#btnDeleteNote").show();
+		    	$("#btnDeleteNote").attr("onclick","eliminarNota(\'"+idPlato+"\')");
+		    	$("#btnSaveNote").attr('onclick','guardarNotaPlato("'+idPlato+'")');
+		    }
+		});	
+    }
+
+    function eliminarNota(platoEliminar){
+
+    	for(var i=0 ; i<notaPlato.length ; i++){
+    		if(platoEliminar.localeCompare(codigoPlato[i]) == 0){
+    			nombrePlatoNota.splice(i, 1);
+    			codigoPlato.splice(i, 1);
+				notaPlato.splice(i, 1);
+    		}
+    	}
+
+    	cerrarModal();
+    }
+
+    function notasConPedidos(codigo){    	
+    	var notasRealizadas = crearArray('<?=$notas?>');
+		var notaPlatoReturn = new Array();
+
+		var contadorNotas = 0;		
+
+		for(var i=0 ; i<codigo.length ; i++){
+
+			var posicionNota;
+
+			for(var j=0 ; j<codigoPlato.length ; j++){
+				if(codigo[i].localeCompare(codigoPlato[j]) == 0){
+					contadorNotas++;
+					posicionNota = j;
+				}
+			}
+
+			if(contadorNotas > 0){
+				notaPlatoReturn.push(notaPlato[posicionNota].replace(",",'*_'));
+			}else{
+				notaPlatoReturn.push("");
+			}		
+
+			contadorNotas = 0;
+		}
+
+		if(notasRealizadas != 0){
+			
+			notaPlatoReturn = notasRealizadas.concat(notaPlatoReturn);			
+		}
+
+		return notaPlatoReturn;
+    }
+</script>
+
+
+
+<script type="text/javascript">
+	function arrayToChar(array){
+		//cadena que va tener los datos del array
+		var char = '';
+		// ciclo para rellenar la variable char
+		for (var i=0 ; i<array.length ; i++) {
+			//anida con los datos nuevos
+			char = char + array[i] + ",";
+		}
+		//elimina la ultima coma
+		char = char.substr(0, char.length-1);
+		//retorna el valor 
+		return char;
+	}
+
+	function crearArray(datos){
+		//array que se retorna
+		var arrayRetornar = new Array();
+		//cadena que entra y se va a estar modificando
+		var cadena = datos+',';
+		//posicion de la coma
+		var posComa = cadena.indexOf(",");
+		//valor que se estara insertando en el array
+		var valorCadena;
+
+		while(posComa != -1){			
+			// el valor va desde el primer caracter hasta el ultimo antes de la coma
+			valorCadena = cadena.substr(0,posComa);			
+			// si la posicion de la coma es dferente de -1 llena el cursor
+			if(posComa != -1){				
+				arrayRetornar.push(valorCadena);
+			}
+			//se borra los datos que hay detras de la primer coma junto con ella 
+			cadena = cadena.substr(posComa+1);
+			// se busca la posicion de la siguiente coma 
+			posComa = cadena.indexOf(",");
+		}
+
+		return arrayRetornar;
+	}
 </script>
