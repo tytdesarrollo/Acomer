@@ -600,7 +600,26 @@ use yii\widgets\ActiveForm;
 
 
 <script type="text/javascript">
-	/*setTimeout(function(){
-		$("#pedidosEmp2").click();
-	}, 5000);	*/
+	function opcionesPlaza(){
+		swal({
+			title: "Selecciona una opcion",
+			text: "",
+			type: "info",
+			showCancelButton: true,
+			confirmButtonColor: "#4caf50",
+			confirmButtonText: "Administrador",
+			cancelButtonText: "Cerrar Sesion",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+			if(isConfirm) {
+				var administrador = "<?php echo Url::toRoute(['site/administrador']); ?>";
+				location.href = administrador+"&cierre=mesero";
+		  	}else{
+			    var salir = "<?php echo Url::toRoute(['site/salida']); ?>";
+			    location.href = salir;
+			}
+		});
+	}
 </script>

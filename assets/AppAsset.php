@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
 		'css/fullcalendar.css',
 		'css/menu-cat.css',
 		'css/style-order.css',
+		'css/dataTables.bootstrap4.css',
     ];
     public $js = [
 		// 'js/modernizr-custom.js',
@@ -34,6 +35,8 @@ class AppAsset extends AssetBundle
 		'js/main-menu.js',
 		'js/order.js',
 		'js/countspin.js',
+		'js/jquery.dataTables.js',
+		'js/dataTables.bootstrap4.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

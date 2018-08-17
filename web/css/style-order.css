@@ -59,7 +59,8 @@
 	display: inline-block;
 	vertical-align: top;
 	width: calc(50% - 2em);
-	min-width: 16em;
+	/* min-width: 16em; */
+	min-width: 10em;
 	margin: 0 0.5em 2.5em;
 	padding: 1.5em 1.5em 2em;
 	background: #24252A;
@@ -299,6 +300,17 @@
 	padding: 3px 5px;
 }
 
+.product .action--compare-add{
+	display: block;
+	padding: 0.7em 0.7em;
+}
+.product .action--button i + span{
+	margin-left: 0em;
+}
+.product .action__text{
+	font-size: 0.95em;
+}
+
 .action--remove:hover,
 .action--compare-add:hover {
 	/* color: #5C5EDC; */
@@ -533,15 +545,18 @@
 
 @media screen and (min-width: 48em){
 	.product{
-		width: calc(100% / 3 - 2em);
-		margin: 0 0.7em 2.5em;
+		/* width: calc(100% / 3 - 2em); */
+		width: calc(25% - 2em);
+		/* margin: 0 0.7em 2.5em; */
+		margin: 0 0.7em 1.5em;
 	}
 }
 
 @media screen and (min-width: 70em){
 	.product{
 		width: calc(25% - 2em);
-		margin: 0 0.9em 2.5em;
+		/* margin: 0 0.9em 2.5em; */
+		margin: 0 0.9em 2em;
 	}
 }
 
@@ -671,8 +686,8 @@
 	margin: 0 auto;
 }
 .content-count .input-group-addon, .content-count .input-group-btn{
-	width: auto;
-	display: inline-block;
+	/* width: auto; */
+	/* display: inline-block; */
 	padding: 0;
 }
 .content-count .input-group-btn .btn-default{
@@ -680,15 +695,16 @@
     background-color: #2C2D34;
     border-color: #2C2D34;
 	outline: 0;
-	padding: 6px 12px;
+	padding: 6px 10px;
+	margin: 3px 0px;
 }
 .content-count .input-group-btn .btn-default.plus{
 	color: #6cd84e;
 }
 .content-count .input-group .form-control{
-	display: inline-block;
-	float: none;
-	width: 80px;
+	/* display: inline-block; */
+	/* float: none; */
+	/* width: 80px; */
 	vertical-align: middle;
 	color: #fff;
 	background-color: transparent;
