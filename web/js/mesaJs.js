@@ -1244,7 +1244,7 @@
 		}
 	}
 
-//HABILITAR LOS BOTONES DEPENDIENDO DE AS CONCIDIONES INDICADAS
+//HABILITAR LOS BOTONES DEPENDIENDO DE LAS CONCIDIONES INDICADAS
 	function habilitarBotones(){
 		// habilitar el boton de la facturacion
 		if(generalEstadoM == 1){

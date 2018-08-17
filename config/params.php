@@ -12,9 +12,9 @@ return[
 			    )
 			    (CONNECT_DATA=
 			      (SERVER=dedicated)
-			      (SERVICE_NAME=AWAJAVA)
+			      (SERVICE_NAME=orcl.talentos)
 			    )
 	  		)',
-'usuario'=>'USR_AWA',    //USR_AWA	  		//USR_SAIC
-'password'=>'0RCAWASYST' //0RCAWASYST       //SAIC123WEB
+'usuario'=>'USR_SAIC',    //USR_AWA	  		//USR_SAIC      //USR_WEBPRU
+'password'=>'SAIC123WEB' //0RCAWASYST       //SAIC123WEB	//WEBPRU123
 ];
