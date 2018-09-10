@@ -4,22 +4,18 @@
 	use yii\bootstrap\ActiveForm;
 	use yii\bootstrap\Alert;
 	use yii\helpers\Url;
-	use app\models\SpMenusPlaza;
+	use app\models\SpLoginAcomer;
 
 	AppAsset::register($this);
 
 	$this->title = 'Acomer';
-
-	$c1 = 'ERMINO MEDIO,SIN CEBOLLA*_SIN VINAGRETA,';
-	$c2 = explode(',',$c1);
-
-	var_dump($c2);
-	
-	
 ?>
 
 
+<script type="text/javascript">
 
+	console.log( "$22.555.000.000".replace( new RegExp("\\.","gm"),""));
+</script>
 
 
 

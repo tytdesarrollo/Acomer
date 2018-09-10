@@ -3376,6 +3376,214 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	top: 237px;
     left: 642px;
 }
+.mesa__56{
+    top: 185px;
+    left: 48px;
+}
+.mesa__57{
+    top: 156px;
+    left: 98px;
+}
+.mesa__58{
+    top: 128px;
+    left: 149px;
+}
+.mesa__59{
+    top: 101px;
+    left: 199px;
+}
+.mesa__60{
+    top: 72px;
+    left: 249px;
+}
+.mesa__61{
+    top: 45px;
+    left: 298px;
+}
+.mesa__62{
+    top: 18px;
+    left: 348px;
+}
+.mesa__63{
+    top: 215px;
+    left: 100px;
+}
+.mesa__64{
+    top: 186px;
+    left: 151px;
+}
+.mesa__65{
+    top: 158px;
+    left: 200px;
+}
+.mesa__66{
+    top: 130px;
+    left: 250px;
+}
+.mesa__67{
+    top: 101px;
+    left: 301px;
+}
+.mesa__68{
+    top: 74px;
+    left: 352px;
+}
+.mesa__69{
+    top: 47px;
+    left: 400px;
+}
+.mesa__70{
+    top: 307px;
+    left: 81px;
+}
+.mesa__71{
+    top: 278px;
+    left: 131px;
+}
+.mesa__72{
+    top: 251px;
+    left: 183px;
+}
+.mesa__73{
+    top: 222px;
+    left: 233px;
+}
+.mesa__74{
+    top: 194px;
+    left: 283px;
+}
+.mesa__75{
+    top: 167px;
+    left: 333px;
+}
+.mesa__76{
+    top: 139px;
+    left: 383px;
+}
+.mesa__77{
+    top: 112px;
+    left: 432px;
+}
+.mesa__78{
+    top: 83px;
+    left: 482px;
+}
+.mesa__79{
+    top: 335px;
+    left: 134px;
+}
+.mesa__80{
+    top: 307px;
+    left: 184px;
+}
+.mesa__81{
+    top: 278px;
+    left: 233px;
+}
+.mesa__82{
+    top: 250px;
+    left: 282px;
+}
+.mesa__83{
+    top: 224px;
+    left: 332px;
+}
+.mesa__84{
+    top: 198px;
+    left: 383px;
+}
+.mesa__85{
+    top: 170px;
+    left: 433px;
+}
+.mesa__86{
+    top: 141px;
+    left: 482px;
+}
+.mesa__87{
+    top: 112px;
+    left: 532px;
+}
+.mesa__88{
+    top: 357px;
+    left: 244px;
+}
+.mesa__89{
+    top: 329px;
+    left: 293px;
+}
+.mesa__90{
+    top: 300px;
+    left: 343px;
+}
+.mesa__91{
+    top: 271px;
+    left: 393px;
+}
+.mesa__92{
+    top: 242px;
+    left: 443px;
+}
+.mesa__93{
+    top: 214px;
+    left: 492px;
+}
+.mesa__94{
+    top: 185px;
+    left: 542px;
+}
+.mesa__95{
+    top: 156px;
+    left: 592px;
+}
+.mesa__96{
+    top: 384px;
+    left: 296px;
+}
+.mesa__97{
+    top: 356px;
+    left: 345px;
+}
+.mesa__98{
+    top: 328px;
+    left: 394px;
+}
+.mesa__99{
+    top: 300px;
+    left: 443px;
+}
+.mesa__100{
+    top: 272px;
+    left: 492px;
+}
+.mesa__101{
+    top: 242px;
+    left: 542px;
+}
+.mesa__102{
+    top: 214px;
+    left: 592px;
+}
+.mesa__103{
+    top: 185px;
+    left: 642px;
+}
+.mesa__104{
+    top: 408px;
+    left: 345px;
+}
+.mesa__105{
+    top: 382px;
+    left: 393px;
+}
+.mesa__106{
+    top: 353px;
+    left: 443px;
+}
+.mesa__107{
+    top: 324px;
+    left: 492px;
+}
 .container__1{
 	top: 113px;
     left: 202px;
@@ -3449,11 +3657,18 @@ a.txt__light-100:hover, a.txt__light-100:focus{
 	font-size:35px;
 	enable-background:new;
 }
+.st5{
+	font-size:26px;
+	enable-background:new;
+}
 .notification.text_0-9 use{
 	font-size:41.4474px;
 }
 .notification.text_10-20 use{
 	font-size:35px;
+}
+.notification.text_100-107 use{
+	font-size:26px;
 }
 .notification use{
 	opacity:0.8;
@@ -6505,3 +6720,13 @@ body.overflow-hidden {
 }
 
 /* Texto */
+
+
+.cambio_plaza{
+	width: 40px;
+	height: 40px;
+	margin-top: 4px;
+}
+#modalContent .form-group{
+	margin: 0px;
+}

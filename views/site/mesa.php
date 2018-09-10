@@ -59,10 +59,14 @@
 				<div class="mrg__bottom-30">
 					<div class="container-fluid">
 						<div class="pull-right">
-							<a href="<?php echo Url::toRoute(['site/plaza']); ?>" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
-								<i class="material-icons">&#xE14C;</i>
-							</a>
-						</div>
+							<?php if ($codigomesa <= 55): ?>
+								<a href="<?php echo Url::toRoute(['site/plaza']); ?>" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+							<?php else: ?>
+								<a href="<?php echo Url::toRoute(['site/plaza2']); ?>" class="btn btn-raised btn-organge-grad btn-radius btn-inline">
+							<?php endif ?>
+									<i class="material-icons">&#xE14C;</i>
+								</a>
+							</div>
 					</div>
 				</div>
 				<div class="text-center">
@@ -75,7 +79,12 @@
 								<span class="glyphicon glyphicon-minus"></span>
 							</button>
 						</span>
-						<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="12">
+						<?php if (strcmp($puestosReserv, "NO_RESERVA") === 0): ?>
+							<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="1" min="1" max="12">	
+						<?php else: ?>
+							<input id="numPersonas" type="text" name="selectPuestos" class="form-control input-number" value="<?=$puestosReserv?>" min="1" max="12">
+						<?php endif ?>
+						
 						<span class="input-group-btn">
 							<button type="button" class="btn btn-default btn-number plus" data-type="plus" data-field="selectPuestos">
 								  <span class="glyphicon glyphicon-plus"></span>
@@ -587,69 +596,77 @@
 											</div>
 											<div class="clearfix mrg__bottom-30">
 												<div class="propina-content pull-left" id="opcionesPropina">
-													<p class="fnt__Bold">¿Desea agregar propina?</p>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina1" value="0" checked="" onclick="calcularPropina(0)">
-															0%
-														</label>
-													</div>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina2" value="10" onclick="calcularPropina(10)">
-															10%
-														</label>
-													</div>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina3" value="15" onclick="calcularPropina(15)">
-															15%
-														</label>
-													</div>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina4" value="18" onclick="calcularPropina(18)">
-															18%
-														</label>
-													</div>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina5" value="0" onclick="habilitarPropina()">Otro:
-														</label>																
+													<div id="contenedorPropinas">
+														<p class="fnt__Bold">¿Desea agregar propina?</p>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina1" value="0" checked="" onclick="calcularPropina(0)">
+																0%
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina2" value="10" onclick="calcularPropina(10)">
+																10%
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina3" value="15" onclick="calcularPropina(15)">
+																15%
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina4" value="18" onclick="calcularPropina(18)">
+																18%
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="optionsRadiosPropina" id="optionsRadiosPropina5" value="0" onclick="habilitarPropina()">Otro:
+															</label>																
+														</div>	
+														<div class="radio radio-primary">
+															<input type="number" class="form-control" placeholder="$0" id="propinax" value="x" style="width:100px; font-size:20px;" disabled="true" />
+														</div>	
 													</div>	
-													<div class="radio radio-primary">
-														<input type="number" class="form-control" placeholder="$0" id="propinax" value="x" style="width:100px; font-size:20px;" disabled="true" />
-													</div>														
-													<p class="fnt__Bold">Selecciona la forma de pago</p>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="formaPago" id="formaPago1" value="01" checked="">
-															Efectivo
-														</label>
+													<div id="contenedorFormasPago">
+														<p class="fnt__Bold">Selecciona la forma de pago</p>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="formaPago1" id="formaPago1" value="01" checked="" onclick="habiitarCheck('#formaPago1')">
+																Efectivo
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<input type="number" class="form-control" placeholder="Valor efectivo ingresado" id="valEfectivo" value="x" style="width:160px; font-size:20px; height: 22px" />
+														</div>	
+														<br>
+														<div class="radio radio-primary">
+															<label>
+																<input type="radio" name="formaPago2" id="formaPago2" value="02" onclick="habiitarCheck('#formaPago2')">
+																Tarjeta 1
+															</label>
+														</div>
+														<div class="radio radio-primary">
+															<input type="number" class="form-control" placeholder="Valor tarjeta a pagar" id="valorTarjeta1" value="x" style="width:159px; font-size:20px; height: 22px" />															
+														</div>		
+														<div class="radio radio-primary">
+															<input type="number" class="form-control" placeholder="Numero autorizacion" id="numeroAuth1" value="x" style="width:159px; font-size:20px; height: 22px" />
+														</div>
+														<div class="radio radio-primary" id="addTarjetaId" onclick="addTarjetaPago(2,3)">
+															<i class="material-icons"  >add</i>
+														</div>		
+
+													</div>	
+													<div id="contenedorAtenciones">
+														<p>
+															<a onclick="adicionarAtencion()" href="#" style="text-transform: uppercase; font-weight: 500; color:#03a9f4" >
+																<i class="material-icons">card_giftcard</i> Atenciones
+															</a>														
+														</p>
 													</div>
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="formaPago" id="formaPago2" value="02" onclick="habilitarAuth('numeroAuth1')">
-															Tarjeta
-														</label>
-													</div>
-													<div class="radio radio-primary">
-														<input type="number" class="form-control" placeholder="# Auth" id="numeroAuth1" value="x" style="width:82px; font-size:20px;" disabled="true" />
-													</div>														
-													<div class="radio radio-primary">
-														<label>
-															<input type="radio" name="formaPago" id="formaPago3" value="03" onclick="habilitarAuth('numeroAuth2')">
-															Ambos															
-														</label>
-													</div>		
-													<div class="radio radio-primary">
-														<input type="number" class="form-control" placeholder="# Auth" id="numeroAuth2" value="x" style="width:82px; font-size:20px;" disabled="true" />
-													</div>												
-													<p>
-														<a onclick="adicionarAtencion()" href="#" style="text-transform: uppercase; font-weight: 500; color:#03a9f4" >
-															<i class="material-icons">card_giftcard</i> Atenciones
-														</a>														
-													</p>													
 												</div>																					
 												<div class="sub-total-factura-content pull-right">
 													<div class="iva-factura text-right fnt__Medium">
@@ -999,6 +1016,7 @@
 		var generalFactura;
 		var generalAvatars = '<?=$avatars?>';
 		var generalAvatarsDb = '';
+		var generalArrayIdFormaPagos = new Array();
 	</script>
 
 	<script type="text/javascript">		
@@ -1143,7 +1161,7 @@
 			'<div class="content-mesa">'+
 				'<img src="img/mesa_'+cantidadReal+'_puestos.svg" alt="Mesa '+cantidadReal+' puestos" class="img-responsive">'+					
 				'<div class="n-mesa">'+
-					'<span>#'+generalCodigoM+'</span>'+
+					'<span>'+generalCodigoM+'</span>'+
 				'</div>'+
 			'</div>';
 
@@ -1365,6 +1383,8 @@
 						$("#btnRegistroC").show();
 						$("#btn-fact").html("Facturar");
 					}
+
+					$("#contenedorFormasPago").hide();
 				}
 			});	
 
@@ -1394,8 +1414,14 @@
 				}
 				break;
 			case '0':
-				var urlPlaza = '<?php echo Url::toRoute(['site/plaza']); ?>'
-				location.href = urlPlaza;
+				if(generalCodigoM <= 55){
+					var urlPlaza = '<?php echo Url::toRoute(['site/plaza']); ?>'
+					location.href = urlPlaza;
+				}else{
+					var urlPlaza = '<?php echo Url::toRoute(['site/plaza2']); ?>'
+					location.href = urlPlaza;
+				}
+				
 				break;
 		}
 				
@@ -1954,7 +1980,7 @@
 			text: "La factura "+numeroFactura+" sera cancelada!",
 			type: 'warning',			
 			showCancelButton: true,			
-			closeOnCancel: false,
+			closeOnCancel: true,
 			confirmButtonColor: "#5cb85c",
 			cancelButtonColor: "#EC4424",
 			confirmButtonText: "Si, reversar",
@@ -2223,28 +2249,138 @@
 		
 	}
 
-	function estadoMesaFac(){		
+	function actualizaFormasPago(){
+
+		swal({
+			title: '¿Actualizar y Salir o reversar factura?',						
+			type: "info",
+			text: '*Reversar en caso de que la factura tenga algún error',
+			showCancelButton: true,
+			confirmButtonColor: "#5cb85c",
+			cancelButtonColor: "#EC4424",
+			confirmButtonText: "Actualizar, terminar",
+			cancelButtonText: "Reversar Factura",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+			function(isConfirm){
+				if (isConfirm) {
+					//actualizaFormasPago
+					var valorEfectivo = 0;	
+					var arrayPagarTarjeta = new Array();
+					var arrayNumeroAuth = new Array();
+					var contadorDataEmpty = 1;
+
+					if($("#formaPago1").attr('checked')){
+						valorEfectivo = $("#valEfectivo").val();
+						contadorDataEmpty = contadorDataEmpty * valorEfectivo.length;
+					}		
+
+					if($("#formaPago2").attr('checked')){						
+
+						arrayPagarTarjeta.push($("#valorTarjeta1").val());
+						arrayNumeroAuth.push($("#numeroAuth1").val());
+
+						for(var i=0 ; i<generalArrayIdFormaPagos.length ; i++){			
+							var valorPagarTar = $("#valorTarjeta"+generalArrayIdFormaPagos[i]).val();
+							arrayPagarTarjeta.push(valorPagarTar);							
+
+							var ValorNumAuth = $("#numeroAuth"+generalArrayIdFormaPagos[i]).val();
+							arrayNumeroAuth.push(ValorNumAuth);
+
+							contadorDataEmpty = contadorDataEmpty * ValorNumAuth.length * valorPagarTar.length;
+						}						
+					}else{
+						arrayPagarTarjeta.push("");
+						arrayNumeroAuth.push("NO_TIENE");
+					}
+
+					if(contadorDataEmpty != 0){
+						var numeroFactura = $("#numeroFactura").html();
+
+						$.ajax({
+							url:'<?php echo Url::toRoute(['site/actualizarformapago']); ?>',
+							method: "GET",
+							data: {'numfac':numeroFactura,'numauth':arrayNumeroAuth,'valortar':arrayPagarTarjeta,'efectivo':valorEfectivo},	// full para saber si es por puestos o toda la mesa
+							success: function (data) {			
+								
+								swal("Datos actualizados","","success");
+								
+								estadoMesaFac(data);
+							}
+						});
+					}else{
+						swal("Datos vacíos","Llene los datos de formas de pago para continuar la facturación","warning");
+					}
+
+					
+				}else{
+					reversarFac();
+				}
+			}
+		);		
+		
+	}
+
+	function estadoFacturaPago(){
+		$("#labelImprimir").attr('onclick', 'actualizaFormasPago()');
+		//muestra el boton de salir (futuro a imprimir )
+		document.getElementById("labelImprimir").innerHTML = 'Opciones';			
+		document.getElementById("cerrarFacturar").style.display = 'none';
+		document.getElementById("cerrarFacturar").style.display = 'none';	
+	}
+
+	function estadoMesaFac(devuelta){		
 		$.ajax({
 			url:'<?php echo Url::toRoute(['site/estadomesafac']); ?>',
 			method: "GET",
 			data: {'mesa':generalCodigoM},	// full para saber si es por puestos o toda la mesa		
 			success: function (data) {										
 				if(data == 1){
-					$(document).ready(function(){					    
-					    // clears onclick then sets click using jQuery
-					    $("#labelImprimir").attr('onclick', 'imprimirRecibo()');
-					});	
-
-					//muestra el boton de salir (futuro a imprimir )
-					document.getElementById("labelImprimir").innerHTML = 'Salir';			
-
-					document.getElementById("cerrarFacturar").style.display = 'none';		
+					//
+					swal("Actuaizado!","Devolver: "+devuelta+" en efectivo","success");
+					//
+					$('.confirm').click(function(){
+						var urlDestino;	
+						urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
+						location.href = urlDestino;	
+					});
+				}else{
+					swal("Actuaizado!","Devolver: "+data+" en efectivo","success");
+					//
+					$('.confirm').click(function(){
+						swal({
+							title: "Faltan platos por facturar",
+						  	text: "Desea continuar en la mesa o salir a la plaza?",	
+						  	type: 'info',	  
+							html: true, // add this if you want to show HTM		  
+							showCancelButton: true,
+							closeOnConfirm: false,
+							closeOnCancel: false,
+							confirmButtonColor: "#5cb85c",
+							cancelButtonColor: "#EC4424",
+							confirmButtonText: "Volver a mesa",
+							cancelButtonText: "Salir",
+					  
+						},function (isConfirm) {
+					  		//url donde sera redireccionado
+							var urlDestino;				
+							// retornar a la mesa
+							if (isConfirm == true) {					
+								urlDestino = '<?php echo Url::toRoute(['site/mesa']); ?>'
+								location.href = urlDestino+"&codigoM="+generalCodigoM+"&estadoM="+generalEstadoM+"&tamanoM="+generalTamano;
+							//retornar a la plaza
+							} else {					
+								urlDestino = '<?php echo Url::toRoute(['site/plaza']); ?>'
+								location.href = urlDestino;	
+							}
+					  		
+						});
+					});					
 				}
-
-				document.getElementById("cerrarFacturar").style.display = 'none';
 			}
 		});
-	}
+	}	
 
 	function generarFactura(){	
 		//
@@ -2305,7 +2441,7 @@
 			empresaAten = empresaAten.substring(0,empresaAten.length-1);
 			valoresAten = valoresAten.substring(0,valoresAten.length-1);
 		}		
-		console.log(empresaAten+" - "+valoresAten);
+		
 		/********************************************/
 
 		if(validaciones){
@@ -2334,7 +2470,11 @@
 							//se oculta el boton cliente
 							document.getElementById("btnRegistroC").style.display = "none";
 							//se oculata las opciones de cambio de porcentaje de propina
-							document.getElementById("opcionesPropina").style.display = "none";		
+							//document.getElementById("opcionesPropina").style.display = "none";		
+							$("#contenedorPropinas").hide();
+							$("#contenedorAtenciones").hide();
+							$("#contenedorFormasPago").show();
+
 							document.getElementById("nombreClientefac").innerHTML = "N/A";		
 							document.getElementById("idClientefac").innerHTML = "N/A";		
 							//ejecuta la factura en bd
@@ -2356,7 +2496,10 @@
 				//se oculta el boton cliente
 				document.getElementById("btnRegistroC").style.display = "none";
 				//se oculata las opciones de cambio de porcentaje de propina
-				document.getElementById("opcionesPropina").style.display = "none";									
+				//document.getElementById("opcionesPropina").style.display = "none";		
+				$("#contenedorPropinas").hide();
+				$("#contenedorAtenciones").hide();	
+				$("#contenedorFormasPago").show();
 				//ejecuta la factura en bd
 				mostrarFactura(valorFormaPago,valorAutorizacion,empresaAten,valoresAten);
 				// muestra el mensaje de terminado
@@ -2458,7 +2601,7 @@
 
 					swal.close();
 					imprimirFactura(numeroFactura);
-					estadoMesaFac();
+					estadoFacturaPago();
 				}
 			});
 		}
@@ -3131,10 +3274,58 @@
     }
 	/************NOTAS*************/	
 
-	function habilitarAuth(idAuth){
-		$("#"+idAuth).prop("disabled",false);
-		$("#"+idAuth).focus();				
+	function habiitarCheck(id){		
+
+		if($(id).attr('checked')){
+			$(id).attr('checked',false)
+		}else{
+			$(id).attr('checked',true)
+		}
 	}
+
+	function addTarjetaPago(consecutivo,contador){		
+
+		var formaPagoHtml = 			
+			'<div id="addtarjeta'+(contador)+'">'+
+				'<br>'+
+				'<div class="radio radio-primary">'+
+					'<label>'+
+						'Tarjeta '+(consecutivo)+					
+					'</label>'+
+				'</div>'+
+				'<div class="radio radio-primary">'+
+					'<input type="number" class="form-control" placeholder="Valor tarjeta a pagar" id="valorTarjeta'+(contador)+'" value="x" style="width:159px; font-size:20px; height:22px"/>'+
+				'</div>'+
+				'<div class="radio radio-primary">'+
+					'<input type="number" class="form-control" placeholder="Numero autorizacion" id="numeroAuth'+(contador)+'" value="x" style="width:159px; font-size:20px; height:22px"/>'+
+				'</div>'+
+				'<div class="radio radio-primary" onclick="deleteTarjetaPago('+(contador)+')">'+
+					'<i class="material-icons" >remove</i>'+
+				'</div>	'+
+			'</div>';
+
+		$("#contenedorFormasPago").append(formaPagoHtml);			
+
+		$("#addTarjetaId").attr("onclick","addTarjetaPago("+(consecutivo+1)+","+(contador+1)+")");
+
+		generalArrayIdFormaPagos.push(contador);
+	}
+
+	function deleteTarjetaPago(contador){
+		var idTarjetaRemove = "#addtarjeta"+contador;
+
+		$(idTarjetaRemove).remove();
+
+		for(var i=0 ; i<generalArrayIdFormaPagos.length ; i++){
+
+			if(contador == generalArrayIdFormaPagos[i]){
+				generalArrayIdFormaPagos.splice(i,1);
+			}
+		}
+	}
+
+
+
 	</script>
 
 	
@@ -3165,6 +3356,8 @@
 	   		})
 	  	}
 	}
+
+	console.log("<?=$puestosReserv?>");
 
 </script>
 

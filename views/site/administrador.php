@@ -26,7 +26,7 @@
 
 		<style type="text/css">					
 
-			#fechaCuenta, #fechaHist, #fechaFactura, #horaFactura, #fecIniCierre, #fecFinCierre, #horaIniCierre, #horaFinCierre{
+			#fechaCuenta, #fechaHist, #fechaFactura, #horaFactura, #fecIniCierre, #fecFinCierre, #horaIniCierre, #horaFinCierre, #fechaGanancia, #fechaReserva{
 				width: 185px;
     			height: 31px;
 			}
@@ -63,7 +63,7 @@
 				color: black;
 			}
 
-			#btnCierre, #btnAnadir, #btnFacturar {
+			#btnCierre, #btnAnadir, #btnFacturar, #btnReporte{
 				background: #009688;
 				color:white;
 			}
@@ -149,6 +149,11 @@
 			.centerTbody{
 				text-align: right;
 			}
+
+			textarea {
+				resize: none;
+			}
+
 			
 		</style>
 		<?= Html::jsFile('@web/js/jquery.min.js') ?>
@@ -190,36 +195,58 @@
 				<div class="row" id="containerTab">
 					<div id="tabbar">
 						<ul class="nav nav-tabs">
-							<?php if ($rol === "ADMINISTRADOR"): ?>
+							<?php if ($rol === "ADMINISTRADOR" or $rol === "ADMINMENOR"): ?>
 								<li  class="active">
 									<a href="#tab1" data-toggle="tab">
 										<i class="material-icons">attach_money</i> CUENTAS
 									</a>
 								</li>
-								<li class="divider"><div class="ln"></div></li>							
+								<li class="divider"><div class="ln"></div></li>								
 								<li >
-									<a href="#tab2" data-toggle="tab">
-										<i class="material-icons">&#xE889;</i> HISTORIAL DE VENTAS
-									</a>
-								</li>
-								<li class="divider"><div class="ln"></div></li>							
-								<li >								
-									<a href="#tab3" data-toggle="tab" id="tab3Click">									
-										<i class="material-icons icon-btn">&#xE561;</i> MENU RESTAURANTES
-									</a>
-								</li>
-								<li class="divider"><div class="ln"></div></li>
-								<li >
-									<a href="#tab4" data-toggle="tab">
-										<i class="material-icons">&#xE8A1;</i> CIERRES
+									<a href="#tab7" data-toggle="tab">
+										<i class="material-icons">business_center</i> GANANCIAS
 									</a>
 								</li>	
+								<li class="divider"><div class="ln"></div></li>		
+																			
+								<li class="click-order-table">
+									<a href="#tab2" data-toggle="tab">
+										<i class="material-icons">&#xE889;</i> VENTAS
+									</a>
+								</li>
+								<li class="divider"><div class="ln"></div></li>		
+								<?php if ($rol === "ADMINISTRADOR"): ?>
+									<li >								
+										<a href="#tab3" data-toggle="tab" id="tab3Click">									
+											<i class="material-icons icon-btn">&#xE561;</i> MENU COMIDA
+										</a>
+									</li>
+									<li class="divider"><div class="ln"></div></li>
+									<li class="click-order-table">
+										<a href="#tab4" data-toggle="tab">
+											<i class="material-icons">&#xE8A1;</i> CIERRES
+										</a>
+									</li>	
+									<li class="divider"><div class="ln"></div></li>
+									<li >
+										<a href="#tab5" data-toggle="tab">
+											<i class="material-icons">insert_drive_file</i> FACTURAR
+										</a>
+									</li>
+									<li class="divider"><div class="ln"></div></li>
+									<li class="click-order-table">
+										<a href="#tab8" data-toggle="tab">
+											<i class="material-icons">list_alt</i> RESERVAS
+										</a>
+									</li>									
+								<?php endif ?>																					
+										
 								<li class="divider"><div class="ln"></div></li>
 								<li >
-									<a href="#tab5" data-toggle="tab">
-										<i class="material-icons">insert_drive_file</i> FACTURAR
+									<a href="#tab6" data-toggle="tab">
+										<i class="material-icons">folder_open</i> REPORTES
 									</a>
-								</li>		
+								</li>	
 							<?php else: ?>
 								<li >
 									<a href="#tab1" data-toggle="tab">
@@ -228,7 +255,7 @@
 								</li>
 								<li class="active">								
 									<a href="#tab3" data-toggle="tab">									
-										<i class="material-icons icon-btn">&#xE561;</i> MENU RESTAURANTES
+										<i class="material-icons icon-btn">&#xE561;</i> MENU COMIDA
 									</a>
 								</li>
 								<li class="divider"><div class="ln"></div></li>
@@ -242,13 +269,19 @@
 										<i class="material-icons">insert_drive_file</i> FACTURAR
 									</a>
 								</li>
+								<li class="divider"><div class="ln"></div></li>
+								<li class="click-order-table">
+									<a href="#tab8" data-toggle="tab">
+										<i class="material-icons">list_alt</i> RESERVAS
+									</a>
+								</li>
 							<?php endif ?>				
 						</ul>
 					</div>
 					<div class="tab-content">						
 
 					<!--CUENTAS-->
-						<?php if ($rol === "ADMINISTRADOR"): ?>
+						<?php if ($rol === "ADMINISTRADOR" or $rol === "ADMINMENOR"): ?>
 						  <div class="tab-pane fade active in" id="tab1">	
 						<?php else: ?>
 						  <div class="tab-pane fade in" id="tab1">
@@ -310,6 +343,61 @@
 											
 							</div>
 						</div>
+
+					<!--HISTORIAL DE VENTAS-->
+						<div class="tab-pane fade in" id="tab7">
+							<div class="heading">
+								<h3 class="fnt__Medium text-center"><strong>GANANCIAS</strong></h3>
+							</div>							
+							<div class="body">
+								<hr>
+								<div class="row">									
+									<div class="col-md-6">
+										<div class="input-group" id="contentSearch">
+											<span class="input-group-addon">
+												<i class="material-icons" >date_range</i>
+											</span>
+											<input type="date" class="form-control" id="fechaGanancia" value="<?php echo date("Y-m-d");?>">
+										</div>
+									</div>																		
+								</div>	
+								<hr>
+
+								<div class="col-md-12">
+									<!--<h4 class="fnt__Medium"><strong>Detalle por empresa</strong></h4>-->
+									<table class="table table-striped table-bordered table-responsive" id="dataTable10" style="width: 100%;overflow-x:auto;">
+										<thead class="thead" align="center">
+											<tr>
+												<th></th>		
+												<th class="centerThead" colspan="3">DIARIA</th>
+												<th class="centerThead" colspan="3">SEMANAL</th>
+												<th class="centerThead" colspan="3">MENSUAL</th>	
+												<th class="centerThead" colspan="3">ANUAL</th>	
+											</tr>
+											<tr>
+												<th class="centerThead">EMPRESA</th>	
+												<th class="centerThead">VALOR</th>		
+												<th class="centerThead">PLAZA</th>										
+												<th class="centerThead">RESTAURANTE</th>
+												<th class="centerThead">VALOR</th>		
+												<th class="centerThead">PLAZA</th>										
+												<th class="centerThead">RESTAURANTE</th>
+												<th class="centerThead">VALOR</th>		
+												<th class="centerThead">PLAZA</th>										
+												<th class="centerThead">RESTAURANTE</th>
+												<th class="centerThead">VALOR</th>		
+												<th class="centerThead">PLAZA</th>										
+												<th class="centerThead">RESTAURANTE</th>											
+											</tr>
+										</thead>
+										<tbody id="bodyGanancias1">											
+
+										</tbody>
+									</table>
+									<br>											
+								</div>
+							</div>
+						</div>
 					
 					<!--HISTORIAL DE VENTAS-->
 						<div class="tab-pane fade in" id="tab2">
@@ -335,8 +423,6 @@
 										<thead class="thead">
 											<tr>
 												<th scope="col" class="order-data-tables"></th>
-												<th scope="col">NIT</th>
-												<th scope="col">RESTAURANTE</th>
 												<th scope="col"># DOCUMENTO</th>
 												<th scope="col">FECHA</th>
 												<th scope="col">SUBTOTAL</th>
@@ -350,15 +436,25 @@
 											<?php for ($i=0 ; $i<count($documentos['NIT']) ; $i++): ?>
 												<tr>
 													<td><i class="material-icons" onclick="mostrarDetallesVentas(<?=$i?>)">&#xE417;</i></td>
-													<td><span id='histnit<?=$i?>'><?=$documentos['NIT'][$i]?></span></td>
-													<td><span id='histemp<?=$i?>'><?=$documentos['EMPRESA'][$i]?></span></td>
-													<td><span id='histdoc<?=$i?>'><?=$documentos['DOCUMENTO'][$i]?></span></td>
-													<td><?=$documentos['FECHA'][$i]?></span></td>
-													<td><span id='histsub<?=$i?>'><?=number_format($documentos['SUBTOTAL'][$i], 2,',', '.')?></span></td>
-													<td><span id='histpro<?=$i?>'><?=number_format($documentos['PROPINA'][$i], 2,',', '.')?></span></td>
-													<td><span id='histimp<?=$i?>'><?=number_format($documentos['IMPUESTO'][$i], 2,',', '.')?></span></td>
-													<td><span id='histatn<?=$i?>'><?=number_format($documentos['ATENCIONES'][$i], 2,',', '.')?></span></td>
-													<td><span id='histval<?=$i?>'><?=number_format($documentos['VALOR'][$i], 2,',', '.')?></span></td>
+													<td><span id="docuHist<?=$i?>" 
+														attr-histnit="<?=$documentos['NIT'][$i]?>"
+														attr-histemp="<?=$documentos['EMPRESA'][$i]?>"
+														attr-histdoc="<?=$documentos['DOCUMENTO'][$i]?>"
+														attr-histfec="<?=$documentos['FECHA'][$i]?>"
+														attr-histsub="<?=number_format($documentos['SUBTOTAL'][$i], 2,',', '.')?>"
+														attr-histpro="<?=number_format($documentos['PROPINA'][$i], 2,',', '.')?>"
+														attr-histimp="<?=number_format($documentos['IMPUESTO'][$i], 2,',', '.')?>"
+														attr-histatn="<?=number_format($documentos['ATENCIONES'][$i], 2,',', '.')?>"
+														attr-histval="<?=number_format($documentos['VALOR'][$i], 2,',', '.')?>">
+															<?=$documentos['DOCUMENTO'][$i]?>
+														</span>
+													</td>
+													<td><?=$documentos['FECHA'][$i]?></td>
+													<td><?=number_format($documentos['SUBTOTAL'][$i], 2,',', '.')?></td>
+													<td><?=number_format($documentos['PROPINA'][$i], 2,',', '.')?></td>
+													<td><?=number_format($documentos['IMPUESTO'][$i], 2,',', '.')?></td>
+													<td><?=number_format($documentos['ATENCIONES'][$i], 2,',', '.')?></td>
+													<td><?=number_format($documentos['VALOR'][$i], 2,',', '.')?></td>
 											    </tr>	
 											<?php endfor ?>											
 										</tbody>
@@ -368,13 +464,13 @@
 						</div>
 
 					<!--MENU DE RESTAURANTE-->
-						<?php if ($rol === "ADMINISTRADOR"): ?>
+						<?php if ($rol === "ADMINISTRADOR" or $rol === "ADMINMENOR"): ?>
 						<div class="tab-pane fade in" id="tab3">						
 						<?php else: ?>
 						<div class="tab-pane fade active in" id="tab3">												
 						<?php endif ?>												
 							<div class="heading">
-								<h3 class="fnt__Medium text-center"><strong>MENU DE RESTAURANTES</strong></h3>
+								<h3 class="fnt__Medium text-center"><strong>MENU - COMIDA</strong></h3>
 							</div>
 							<div class="body">
 								<hr>
@@ -424,16 +520,12 @@
 												<div class="col-md-12" style="z-index: 1;">													
 													<table class="table table-striped" id="dataTable7" style="width: 100%;overflow-x:auto;">
 														<thead class="thead">
-															<tr>
-																<th>CODIGO</th>
+															<tr>																
 																<th>NOMBRE</th>
 																<th>PRECIO BRUTO</th>
-																<th>PRECIO NETO</th>
-																<!--<th>IMAGEN</th>-->
-																<th>COD CATEGORIA</th>
+																<th>PRECIO NETO</th>																
 																<th>CATEGORIA</th>
-																<th>TIEMPO (min)</th>
-																<th>NIT</th>
+																<th>TIEMPO (min)</th>																
 																<th>EMPRESA</th>
 																<th>DESCRIPCION</th>
 																<th class="order-data-tables">EDITAR</th>
@@ -779,6 +871,115 @@
 								<div class="col-md-12">	
 									<button class="btn btn-primary" id="btnFacturar" onclick="visualizaFactura()" style="width: 100%">FACTURAR</button>																		
 								</div>
+							</div>
+						</div>
+
+					<!--REPORTE-->
+						<div class="tab-pane fade in" id="tab6">
+							<div class="heading">
+								<h3 class="fnt__Medium text-center"><strong>REPORTES</strong></h3>
+							</div>
+							<div class="body">
+								<hr>
+								<div class="col-md-4">
+									<label class="font-style-form" for="fechaInicioReporte">Fecha de incio</label>
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >date_range</i>
+										</span>
+										<input type="date" class="form-control" id="fechaInicioReporte" max="<?php echo date("Y-m-d");?>">
+									</div>
+								</div>		
+
+								<div class="col-md-4">
+									<label class="font-style-form" for="fechaFinReporte">Fecha fin</label>
+									<div class="input-group" id="contentSearch">
+										<span class="input-group-addon">
+											<i class="material-icons" >date_range</i>
+										</span>
+										<input type="date" class="form-control" id="fechaFinReporte" max="<?php echo date("Y-m-d");?>">
+									</div>
+								</div>		
+
+								<div class="col-md-4">
+									<label class="font-style-form" for="empReportes">Empresa</label>
+									<select id="empReportes" class="form-control">
+				    					<option id="defaultEmpReportet" selected="selected" value="">Selecciona una empresa</option>
+				    					<?php if ($rol === 'ADMINISTRADOR'): ?>
+				    						<?php for ($i=0 ; $i<count($empresasReporte) ; $i++): ?>
+					    						<option id="<?=$empresasReporte[$i]["GEN_EMP_COD"]?>" value="<?=$empresasReporte[$i]["GEN_EMP_COD"]?>"><?=$empresasReporte[$i]["GEN_EMP_NOM"]?></option>	
+					    					<?php endfor ?>	
+					    				<?php else: ?>
+					    					<?php for ($i=0 ; $i<count($empresasReporte) ; $i++): ?>
+					    						<?php if ($empresasReporte[$i]["GEN_EMP_COD"] === $rolEmp): ?>
+					    							<option id="<?=$empresasReporte[$i]["GEN_EMP_COD"]?>" value="<?=$empresasReporte[$i]["GEN_EMP_COD"]?>"><?=$empresasReporte[$i]["GEN_EMP_NOM"]?></option>	
+					    						<?php endif ?>
+					    					<?php endfor ?>	
+				    					<?php endif ?>									
+									</select>	
+								</div>		
+
+								<div class="col-md-12 text-center">									
+									<button class="btn btn-primary" id="btnReporte" onclick="reaizarReporte()">Realizar reporte</button>
+								</div>							
+								
+							</div>
+						</div>
+
+
+
+					<!--RESERVAS-->
+						<div class="tab-pane fade in" id="tab8">
+							<div class="heading">
+								<h3 class="fnt__Medium text-center"><strong>RESERVAS</strong></h3>
+							</div>
+							<div class="body">
+								<hr>
+								<div class="row">									
+									<div class="col-md-6">
+										<div class="input-group" id="contentSearch">
+											<span class="input-group-addon">
+												<i class="material-icons" >date_range</i>
+											</span>
+											<input type="date" class="form-control" id="fechaReserva" value="<?php echo date("Y-m-d");?>">
+										</div>
+									</div>																											
+								</div>
+								<hr>
+								<div class="col-md-12">									
+									<a class="pull-right btn btn-raised btn-success btn-radius btn-inline" onclick="reservar('nuevo')" style="z-index: 2;">
+										<i class="material-icons">add</i> RESERVAR
+									</a>												
+								</div>	
+
+								
+
+								<table class="table table-striped" id="dataTable11" style="width: 100%;overflow-x:auto;" >
+									<thead class="thead">
+										<tr>
+											<th scope="col" class="order-data-tables"></th>
+											<th scope="col">CODIGO RESERVA</th>
+											<th scope="col">NUMERO DE MESA</th>
+											<th scope="col">FECHA RESERVA</th>
+											<th scope="col">HORA RESERVA</th>
+											<th scope="col">CLIENTE</th>
+											<th scope="col">EDITAR</th>
+											<th scope="col">ELIMINAR</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th><i class="material-icons" onclick="mostrarDetalleCierre()">&#xE417;</i></th>
+											<th>RSVGOZA1</th>										
+											<td>Mesa 1</td>
+											<td>08/04/2018</td>												
+											<td>1:00:00 AM</td>
+											<td>Jose antonio </td>
+											<td></td>
+											<td></td>
+									    </tr>	
+									</tbody>
+								</table>								
 							</div>
 						</div>
 					</div>
@@ -1244,22 +1445,21 @@
 						 			</div>
 						 			<hr>
 						 			<div id="bodyContModal6">
-						 				<script type="text/javascript">
-						 					console.log('<?php echo json_encode($platos)?>');
-						 					console.log('<?php echo json_encode($codPlatos)?>');
-						 				</script>	
-
-										
-										<div class="col-md-12">
-											<label class="font-style-form" for="codOptionNewNote">Codigo plato o categoria</label>
+						 				
+										<div class="col-md-12" style="display: none;">
+											<label class="font-style-form" for="codOptionNewNote">Codigo plato o categoria*</label>
 											<input type="text" class="form-control" id="codOptionNewNote">
 										</div>	
 
 										<div class="col-md-12">
-											<label class="font-style-form" for="optionNewNote">Plato o categoria para asignarle una nota</label>
+											<label class="font-style-form" for="optionNewNote">Plato o categoria para asignarle una nota*</label>
 											<input type="text" class="form-control" id="optionNewNote">
-										</div>	
-											
+										</div>										
+
+										<div class="col-md-12">
+											<label class="font-style-form" for="descriptionNewNote">Detalle de nota*</label>
+											<textarea class="form-control" id="descriptionNewNote"></textarea>
+										</div>												
 						 			</div>
 						 			<hr>
 						 			<div id="footContModal6">
@@ -1272,7 +1472,107 @@
     								<span class="glyphicon glyphicon-remove"></span>
                         			<span class="hidden-xs"> Cerrar</span> 
     							</button>         
-    							<button type="button" class="btn btn-default" id="btnSaveNotas">
+    							<button type="button" class="btn btn-default" onclick="accionBtnEditNotas('NEW')" id="btnSaveNotas">
+    								<span class="glyphicon glyphicon-floppy-saved"></span>
+                        			<span class="hidden-xs"> Guardar</span> 
+    							</button> 
+    						</div>
+      						
+    					</div>
+  					</div>
+				</div>
+
+			<!--MODAL DE RESERVAS-->
+				<div id="ModalContent7" class="modal fade" role="dialog" >
+  					<div class="modal-dialog modal-lg">
+    					<div class="modal-content">
+      						<div class="modal-header text-center">
+        						<h4 class="modal-tittle"><strong id="tituloModal7">NUEVA RESERVAS</strong></h4>
+      						</div>
+							 <div class="modal-body">
+						 		<div class="container-fluid" id="contenidoModal7">
+						 			<div id="headContModal7">
+						 				<h4 id="tituloModalReserva">#RSVGOZA1</h4>
+						 				<div id="detalleModalView">
+						 					<h4 id="viewMesa"><strong>Mesa reservada:</strong> #5</h4>
+							 				<h4 id="viewPuestos"><strong>Numero de puestos:</strong> #5</h4>
+							 				<h4 id="viewFecha"><strong>Fecha: </strong> 28/08/2018</h4>
+							 				<h4 id="viewHora"><strong>Hora: </strong> 14:00:00</h4>
+							 				<h4 id="viewCliente"><strong>Cliente: </strong>Felipe</h4>
+						 				</div>
+						 			</div>
+						 			<hr>
+						 			<div id="bodyContModal7">
+
+						 				<input type="text" class="form-control" id="codModalReserva">
+
+						 				<div class="form-group">
+											<label class="font-style-form" for="mesaModalReserva">Mesa reservada</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<select id="mesaModalReserva" class="form-control">
+								    					<option id="0" selected="selected" value="default">Selecciona una mesa</option>
+								    					<?php for ($i=56 ; $i<=107 ; $i++): ?>
+								    						<option value="<?=$i?>">Mesa #<?=$i?></option>
+								    					<?php endfor ?>								    						
+													</select>													
+												</div>												
+											</div>						    				
+						    			</div>	
+
+						    			<div class="form-group">
+											<label class="font-style-form" for="puestosModalReserva">Puestos reservados</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<select id="puestosModalReserva" class="form-control">
+								    					<option id="0" selected="selected" value="default">Selecciona cantidad puestos</option>
+								    					<?php for ($i=1 ; $i<=12 ; $i++): ?>
+								    						<option value="<?=$i?>"><?=$i?> puestos</option>
+								    					<?php endfor ?>								    						
+													</select>	
+												</div>												
+											</div>						    				
+						    			</div>	
+
+						    			<div class="form-group">
+											<label class="font-style-form" for="fechaModalReserva">Fecha reservada</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<input type="date" class="form-control" id="fechaModalReserva" min="<?php echo date("Y-m-d");?>">
+												</div>												
+											</div>						    				
+						    			</div>	
+
+						    			<div class="form-group">
+											<label class="font-style-form" for="horaModalReserva">Hora reservada</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<input type="time" class="form-control" id="horaModalReserva">
+												</div>												
+											</div>						    				
+						    			</div>
+
+						    			<div class="form-group">
+											<label class="font-style-form" for="clienteModalReserva">Nombre del cliente</label>    								    				
+											<div class="row">										
+												<div class="col-md-12">
+													<input type="text" class="form-control" id="clienteModalReserva" placeholder="Ingrese nombre del cliente">
+												</div>												
+											</div>						    				
+						    			</div>							    																			
+						 			</div>
+						 			<hr>
+						 			<div id="footContModal7">
+						 				
+						 			</div>						 			
+								</div>
+							</div>      						
+    						<div class="modal-footer">
+      							<button type="button" class="btn btn-default" data-dismiss="modal" id="cerrarReservas">
+    								<span class="glyphicon glyphicon-remove"></span>
+                        			<span class="hidden-xs"> Cerrar</span> 
+    							</button>         
+    							<button type="button" class="btn btn-default" onclick="opcionesReserva()" id="btnSaveResevas">
     								<span class="glyphicon glyphicon-floppy-saved"></span>
                         			<span class="hidden-xs"> Guardar</span> 
     							</button> 
@@ -1341,6 +1641,7 @@
 
 <script type="text/javascript">
 	var rolIniciado = "<?=$rol?>";
+	var empresaRol = "<?=$rolEmp?>";
 	var movCategoria = "<?=$movcat?>";
 
 	var nombreContainer1 = "<?=$nitcontainer1?>";
@@ -1352,6 +1653,7 @@
 	$(showForm('CAT'));
 	$(checkCierre(0));	
 	$(movimientoCategoria());
+	$(cargarReservas());
 
 	function movimientoCategoria(){
 		if(movCategoria == 1){
@@ -1437,7 +1739,7 @@
 	}
 
 	function salir(){
-		if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){
+		if(rolIniciado.localeCompare("ADMINISTRADOR") == 0 || rolIniciado.localeCompare("ADMINMENOR") == 0){
 			var urlCerrar = "<?php echo Url::toRoute(['site/salida'])?>";
 			location.href = urlCerrar;			
 		}else{
@@ -1462,14 +1764,17 @@
 	}
 	
 	function mostrarDetallesVentas(posicion){
-		var codigoVenta = $("#histdoc"+posicion).html();
-		var codigoEmp = $("#histnit"+posicion).html();
-		var nomEmp = $("#histemp"+posicion).html();
-		var subtotalFac = $("#histsub"+posicion).html();
-		var propinaFac = $("#histpro"+posicion).html();
-		var impuestoFac = $("#histimp"+posicion).html();
-		var atencionFac = $("#histatn"+posicion).html();
-		var valorFac = $("#histval"+posicion).html();
+
+		var codigoRowHist = "#docuHist"+posicion;
+
+		var codigoVenta = $(codigoRowHist).attr("attr-histdoc");
+		var codigoEmp = $(codigoRowHist).attr("attr-histnit");
+		var nomEmp = $(codigoRowHist).attr("attr-histemp");
+		var subtotalFac = $(codigoRowHist).attr("attr-histsub");
+		var propinaFac = $(codigoRowHist).attr("attr-histpro");
+		var impuestoFac = $(codigoRowHist).attr("attr-histimp");
+		var atencionFac = $(codigoRowHist).attr("attr-histatn");
+		var valorFac = $(codigoRowHist).attr("attr-histval");
 
 		if(codigoVenta.localeCompare("N/A") != 0){
 			$('#ModalContent').modal('show');
@@ -1953,48 +2258,50 @@
 				$("#tituloModal4").html("EDITAR PLATO");
 				$("#labelcodPlato").show();
 				$("#codPlato").show();				
+				//
+				var idFilaPlato = "#platoId"+codigo;
 				//Empresa a la que pertenece el plato
-				var empresaPlato = $("#nitEmpPlatoId"+codigo).html();
+				var empresaPlato = $(idFilaPlato).attr("attr-platocodemp");
 				//se selecciona la imagen
 				$("option[value='"+empresaPlato+"']").attr('selected','selected');
 
-				// nombre de la categoria seleccionada
-				var codigoePlato = $("#platoId"+codigo).html();
+				// codigo del plato seleccionado
+				var codigoePlato = $(idFilaPlato).attr("attr-platoId");
 				//se imprime el nombre
 				$("#codPlato").val(codigoePlato);
 
-				// nombre de la categoria seleccionada
-				var nombrePlato = $("#nombrePlaId"+codigo).html();
+				// nombre del plato seleccionada
+				var nombrePlato = $(idFilaPlato).attr("attr-platonombre");
 				//se imprime el nombre
 				$("#nomPlato").val(nombrePlato);
-
+				
 				//categoria a la que pertence el plato
-				var categoriaPlato = $("#codigoCatPlId"+codigo).html();
+				var categoriaPlato = $(idFilaPlato).attr("attr-platocodcat");
 				//se muestra la categoria 
 				$("option[value="+categoriaPlato+"]").attr('selected','selected');
 
 				// descripcion del plato
-				var descripPlato = $("#descPlatoId"+codigo).html();
+				var descripPlato = $(idFilaPlato).attr("attr-platodescri");
 				//se imprime la descripcion
 				$("#descplato").val(descripPlato);
 
 				// tiempo del plato
-				var tiempoPlato = $("#tiempoPlaId"+codigo).html();
+				var tiempoPlato = $(idFilaPlato).attr("attr-platotiempo");
 				//tiempo del plato
 				$("#tiempoPre").val(tiempoPlato);				
 				//se selecciona la imagen
 				$("option[value=min]").attr('selected','selected');
 
 				//precio del plato neto 
-				var precioNetoPlato = $("#precioFullId"+codigo).html();				
+				var precioNetoPlato = $(idFilaPlato).attr("attr-platoprenet");	
 				precioNetoPlato = precioNetoPlato.replace(",","");
-				//imprimo el precio
+				//cambio el valor en el input
 				$("#preNetPlato").val(parseFloat(precioNetoPlato)); 
 
 				//precio del plato bruto 
-				var precioBrutoPlato = $("#precioId"+codigo).html();
+				var precioBrutoPlato = $(idFilaPlato).attr("attr-platoprebru");	
 				precioBrutoPlato = precioBrutoPlato.replace(",","");
-				//imprimo el precio
+				//cambio el valor en el input
 				$("#precBruPlato").val(parseFloat(precioBrutoPlato));
 				
 				$("#btnSavePlato").attr('onclick', 'accionBtnEditPlato("EDIT")');
@@ -2005,8 +2312,8 @@
 	}
 
 	function eliminarPlato(codigo){
-
-		var nombrePlato = $("#nombrePlaId"+codigo).html();
+		var idFilaPlato = "#platoId"+codigo;		
+		var nombrePlato = $(idFilaPlato).attr("attr-platonombre");
 
 		swal({
 			title: 'Seguro desea eliminar el plato '+nombrePlato,
@@ -2026,8 +2333,8 @@
 	  		if (inputValue === false) return false;
 	  		if (inputValue === true) {	
 
-	  			var idPlato = $("#platoId"+codigo).html();
-	  			var empresaPlato = $("#nitEmpPlatoId"+codigo).html();
+	  			var idPlato = $(idFilaPlato).attr("attr-platoId");
+	  			var empresaPlato = $(idFilaPlato).attr("attr-platocodemp");
 	  			
 				$.ajax({
 					url:'<?php echo Url::toRoute(['site/funcionesplatos']); ?>',							
@@ -2049,6 +2356,11 @@
 		  		
 		});
 	}
+
+
+/***************************************************************************************************************************************************
+FUNCIONES PARA LA PESTANA DE NOTAS
+***************************************************************************************************************************************************/
 
 	function cargarNotas(){
 		$("#dataTable9").dataTable({				
@@ -2080,47 +2392,193 @@
 	}
 
 	function editarNota(codigo){
-		// id del tag 
-		var idTag = "#platoId"+codigo;
-		// codigo de la categoria seleccionado
-		var codigoPlato = $(idTag).html();
+		// limpia el formulario
+		$("#codOptionNewNote").val("");
+		$("#optionNewNote").val("");
+		$("#descriptionNewNote").val("");
 
 		switch(codigo){
 			case 'nuevo':
-				
+				// modifica el atributo del boton guardar en el modal
+				$("#btnSaveNotas").attr("onclick","accionBtnEditNotas('NEW')");
+				// cambiar el titulo del modal
+				$("#tituloModal6").html("NUEVA NOTA");
 				break;
 			default:				
+				var notaid = $("#notaRow"+codigo).attr("attr-notaid").toUpperCase();
+				// modifica el atributo del boton guardar en el modal
+				$("#btnSaveNotas").attr("onclick","accionBtnEditNotas('EDIT','"+notaid+"')");
+				// cambiar el titulo del modal
+				$("#tituloModal6").html("EDITAR NOTA");
 				
+				var pltcatid = $("#notaRow"+codigo).attr("attr-pltcatid").toUpperCase();
+				var pltcatnom = $("#notaRow"+codigo).attr("attr-nompltcat").toUpperCase();
+				var notadesc = $("#notaRow"+codigo).attr("attr-notadesc").toUpperCase();
+
+				$("#codOptionNewNote").val(pltcatid);
+				$("#optionNewNote").val(pltcatnom);
+				$("#descriptionNewNote").val(notadesc);
+
 				break;
 		}
 
 		$('#ModalContent6').modal('show');
 	}
 
+	function accionBtnEditNotas(accion, idEdit = 0){
+		switch (accion){
+			case 'NEW':
+				// toma los valores del formulario
+				var codigoPltCat = $("#codOptionNewNote").val();
+				var nombrePltCat = $("#optionNewNote").val();
+				var descriPltCat = $("#descriptionNewNote").val();
+				var datosVacios = codigoPltCat.length * nombrePltCat.length * descriPltCat.length;
 
+				if(datosVacios > 0){
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/opcionesnotasadmin']); ?>',							
+						method: "GET",
+						data: {'opcion':'NEW','codigopltcat':codigoPltCat,'nota':descriPltCat.toUpperCase()},
+						success: function (data) {	
+
+							if(data.localeCompare("ok") == 0){
+								swal("Nota guardada","","success");								
+								cargarNotas();
+								$("#cerrarEditNotas").click();
+							}else{
+								swal("Error al guardar","Vuelve a intentarlo o comunica con el administrador","error");	
+							}
+						},
+						error: function (error){
+							swal("Error al guardar","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});	
+				}else{
+					swal("Campos vacíos","Complete el formulario, las casillas marcadas con (*) son obligatorias","warning");
+				}
+				break;
+			case 'EDIT':
+				// toma los valores del formulario
+				var codigoPltCat = $("#codOptionNewNote").val();
+				var nombrePltCat = $("#optionNewNote").val();
+				var descriPltCat = $("#descriptionNewNote").val();
+				var datosVacios = codigoPltCat.length * nombrePltCat.length * descriPltCat.length;
+
+				if(datosVacios > 0){
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/opcionesnotasadmin']); ?>',							
+						method: "GET",
+						data: {'opcion':'EDIT','codigoNota':idEdit,'codigopltcat':codigoPltCat,'nota':descriPltCat.toUpperCase()},
+						success: function (data) {	
+
+							if(data.localeCompare("ok") == 0){
+								swal("Nota editada","","success");								
+								cargarNotas();
+								$("#cerrarEditNotas").click();
+							}else{
+								swal("Error al editar","Vuelve a intentarlo o comunica con el administrador","error");	
+							}
+						},
+						error: function (error){
+							swal("Error al editar","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});						
+				}else{
+					swal("Campos vacíos","Complete el formulario, las casillas marcadas con (*) son obligatorias","warning");
+				}
+				break;
+		}
+	}
+
+	function eliminarNota(codigo){
+		var notaid = $("#notaRow"+codigo).attr("attr-notaid");
+
+		swal({
+			title: 'Eliminar nota',
+			text: 'Seguro desea eliminar la nota seleccionada',
+			type: '',
+			html:true,
+			showCancelButton: true,
+			confirmButtonColor: "#5cb85c",
+			cancelButtonColor: "#EC4424",
+			confirmButtonText: "Si",
+			cancelButtonText: "No",
+			confirmButtonClass: 'btn btn-success',
+			cancelButtonClass: 'btn btn-danger',
+			buttonsStyling: false,
+			reverseButtons: true
+		},function (inputValue) {
+	  		if (inputValue === false) return false;
+	  		if (inputValue === true) {	
+	  			$.ajax({
+					url:'<?php echo Url::toRoute(['site/opcionesnotasadmin']); ?>',							
+					method: "GET",
+					data: {'opcion':'DELETE','codigoNota':notaid},
+					success: function (data) {	
+
+						if(data.localeCompare("ok") == 0){
+							swal("Nota eliminada","","success");								
+							cargarNotas();
+							$("#cerrarEditNotas").click();
+						}else{
+							swal("Error al eliminada","Vuelve a intentarlo o comunica con el administrador","error");	
+						}
+					},
+					error: function (error){
+						swal("Error al editar","Vuelve a intentarlo o comunica con el administrador","error");
+					}
+				});		
+	  			
+	  		}
+		  		
+		});
+
+				
+	}
+
+	
+	// autocomplete de las notas nuevas
 	$(document).ready(function(){
 
 		var arrayPhpNotas1 = new Array();
 		var arrayPhpNotas2 = new Array();
+		var arrayPhpNotas3 = new Array();
+		var arrayPhpNotas4 = new Array();
 
-		arrayPhpNotas1 = '<?php echo json_encode($platos)?>';
-		arrayPhpNotas2 = '<?php echo json_encode($codPlatos)?>';
+		arrayPhpNotas1 = '<?php echo json_encode($platos);?>';
+		arrayPhpNotas2 = '<?php echo json_encode($codPlatos);?>';
+		arrayPhpNotas3 = '<?php echo json_encode($categorias);?>';		
 
-		var opcionCodNotanueva = JSON.parse(arrayPhpNotas1);
-		var opcionNotanueva = JSON.parse(arrayPhpNotas2);
+		var opcionNotanueva = JSON.parse(arrayPhpNotas1);
+		var opcionCodNotanueva = JSON.parse(arrayPhpNotas2);		
+		var opcionNotanueva2 = JSON.parse(arrayPhpNotas3);
+
+		var codigosCategoriasNota = new Array();
+		var nombresCategoriasNota = new Array();	
+
+		for(var i=0 ; i<opcionNotanueva2.length ; i++){
+			codigosCategoriasNota.push(opcionNotanueva2[i]['COD_CATEGORIA']);
+			nombresCategoriasNota.push(opcionNotanueva2[i]['DESCRIPCION']);			
+		}
+
+		opcionCodNotanueva = opcionCodNotanueva.concat(codigosCategoriasNota);
+		opcionCodNotanueva.push("ALL");
+		opcionNotanueva = opcionNotanueva.concat(nombresCategoriasNota);
+		opcionNotanueva.push("TODOS");
 
 		$("#optionNewNote").autocomplete({
-	  		source: opcionCodNotanueva,
+	  		source: opcionNotanueva,
 	  		select: function (e, ui) {		       
 		        var value = ui.item.value;		        
-		        for (var i=0 ; i<opcionNotanueva.length ; i++){			        	
-					if(value.localeCompare(opcionCodNotanueva[i]) == 0){
+		        for (var i=0 ; i<opcionCodNotanueva.length ; i++){			        	
+					if(value.localeCompare(opcionNotanueva[i]) == 0){ 
 						$("#codOptionNewNote").focusin();
-						$("#codOptionNewNote").val(opcionNotanueva[i]);
+						$("#codOptionNewNote").val(opcionCodNotanueva[i]);
 					}
 				}	
-			}
-		});		
+			},
+			appendTo: "#ModalContent6"
+		});	
 	});	
 
 	function accionBtnEditCateg(action){				
@@ -2319,8 +2777,7 @@
 
 					break;
 			}
-		}			
-		console.log(empresaPlato+", "+nombrePlato+", "+catePlato+", "+tiempoPlato+", "+unidadTiempoPl+", "+precioPlato+", "+descPlato);
+		}					
 	}	
 
 	// CALCULAR EL VALOR SIN IMPUESTO
@@ -2350,18 +2807,20 @@
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*var dateNow = new Date();
 	var today = dateNow.getDate()+"/"+(dateNow.getMonth()+1)+"/"+dateNow.getFullYear();*/	
-	if(rolIniciado.localeCompare("ADMINISTRADOR") != 0){		
+	if(rolIniciado.localeCompare("ADMINISTRADOR") != 0 && rolIniciado.localeCompare("ADMINMENOR") != 0){		
 		//activacion de tab
 		$("#tab1").removeClass("active");
 		$("#tab3").addClass("active");
 		//ejecuta la consulta de la cuentas
-		$(consultaCuenta());	
-		setInterval(consultaCuenta, 5000);
+		$(consultaCuenta());			
+		//setInterval(consultaCuenta, 5000);		
 		//
 		$("#btnSalida").html("volver");
 	}else{
-		$(consultaCuenta());	
-		setInterval(consultaCuenta, 5000);
+		$(consultaCuenta());
+		$(consultaGanancias());
+		/*setInterval(consultaCuenta, 5000);
+		setInterval(consultaGanancias, 5000);*/
 	}
 	
 	$("#fechaCuenta").change(function(){
@@ -2390,48 +2849,144 @@
 				var acumuMes = arrayDatos[2];				
 				var acumuAno = arrayDatos[3];
 				var acumuSem = arrayDatos[4];
+				var contadorRegistros = 0;
 
 				var detalleTable = '';				
 
 				for (var i=0 ; i<detalleEmp['NIT'].length; i++) {
-					detalleTable = detalleTable +
-						'<tr>'+														
-							'<td>'+detalleEmp['EMPRESA'][i]+'</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
-							'<td class="centerTbody">'+detalleEmp['PORC_DIA'][i]+'%</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(acumuSem['ACUM_SEMA'][i])+'</td>'+
-							'<td class="centerTbody">'+acumuSem['PORC_SEMA'][i]+'%</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(acumuMes['ACUM_MES'][i])+'</td>'+
-							'<td class="centerTbody">'+acumuMes['PORC_MES'][i]+'%</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(acumuAno['ACUM_YEAR'][i])+'</td>'+							
-							'<td class="centerTbody">'+acumuAno['PORC_YEAR'][i]+'%</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
-							'<td class="centerTbody">$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+							
-						'</tr>';					
+
+					if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){
+						detalleTable = detalleTable +
+							'<tr>'+														
+								'<td>'+detalleEmp['EMPRESA'][i]+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
+								'<td class="centerTbody">'+detalleEmp['PORC_DIA'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuSem['ACUM_SEMA'][i])+'</td>'+
+								'<td class="centerTbody">'+acumuSem['PORC_SEMA'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuMes['ACUM_MES'][i])+'</td>'+
+								'<td class="centerTbody">'+acumuMes['PORC_MES'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuAno['ACUM_YEAR'][i])+'</td>'+							
+								'<td class="centerTbody">'+acumuAno['PORC_YEAR'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+							
+							'</tr>';		
+
+					}else if(rolIniciado.localeCompare("ADMINMENOR") == 0){
+
+						if(detalleEmp['NIT'][i].localeCompare(empresaRol) == 0){							
+
+							detalleTable = detalleTable +
+								'<tr>'+														
+									'<td>'+detalleEmp['EMPRESA'][i]+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
+									'<td class="centerTbody">'+detalleEmp['PORC_DIA'][i]+'%</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(acumuSem['ACUM_SEMA'][i])+'</td>'+
+									'<td class="centerTbody">'+acumuSem['PORC_SEMA'][i]+'%</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(acumuMes['ACUM_MES'][i])+'</td>'+
+									'<td class="centerTbody">'+acumuMes['PORC_MES'][i]+'%</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(acumuAno['ACUM_YEAR'][i])+'</td>'+							
+									'<td class="centerTbody">'+acumuAno['PORC_YEAR'][i]+'%</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+							
+								'</tr>';	
+
+							contadorRegistros++;
+						}
+					}else if(rolIniciado.localeCompare("MESERO") == 0){
+						detalleTable = detalleTable +
+							'<tr>'+														
+								'<td>'+detalleEmp['EMPRESA'][i]+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL'][i])+'</td>'+
+								'<td class="centerTbody">'+detalleEmp['PORC_DIA'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuSem['ACUM_SEMA'][i])+'</td>'+
+								'<td class="centerTbody">'+acumuSem['PORC_SEMA'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuMes['ACUM_MES'][i])+'</td>'+
+								'<td class="centerTbody">'+acumuMes['PORC_MES'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(acumuAno['ACUM_YEAR'][i])+'</td>'+							
+								'<td class="centerTbody">'+acumuAno['PORC_YEAR'][i]+'%</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['SUBTOTAL'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['IMPUESTOS'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(detalleEmp['ATENCIONES'][i])+'</td>'+							
+							'</tr>';	
+
+						contadorRegistros++;
+					}
+					
 				}				
 
-				detalleTable = detalleTable +
-					'<tr>'+														
-						'<th>TOTALES</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(totales['VALOR'][0])+'</th>'+
-						'<th class="centerTbody">100%</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_SEMA'][0])+'</th>'+
-						'<th class="centerTbody">100%</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_MES'][0])+'</th>'+
-						'<th class="centerTbody">100%</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_YEAR'][0])+'</th>'+						
-						'<th class="centerTbody">100%</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(totales['SUBTOTAL'][0])+'</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(totales['IMPUESTO'][0])+'</th>'+
-						'<th class="centerTbody">$'+formatoMoneda(totales['ATENCIONES'][0])+'</th>'+							
-					'</tr>';	
+				if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){
+					detalleTable = detalleTable +
+						'<tr>'+														
+							'<th>TOTALES</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(totales['VALOR'][0])+'</th>'+
+							'<th class="centerTbody">100%</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_SEMA'][0])+'</th>'+
+							'<th class="centerTbody">100%</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_MES'][0])+'</th>'+
+							'<th class="centerTbody">100%</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_YEAR'][0])+'</th>'+						
+							'<th class="centerTbody">100%</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(totales['SUBTOTAL'][0])+'</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(totales['IMPUESTO'][0])+'</th>'+
+							'<th class="centerTbody">$'+formatoMoneda(totales['ATENCIONES'][0])+'</th>'+							
+						'</tr>';	
+				}else{
+					if(contadorRegistros == 0){
+						detalleTable = detalleTable +
+							'<tr>'+														
+								'<th>N/A</th>'+
+								'<th class="centerTbody">$0</th>'+
+								'<th class="centerTbody">0%</th>'+
+								'<th class="centerTbody">$0</th>'+
+								'<th class="centerTbody">0%</th>'+
+								'<th class="centerTbody">$0</th>'+
+								'<th class="centerTbody">0%</th>'+
+								'<th class="centerTbody">$0</th>'+						
+								'<th class="centerTbody">0%</th>'+
+								'<th class="centerTbody">$0</th>'+
+								'<th class="centerTbody">$0</th>'+
+								'<th class="centerTbody">$0</th>'+							
+							'</tr>';	
+					}
+				}
+					
 
 				
 				//totales['PROPINA'][0]
-				$("#bodyCuenta1").html(detalleTable);					
+				detalleTable = 
+					'<thead class="thead" align="center">'+
+						'<tr>'+
+							'<th></th>'+
+							'<th class="centerThead" colspan="2">NETO DIA</th>'+
+							'<th class="centerThead" colspan="6">ACUMULADOS</th>'+
+							'<th class="centerThead" colspan="3">TOTAL DIARIO</th>	'+
+						'</tr>'+
+						'<tr>'+
+							'<th class="centerThead">EMPRESA</th>'+
+							'<th class="centerThead">NETO</th>'+
+							'<th class="centerThead">%</th>'+
+							'<th class="centerThead">SEMANA</th>'+
+							'<th class="centerThead">%</th>'+
+							'<th class="centerThead">MES</th>'+
+							'<th class="centerThead">%</th>'+
+							'<th class="centerThead">AÑO</th>'+
+							'<th class="centerThead">%</th>'+
+							'<th class="centerThead">BRUTO*</th>'+
+							'<th class="centerThead">IMPUESTOS</th>'+
+							'<th class="centerThead">ATENCIONES</th>'+
+						'</tr>'+
+					'</thead>'+
+					'<tbody id="bodyCuenta1">'+
+						detalleTable+
+					'</tbody>';
 
-				/*$("#dataTable8").dataTable({
+				$("#dataTable8").html(detalleTable);
+
+				console.log(rolIniciado);
+
+				$("#dataTable8").dataTable({
 		        	responsive: true,	    	
 		        	scrollX: true,
 		        	scrollY: true,
@@ -2454,8 +3009,7 @@
 		            "bFilter": false,
 		            "bInfo":false
 
-		        });*/
-				
+		        });				
 
 			}
 		});	
@@ -2661,6 +3215,11 @@
 	  return texto.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3/$2/$1');
 	}
 
+	function reformatDateString(s) {
+	  	var b = s.split(/\D/);
+	  	return b.reverse().join('/');
+	}
+
 	function formatoMoneda(valorIn){
 		if(valorIn.indexOf(".") != -1){
 			var decimal = ","+valorIn.substring(valorIn.indexOf(".")+1,valorIn.length);
@@ -2702,9 +3261,500 @@
 		
 		$(".click-order-table").click(function(){
 			$(".order-data-tables").click();
+
+			setTimeout(function(){
+				$(".order-data-tables").click();				
+	  		}, 1000);
 		});
 
 	});
+
+/***************************************************************************************************************************************************
+FUNCIONES PARA LA PESTANA DE REPORTES
+***************************************************************************************************************************************************/
+	function reaizarReporte(){
+		var fechInicio = $("#fechaInicioReporte").val();		
+		var fechaFin = $("#fechaFinReporte").val();		
+		var empReporte = $("#empReportes").val();
+
+		var countData = fechInicio.length * fechaFin.length * empReporte.length;
+
+		if(countData == 0){
+			swal("Datos Vacíos","Complete todos los campos para generar el reporte","warning");
+		}else{
+			var fecha1 = new Date(fechInicio);
+			var fecha2 = new Date(fechaFin);			
+
+			if(fecha1 < fecha2){
+				fechInicio = formato(fechInicio);
+				fechaFin = formato(fechaFin);
+
+				var route = "<?php echo Url::toRoute(['site/rptvenprod'])?>";
+				location.href = route+"&empresa="+empReporte+"&fechaini="+fechInicio+"&fechafin="+fechaFin;
+				
+			}else{
+				swal("Fechas erroneas","La fecha inicial debe ser menor a la fecha final","warning");
+			}
+		}
+		
+		
+
+		
+	}
+
+/***************************************************************************************************************************************************
+FUNCIONES PARA LA PESTANA DE GANANCIAS
+***************************************************************************************************************************************************/
+	$("#fechaGanancia").change(function(){
+		var fecha = formato(this.value);	
+
+		consultaGanancias();
+	});
+
+	function consultaGanancias(){	
+
+		var fecha = formato(document.getElementById("fechaGanancia").value);		
+
+		$.ajax({
+			url:'<?php echo Url::toRoute(['site/gananciasemp']); ?>',	
+			dataType:'json',								
+			method: "GET",
+			data: {'fecha':fecha},
+			success: function (data) {	
+				//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+				var arrayDatos = $.map(data, function(value, index) {
+	    			return [value];
+				});					
+
+				var gananciasDiaria = arrayDatos[0];								
+				var gananciasMes = arrayDatos[1];	
+				var gananciasAno = arrayDatos[2];	
+				var gananciasSemana = arrayDatos[3];					
+
+
+				var detalleTable = '';		
+				var contadorRegistros = 0;						
+
+				for (var i=0 ; i<gananciasDiaria['EMPRESA'].length; i++) {							
+
+
+					if(rolIniciado.localeCompare("ADMINISTRADOR") == 0){
+						detalleTable = detalleTable +
+							'<tr>'+														
+								'<td>'+gananciasDiaria['EMPRESA'][i]+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['TOTAL'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['GAN_PLZ_DIA'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['GAN_RTA_DIA'][i])+'</td>'+
+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['ACUM_SEMA'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['GAN_PLZ_SEMA'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['GAN_RTA_SEMA'][i])+'</td>'+	
+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasMes['ACUM_MES'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasMes['GAN_PLZ_MES'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasMes['GAN_RTA_MES'][i])+'</td>'+
+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasAno['ACUM_YEAR'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasAno['GAN_PLZ_YEAR'][i])+'</td>'+
+								'<td class="centerTbody">$'+formatoMoneda(gananciasAno['GAN_RTA_YEAR'][i])+'</td>'+
+							'</tr>';						
+					}else if(rolIniciado.localeCompare("ADMINMENOR") == 0){
+
+						if(empresaRol.localeCompare(gananciasDiaria['NIT'][i]) == 0){
+
+							detalleTable = detalleTable +
+								'<tr>'+														
+									'<td>'+gananciasDiaria['EMPRESA'][i]+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['TOTAL'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['GAN_PLZ_DIA'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasDiaria['GAN_RTA_DIA'][i])+'</td>'+
+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['ACUM_SEMA'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['GAN_PLZ_SEMA'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasSemana['GAN_RTA_SEMA'][i])+'</td>'+	
+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasMes['ACUM_MES'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasMes['GAN_PLZ_MES'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasMes['GAN_RTA_MES'][i])+'</td>'+
+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasAno['ACUM_YEAR'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasAno['GAN_PLZ_YEAR'][i])+'</td>'+
+									'<td class="centerTbody">$'+formatoMoneda(gananciasAno['GAN_RTA_YEAR'][i])+'</td>'+
+								'</tr>';	
+
+							contadorRegistros++;	
+						}
+					}
+				}				
+
+				
+				/*detalleTable = detalleTable +
+					'<tr>'+														
+						'<th>TOTALES</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['VALOR'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_SEMA'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_MES'][0])+'</th>'+
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(detalleEmp['TOTAL_YEAR'][0])+'</th>'+						
+						'<th class="centerTbody">100%</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['SUBTOTAL'][0])+'</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['IMPUESTO'][0])+'</th>'+
+						'<th class="centerTbody">$'+formatoMoneda(totales['ATENCIONES'][0])+'</th>'+							
+					'</tr>';	*/
+
+
+				if(rolIniciado.localeCompare("ADMINMENOR") == 0 && contadorRegistros == 0){
+					detalleTable = detalleTable +
+						'<tr>'+														
+							'<td>N/A</td>'+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+	
+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+							'<td class="centerTbody">$0</td>'+
+						'</tr>';	
+				}
+
+				
+				
+				//totales['PROPINA'][0]
+				detalleTable = 
+					'<thead class="thead" align="center">'+
+						'<tr>'+
+							'<th></th>'+
+							'<th class="centerThead" colspan="3">DIARIA</th>'+
+							'<th class="centerThead" colspan="3">SEMANAL</th>'+
+							'<th class="centerThead" colspan="3">MENSUAL</th>'+
+							'<th class="centerThead" colspan="3">ANUAL</th>	'+
+						'</tr>'+
+						'<tr>'+
+							'<th class="centerThead">EMPRESA</th>'+
+							'<th class="centerThead">VALOR</th>'+
+							'<th class="centerThead">PLAZA</th>'+
+							'<th class="centerThead">RESTAURANTE</th>'+
+
+							'<th class="centerThead">VALOR</th>'+
+							'<th class="centerThead">PLAZA</th>'+
+							'<th class="centerThead">RESTAURANTE</th>'+
+
+							'<th class="centerThead">VALOR</th>'+
+							'<th class="centerThead">PLAZA</th>'+
+							'<th class="centerThead">RESTAURANTE</th>'+
+
+							'<th class="centerThead">VALOR</th>'+
+							'<th class="centerThead">PLAZA</th>'+
+							'<th class="centerThead">RESTAURANTE</th>'+
+						'</tr>'+
+					'</thead>'+
+					'<tbody id="bodyGanancias1">'+
+						detalleTable+
+					'</tbody>';
+
+					
+
+				$("#dataTable10").html(detalleTable);					
+
+				$("#dataTable10").dataTable({
+		        	responsive: true,	    	
+		        	scrollX: true,
+		        	scrollY: true,
+		        	scrollCollapse: true,
+		        	"destroy":true,
+		        	"language": {
+		                    "lengthMenu": "Mostrar _MENU_ registros por pagina",
+		                    "zeroRecords": "Lo sentimos no hay nada para mostrar",
+		                    "info": "Pagina _PAGE_ de _PAGES_",
+		                    "infoEmpty": "Registros no disponibles",
+		                    "infoFiltered": "(filtrado de _MAX_ registros)",
+		                    "paginate": {
+		                      "previous": "Previo",
+		                      "next": "Siguiente",
+		                    },
+		                    "search": "Buscar:"
+		                },
+		            "bLengthChange" : false, 
+		            "bPaginate": false,
+		            "bFilter": false,
+		            "bInfo":false,
+		            "autoWidth": true
+
+		        });		
+
+			}
+		});	
+	}
+
+/***************************************************************************************************************************************************
+FUNCIONES PARA LA PESTANA RESERVAS
+***************************************************************************************************************************************************/
+	$("#fechaReserva").change(function(){	
+		cargarReservas();
+	});
+
+	function cargarReservas(){
+
+		var fecha = formato(document.getElementById("fechaReserva").value);
+
+		$("#dataTable11").dataTable({				
+			"destroy":true,
+	    	"ajax":{
+	    		"url":"<?php echo Url::toRoute(['site/reservasmesas']); ?>",
+	    		"method":"GET",
+	    		"data":{
+					"opcion":"READ", "fecha":fecha
+	    		}
+	    	},	    	
+	    	responsive: true,	    	
+        	scrollX: true,
+        	scrollY: true,
+        	scrollCollapse: true,
+	    	"language": {
+	                "lengthMenu": "Mostrar _MENU_ registros por pagina",
+	                "zeroRecords": "Lo sentimos no hay nada para mostrar",
+	                "info": "Pagina _PAGE_ de _PAGES_",
+	                "infoEmpty": "Registros no disponibles",
+	                "infoFiltered": "(filtrado de _MAX_ registros)",
+	                "paginate": {
+	                  "previous": "Previo",
+	                  "next": "Siguiente",
+	                },
+	                "search": "Buscar:"
+	            }
+	    });
+	}
+
+	function reservar(opcion){
+		
+		switch(opcion){
+			case 'nuevo':
+				$("#tituloModalReserva").hide();
+				$("#codModalReserva").hide();
+				$("#detalleModalView").hide();
+				$("#bodyContModal7").show();
+				$("#btnSaveResevas").show();
+				$("#btnSaveResevas").attr("onClick","opcionesReserva('SAVE')");
+
+				$("#tituloModal7").html("NUEVA RESERVA");
+
+				$("#mesaModalReserva option[value='0']").attr("selected", "selected");			
+				$("#puestosModalReserva option[value='0']").attr("selected", "selected");
+				$("#fechaModalReserva").val("");
+				$("#horaModalReserva").val("");
+				$("#clienteModalReserva").val("");				
+				break;
+		}
+		
+		$('#ModalContent7').modal('show');
+	}
+
+	function mostrarReserva(consecutivo){
+		var id = "#reserva"+consecutivo;	
+		
+		$("#bodyContModal7").hide();
+		$("#btnSaveResevas").hide();
+		$("#detalleModalView").show();
+		$("#tituloModalReserva").show();
+
+		$("#tituloModal7").html("DETALLE DE RESERVA");
+
+		$("#tituloModalReserva").html("<strong>Codigo de reserva: </strong>#"+$(id).attr("attr-rsvrcod"));
+		$("#viewMesa").html("<strong>Mesa reservada: </strong>#"+$(id).attr("attr-rsvrmesa"));
+		$("#viewPuestos").html("<strong>Numero de puestos: </strong>"+$(id).attr("attr-rsvrpuestos")+" puesto(s)");
+		$("#viewFecha").html("<strong>Fecha: </strong>"+$(id).attr("attr-rsvrfecha"));
+		$("#viewHora").html("<strong>Hora: </strong>"+$(id).attr("attr-rsvrhora"));
+		$("#viewCliente").html("<strong>Cliente: </strong>"+$(id).attr("attr-rsvrcliente"));
+
+		$('#ModalContent7').modal('show');
+	}
+
+	function opcionesReserva(opcion){
+		
+
+		switch(opcion){
+			case 'SAVE':
+				var mesaReservar = $("#mesaModalReserva").val();
+				var puestosReservar = $("#puestosModalReserva").val();
+				var fechaReservar = formato($("#fechaModalReserva").val());
+				var horaReservar = $("#horaModalReserva").val();
+				var clienteReservar = $("#clienteModalReserva").val();
+
+				var tamanoDatos = parseInt(mesaReservar) * parseInt(puestosReservar) * fechaReservar.length * horaReservar.length * clienteReservar.length;
+
+				if(tamanoDatos > 0){
+					
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/reservasmesas']); ?>',	
+						dataType:'json',								
+						method: "GET",
+						data: {'opcion':'SAVE','mesa':mesaReservar,'puesto':puestosReservar,'fecha':fechaReservar,'hora':horaReservar,'cliente':clienteReservar},
+						success: function (data) {
+							//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
+							var arrayDatos = $.map(data, function(value, index) {
+				    			return [value];
+							});	
+
+							var condigoRerserva = arrayDatos[0][0];							
+
+							if(condigoRerserva.localeCompare("NO_DISPONIBLE") == 0){
+								swal("No disponible","La mesa seleccionada ya tiene una reserva a la misma hora el mismo día, prueba con otra mesa o una hora distinta","warning");
+							}else{
+								swal("Mesa reservada","El número de reserva asignado es "+arrayDatos[0],"success");
+								
+								$("#cerrarReservas").click();								
+
+								cargarReservas();
+							}
+						},
+						error: function (error){
+							swal("Error al crear","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});
+				}else{
+					swal("Campos vacios","Asegúrate de que todos los campos han sido completados","warning");
+				}
+				break;
+
+			case 'EDIT':
+				var codigoReservar = $("#codModalReserva").val();
+				var mesaReservar = $("#mesaModalReserva").val();
+				var puestosReservar = $("#puestosModalReserva").val();
+				var fechaReservar = formato($("#fechaModalReserva").val());
+				var horaReservar = $("#horaModalReserva").val();
+				var clienteReservar = $("#clienteModalReserva").val();
+
+				var tamanoDatos = parseInt(mesaReservar) * parseInt(puestosReservar) * fechaReservar.length * horaReservar.length * clienteReservar.length;
+
+				if(tamanoDatos > 0){
+					$.ajax({
+						url:'<?php echo Url::toRoute(['site/reservasmesas']); ?>',	
+						dataType:'json',								
+						method: "GET",
+						data: {'opcion':'EDIT','codigo':codigoReservar,'mesa':mesaReservar,'puesto':puestosReservar,'fecha':fechaReservar,'hora':horaReservar,'cliente':clienteReservar},
+						success: function (data) {
+							var arrayDatos = $.map(data, function(value, index) {
+				    			return [value];
+							});								
+
+							var mensaje = arrayDatos[0][0];		
+
+
+							if(mensaje.localeCompare("NO_DISPONIBLE") == 0){
+								swal("No disponible","La mesa seleccionada ya tiene una reserva a la misma hora el mismo día, prueba con otra mesa o una hora distinta","warning");
+							}else{
+								swal("Reserva actualizada","Su reserva ha sido modificada con éxito","success");
+								
+								$("#cerrarReservas").click();
+								
+								cargarReservas();
+
+							}
+						
+						},
+						error: function (error){
+							swal("Error al actualizar","Vuelve a intentarlo o comunica con el administrador","error");
+						}
+					});
+				}
+				break;
+			}
+
+	}	
+
+	function editarReserva(consecutivo){
+		var idEtiqueta = "#reserva"+consecutivo;
+
+		var codReserva = $(idEtiqueta).attr("attr-rsvrcod");
+		var mesaReserva = $(idEtiqueta).attr("attr-rsvrmesa");
+		var puestoReserva = $(idEtiqueta).attr("attr-rsvrpuestos");
+		var fecReserva = $(idEtiqueta).attr("attr-rsvrfecha");
+			fecReserva = reformatDateString(fecReserva);
+			fecReserva = fecReserva.replace(new RegExp('/', 'gi'), '-');
+		var horaReserva = $(idEtiqueta).attr("attr-rsvrhora");
+		var cliReserva = $(idEtiqueta).attr("attr-rsvrcliente");			
+
+		$("#tituloModalReserva").hide();
+		$("#codModalReserva").hide();
+		$("#detalleModalView").hide();
+		$("#bodyContModal7").show();
+		$("#btnSaveResevas").show();
+		$("#btnSaveResevas").attr("onClick","opcionesReserva('EDIT')");
+
+		$("#tituloModal7").html("EDITAR RESERVA");
+
+		$("#codModalReserva").val(codReserva);
+		$("#mesaModalReserva option[value='"+mesaReserva+"']").attr("selected", "selected");			
+		$("#puestosModalReserva option[value='"+puestoReserva+"']").attr("selected", "selected");		
+		document.getElementById("fechaModalReserva").value = fecReserva;
+		$("#horaModalReserva").val(horaReserva);
+		$("#clienteModalReserva").val(cliReserva);
+
+		$('#ModalContent7').modal('show');
+
+	}
+	
+	function deleteReserva(consecutivo){
+		var idEtiqueta = "#reserva"+consecutivo;
+		var codReserva = $(idEtiqueta).attr("attr-rsvrcod");
+
+		swal({
+			title: 'Seguro desea eliminar la reserva '+codReserva,
+			text: 'No se podrá reversar una vez realizada la acción',
+			type: '',
+			html:true,
+			showCancelButton: true,
+			confirmButtonColor: "#5cb85c",
+			cancelButtonColor: "#EC4424",
+			confirmButtonText: "Si",
+			cancelButtonText: "No",
+			confirmButtonClass: 'btn btn-success',
+			cancelButtonClass: 'btn btn-danger',
+			buttonsStyling: false,
+			reverseButtons: true
+		},function (inputValue) {
+	  		if (inputValue === false) return false;
+	  		if (inputValue === true) {	
+	  			$.ajax({
+					url:'<?php echo Url::toRoute(['site/reservasmesas']); ?>',	
+					dataType:'json',								
+					method: "GET",
+					data: {'opcion':'DELETE',"codigo":codReserva},
+					success: function (data) {
+						var arrayDatos = $.map(data, function(value, index) {
+			    			return [value];
+						});						
+
+						var mensaje = arrayDatos[0][0];		
+
+
+						if(mensaje.localeCompare("ELIMINADO") == 0){
+							swal("Reserva eliminada","","success");
+							
+							$("#cerrarReservas").click();
+							
+							cargarReservas();
+						}
+					},
+					error: function (error){
+						swal("Error al eliminar","Vuelve a intentarlo o comunica con el administrador","error");
+					}
+				});
+	  		}
+		  		
+		});
+
+	}
 </script>
 
 <?php $this->endPage() ?>

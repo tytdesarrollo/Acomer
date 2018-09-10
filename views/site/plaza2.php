@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 <?= Html::jsFile('@web/js/ciclosession.js') ?>
 
 <div class="main">
-	<img src="img/plaza.png" alt="" class="img-responsive base">
+	<img src="img/plaza20.png" alt="" class="img-responsive base">
 	<div class="content-mesas">
 		<!--DIV DONDE SE CARGAN LAS MESAS-->
 		<div id="mesasPlaza">
@@ -69,6 +69,38 @@ use yii\widgets\ActiveForm;
 			</div>
 		</div>
 	</div>
+
+
+	<div id="modalContent" class="modal fade" role="dialog" >
+		<div class="modal-dialog modal-lg" style="width: 50%">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h4 class="modal-tittle"><strong>VALIDAR RESERVAS</strong></h4>	
+				</div>
+				<div class="modal-body">
+			 		<div class="container-fluid" id="contenidoModal7">
+			 			<!-- <div id="headContModal">
+			 			        						        					
+			 			</div> -->
+			 			
+			 			<div id="bodyContModal"	class="text-center">
+							<input type="text" class="form-control" id="codigoReserva" placeholder="Ingresa el codigo de reserva" style="text-align: center;">							
+			 			</div>
+
+			 			<div id="footContModal"  class="text-center">
+			 				<a id="" onClick="validarReserva()" class="btn btn-raised btn-success btn-radius btn-inline">
+								<i class="material-icons icon-btn">check_circle_outline</i>VALIDAR
+							</a>
+			 			</div>						 			
+					</div>
+				</div>      						
+				<div class="modal-footer">
+						
+				</div>
+					
+			</div>
+		</div>
+	</div>
 </div>
 <!--<script>
 	$(function sideClose(){
@@ -95,7 +127,7 @@ use yii\widgets\ActiveForm;
 
 	function tiempoReal(){
 		$.ajax({
-			url:'<?php echo Url::toRoute(['site/jsonmesas']); ?>',
+			url:'<?php echo Url::toRoute(['site/jsonmesas2']); ?>',
 			dataType:'json',
 			success: function (data) {						
 				//cantidad de datos que contiene cada array del json	
@@ -103,7 +135,7 @@ use yii\widgets\ActiveForm;
 				//un arrray contiene en arrays de cada columna devuelta por el json (consulta hecha a base de datos)
 				var arrayDatos = $.map(data, function(value, index) {
 	    			return [value];
-				});				
+				});							
 				//
 				//console.log(arrayDatos);
 				//almaceno los valores pertenecientes al codigo de las mesas
@@ -118,10 +150,14 @@ use yii\widgets\ActiveForm;
 				var puestosMesas = arrayDatos[4];	
 				//hora de atencion a la mesa
 				var atencionMesas = arrayDatos[6];
+				//reserva de la mesa
+				var reservaMesas = arrayDatos[7];	
+				//numero de puestos de la reserva
+				var reservaPuestos = arrayDatos[10];
 				//variable que contiene las mesas que se cargan en la plaza
 				var mesas;			
 				// ejecutamos la carga de las mesas
-				mesas = cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas);						
+				mesas = cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas, reservaMesas, reservaPuestos);						
 
 				//muestros las mesas en la plaza
 				document.getElementById("mesasPlaza").innerHTML = mesas;
@@ -130,7 +166,7 @@ use yii\widgets\ActiveForm;
 	}setInterval(tiempoReal, 5000);
 
 	// funcion que permite montar las mesas en la plaza
-	function cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas){
+	function cargarMesas(tamano, codigosMesas, estadosMesas, empresaMesas, posicionesMesas, puestosMesas, atencionMesas, reservaMesas, reservaPuestos){
 		//formato para mostrar las mesas en la plaza
 		var esquemaTotal;
 		//tipo de notificacion que va a tener la mesa
@@ -145,7 +181,7 @@ use yii\widgets\ActiveForm;
 			imgMesa = useImg(i);
 			// mesas que se van a mostrar
 			esquemaTemporal = 
-				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+puestosMesas[i]+','+estadosMesas[i]+','+codigosMesas[i]+')">'+
+				'<div class="mesas '+posicionesMesas[i]+'" onClick="escogerPuestos('+puestosMesas[i]+','+estadosMesas[i]+','+codigosMesas[i]+',\''+reservaMesas[i]+'\',\''+reservaPuestos[i]+'\')">'+
 				'<img src="img/mesa.svg" alt="" class="img-responsive">'+
 					notificacionMesa+
 						'<svg width="50" height="60">'+
@@ -166,37 +202,91 @@ use yii\widgets\ActiveForm;
 	}
 
 	// funcion que se ejecuta al clickear la mesa 	
-	function escogerPuestos(puesto,estado,codigo){		
+	function escogerPuestos(puesto,estado,codigo,reserva,puestoReserv){		
 		var route = "<?php echo Url::toRoute(['site/mesa'])?>";
+
+
 		//mensaje de confirmacion si la mesa esta ocupada
-		if(estado == 0){
-			// confirmacion para entrar a la mesa que esta ocupada
-			/*swal({
-				  title: "",
-				  text: "La mesa esta ocupada, desea ingresar?",
-				  type: "info",
-				  showCancelButton: true,
-				  confirmButtonColor: "#4caf50",
-				  confirmButtonText: "Si, ingresar",
-				  cancelButtonColor: "#EC4424",
-				  cancelButtonText: "No, volver",
-				  closeOnConfirm: false,
-				  closeOnCancel: false
-				},
-				function(isConfirm){
-				  if (isConfirm) {
-				    //redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
-					location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;
-				  } else {
-				    swal("", "Proceso cancelado..", "error");
-				  }
-				});		*/
+		if(estado == 0){			
 			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
 			location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;	
 		}else{
-			//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
-			location.href = route+"&codigoM="+codigo;
+			if(reserva.localeCompare("SIN_RESERVA") != 0){
+				$('#modalContent').modal('show');	
+
+				$("#codigoReserva").attr("attr-val",reserva);
+				$("#codigoReserva").attr("attr-mes",codigo);
+				$("#codigoReserva").attr("attr-pos",puestoReserv);
+			}else{
+				//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+				location.href = route+"&codigoM="+codigo;	
+			}
+			
 		}
+
+		/*if(reserva.localeCompare("SIN_RESERVA") != 0){
+			$('#modalContent').modal('show');	
+
+			$("#codigoReserva").attr("attr-val",reserva);		
+		}else{
+			//mensaje de confirmacion si la mesa esta ocupada
+			if(estado == 0){			
+				//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+				location.href = route+"&codigoM="+codigo+"&estadoM="+estado+"&tamanoM="+puesto;	
+			}else{
+				//redirecciona a la eleccion de puestos en caso de estar vacia la mes o adicinar pedido si ya se encuentra ocupada
+				location.href = route+"&codigoM="+codigo;
+			}
+		}*/
+			
+	}
+
+	function validarReserva(){
+		var inCodigoReserva = $("#codigoReserva").val().toUpperCase();
+		var codigoReserva = $("#codigoReserva").attr("attr-val");
+		var codigo = $("#codigoReserva").attr("attr-mes");
+		var puestos = $("#codigoReserva").attr("attr-pos");
+		var route = "<?php echo Url::toRoute(['site/mesa'])?>";	
+
+		$('#modalContent').modal('hide');	
+
+		if(inCodigoReserva.localeCompare(codigoReserva) == 0){
+			// cambia el estado de la reserva
+			$.ajax({
+				url:'<?php echo Url::toRoute(['site/reservasmesas']); ?>',	
+				dataType:'json',								
+				method: "GET",
+				data: {'opcion':'VALIDAR','reserva':inCodigoReserva},
+				success: function (data) {
+
+				}
+			});		
+
+			//mensaje de reserva validada
+			swal({
+				title: "Reserva valida",
+				text: "",
+				type: "success",
+				showCancelButton: false,
+				confirmButtonColor: "#4caf50",
+				confirmButtonText: "OK",
+				cancelButtonText: "No, Volver",
+				closeOnConfirm: false,
+				closeOnCancel: false
+			},
+			function(isConfirm){
+			  	if (isConfirm) {				  					  			  		
+
+					location.href = route+"&codigoM="+codigo+"&puestoRsr="+puestos;					
+					
+			  	} else {
+				    swal("", "Proceso cancelado", "error");
+				}
+			});
+		}else{
+			swal("Codigo erroneo","El código ingresado no coincide con el de la mesa seleccionada, verifica que este bien escrito o que sea la mesa apropiada.","warning");
+		}
+
 	}
 	
 	function tipoNotificacion(estado, atencion, codMesa){
@@ -208,8 +298,11 @@ use yii\widgets\ActiveForm;
 			if(codMesa <= 9){
 				return '<div class="notification text_0-9 null">'
 			// para las mesas de dole digito
-			}else{
+			}else if(codMesa >= 10 && codMesa <= 99){
 				return '<div class="notification text_10-20 null">'
+			// para las mesas de dole digito
+			}else if(codMesa >= 100 && codMesa <= 999){
+				return '<div class="notification text_100-107 null">'
 			}
 		}else if(estado == 0){
 			// el tiempo para la entrega esta sin retrasos
@@ -218,15 +311,35 @@ use yii\widgets\ActiveForm;
 				if(codMesa <= 9){
 					return '<div class="notification text_0-9 full">'
 				// para las mesas de dole digito
-				}else{
+				}else if(codMesa >= 10 && codMesa <= 99){
 					return '<div class="notification text_10-20 full">'
+				// para las mesas de dole digito
+				}else if(codMesa >= 100 && codMesa <= 999){
+					return '<div class="notification text_100-107 full">'
 				}
 			}else{
 				// si supera no supera los 15 minutos
 				if(atencion <= 15){
-					return '<div class="notification text_10-20 warning" >';
+					if(codMesa <= 9){
+						return '<div class="notification text_0-9 warning" >';
+					// para las mesas de dole digito
+					}else if(codMesa >= 10 && codMesa <= 99){
+						return '<div class="notification text_10-20 warning" >';
+					// para las mesas de dole digito
+					}else if(codMesa >= 100 && codMesa <= 107){
+						return '<div class="notification text_100-107 warning" >';
+					}
+					
 				}else{
-					return '<div class="notification text_10-20 danger" >';
+					if(codMesa <= 9){
+						return '<div class="notification text_0-9 danger" >';
+					// para las mesas de dole digito
+					}else if(codMesa >= 10 && codMesa <= 99){
+						return '<div class="notification text_10-20 danger" >';
+					// para las mesas de dole digito
+					}else if(codMesa >= 100 && codMesa <= 107){
+						return '<div class="notification text_100-107 danger" >';
+					}					
 				}
 			}
 			
@@ -238,7 +351,7 @@ use yii\widgets\ActiveForm;
 		var imagen;
 		var contador;
 
-		contador = numero + 1;
+		contador = numero + 56;
 		imagen = '<use xlink:href="img/notification_icons.svg#not'+contador+'">'
 		return imagen;
 	}
@@ -377,6 +490,8 @@ use yii\widgets\ActiveForm;
 			$('#sideClose').removeClass('start');
 		}
 
+
+		var arrayF = new Array("","","","");
 		return arrayF;
 	}
 
@@ -525,39 +640,6 @@ use yii\widgets\ActiveForm;
 		if(array1.length > 0){
 
 			entregarEnMesa(array1,array2,array3,array4);
-			
-
-			// CONFIRMAR LOS PLATOS POR SI ALGUN DIA SE VUELVE HABILITAR
-			/*swal({
-				title: '¿Confirmar platos a entregar?',
-				text: 
-					'<div>'+
-						'<ul class="list-group">'+
-							lista+
-						'</ul>'+
-						'<h4>*NOTA: click sobre plato si desea cancelar esa entrega</h4>'+
-					'</div>',
-				type: '',
-				html:true,
-				showCancelButton: true,
-				confirmButtonColor: "#5cb85c",
-				cancelButtonColor: "#EC4424",
-				confirmButtonText: "Si",
-				cancelButtonText: "No",
-				confirmButtonClass: 'btn btn-success',
-				cancelButtonClass: 'btn btn-danger',
-				buttonsStyling: false,
-				reverseButtons: true
-			},function (inputValue) {
-		  		if (inputValue === false) {		  			
-		  			return false;
-		  		}
-		  		if (inputValue === true) {	
-		  			entregarEnMesa(array1,array2,array3,array4);
-		  		}
-			  		
-				});*/
-			
 		}
 
 	}
@@ -624,9 +706,8 @@ use yii\widgets\ActiveForm;
 		});
 	}
 
-
 	function direccionamiento_plazas(){
-		var plaza2 = "<?php echo Url::toRoute(['site/plaza2']); ?>";
-		location.href = plaza2;
+		var plaza1 = "<?php echo Url::toRoute(['site/plaza']); ?>";
+		location.href = plaza1;
 	}
 </script>
