@@ -12,8 +12,10 @@
 			//PARAMETROS DE ENTRADA Y DE SALIDA DEL PROCEDIMIENTO
 			//CONEXION
 			$db = Yii::$app->params['awadb'];		
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];
 
-			$CONEXION = oci_connect('USR_SAIC', 'SAIC123WEB', $db);
+			$CONEXION = oci_connect($usuario, $contrasena, $db);
 			
 			//DATOS DE REPORTE VENTAS POR PRODUCTO
 			$CURSOR_DATOSVENPROD;
@@ -44,9 +46,11 @@
 		public function sp_list_empresas(){
 			//PARAMETROS DE ENTRADA Y DE SALIDA DEL PROCEDIMIENTO
 			//CONEXION
-			$db = Yii::$app->params['awadb'];		
+			$db = Yii::$app->params['awadb'];	
+			$usuario = Yii::$app->params['usuario'];
+			$contrasena = Yii::$app->params['password'];	
 
-			$CONEXION = oci_connect('USR_SAIC', 'SAIC123WEB', $db);
+			$CONEXION = oci_connect($usuario, $contrasena, $db);
 			
 			//LISTA EMPRESAS
 			$CURSOR_LISTEMPRESAS;			
