@@ -284,6 +284,7 @@ use yii\widgets\ActiveForm;
 				}
 			});
 		}else{
+			$("#codigoReserva").val("");
 			swal("Codigo erroneo","El código ingresado no coincide con el de la mesa seleccionada, verifica que este bien escrito o que sea la mesa apropiada.","warning");
 		}
 
