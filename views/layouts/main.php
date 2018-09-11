@@ -31,6 +31,12 @@ AppAsset::register($this);
 	<nav id="menu" class="navbar">
 		<div class="container-fluid">
 			<div class="pull-right">
+
+				<div class="content__icon-menu__aux">
+					<div class="dropdown">
+						<a onclick="direccionamiento_plazas()" id="cambioPlazas"><img class="cambio_plaza" src="../web/img/cambio_plaza.svg" alt=""></a>
+					</div>
+				</div>
 				
 				<div class="content__icon-menu__aux">
 					<div class="dropdown">

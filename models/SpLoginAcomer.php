@@ -84,14 +84,15 @@
 			
 			$c2 = '';
 			//se hace el llamado al procedimietno que trae la informacion de las mesas
-			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_ROL(:c1,:c2); END;");
+			$stid = oci_parse($conexion,"BEGIN PKG_ACOMER_PROCEDURES.SP_ACOMER_CONSULTA_ROL(:c1,:c2,:c3); END;");
 
 			oci_bind_by_name($stid, ":c1", $c1, 11);
 			oci_bind_by_name($stid, ":c2", $c2, 200);			
+			oci_bind_by_name($stid, ":c3", $c3, 200);			
 
 			//Se ejecuta el procedimiento 
 			oci_execute($stid);
 
-			return $c2;
+			return array($c2,$c3);
 		}
 	}

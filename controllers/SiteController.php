@@ -27,6 +27,7 @@ use app\models\SpMesasFactura;
 use app\models\SpCocinaPedidos;
 use app\models\SpAdministracion;
 use app\models\SpCrearMenus;
+use app\models\AcRptVentasProd;
 
 
 class SiteController extends Controller
@@ -305,13 +306,13 @@ class SiteController extends Controller
             $cedula = $_SESSION['cedula'];
 
             $fn_login = new SpLoginAcomer();
-            $rol = $fn_login->procedimiento2($cedula);
+            $rol = $fn_login->procedimiento2($cedula)[0];
 
             if($rol === 'MESERO'){
                 return $this->redirect(['site/plaza']);
             }else if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
-            }else if($rol === 'ADMINISTRADOR'){
+            }else if($rol === 'ADMINISTRADOR' || $rol === 'ADMINMENOR'){
                 return $this->redirect(['site/administrador']);
             }else{
                 session_destroy();
@@ -343,7 +344,7 @@ class SiteController extends Controller
             $cedula = trim($cedula);
 
             $fn_login = new SpLoginAcomer();
-            $rol = $fn_login->procedimiento2($cedula);
+            $rol = $fn_login->procedimiento2($cedula)[0];
 
             if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
@@ -367,10 +368,39 @@ class SiteController extends Controller
                                        "container4"=>$container4, "rol"=>$rol]);           
     }
 
+    public function actionPlaza2(){
+
+        $cedula = Yii::$app->session['cedula'];
+        $cedula = trim($cedula);
+        
+        $fn_login = new SpLoginAcomer();
+        $rol = $fn_login->procedimiento2($cedula)[0];
+        //==========================================================
+        //codigos de los container
+        $fn_plaza = new SpMesasPlaza();
+        $codigos = $fn_plaza->procedimiento2();   
+        $container1 = $codigos[0];  
+        $container2 = $codigos[1]; 
+        $container3 = $codigos[2]; 
+        $container4 = $codigos[3]; 
+        //==========================================================
+        //
+        return $this->render('plaza2',["container1"=>$container1, "container2"=>$container2, "container3"=>$container3,
+                                       "container4"=>$container4, "rol"=>$rol]);
+    }
+
     public function actionJsonmesas(){
         $fn_mesas = new SpMesasPlaza;
         //obtiene las posiciones de las mesas 
-        $datosMesas = $fn_mesas->procedimiento(); 
+        $datosMesas = $fn_mesas->procedimiento('PLAZA1'); 
+        //imprime los datos en tipo json         
+        echo json_encode($datosMesas);
+    }
+
+    public function actionJsonmesas2(){
+        $fn_mesas = new SpMesasPlaza;
+        //obtiene las posiciones de las mesas 
+        $datosMesas = $fn_mesas->procedimiento('PLAZA2'); 
         //imprime los datos en tipo json         
         echo json_encode($datosMesas);
     }
@@ -503,13 +533,24 @@ class SiteController extends Controller
         $fn_menus_new = new SpCrearMenus();
         $empresas = $fn_menus_new->procedimiento7();
         //=============================EMPRESAS=======================================
+        
+
+
+        //=============================RESERVAS=======================================
+        if(!isset($_GET['puestoRsr'])){
+            $puestosReserv = "NO_RESERVA";
+        }else{
+            $puestosReserv = Yii::$app->request->get('puestoRsr');            
+        }
+        
+        //=============================RESERVAS=======================================
 
         
         $this->layout=false;    
         return $this->render('mesa',["estadomesa" => $estadomesa, "codigomesa" => $codigomesa,
                                      "platos" => $platos, "cantidad" => $cantidad, "puestos" => $puestos,
                                      "tamano" => $tamano, "arrpuestos" => $arrpuestos, 
-                                     "confirmados" => $confirmados,"avatars"=>$avatars,"empresas"=>$empresas,"notas"=>$notas]);
+                                     "confirmados" => $confirmados,"avatars"=>$avatars,"empresas"=>$empresas,"notas"=>$notas, "puestosReserv"=>$puestosReserv]);
         
     }
    
@@ -1426,7 +1467,7 @@ class SiteController extends Controller
             $cedula = trim($cedula);
 
             $fn_login = new SpLoginAcomer();
-            $rol = $fn_login->procedimiento2($cedula);            
+            $rol = $fn_login->procedimiento2($cedula)[0];            
 
             if($rol === 'MESERO'){
                 return $this->redirect(['site/plaza']);
@@ -1622,13 +1663,15 @@ class SiteController extends Controller
             $cedula = trim($cedula);
 
             $fn_login = new SpLoginAcomer();
-            $rol = $fn_login->procedimiento2($cedula);
+            $resutadoRol = $fn_login->procedimiento2($cedula);
+            $rol = $resutadoRol[0];
+            $rolEmp = $resutadoRol[1];
 
             if($rol === 'COCINERO'){
                 return $this->redirect(['site/cocina']);
             }else if($rol === 'MESERO'){
 
-                $cierre = Yii::$app->request->get('cierre');                
+                $cierre = Yii::$app->request->get('cierre');        
                 
                 if(!$cierre){
                     return $this->redirect(['site/plaza']);   
@@ -1680,8 +1723,12 @@ class SiteController extends Controller
         $container3 = $codigos[6]; 
         $container4 = $codigos[7]; 
 
+        //codigos de las empresas para generar los reportes 
+        $fn_reporte = new AcRptVentasProd();
+        $empresasReporte = $fn_reporte->sp_list_empresas();
+
         $this->layout=false;
-        return $this->render('administrador',["documentos"=> $documentos,"categorias"=>$categorias,"imgcategorias"=>$imgcategorias,"empresas"=>$empresas,"rol"=>$rol,"movcat"=>$movcat,"platos"=>$platos,"codPlatos"=>$codPlatos, "container1"=>$container1,"container2"=>$container2,"container3"=>$container3,"container4"=>$container4,"nitcontainer1"=>$nitcontainer1,"nitcontainer2"=>$nitcontainer2,"nitcontainer3"=>$nitcontainer3,"nitcontainer4"=>$nitcontainer4]);
+        return $this->render('administrador',["documentos"=> $documentos,"categorias"=>$categorias,"imgcategorias"=>$imgcategorias,"empresas"=>$empresas,"rol"=>$rol,"movcat"=>$movcat,"platos"=>$platos,"codPlatos"=>$codPlatos, "container1"=>$container1,"container2"=>$container2,"container3"=>$container3,"container4"=>$container4,"nitcontainer1"=>$nitcontainer1,"nitcontainer2"=>$nitcontainer2,"nitcontainer3"=>$nitcontainer3,"nitcontainer4"=>$nitcontainer4,"empresasReporte"=>$empresasReporte,"rolEmp"=>$rolEmp]);
     }
 
     public function actionDocumentos(){
@@ -1695,27 +1742,27 @@ class SiteController extends Controller
         for ($i=0 ; $i<count($documentos['NIT']) ; $i++) { 
             $iconTable = "<i class='material-icons'  onclick='mostrarDetallesVentas(".$i.")'> &#xE417;</i>";
 
-            $nitId = "id='histnit".$i."'";
-            $empId = "id='histemp".$i."'";
-            $docId = "id='histdoc".$i."'";
-            $subId = "id='histsub".$i."'";
-            $proId = "id='histpro".$i."'";
-            $impId = "id='histimp".$i."'";
-            $atnId = "id='histatn".$i."'";
-            $valId = "id='histval".$i."'";
+            $docAttr = "id='docuHist".$i."' ".
+                            "attr-histnit='".$documentos['NIT'][$i]."' ".
+                            "attr-histemp='".$documentos['EMPRESA'][$i]."' ".
+                            "attr-histdoc='".$documentos['DOCUMENTO'][$i]."' ".
+                            "attr-histfec='".$documentos['FECHA'][$i]."' ".
+                            "attr-histsub='".number_format($documentos['SUBTOTAL'][$i], 2,',', '.')."' ".
+                            "attr-histpro='".number_format($documentos['PROPINA'][$i], 2,',', '.')."' ".
+                            "attr-histimp='".number_format($documentos['IMPUESTO'][$i], 2,',', '.')."' ".
+                            "attr-histatn='".number_format($documentos['ATENCIONES'][$i], 2,',', '.')."' ".
+                            "attr-histval='".number_format($documentos['VALOR'][$i], 2,',', '.')."' ";
 
             $jsonTable = $jsonTable .
                 '['.
-                    '"'.$iconTable.'",'.
-                    '"<span '.$nitId.'>'.$documentos['NIT'][$i].'</span>",'.
-                    '"<span '.$empId.'>'.$documentos['EMPRESA'][$i].'</span>",'.
-                    '"<span '.$docId.'>'.$documentos['DOCUMENTO'][$i].'</span>",'.
+                    '"'.$iconTable.'",'.                                        
+                    '"<span '.$docAttr.'>'.$documentos['DOCUMENTO'][$i].'</span>",'.
                     '"'.$documentos['FECHA'][$i].'",'.
-                    '"<span '.$subId.'>'.number_format($documentos['SUBTOTAL'][$i], 2,',', '.').'</span>",'.
-                    '"<span '.$proId.'>'.number_format($documentos['PROPINA'][$i], 2,',', '.').'</span>",'.
-                    '"<span '.$impId.'>'.number_format($documentos['IMPUESTO'][$i], 2,',', '.').'</span>",'.
-                    '"<span '.$atnId.'>'.number_format($documentos['ATENCIONES'][$i], 2,',', '.').'</span>",'.
-                    '"<span '.$valId.'>'.number_format($documentos['VALOR'][$i], 2,',', '.').'</span>"'.
+                    '"'.number_format($documentos['SUBTOTAL'][$i], 2,',', '.').'",'.
+                    '"'.number_format($documentos['PROPINA'][$i], 2,',', '.').'",'.
+                    '"'.number_format($documentos['IMPUESTO'][$i], 2,',', '.').'",'.
+                    '"'.number_format($documentos['ATENCIONES'][$i], 2,',', '.').'",'.
+                    '"'.number_format($documentos['VALOR'][$i], 2,',', '.').'"'.
                 '],';
         }
 
@@ -1860,6 +1907,16 @@ class SiteController extends Controller
         echo json_encode($datos);
     }
 
+    public function actionGananciasemp(){
+        $c1 =  Yii::$app->request->get('fecha');
+
+        $admin = new SpAdministracion();
+        $datos = $admin->procedimiento12($c1);
+
+        echo json_encode($datos);
+
+    }
+
     public function actionRealizacierre(){
         $c1 =  Yii::$app->request->get('fechaIni');
         $c2 =  Yii::$app->request->get('horaIni');
@@ -1990,29 +2047,27 @@ class SiteController extends Controller
                     $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarPlato(".$i.")'> delete</i>";
                     //$imagenPlato = "<img id='imgCat".$i."' src='img/categorias/".$datosPlatos[$i]['IMAGEN']."' >";
 
-                    $platoId = "id='platoId".$i."'";
-                    $nombrePlaId = "id='nombrePlaId".$i."'";
-                    $precioId = "id='precioId".$i."'";
-                    $precioFullId = "id='precioFullId".$i."'";
-                    $codigoCatPlId = "id='codigoCatPlId".$i."'";
-                    $nombreCatPlId = "id='nombreCatPlId".$i."'";
-                    $tiempoPlaId = "id='tiempoPlaId".$i."'";
-                    $nitEmpPlatoId = "id='nitEmpPlatoId".$i."'";
-                    $nomEmpPlatoId = "id='nomEmpPlatoId".$i."'";
-                    $descPlatoId = "id='descPlatoId".$i."'";
+                    $dataPlAttr = "id='platoId".$i."' ".
+                                    "attr-platoId='".$datosPlatos[$i]['COD_PRODUCTO']."' ".
+                                    "attr-platonombre='".$datosPlatos[$i]['NOMBRE']."' ".
+                                    "attr-platoprebru='".number_format($datosPlatos[$i]['PRECIO'], 2)."' ".
+                                    "attr-platoprenet='".number_format($datosPlatos[$i]['PRECIO_FULL'], 2)."' ".
+                                    "attr-platocodcat='".$datosPlatos[$i]['CATEGORIA']."' ".
+                                    "attr-platonomcat='".$datosPlatos[$i]['NOM_CATEGORIA']."' ".
+                                    "attr-platotiempo='".$datosPlatos[$i]['TIEMPO']."' ".
+                                    "attr-platocodemp='".$datosPlatos[$i]['COD_EMPRESA']."' ".
+                                    "attr-platonomemp='".$datosPlatos[$i]['EMPRESA']."' ".
+                                    "attr-platodescri='".$datosPlatos[$i]['DESCRIPCION']."' ";
 
                     $jsonTable = $jsonTable .
-                        '['.
-                            '"<span '.$platoId.'>'.$datosPlatos[$i]['COD_PRODUCTO'].'</span>",'.                            
-                            '"<span '.$nombrePlaId.'>'.$datosPlatos[$i]['NOMBRE'].'</span>",'.
-                            '"<span '.$precioId.'>'.number_format($datosPlatos[$i]['PRECIO'], 2).'",'.
-                            '"<span '.$precioFullId.'>'.number_format($datosPlatos[$i]['PRECIO_FULL'], 2).'",'.                            
-                            '"<span '.$codigoCatPlId.'>'.$datosPlatos[$i]['CATEGORIA'].'",'.
-                            '"<span '.$nombreCatPlId.'>'.$datosPlatos[$i]['NOM_CATEGORIA'].'",'.
-                            '"<span '.$tiempoPlaId.'>'.$datosPlatos[$i]['TIEMPO'].'",'.
-                            '"<span '.$nitEmpPlatoId.'>'.$datosPlatos[$i]['COD_EMPRESA'].'",'.
-                            '"<span '.$nomEmpPlatoId.'>'.$datosPlatos[$i]['EMPRESA'].'",'.
-                            '"<span '.$descPlatoId.'>'.$datosPlatos[$i]['DESCRIPCION'].'",'.
+                        '['.                        
+                            '"<span '.$dataPlAttr.'>'.$datosPlatos[$i]['NOMBRE'].'</span>",'.                            
+                            '"'.number_format($datosPlatos[$i]['PRECIO'], 2).'",'.
+                            '"'.number_format($datosPlatos[$i]['PRECIO_FULL'], 2).'",'.                                                        
+                            '"'.$datosPlatos[$i]['NOM_CATEGORIA'].'",'.
+                            '"'.$datosPlatos[$i]['TIEMPO'].'",'.                            
+                            '"'.$datosPlatos[$i]['EMPRESA'].'",'.
+                            '"'.$datosPlatos[$i]['DESCRIPCION'].'",'.
                             '"'.$iconEdit.'",'.
                             '"'.$iconDelete.'"'.
                         '],';
@@ -2215,13 +2270,15 @@ class SiteController extends Controller
         $datosNotas = $fn_notas->procedimiento11('READ',0,'','');           
         $jsonTable = '';
 
-        for ($i=0 ; $i<count($datosNotas['NOTA_DESCRIPCION']) ; $i++) {       
-            $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarPlato(".$i.")'> edit</i>";              
-            $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarPlato(".$i.")'> delete</i>";            
+        for ($i=0 ; $i<count($datosNotas['NOTA_DESCRIPCION']) ; $i++) {                   
+            $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarNota(".$i.")'> edit</i>";              
+            $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='eliminarNota(".$i.")'> delete</i>";            
+
+            $notasAttr = "id='notaRow".$i."' attr-notaid='".$datosNotas['NOTA_ID'][$i]."' attr-pltcatid='".$datosNotas['ID_PLT_CAT'][$i]."' attr-nompltcat='".$datosNotas['CATE_PLA'][$i]."' attr-notadesc='".$datosNotas['NOTA_DESCRIPCION'][$i]."'";
 
             $jsonTable = $jsonTable .
                 '['.
-                    '"'.$datosNotas['NOTA_DESCRIPCION'][$i].'",'.
+                    '"<span '.$notasAttr.'>'.$datosNotas['NOTA_DESCRIPCION'][$i].'</span>",'.
                     '"'.$datosNotas['CATE_PLA'][$i].'",'.
                     '"'.$iconEdit.'",'.
                     '"'.$iconDelete.'"'.
@@ -2232,6 +2289,208 @@ class SiteController extends Controller
         $jsonTable = '{"data":['.$jsonTable.']}';
         //
         echo $jsonTable; 
+    }
+
+    public function actionOpcionesnotasadmin(){
+
+        $c1 = Yii::$app->request->get('opcion');        
+
+        $fn_notas = new SpAdministracion;
+
+        switch ($c1) {
+            case 'NEW':
+                $c2 = Yii::$app->request->get('codigopltcat');
+                $c3 = Yii::$app->request->get('nota');
+
+                $crearNota = $fn_notas->procedimiento11('NEW',0,$c3,$c2);           
+                echo "ok";
+                break;
+            case 'EDIT':
+                $c2 = Yii::$app->request->get('codigopltcat');
+                $c3 = Yii::$app->request->get('nota');
+                $c4 = Yii::$app->request->get('codigoNota');
+
+                $crearNota = $fn_notas->procedimiento11('EDIT',$c4,$c3,$c2);           
+                echo "ok";                
+                break;
+            case 'DELETE':
+                $c2 = Yii::$app->request->get('codigoNota');
+
+                $crearNota = $fn_notas->procedimiento11('DELETE',$c2,"","");           
+                echo "ok";
+                break;
+        }        
+    }
+
+    public function actionActualizarformapago(){
+        $c1 = Yii::$app->request->get('numfac');
+        $c2 = Yii::$app->request->get('numauth');
+        $c3 = Yii::$app->request->get('valortar');
+        $c4 = Yii::$app->request->get('efectivo');
+
+        $fn_faturar = new SpMesasFactura;
+        $devuelta = $fn_faturar->procedimiento17($c1,$c2,$c3,$c4);
+
+
+        echo number_format($devuelta, 2,',', '.');
+    }
+
+    public function actionRptvenprod()
+    {
+        $empr = $_GET["empresa"];
+        $fecini = $_GET["fechaini"];
+        $fecfin = $_GET["fechafin"];        
+        
+        //Declaro la clase para el procedimeinto que trae los datos para imprimir la factura
+        $model = new AcRptVentasProd;
+        $datosVenprod = $model->sp_ac_RptVentaprod($empr, $fecini, $fecfin);
+        
+        //Obtengo el array donde estan todas las empresas almacenadas
+        $datos_rptvenprod = $datosVenprod[0];
+            
+        $this->layout=false; 
+        return $this->render('rptvenprod',["datos_rptvenprod"=>$datos_rptvenprod,"codi_empre"=>$empr,"fech_ini"=>$fecini,"fech_fin"=>$fecfin]);
+    }
+
+    public function actionReservasmesas(){
+        //$c1: operacion a reaizar
+        //$c2: codigo de reserva
+        //$c3: codigo de mesa
+        //$c4: nuero de puesto
+        //$c5: nombre ciente
+        //$c6: fecha de reserba
+        //$c7: hora de reserva
+        //$c8: cursor
+        
+        $opcion = Yii::$app->request->get('opcion');        
+
+        switch ($opcion) {
+            case 'READ':                           
+
+                $c1 = 'READ';
+                $c2 = '';
+                $c3 = array('');
+                $c4 = array('');
+                $c5 = '';
+                $c6 = Yii::$app->request->get('fecha');
+                $c7 = '';
+
+                $fn_reservas = new SpAdministracion;
+                $data = $fn_reservas->procedimiento13($c1,$c2,$c3,$c4,$c5,$c6,$c7);
+
+                $jsonTable = '';
+
+                for ($i=0 ; $i<count($data['VEN_RESV_COD']) ; $i++) {     
+
+                    if(strcmp($data['VEN_RESV_COD'][$i], "N/A") === 0){
+                        $iconTable = "<i class='material-icons'> &#xE417;</i>";
+                        $iconEdit = "<i class='material-icons editIcon btn-link' > edit</i>";              
+                        $iconDelete = "<i class='material-icons deleteIcon btn-link'> delete</i>"; 
+
+                        $darRsvrAttr = "id='reserva".$i."' ".
+                                    "attr-rsvrcod='".$data['VEN_RESV_COD'][$i]."' ".
+                                    "attr-rsvrmesa='".$data['VEN_RESV_MESCOD'][$i]."' ".
+                                    "attr-rsvrpuestos='".$data['VEN_RESV_NUMPOS'][$i]."' ".
+                                    "attr-rsvrfecha='".$data['VEN_RESV_FECHA'][$i]."' ".
+                                    "attr-rsvrhora='".$data['VEN_RESV_HORA'][$i]."' ".
+                                    "attr-rsvrcliente='".$data['VEN_RESV_NOMBRE'][$i]."'";
+
+                        $jsonTable = $jsonTable .
+                            '['.      
+                                '"'.$iconTable.'",'.
+                                '"<span '.$darRsvrAttr.'>'.$data['VEN_RESV_COD'][$i].'</span>",'.
+                                '"'.$data['VEN_RESV_MESCOD'][$i].'",'.                                                        
+                                '"'.$data['VEN_RESV_FECHA'][$i].'",'.
+                                '"'.$data['VEN_RESV_HORA'][$i].'",'.
+                                '"'.$data['VEN_RESV_NOMBRE'][$i].'",'.                            
+                                '"'.$iconEdit.'",'.
+                                '"'.$iconDelete.'"'.
+                            '],';
+                    }else{
+                        $iconTable = "<i class='material-icons'  onclick='mostrarReserva(".$i.")'> &#xE417;</i>";
+                        $iconEdit = "<i class='material-icons editIcon btn-link'  onclick='editarReserva(".$i.")'> edit</i>";              
+                        $iconDelete = "<i class='material-icons deleteIcon btn-link'  onclick='deleteReserva(".$i.")'> delete</i>"; 
+
+                        $darRsvrAttr = "id='reserva".$i."' ".
+                                    "attr-rsvrcod='".$data['VEN_RESV_COD'][$i]."' ".
+                                    "attr-rsvrmesa='".$data['VEN_RESV_MESCOD'][$i]."' ".
+                                    "attr-rsvrpuestos='".$data['VEN_RESV_NUMPOS'][$i]."' ".
+                                    "attr-rsvrfecha='".$data['VEN_RESV_FECHA'][$i]."' ".
+                                    "attr-rsvrhora='".$data['VEN_RESV_HORA'][$i]."' ".
+                                    "attr-rsvrcliente='".$data['VEN_RESV_NOMBRE'][$i]."'";
+
+                        $jsonTable = $jsonTable .
+                            '['.      
+                                '"'.$iconTable.'",'.
+                                '"<span '.$darRsvrAttr.'>'.$data['VEN_RESV_COD'][$i].'</span>",'.
+                                '"'.$data['VEN_RESV_MESCOD'][$i].'",'.                                                        
+                                '"'.$data['VEN_RESV_FECHA'][$i].'",'.
+                                '"'.$data['VEN_RESV_HORA'][$i].'",'.
+                                '"'.$data['VEN_RESV_NOMBRE'][$i].'",'.                            
+                                '"'.$iconEdit.'",'.
+                                '"'.$iconDelete.'"'.
+                            '],';
+                    }   
+                }
+
+                $jsonTable = substr($jsonTable,0,-1);
+                $jsonTable = '{"data":['.$jsonTable.']}';  
+
+                echo $jsonTable;              
+                break;
+
+            case 'SAVE':
+                $c1 = 'SAVE';
+                $c2 = '';
+                $c3 = array(Yii::$app->request->get('mesa'));
+                $c4 = array(Yii::$app->request->get('puesto'));
+                $c5 = Yii::$app->request->get('cliente');
+                $c6 = Yii::$app->request->get('fecha');
+                $c7 = Yii::$app->request->get('hora').":00";             
+
+                $fn_reservas = new SpAdministracion;
+                $data = $fn_reservas->procedimiento13($c1,$c2,$c3,$c4,$c5,$c6,$c7);
+
+                echo json_encode($data);
+                break;
+
+            case 'EDIT':
+                $c1 = 'UPDATE';
+                $c2 = Yii::$app->request->get('codigo');;
+                $c3 = array(Yii::$app->request->get('mesa'));
+                $c4 = array(Yii::$app->request->get('puesto'));
+                $c5 = Yii::$app->request->get('cliente');
+                $c6 = Yii::$app->request->get('fecha');
+                $c7 = Yii::$app->request->get('hora').":00";             
+
+                $fn_reservas = new SpAdministracion;
+                $data = $fn_reservas->procedimiento13($c1,$c2,$c3,$c4,$c5,$c6,$c7);
+
+                echo json_encode($data);
+                break;
+
+             case 'DELETE':
+                $c1 = 'DELETE';
+                $c2 = Yii::$app->request->get('codigo');
+                $c3 = array("");
+                $c4 = array("");
+                $c5 = "";
+                $c6 = "";
+                $c7 = "";
+
+                $fn_reservas = new SpAdministracion;
+                $data = $fn_reservas->procedimiento13($c1,$c2,$c3,$c4,$c5,$c6,$c7);
+
+                echo json_encode($data);
+                break;
+
+            case 'VALIDAR':
+                $c1 = Yii::$app->request->get('reserva');
+
+                $fn_reservas = new SpMesasPlaza;
+                $data = $fn_reservas->procedimiento4($c1);
+                break;
+        }                
     }
 
 
